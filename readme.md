@@ -55,7 +55,9 @@ Such a grammar could look like:
     ID: [a-zA-Z] [a-zA-Z0-9_]*;
     WS: [ \n\r\t] -> channel(HIDDEN);
 
-You can see the 2 special rules `variableRef` and `functionRef`, which mostly consist of the `ID` lexer rule. We could have instead used a single `ID` reference in the `simpleExpression` rule. However, this is where your domain knowledge about the language comes in. By making the two use cases explicit you can now exactly tell what to query from your symbol table. The code completion core can return parser rule indexes (as created by ANTLR4 when it generated your files). With a returned candidate `ExprParser.RULE_variableRef` you know that you have to ask your symbol for all visible variables (or functions if you get back `ExprParser.RULE_functionRef`). It's easy to see how this applies to much more complex grammars. The principle is always the same: create an own parser rule for your entity references. If you have an SQL grammar where you drop a table write your rules so:
+You can see the 2 special rules `variableRef` and `functionRef`, which mostly consist of the `ID` lexer rule. We could have instead used a single `ID` reference in the `simpleExpression` rule. However, this is where your domain knowledge about the language comes in. By making the two use cases explicit you can now exactly tell what to query from your symbol table. As you see we are using parser rules to denote entity types, which is half of the magic here.
+
+The code completion core can return parser rule indexes (as created by ANTLR4 when it generated your files). With a returned candidate `ExprParser.RULE_variableRef` you know that you have to ask your symbol for all visible variables (or functions if you get back `ExprParser.RULE_functionRef`). It's easy to see how this applies to much more complex grammars. The principle is always the same: create an own parser rule for your entity references. If you have an SQL grammar where you drop a table write your rules so:
 
     dropTable: DROP TABLE tableRef;
     tableRef: ID;
@@ -64,12 +66,11 @@ instead of:
 
     dropTable: DROP TABLE ID;
     
-Then tell the c3 engine that you want to get back `tableRef` if it is a valid canidate at a given position.
+Then tell the c3 engine that you want to get back `tableRef` if it is a valid candidate at a given position.
 
 # Getting Started
 With this knowledge we can now look at a simple code example that shows how to use the engine. For further details check the unit tests for this node module (under the test/ folder).
 
-    <!-- language: typescript -->
     let inputStream = new ANTLRInputStream("var c = a + b()");
     let lexer = new ExprLexer(inputStream);
     let tokenStream = new CommonTokenStream(lexer);
@@ -88,11 +89,10 @@ This is a pretty standard parser setup here. It's not even necessary to actually
 * the tokens from your input stream
 * vocabulary and rule names for debug output
 
-All these could be passed in individually, but since your parser contains all of that anyway, the API has been designed to take a parser instead. In real world applications you will have a parser anyway (e.g. for error checking), which is perfect as ATN and input provider for the code completion core.
+All these could be passed in individually, but since your parser contains all of that anyway, the API has been designed to take a parser instead. In real world applications you will have a parser anyway (e.g. for error checking), which is perfect as ATN and input provider for the code completion core. But keep in mind: whatever parser you pass in it must have a fully set up token stream.
 
 The returned candidate collection contains fields for lexer tokens (mostly keywords, but also other tokens if they are not on the ignore list) and parser rule indexes. This collection is defined as:
 
-    <!-- language: typescript -->
     export class CandidatesCollection {
         public tokens: Map<number, number[]> = new Map();
         public rules: Map<number, number[]> = new Map();
@@ -100,16 +100,53 @@ The returned candidate collection contains fields for lexer tokens (mostly keywo
 
 where the map keys are the lexer tokens and the rule indexes, respectively. Both can come with additional numbers, which you may or may not use for your implementation. For parser rules the array represents a stack of rule indexes at which the given rule was found during evaluation. That's probably something only rarely used (mostly for debugging), however for the lexer tokens the array consists of further token ids which directly follow the given token in the grammar (if any). That's quite a neat additional feature which allows you to show token sequences to the user if they are always used together. For example consider this SQL rule:
 
-    <!-- language: sql -->
     createTable: CREATE TABLE (IF NOT EXISTS)? ...;
     
-Here, if a possible candidate is the IF keyword, you can also show the entire `IF NOT EXISTS` sequence to the user (and let him complete all 3 words in one go in his/her source code). The engine will return a candidate entry for `IF` with an array containing `NOT` and `EXISTS`. This list will of course update properly when the user comes to `NOT`. Then you will get a candidate entry for `NOT` and an additional list of just `EXISTS`.
+Here, if a possible candidate is the `IF` keyword, you can also show the entire `IF NOT EXISTS` sequence to the user (and let him complete all 3 words in one go in his/her source code). The engine will return a candidate entry for `IF` with an array containing `NOT` and `EXISTS`. This list will of course update properly when the user comes to `NOT`. Then you will get a candidate entry for `NOT` and an additional list of just `EXISTS`.
+
+Essential for getting any rule index, which you can use to query your symbol table, is that you specify those you want in the `CodeCompletionCore.preferredRules` field before running `CodeCompletionCore.collectCandidates()`.
+
+The final step to get your completion strings is usually something like this:
+
+    let keywords: string[] = [];
+    for (let candidate of candidates.tokens) {
+        keywords.push(parser.vocabulay.getDisplayName(candidate[0]);
+    }
+    
+    let symbol = ...; // Find the symbol that covers your caret position.
+    let functionNames: string[] = [];
+    let variableNames: string[] = [];
+    for (let candidate of candidates.rules) {
+      switch (candidate[0]) {
+        case ExprParser.RULE_functionRef: {
+          let functions = symbol.getSymbolsOfType(c3.FunctionSymbol);
+          for (function of functions)
+            functionNames.push(function.name);
+          break;      
+        }
+
+        case ExprParser.RULE_variableRef: {
+          let variables = symbol.getSymbolsOfType(c3.VariableSymbol);
+          for (variable of variables)
+            functionNames.push(variable.name);
+          break;
+        }
+      }
+    }
+    
+    // Finally combine all found lists into one for the UI.
+    // We do that in separate steps so that you can apply some ordering to each of your sublists.
+    // Then you also can order symbols groups as a whole depending their importance.
+    let candidates: string[] = [];
+    candidates.push(...keywords);
+    candidates.push(...functionNames);
+    candidates.push(...variableNames);
+      
 
 # Fine Tuning
 ## Ignored Tokens
 As mentioned above in the base setup the engine will only return lexer tokens. This will include your keywords, but also many other tokens like operators, which you usually don't want in your completion list. In order to ease usage you can tell the engine which lexer tokens you are not interested in and which therefor should not appear in the result. This can easily be done by assigning a list of token ids to the `ignoredTokens` field before you invoke `collectCandidates()`:
 
-    <!-- language: typescript -->
     core.ignoredTokens = new Set([
       ExprLexer.ID,
       ExprLexer.PLUS, ExprLexer.MINUS,
@@ -119,12 +156,14 @@ As mentioned above in the base setup the engine will only return lexer tokens. T
     ]);
 
 ## Preferred Rules
-Another important field of the engine is `preferredRules`. This lets you specify the parser rules that are interesting for you and should include the rule indexes for the entitites we talked about in the code completion breakdown paragraph above. Whenever the c3 engine hits a lexer token when collecting candidates from a specific ATN state it will check the call stack for it and, if that contains any of the preferred rules, will select that instead of the lexer token. This transformation ensures that the engine returns contextual informations which can actually be used to look up symbols.
+As mentioned already the `preferredRules` field is an essential part for getting more than just keywords. It lets you specify the parser rules that are interesting for you and should include the rule indexes for the entitites we talked about in the code completion breakdown paragraph above. Whenever the c3 engine hits a lexer token when collecting candidates from a specific ATN state it will check the call stack for it and, if that contains any of the preferred rules, will select that instead of the lexer token. This transformation ensures that the engine returns contextual informations which can actually be used to look up symbols.
 
 ## Constraining the Search Space
 Walking the ATN can at times be quite expensive, especially for complex grammars with many rules and perhaps (left) recursive expression rules. I have seen millions of visited ATN states for complex input, which will take very long to finish. In such cases it pays off to limit the engine to just a specific rule (and those called by it). For that there is an optional parser rule context parameter in the `collectCandidates()` method. If a context is given the engine will never look outside of this rule. It is necessary that the specified caret position lies within that rule (or any of those called by it) to properly finish the ATN walk.
 
-You can determine a parser rule context from your symbol table if that stores the context together with its symbols. Another way would be to use the parse tree and do a search to find the most deeply nested context which contains the caret position. While it will make the c3 engine ultra fast when you pick the context that most closely covers the caret position it might have also a negative side effect: candidates located outside of this context (or those called by it) will not appear in the returned candidates list. So, this is a tradeoff between speed and precision here. You can select any parse rule context you wish between the top rule (or null) and the most deeply nested one. with increasing execution time (but more complete results) the higher in the stack your given rule is.
+You can determine a parser rule context from your symbol table if it stores the context together with its symbols. Another way would be to use the parse tree and do a search to find the most deeply nested context which contains the caret position. While it will make the c3 engine ultra fast when you pick the context that most closely covers the caret position it might have also a negative side effect: candidates located outside of this context (or those called by it) will not appear in the returned candidates list. So, this is a tradeoff between speed and precision here. You can select any parse rule context you wish between the top rule (or null) and the most deeply nested one. with increasing execution time (but more complete results) the higher in the stack your given rule is.
+
+In any case, when you want to limit the search space you have to parse your input first to get a parse tree.
 
 ## Selecting the Right Caret Position
 It might sound weird to talk about such a trivial thing like the caret position but there's one thing to consider, which makes this something you have to think about. The issue is the pure token index returned by the token stream and the visual appearance on screen. This image shows a typical scenario:
