@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - "stable"
+  - "6"
+
+sudo: false
+
+install:
+  - npm uninstall typescript
+  - npm uninstall tslint
+  - npm install
+  - npm update

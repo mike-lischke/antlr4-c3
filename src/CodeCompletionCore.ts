@@ -514,7 +514,6 @@ export class CodeCompletionCore {
 
     private generateBaseDescription(state: ATNState): string {
         let stateValue = state.stateNumber == ATNState.INVALID_STATE_NUMBER ? "Invalid" : state.stateNumber;
-        //return "[" + stateValue + " " + ATNState.serializationNames[state.stateType] + "] in " + this.ruleNames[state.ruleIndex];
         return "[" + stateValue + " " + ATNStateType[state.stateType] + "] in " + this.ruleNames[state.ruleIndex];
     }
 
@@ -540,7 +539,6 @@ export class CodeCompletionCore {
                 if (labels.length == 0)
                     labels = "ε";
                 transitionDescription += "\n" + currentIndent + "\t(" + labels + ") " + "[" + transition.target.stateNumber + " " +
-                    //ATNState.serializationNames[transition.target.stateType] + "] in " + this.ruleNames[transition.target.ruleIndex];
                     ATNStateType[transition.target.stateType] + "] in " + this.ruleNames[transition.target.ruleIndex];
             }
         }

@@ -333,7 +333,7 @@ describe('antlr4-c3', function () {
 
     });
 
-    it("Real world setup", function () {
+    it("Typical setup", function () {
       let inputStream = new ANTLRInputStream("var c = a + b");
       let lexer = new ExprLexer(inputStream);
       let tokenStream = new CommonTokenStream(lexer);
@@ -407,7 +407,7 @@ describe('antlr4-c3', function () {
       let parser = new CPP14Parser(tokenStream);
     });
 
-    it('Real world example', function () {
+    it('C++ example', function () {
       // We are trying here to get useful code completion candidates without adjusting the grammar in any way.
       // We use the grammar as downloaded from the antlr grammar directory and set up the c3 engine
       // instead in a way that still returns useful info. This limits us somewhat.
@@ -580,7 +580,7 @@ describe('antlr4-c3', function () {
       expect(candidates.tokens.has(CPP14Lexer.Protected), "Test 6.59").to.equal(false);
     });
 
-    it('Real world example with errors in input', function () {
+    it('C++ example with errors in input', function () {
       let inputStream = new ANTLRInputStream("class A {\n" +
         "public:\n" +
         "  void test() {\n" +
@@ -612,8 +612,8 @@ describe('antlr4-c3', function () {
 
       core.preferredRules = new Set([CPP14Parser.RULE_classname, CPP14Parser.RULE_namespacename, CPP14Parser.RULE_idexpression]);
 
-      core.showDebugOutput = true;
-      core.showRuleStack = true;
+      core.showDebugOutput = false;
+      core.showRuleStack = false;
       let candidates = core.collectCandidates(11); // At the opening parenthesis.
 
       expect(candidates.tokens.size, "Test 7.2").to.equal(1);

@@ -1,12 +1,16 @@
 {
   "name": "antlr4-c3",
-  "version": "1.0.0",
-  "description": "A code completion core implmentation for any ANTLR4 based parser",
+  "version": "1.0.1",
+  "description": "A grammar agnostic code completion core implmentation for ANTLR4 based parsers",
   "main": "out/index.js",
   "scripts": {
     "antlr4ts": "antlr4ts test/Expr.g4 test/CPP14.g4 -no-visitor -no-listener",
     "compile": "tsc --outDir ./out/src",
     "test": "mocha --compilers ts:ts-node/register,tsx:ts-node/register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mike-lischke/antlr4-c3"
   },
   "keywords": [
     "ANTLR4",
@@ -15,13 +19,13 @@
     "grammar"
   ],
   "dependencies": {
-    "antlr4ts": "^0.4.0-alpha.3"
+    "antlr4ts": "^0.4.0-alpha.4"
   },
   "devDependencies": {
     "@types/chai": "^3.4.34",
     "@types/mocha": "^2.2.32",
     "@types/node": "^6.0.40",
-    "antlr4ts-cli": "^0.4.0-alpha.3",
+    "antlr4ts-cli": "^0.4.0-alpha.4",
     "chai": "^3.5.0",
     "mocha": "^2.5.3",
     "typescript": "^2.0.3",
