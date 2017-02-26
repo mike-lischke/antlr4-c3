@@ -1,6 +1,6 @@
 {
   "name": "antlr4-c3",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A grammar agnostic code completion core implmentation for ANTLR4 based parsers",
   "main": "out/index.js",
   "scripts": {
