@@ -263,7 +263,7 @@ describe('antlr4-c3', function () {
       main.addDependencies(systemFunctions, libVariables);
 
       // Note: namespaces are handled in the context of their parent. Symbols in a namespace/module/library are accessible from their parent.
-      expect(main.getAllSymbols().length, "Test 3.1").to.equal(2566);
+      expect(main.getAllSymbols().length, "Test 3.1").to.equal(2232);
       expect(systemFunctions.getAllSymbols().length, "Test 3.2").to.equal(334); // System functions alone + the namespace.
       expect(libFunctions.getAllSymbols().length, "Test 3.3").to.equal(445); // Lib functions alone + the namespace.
       expect(libVariables.getAllSymbols().length, "Test 3.4").to.equal(1668); // Lib variables + lib functions + namespaces.

@@ -79,7 +79,7 @@ export class FundamentalType implements Type {
 // symbols can so provide additional APIs for simpler access to their sub elements, if needed.
 export class Symbol {
     name: string = ""; // The name of the scope or empty if anonymous.
-    context: ParserRuleContext | undefined; // Reference to the parse tree which defines this symbol.
+    context: ParserRuleContext | undefined; // Reference to the parse tree which contains this symbol.
 
     protected parent: Symbol | undefined;
 
@@ -87,14 +87,15 @@ export class Symbol {
         this.name = name;
     }
 
-    clear() {
-    }
-
     // The parent is usually a scoped symbol as only those can have children, but we allow
     // any symbol here for special scenarios.
     // This is rather an internal method and should rarely be used by external code.
     setParent(parent: Symbol | undefined) {
         this.parent = parent;
+    }
+
+    getParent(): Symbol | undefined {
+        return this.parent;
     }
 
     removeFromParent() {
@@ -186,10 +187,6 @@ export class TypeAlias extends Symbol implements Type {
 
 // A symbol with a scope (so it can have child symbols).
 export class ScopedSymbol extends Symbol {
-    clear() {
-        super.clear();
-    }
-
     constructor(name = "") {
         super(name)
     }
@@ -259,29 +256,31 @@ export class ScopedSymbol extends Symbol {
         return result;
     }
 
-    // Returns all symbols accessible from this scope.
+    // Returns all symbols of the the given type accessible from this scope.
     // TODO: add optional position dependency (only symbols defined before a given caret pos are viable).
-    getAllSymbols(localOnly = false): Symbol[] {
+    getAllSymbols<T extends Symbol>(t: new (...args: any[]) => T, localOnly = false): Symbol[] {
         let result: Symbol[] = [];
 
         // Special handling for namespaces, which act like grouping symbols in this scope,
         // so we show them as available in this scope.
         for (let child of this.children) {
-            result.push(child);
+            if (child instanceof t) {
+                result.push(child);
+            }
             if (child instanceof NamespaceSymbol)
-                result.push(...child.getAllSymbols(true));
+                result.push(...child.getAllSymbols(t, true));
         }
 
         if (!localOnly) {
             if (this.parent && this.parent instanceof ScopedSymbol)
-                result.push(...this.parent.getAllSymbols());
+                result.push(...this.parent.getAllSymbols(t));
         }
 
         return result;
     }
 
-    // Returns a symbol with a given name from this scope or any of the parent scopes (conditionally).
-    // That means inner scopes can see symbols from outer scopes.
+    // Returns the first symbol, from top to bottom, with a given name from this scope
+    // or any of the parent scopes (conditionally).
     resolve(name: string, localOnly = false): Symbol | undefined {
         for (let child of this.children) {
             if (child.name == name)
@@ -550,17 +549,26 @@ export class SymbolTable extends ScopedSymbol {
     }
 
     clear() {
-        this.dependencies = [];
+        this.dependencies.clear();
+        this.children = [];
     }
 
     addDependencies(...tables: SymbolTable[]) {
-        this.dependencies.push(...tables);
+        tables.forEach((value, key) => {
+            this.dependencies.add(value);
+        });
+    }
+
+    removeDependency(table: SymbolTable) {
+        if (this.dependencies.has(table)) {
+            this.dependencies.delete(table);
+        }
     }
 
     // Instance informations, mostly relevant for unit testing.
     getInfo() {
         return {
-            dependencyCount: this.dependencies.length,
+            dependencyCount: this.dependencies.size,
             symbolCount: this.children.length
         };
     }
@@ -594,11 +602,14 @@ export class SymbolTable extends ScopedSymbol {
         return this.addNewSymbolOfType(NamespaceSymbol, currentParent, parts[parts.length - 1]);
     }
 
-    getAllSymbols(): Symbol[] {
-        let result = super.getAllSymbols();
+    getAllSymbols<T extends Symbol>(t?: new (...args: any[]) => T, localOnly: boolean = false): Symbol[] {
+        let type = t ? t : Symbol;
+        let result = super.getAllSymbols(type, localOnly);
 
-        for (let dependency of this.dependencies) {
-            result.push(...dependency.getAllSymbols());
+        if (!localOnly) {
+            for (let dependency of this.dependencies) {
+                result.push(...dependency.getAllSymbols(t, localOnly));
+            }
         }
 
         return result;
@@ -610,7 +621,7 @@ export class SymbolTable extends ScopedSymbol {
         if (!result && !localOnly) {
             for (let dependency of this.dependencies) {
                 result = dependency.resolve(name, false);
-                if (!result)
+                if (result)
                     break;
             }
         }
@@ -619,5 +630,5 @@ export class SymbolTable extends ScopedSymbol {
     }
 
     // Other symbol information available to this instance.
-    private dependencies: SymbolTable[] = [];
+    protected dependencies: Set<SymbolTable> = new Set();
 };

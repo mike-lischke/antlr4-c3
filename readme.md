@@ -1,3 +1,7 @@
+[![NPM](https://nodei.co/npm/antlr4-c3.png?downloads=true&downloadRank=true)](https://nodei.co/npm/antlr4-c3/) [![NPM](https://nodei.co/npm-dl/antlr4-c3.png?months=6&height=3)](https://nodei.co/npm/antlr4-c3/)
+
+[![Build Status](https://travis-ci.org/mike-lischke/antlr4-c3.svg?branch=master)](https://travis-ci.org/mike-lischke/antlr4-c3)
+
 # antlr4-c3 The ANTLR4 Code Completion Core
 
 This node module contains a grammar agnostic code completion engine for ANTLR4 based parsers, written in TypeScript. The c3 engine is able to provide code completion candidates useful for editors with ANTLR generated parsers, independent of the actually language/grammar used for the generation.
@@ -29,22 +33,22 @@ Such a grammar could look like:
 
     grammar Expr;
     expression: assignment | simpleExpression;
-    
+
     assignment: (VAR | LET) ID EQUAL simpleExpression;
-    
+
     simpleExpression
         : simpleExpression (PLUS | MINUS) simpleExpression
         | simpleExpression (MULTIPLY | DIVIDE) simpleExpression
         | variableRef
         | functionRef
     ;
-    
+
     variableRef: ID;
     functionRef: ID OPEN_PAR CLOSE_PAR;
-    
+
     VAR: [vV] [aA] [rR];
     LET: [lL] [eE] [tT];
-    
+
     PLUS: '+';
     MINUS: '-';
     MULTIPLY: '*';
@@ -61,11 +65,11 @@ The code completion core can return parser rule indexes (as created by ANTLR4 wh
 
     dropTable: DROP TABLE tableRef;
     tableRef: ID;
-    
+
 instead of:
 
     dropTable: DROP TABLE ID;
-    
+
 Then tell the c3 engine that you want to get back `tableRef` if it is a valid candidate at a given position.
 
 # Getting Started
@@ -101,7 +105,7 @@ The returned candidate collection contains fields for lexer tokens (mostly keywo
 where the map keys are the lexer tokens and the rule indexes, respectively. Both can come with additional numbers, which you may or may not use for your implementation. For parser rules the array represents a stack of rule indexes at which the given rule was found during evaluation. That's probably something only rarely used (mostly for debugging), however for the lexer tokens the array consists of further token ids which directly follow the given token in the grammar (if any). That's quite a neat additional feature which allows you to show token sequences to the user if they are always used together. For example consider this SQL rule:
 
     createTable: CREATE TABLE (IF NOT EXISTS)? ...;
-    
+
 Here, if a possible candidate is the `IF` keyword, you can also show the entire `IF NOT EXISTS` sequence to the user (and let him complete all 3 words in one go in his/her source code). The engine will return a candidate entry for `IF` with an array containing `NOT` and `EXISTS`. This list will of course update properly when the user comes to `NOT`. Then you will get a candidate entry for `NOT` and an additional list of just `EXISTS`.
 
 Essential for getting any rule index, which you can use to query your symbol table, is that you specify those you want in the `CodeCompletionCore.preferredRules` field before running `CodeCompletionCore.collectCandidates()`.
@@ -112,7 +116,7 @@ The final step to get your completion strings is usually something like this:
     for (let candidate of candidates.tokens) {
         keywords.push(parser.vocabulay.getDisplayName(candidate[0]);
     }
-    
+
     let symbol = ...; // Find the symbol that covers your caret position.
     let functionNames: string[] = [];
     let variableNames: string[] = [];
@@ -122,7 +126,7 @@ The final step to get your completion strings is usually something like this:
           let functions = symbol.getSymbolsOfType(c3.FunctionSymbol);
           for (function of functions)
             functionNames.push(function.name);
-          break;      
+          break;
         }
 
         case ExprParser.RULE_variableRef: {
@@ -133,7 +137,7 @@ The final step to get your completion strings is usually something like this:
         }
       }
     }
-    
+
     // Finally combine all found lists into one for the UI.
     // We do that in separate steps so that you can apply some ordering to each of your sublists.
     // Then you also can order symbols groups as a whole depending their importance.
@@ -141,7 +145,7 @@ The final step to get your completion strings is usually something like this:
     candidates.push(...keywords);
     candidates.push(...functionNames);
     candidates.push(...variableNames);
-      
+
 
 # Fine Tuning
 ## Ignored Tokens
