@@ -51,10 +51,10 @@ class PipelineEntry {
 // The main class for doing the collection process.
 export class CodeCompletionCore {
     // Debugging options. Print human readable ATN state and other info.
-    public showResult = false;                // Not dependent on showDebugOutput. Prints the collected rules + tokens to terminal.
-    public showDebugOutput = false;           // Enables printing ATN state info to terminal.
-    public debugOutputWithTransitions = true; // Only relevant when showDebugOutput is true. Enables transition printing for a state.
-    public showRuleStack = false;             // Also depends on showDebugOutput. Enables call stack printing for each rule recursion.
+    public showResult = false;                 // Not dependent on showDebugOutput. Prints the collected rules + tokens to terminal.
+    public showDebugOutput = false;            // Enables printing ATN state info to terminal.
+    public debugOutputWithTransitions = false; // Only relevant when showDebugOutput is true. Enables transition printing for a state.
+    public showRuleStack = false;              // Also depends on showDebugOutput. Enables call stack printing for each rule recursion.
 
     // Tailoring of the result.
     public ignoredTokens: Set<number>;        // Tokens which should not appear in the candidates set.
@@ -168,7 +168,7 @@ export class CodeCompletionCore {
                     if (rule[0] != ruleStack[i] || rule[1].length != path.length)
                         continue;
                     // Found an entry for this rule. Same path? If so don't add a new (duplicate) entry.
-                    if (path.every((v, j)=> v === rule[1][j])) {
+                    if (path.every((v, j) => v === rule[1][j])) {
                         addNew = false;
                         break;
                     }
@@ -378,7 +378,7 @@ export class CodeCompletionCore {
         statePipeline.push({ state: startState, tokenIndex: tokenIndex });
 
         while (statePipeline.length > 0) {
-            currentEntry = statePipeline.pop() !;
+            currentEntry = statePipeline.pop()!;
             ++this.statesProcessed;
 
             currentSymbol = this.tokens[currentEntry.tokenIndex];

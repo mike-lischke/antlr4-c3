@@ -1,7 +1,7 @@
 {
   "name": "antlr4-c3",
-  "version": "1.0.3",
-  "description": "A grammar agnostic code completion core implmentation for ANTLR4 based parsers",
+  "version": "1.0.4",
+  "description": "A code completion core implmentation for ANTLR4 based parsers",
   "main": "out/index.js",
   "scripts": {
     "postinstall": "tsc",

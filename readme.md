@@ -1,10 +1,10 @@
-[![NPM](https://nodei.co/npm/antlr4-c3.png?downloads=true&downloadRank=true)](https://nodei.co/npm/antlr4-c3/) [![NPM](https://nodei.co/npm-dl/antlr4-c3.png?months=6&height=3)](https://nodei.co/npm/antlr4-c3/)
+[![NPM](https://nodei.co/npm/antlr4-c3.png?downloads=true&downloadRank=true)](https://nodei.co/npm/antlr4-c3/)
 
 [![Build Status](https://travis-ci.org/mike-lischke/antlr4-c3.svg?branch=master)](https://travis-ci.org/mike-lischke/antlr4-c3)
 
 # antlr4-c3 The ANTLR4 Code Completion Core
 
-This node module contains a grammar agnostic code completion engine for ANTLR4 based parsers, written in TypeScript. The c3 engine is able to provide code completion candidates useful for editors with ANTLR generated parsers, independent of the actually language/grammar used for the generation.
+This node module contains a grammar agnostic code completion engine for ANTLR4 based parsers, written in TypeScript. The c3 engine is able to provide code completion candidates useful for editors with ANTLR generated parsers, independent of the actual language/grammar used for the generation.
 
 # Abstract
 
