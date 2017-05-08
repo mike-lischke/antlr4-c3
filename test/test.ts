@@ -34,7 +34,7 @@ export class ErrorListener extends BaseErrorListener {
 // In addition to that some global symbols are added ([3] variables, [4] literals).
 // If namespaces are given then the classes are distributed among them in a round-robin fashion.
 function createClassSymbolTable(name: string, counts: number[], namespaces?: string[]): c3.SymbolTable {
-  let symbolTable = new c3.SymbolTable(name);
+  let symbolTable = new c3.SymbolTable(name, { allowDuplicateSymbols: false });
 
   let nsSymbols: (c3.NamespaceSymbol | undefined)[] = [undefined];
   let nsIndex = 0;
@@ -234,26 +234,26 @@ describe('antlr4-c3', function () {
       // - a system functions table
       // - a table with variables, which has 2 other dependencies (functions in same namespace as system functions and one in a different ns)
       let main = createClassSymbolTable("main", [30, 10, 10, 100, 100]);
-      let systemFunctions = new c3.SymbolTable("system functions");
+      let systemFunctions = new c3.SymbolTable("system functions", { allowDuplicateSymbols: false });
       let namespace1 = systemFunctions.addNewSymbolOfType(c3.NamespaceSymbol, undefined, "ns1");
       for (let i = 0; i < 333; ++i) {
         systemFunctions.addNewSymbolOfType(c3.RoutineSymbol, namespace1, "func" + i);
       }
       main.addDependencies(systemFunctions);
 
-      let libFunctions = new c3.SymbolTable("library functions");
+      let libFunctions = new c3.SymbolTable("library functions", { allowDuplicateSymbols: false });
       let namespace2 = libFunctions.addNewSymbolOfType(c3.NamespaceSymbol, undefined, "ns2");
       for (let i = 0; i < 444; ++i) {
         libFunctions.addNewSymbolOfType(c3.RoutineSymbol, namespace2, "func" + i); // Same names as in the system funcs but different namespace.
       }
 
-      let libVariables = new c3.SymbolTable("library variables");
+      let libVariables = new c3.SymbolTable("library variables", { allowDuplicateSymbols: false });
       let namespace3 = libVariables.addNewSymbolOfType(c3.NamespaceSymbol, undefined, "ns1"); // Like for the system functions.
       for (let i = 0; i < 555; ++i) {
         libVariables.addNewSymbolOfType(c3.VariableSymbol, namespace3, "var" + i);
       }
 
-      let libFunctions2 = new c3.SymbolTable("library functions 2");
+      let libFunctions2 = new c3.SymbolTable("library functions 2", { allowDuplicateSymbols: false });
       let namespace4 = libFunctions2.addNewSymbolOfType(c3.NamespaceSymbol, undefined, "ns1");
       for (let i = 0; i < 666; ++i) {
         libFunctions2.addNewSymbolOfType(c3.RoutineSymbol, namespace4, "func" + i); // Same names as in the system funcs but different namespace.

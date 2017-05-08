@@ -49,6 +49,10 @@ export interface Type {
     reference: ReferenceKind;
 };
 
+export interface SymbolTableOptions {
+    allowDuplicateSymbols?: boolean;
+}
+
 // A single class for all fundamental types. They are distinguished via the kind field.
 export class FundamentalType implements Type {
     name: string;
@@ -114,6 +118,17 @@ export class Symbol {
             run = run.parent;
         }
         return run;
+    }
+
+    // Returns the symbol table we belong too or undefined if we are not yet assigned.
+    getSymbolTable(): SymbolTable | undefined {
+        let run = this.parent;
+        while (run) {
+            if (run instanceof SymbolTable)
+                return run;
+            run = run.parent;
+        }
+        return undefined;
     }
 
     // Returns the next enclosing parent of the given type.
@@ -197,12 +212,15 @@ export class ScopedSymbol extends Symbol {
         symbol.removeFromParent();
 
         // Check for duplicates first.
-        for (let child of this.children) {
-            if (child == symbol || (symbol.name.length > 0 && child.name == symbol.name)) {
-                let name = symbol.name;
-                if (name.length == 0)
-                    name = "<anonymous>";
-                throw new DuplicateSymbolError("Attempt to add duplicate symbol '" + name + "'");
+        let symbolTable = this.getSymbolTable();
+        if (!symbolTable || !symbolTable.options.allowDuplicateSymbols) {
+            for (let child of this.children) {
+                if (child == symbol || (symbol.name.length > 0 && child.name == symbol.name)) {
+                    let name = symbol.name;
+                    if (name.length == 0)
+                        name = "<anonymous>";
+                    throw new DuplicateSymbolError("Attempt to add duplicate symbol '" + name + "'");
+                }
             }
         }
 
@@ -544,7 +562,7 @@ export class SystemVariableSymbol extends Symbol {
 
 // The main class managing all the symbols for a top level entity like a file, library or similar.
 export class SymbolTable extends ScopedSymbol {
-    constructor(name?: string) {
+    constructor(name: string, public readonly options: SymbolTableOptions) {
         super(name);
     }
 
