@@ -161,6 +161,8 @@ describe('antlr4-c3', function () {
       let symbolPath = allSymbols[59].qualifiedName(".", true);
       expect(symbolPath, "Test 1.31").to.equal("main.class2.method2.block2.var1");
       expect(symbolTable.symbolFromPath("main.class2.method2.block2.var1"), "Test 1.32").to.equal(allSymbols[59]);
+
+      expect(symbolTable, "Test 1.33").to.equal(symbolTable.getSymbolTable());
     });
 
     it("Single table type checks", function () {

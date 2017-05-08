@@ -122,6 +122,10 @@ export class Symbol {
 
     // Returns the symbol table we belong too or undefined if we are not yet assigned.
     getSymbolTable(): SymbolTable | undefined {
+        if (this instanceof SymbolTable) {
+            return this;
+        }
+
         let run = this.parent;
         while (run) {
             if (run instanceof SymbolTable)
