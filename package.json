@@ -1,10 +1,11 @@
 {
   "name": "antlr4-c3",
-  "version": "1.0.7",
+  "version": "1.0.11",
   "description": "A code completion core implmentation for ANTLR4 based parsers",
   "main": "out/index.js",
+  "typings": "out/index.d.ts",
   "scripts": {
-    "postinstall": "tsc",
+    "prepublish": "tsc",
     "antlr4ts": "antlr4ts test/Expr.g4 test/CPP14.g4 -no-visitor -no-listener",
     "compile": "tsc --outDir ./out/src",
     "test": "mocha --compilers ts:ts-node/register,tsx:ts-node/register"
