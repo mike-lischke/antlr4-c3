@@ -50,6 +50,10 @@ if($val.text.compareTo("0")!=0) throw new InputMismatchException(this);
  ******************************************************************************/
 grammar CPP14;
 
+@header {
+	import { InputMismatchException } from 'antlr4ts/InputMismatchException';
+}
+
 /*Basic concepts*/
 translationunit
 :

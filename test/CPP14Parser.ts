@@ -1,10 +1,12 @@
 // Generated from test/CPP14.g4 by ANTLR 4.6-SNAPSHOT
 
 
+	import { InputMismatchException } from 'antlr4ts/InputMismatchException';
+
+
 import { ATN } from 'antlr4ts/atn/ATN';
 import { ATNDeserializer } from 'antlr4ts/atn/ATNDeserializer';
 import { FailedPredicateException } from 'antlr4ts/FailedPredicateException';
-import { InputMismatchException } from 'antlr4ts/InputMismatchException';
 import { NotNull } from 'antlr4ts/Decorators';
 import { NoViableAltException } from 'antlr4ts/NoViableAltException';
 import { Override } from 'antlr4ts/Decorators';
@@ -368,101 +370,101 @@ export class CPP14Parser extends Parser {
 	public static readonly RULE_pointerliteral = 197;
 	public static readonly RULE_userdefinedliteral = 198;
 	public static readonly ruleNames: string[] = [
-		"translationunit", "primaryexpression", "idexpression", "unqualifiedid",
-		"qualifiedid", "nestednamespecifier", "lambdaexpression", "lambdaintroducer",
-		"lambdacapture", "capturedefault", "capturelist", "capture", "simplecapture",
-		"initcapture", "lambdadeclarator", "postfixexpression", "expressionlist",
-		"pseudodestructorname", "unaryexpression", "unaryoperator", "newexpression",
-		"newplacement", "newtypeid", "newdeclarator", "noptrnewdeclarator", "newinitializer",
-		"deleteexpression", "noexceptexpression", "castexpression", "pmexpression",
-		"multiplicativeexpression", "additiveexpression", "shiftexpression", "relationalexpression",
-		"equalityexpression", "andexpression", "exclusiveorexpression", "inclusiveorexpression",
-		"logicalandexpression", "logicalorexpression", "conditionalexpression",
-		"assignmentexpression", "assignmentoperator", "expression", "constantexpression",
-		"statement", "labeledstatement", "expressionstatement", "compoundstatement",
-		"statementseq", "selectionstatement", "condition", "iterationstatement",
-		"forinitstatement", "forrangedeclaration", "forrangeinitializer", "jumpstatement",
-		"declarationstatement", "declarationseq", "declaration", "blockdeclaration",
-		"aliasdeclaration", "simpledeclaration", "static_assertdeclaration", "emptydeclaration",
-		"attributedeclaration", "declspecifier", "declspecifierseq", "storageclassspecifier",
-		"functionspecifier", "typedefname", "typespecifier", "trailingtypespecifier",
-		"typespecifierseq", "trailingtypespecifierseq", "simpletypespecifier",
-		"typename", "decltypespecifier", "elaboratedtypespecifier", "enumname",
-		"enumspecifier", "enumhead", "opaqueenumdeclaration", "enumkey", "enumbase",
-		"enumeratorlist", "enumeratordefinition", "enumerator", "namespacename",
-		"originalnamespacename", "namespacedefinition", "namednamespacedefinition",
-		"originalnamespacedefinition", "extensionnamespacedefinition", "unnamednamespacedefinition",
-		"namespacebody", "namespacealias", "namespacealiasdefinition", "qualifiednamespacespecifier",
-		"usingdeclaration", "usingdirective", "asmdefinition", "linkagespecification",
-		"attributespecifierseq", "attributespecifier", "alignmentspecifier", "attributelist",
-		"attribute", "attributetoken", "attributescopedtoken", "attributenamespace",
-		"attributeargumentclause", "balancedtokenseq", "balancedtoken", "initdeclaratorlist",
-		"initdeclarator", "declarator", "ptrdeclarator", "noptrdeclarator", "parametersandqualifiers",
-		"trailingreturntype", "ptroperator", "cvqualifierseq", "cvqualifier",
-		"refqualifier", "declaratorid", "typeid", "abstractdeclarator", "ptrabstractdeclarator",
-		"noptrabstractdeclarator", "abstractpackdeclarator", "noptrabstractpackdeclarator",
-		"parameterdeclarationclause", "parameterdeclarationlist", "parameterdeclaration",
-		"functiondefinition", "functionbody", "initializer", "braceorequalinitializer",
-		"initializerclause", "initializerlist", "bracedinitlist", "classname",
-		"classspecifier", "classhead", "classheadname", "classvirtspecifier",
-		"classkey", "memberspecification", "memberdeclaration", "memberdeclaratorlist",
-		"memberdeclarator", "virtspecifierseq", "virtspecifier", "purespecifier",
-		"baseclause", "basespecifierlist", "basespecifier", "classordecltype",
-		"basetypespecifier", "accessspecifier", "conversionfunctionid", "conversiontypeid",
-		"conversiondeclarator", "ctorinitializer", "meminitializerlist", "meminitializer",
-		"meminitializerid", "operatorfunctionid", "literaloperatorid", "templatedeclaration",
-		"templateparameterlist", "templateparameter", "typeparameter", "simpletemplateid",
-		"templateid", "templatename", "templateargumentlist", "templateargument",
-		"typenamespecifier", "explicitinstantiation", "explicitspecialization",
-		"tryblock", "functiontryblock", "handlerseq", "handler", "exceptiondeclaration",
-		"throwexpression", "exceptionspecification", "dynamicexceptionspecification",
-		"typeidlist", "noexceptspecification", "rightShift", "rightShiftAssign",
+		"translationunit", "primaryexpression", "idexpression", "unqualifiedid", 
+		"qualifiedid", "nestednamespecifier", "lambdaexpression", "lambdaintroducer", 
+		"lambdacapture", "capturedefault", "capturelist", "capture", "simplecapture", 
+		"initcapture", "lambdadeclarator", "postfixexpression", "expressionlist", 
+		"pseudodestructorname", "unaryexpression", "unaryoperator", "newexpression", 
+		"newplacement", "newtypeid", "newdeclarator", "noptrnewdeclarator", "newinitializer", 
+		"deleteexpression", "noexceptexpression", "castexpression", "pmexpression", 
+		"multiplicativeexpression", "additiveexpression", "shiftexpression", "relationalexpression", 
+		"equalityexpression", "andexpression", "exclusiveorexpression", "inclusiveorexpression", 
+		"logicalandexpression", "logicalorexpression", "conditionalexpression", 
+		"assignmentexpression", "assignmentoperator", "expression", "constantexpression", 
+		"statement", "labeledstatement", "expressionstatement", "compoundstatement", 
+		"statementseq", "selectionstatement", "condition", "iterationstatement", 
+		"forinitstatement", "forrangedeclaration", "forrangeinitializer", "jumpstatement", 
+		"declarationstatement", "declarationseq", "declaration", "blockdeclaration", 
+		"aliasdeclaration", "simpledeclaration", "static_assertdeclaration", "emptydeclaration", 
+		"attributedeclaration", "declspecifier", "declspecifierseq", "storageclassspecifier", 
+		"functionspecifier", "typedefname", "typespecifier", "trailingtypespecifier", 
+		"typespecifierseq", "trailingtypespecifierseq", "simpletypespecifier", 
+		"typename", "decltypespecifier", "elaboratedtypespecifier", "enumname", 
+		"enumspecifier", "enumhead", "opaqueenumdeclaration", "enumkey", "enumbase", 
+		"enumeratorlist", "enumeratordefinition", "enumerator", "namespacename", 
+		"originalnamespacename", "namespacedefinition", "namednamespacedefinition", 
+		"originalnamespacedefinition", "extensionnamespacedefinition", "unnamednamespacedefinition", 
+		"namespacebody", "namespacealias", "namespacealiasdefinition", "qualifiednamespacespecifier", 
+		"usingdeclaration", "usingdirective", "asmdefinition", "linkagespecification", 
+		"attributespecifierseq", "attributespecifier", "alignmentspecifier", "attributelist", 
+		"attribute", "attributetoken", "attributescopedtoken", "attributenamespace", 
+		"attributeargumentclause", "balancedtokenseq", "balancedtoken", "initdeclaratorlist", 
+		"initdeclarator", "declarator", "ptrdeclarator", "noptrdeclarator", "parametersandqualifiers", 
+		"trailingreturntype", "ptroperator", "cvqualifierseq", "cvqualifier", 
+		"refqualifier", "declaratorid", "typeid", "abstractdeclarator", "ptrabstractdeclarator", 
+		"noptrabstractdeclarator", "abstractpackdeclarator", "noptrabstractpackdeclarator", 
+		"parameterdeclarationclause", "parameterdeclarationlist", "parameterdeclaration", 
+		"functiondefinition", "functionbody", "initializer", "braceorequalinitializer", 
+		"initializerclause", "initializerlist", "bracedinitlist", "classname", 
+		"classspecifier", "classhead", "classheadname", "classvirtspecifier", 
+		"classkey", "memberspecification", "memberdeclaration", "memberdeclaratorlist", 
+		"memberdeclarator", "virtspecifierseq", "virtspecifier", "purespecifier", 
+		"baseclause", "basespecifierlist", "basespecifier", "classordecltype", 
+		"basetypespecifier", "accessspecifier", "conversionfunctionid", "conversiontypeid", 
+		"conversiondeclarator", "ctorinitializer", "meminitializerlist", "meminitializer", 
+		"meminitializerid", "operatorfunctionid", "literaloperatorid", "templatedeclaration", 
+		"templateparameterlist", "templateparameter", "typeparameter", "simpletemplateid", 
+		"templateid", "templatename", "templateargumentlist", "templateargument", 
+		"typenamespecifier", "explicitinstantiation", "explicitspecialization", 
+		"tryblock", "functiontryblock", "handlerseq", "handler", "exceptiondeclaration", 
+		"throwexpression", "exceptionspecification", "dynamicexceptionspecification", 
+		"typeidlist", "noexceptspecification", "rightShift", "rightShiftAssign", 
 		"operator", "literal", "booleanliteral", "pointerliteral", "userdefinedliteral"
 	];
 
 	private static readonly _LITERAL_NAMES: (string | undefined)[] = [
-		undefined, undefined, undefined, "'alignas'", "'alignof'", "'asm'", "'auto'",
-		"'bool'", "'break'", "'case'", "'catch'", "'char'", "'char16_t'", "'char32_t'",
-		"'class'", "'const'", "'constexpr'", "'const_cast'", "'continue'", "'decltype'",
-		"'default'", "'delete'", "'do'", "'double'", "'dynamic_cast'", "'else'",
-		"'enum'", "'explicit'", "'export'", "'extern'", "'false'", "'final'",
-		"'float'", "'for'", "'friend'", "'goto'", "'if'", "'inline'", "'int'",
-		"'long'", "'mutable'", "'namespace'", "'new'", "'noexcept'", "'nullptr'",
-		"'operator'", "'override'", "'private'", "'protected'", "'public'", "'register'",
-		"'reinterpret_cast'", "'return'", "'short'", "'signed'", "'sizeof'", "'static'",
-		"'static_assert'", "'static_cast'", "'struct'", "'switch'", "'template'",
-		"'this'", "'thread_local'", "'throw'", "'true'", "'try'", "'typedef'",
-		"'typeid'", "'typename'", "'union'", "'unsigned'", "'using'", "'virtual'",
-		"'void'", "'volatile'", "'wchar_t'", "'while'", "'('", "')'", "'['", "']'",
-		"'{'", "'}'", "'+'", "'-'", "'*'", "'/'", "'%'", "'^'", "'&'", "'|'",
-		"'~'", "'!'", "'='", "'<'", "'>'", "'+='", "'-='", "'*='", "'/='", "'%='",
-		"'^='", "'&='", "'|='", "'<<'", "'<<='", "'=='", "'!='", "'<='", "'>='",
-		"'&&'", "'||'", "'++'", "'--'", "','", "'->*'", "'->'", "'?'", "':'",
+		undefined, undefined, undefined, "'alignas'", "'alignof'", "'asm'", "'auto'", 
+		"'bool'", "'break'", "'case'", "'catch'", "'char'", "'char16_t'", "'char32_t'", 
+		"'class'", "'const'", "'constexpr'", "'const_cast'", "'continue'", "'decltype'", 
+		"'default'", "'delete'", "'do'", "'double'", "'dynamic_cast'", "'else'", 
+		"'enum'", "'explicit'", "'export'", "'extern'", "'false'", "'final'", 
+		"'float'", "'for'", "'friend'", "'goto'", "'if'", "'inline'", "'int'", 
+		"'long'", "'mutable'", "'namespace'", "'new'", "'noexcept'", "'nullptr'", 
+		"'operator'", "'override'", "'private'", "'protected'", "'public'", "'register'", 
+		"'reinterpret_cast'", "'return'", "'short'", "'signed'", "'sizeof'", "'static'", 
+		"'static_assert'", "'static_cast'", "'struct'", "'switch'", "'template'", 
+		"'this'", "'thread_local'", "'throw'", "'true'", "'try'", "'typedef'", 
+		"'typeid'", "'typename'", "'union'", "'unsigned'", "'using'", "'virtual'", 
+		"'void'", "'volatile'", "'wchar_t'", "'while'", "'('", "')'", "'['", "']'", 
+		"'{'", "'}'", "'+'", "'-'", "'*'", "'/'", "'%'", "'^'", "'&'", "'|'", 
+		"'~'", "'!'", "'='", "'<'", "'>'", "'+='", "'-='", "'*='", "'/='", "'%='", 
+		"'^='", "'&='", "'|='", "'<<'", "'<<='", "'=='", "'!='", "'<='", "'>='", 
+		"'&&'", "'||'", "'++'", "'--'", "','", "'->*'", "'->'", "'?'", "':'", 
 		"'::'", "';'", "'.'", "'.*'", "'...'"
 	];
 	private static readonly _SYMBOLIC_NAMES: (string | undefined)[] = [
-		undefined, "MultiLineMacro", "Directive", "Alignas", "Alignof", "Asm",
-		"Auto", "Bool", "Break", "Case", "Catch", "Char", "Char16", "Char32",
-		"Class", "Const", "Constexpr", "Const_cast", "Continue", "Decltype", "Default",
-		"Delete", "Do", "Double", "Dynamic_cast", "Else", "Enum", "Explicit",
-		"Export", "Extern", "False", "Final", "Float", "For", "Friend", "Goto",
-		"If", "Inline", "Int", "Long", "Mutable", "Namespace", "New", "Noexcept",
-		"Nullptr", "Operator", "Override", "Private", "Protected", "Public", "Register",
-		"Reinterpret_cast", "Return", "Short", "Signed", "Sizeof", "Static", "Static_assert",
-		"Static_cast", "Struct", "Switch", "Template", "This", "Thread_local",
-		"Throw", "True", "Try", "Typedef", "Typeid", "Typename", "Union", "Unsigned",
-		"Using", "Virtual", "Void", "Volatile", "Wchar", "While", "LeftParen",
-		"RightParen", "LeftBracket", "RightBracket", "LeftBrace", "RightBrace",
-		"Plus", "Minus", "Star", "Div", "Mod", "Caret", "And", "Or", "Tilde",
-		"Not", "Assign", "Less", "Greater", "PlusAssign", "MinusAssign", "StarAssign",
-		"DivAssign", "ModAssign", "XorAssign", "AndAssign", "OrAssign", "LeftShift",
-		"LeftShiftAssign", "Equal", "NotEqual", "LessEqual", "GreaterEqual", "AndAnd",
-		"OrOr", "PlusPlus", "MinusMinus", "Comma", "ArrowStar", "Arrow", "Question",
-		"Colon", "Doublecolon", "Semi", "Dot", "DotStar", "Ellipsis", "Identifier",
-		"Integerliteral", "Decimalliteral", "Octalliteral", "Hexadecimalliteral",
-		"Binaryliteral", "Integersuffix", "Characterliteral", "Floatingliteral",
-		"Stringliteral", "Userdefinedintegerliteral", "Userdefinedfloatingliteral",
-		"Userdefinedstringliteral", "Userdefinedcharacterliteral", "Whitespace",
+		undefined, "MultiLineMacro", "Directive", "Alignas", "Alignof", "Asm", 
+		"Auto", "Bool", "Break", "Case", "Catch", "Char", "Char16", "Char32", 
+		"Class", "Const", "Constexpr", "Const_cast", "Continue", "Decltype", "Default", 
+		"Delete", "Do", "Double", "Dynamic_cast", "Else", "Enum", "Explicit", 
+		"Export", "Extern", "False", "Final", "Float", "For", "Friend", "Goto", 
+		"If", "Inline", "Int", "Long", "Mutable", "Namespace", "New", "Noexcept", 
+		"Nullptr", "Operator", "Override", "Private", "Protected", "Public", "Register", 
+		"Reinterpret_cast", "Return", "Short", "Signed", "Sizeof", "Static", "Static_assert", 
+		"Static_cast", "Struct", "Switch", "Template", "This", "Thread_local", 
+		"Throw", "True", "Try", "Typedef", "Typeid", "Typename", "Union", "Unsigned", 
+		"Using", "Virtual", "Void", "Volatile", "Wchar", "While", "LeftParen", 
+		"RightParen", "LeftBracket", "RightBracket", "LeftBrace", "RightBrace", 
+		"Plus", "Minus", "Star", "Div", "Mod", "Caret", "And", "Or", "Tilde", 
+		"Not", "Assign", "Less", "Greater", "PlusAssign", "MinusAssign", "StarAssign", 
+		"DivAssign", "ModAssign", "XorAssign", "AndAssign", "OrAssign", "LeftShift", 
+		"LeftShiftAssign", "Equal", "NotEqual", "LessEqual", "GreaterEqual", "AndAnd", 
+		"OrOr", "PlusPlus", "MinusMinus", "Comma", "ArrowStar", "Arrow", "Question", 
+		"Colon", "Doublecolon", "Semi", "Dot", "DotStar", "Ellipsis", "Identifier", 
+		"Integerliteral", "Decimalliteral", "Octalliteral", "Hexadecimalliteral", 
+		"Binaryliteral", "Integersuffix", "Characterliteral", "Floatingliteral", 
+		"Stringliteral", "Userdefinedintegerliteral", "Userdefinedfloatingliteral", 
+		"Userdefinedstringliteral", "Userdefinedcharacterliteral", "Whitespace", 
 		"Newline", "BlockComment", "LineComment"
 	];
 	public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(CPP14Parser._LITERAL_NAMES, CPP14Parser._SYMBOLIC_NAMES, []);
@@ -866,7 +868,7 @@ export class CPP14Parser extends Parser {
 						}
 						break;
 					}
-					}
+					} 
 				}
 				this.state = 461;
 				this._errHandler.sync(this);
@@ -1113,7 +1115,7 @@ export class CPP14Parser extends Parser {
 						break;
 					}
 					}
-					}
+					} 
 				}
 				this.state = 499;
 				this._errHandler.sync(this);
@@ -1690,7 +1692,7 @@ export class CPP14Parser extends Parser {
 						}
 						break;
 					}
-					}
+					} 
 				}
 				this.state = 640;
 				this._errHandler.sync(this);
@@ -2303,7 +2305,7 @@ export class CPP14Parser extends Parser {
 						break;
 					}
 					}
-					}
+					} 
 				}
 				this.state = 758;
 				this._errHandler.sync(this);
@@ -2583,7 +2585,7 @@ export class CPP14Parser extends Parser {
 						}
 						break;
 					}
-					}
+					} 
 				}
 				this.state = 807;
 				this._errHandler.sync(this);
@@ -2679,7 +2681,7 @@ export class CPP14Parser extends Parser {
 						}
 						break;
 					}
-					}
+					} 
 				}
 				this.state = 824;
 				this._errHandler.sync(this);
@@ -2762,7 +2764,7 @@ export class CPP14Parser extends Parser {
 						}
 						break;
 					}
-					}
+					} 
 				}
 				this.state = 838;
 				this._errHandler.sync(this);
@@ -2845,7 +2847,7 @@ export class CPP14Parser extends Parser {
 						}
 						break;
 					}
-					}
+					} 
 				}
 				this.state = 853;
 				this._errHandler.sync(this);
@@ -2954,7 +2956,7 @@ export class CPP14Parser extends Parser {
 						}
 						break;
 					}
-					}
+					} 
 				}
 				this.state = 873;
 				this._errHandler.sync(this);
@@ -3037,7 +3039,7 @@ export class CPP14Parser extends Parser {
 						}
 						break;
 					}
-					}
+					} 
 				}
 				this.state = 887;
 				this._errHandler.sync(this);
@@ -3101,7 +3103,7 @@ export class CPP14Parser extends Parser {
 					this.state = 893;
 					this.equalityexpression(0);
 					}
-					}
+					} 
 				}
 				this.state = 898;
 				this._errHandler.sync(this);
@@ -3165,7 +3167,7 @@ export class CPP14Parser extends Parser {
 					this.state = 904;
 					this.andexpression(0);
 					}
-					}
+					} 
 				}
 				this.state = 909;
 				this._errHandler.sync(this);
@@ -3229,7 +3231,7 @@ export class CPP14Parser extends Parser {
 					this.state = 915;
 					this.exclusiveorexpression(0);
 					}
-					}
+					} 
 				}
 				this.state = 920;
 				this._errHandler.sync(this);
@@ -3293,7 +3295,7 @@ export class CPP14Parser extends Parser {
 					this.state = 926;
 					this.inclusiveorexpression(0);
 					}
-					}
+					} 
 				}
 				this.state = 931;
 				this._errHandler.sync(this);
@@ -3357,7 +3359,7 @@ export class CPP14Parser extends Parser {
 					this.state = 937;
 					this.logicalandexpression(0);
 					}
-					}
+					} 
 				}
 				this.state = 942;
 				this._errHandler.sync(this);
@@ -3622,7 +3624,7 @@ export class CPP14Parser extends Parser {
 					this.state = 978;
 					this.assignmentexpression();
 					}
-					}
+					} 
 				}
 				this.state = 983;
 				this._errHandler.sync(this);
@@ -4023,7 +4025,7 @@ export class CPP14Parser extends Parser {
 					this.state = 1051;
 					this.statement();
 					}
-					}
+					} 
 				}
 				this.state = 1056;
 				this._errHandler.sync(this);
@@ -4638,7 +4640,7 @@ export class CPP14Parser extends Parser {
 					this.state = 1172;
 					this.declaration();
 					}
-					}
+					} 
 				}
 				this.state = 1177;
 				this._errHandler.sync(this);
@@ -6297,7 +6299,7 @@ export class CPP14Parser extends Parser {
 					this.state = 1420;
 					this.enumeratordefinition();
 					}
-					}
+					} 
 				}
 				this.state = 1425;
 				this._errHandler.sync(this);
@@ -7033,7 +7035,7 @@ export class CPP14Parser extends Parser {
 					this.state = 1539;
 					this.attributespecifier();
 					}
-					}
+					} 
 				}
 				this.state = 1544;
 				this._errHandler.sync(this);
@@ -7269,7 +7271,7 @@ export class CPP14Parser extends Parser {
 						}
 						break;
 					}
-					}
+					} 
 				}
 				this.state = 1595;
 				this._errHandler.sync(this);
@@ -7496,7 +7498,7 @@ export class CPP14Parser extends Parser {
 					this.state = 1619;
 					this.balancedtoken();
 					}
-					}
+					} 
 				}
 				this.state = 1624;
 				this._errHandler.sync(this);
@@ -7619,7 +7621,7 @@ export class CPP14Parser extends Parser {
 					this.state = 1644;
 					this.initdeclarator();
 					}
-					}
+					} 
 				}
 				this.state = 1649;
 				this._errHandler.sync(this);
@@ -7873,7 +7875,7 @@ export class CPP14Parser extends Parser {
 						}
 						break;
 					}
-					}
+					} 
 				}
 				this.state = 1693;
 				this._errHandler.sync(this);
@@ -8538,7 +8540,7 @@ export class CPP14Parser extends Parser {
 						}
 						break;
 					}
-					}
+					} 
 				}
 				this.state = 1804;
 				this._errHandler.sync(this);
@@ -8687,7 +8689,7 @@ export class CPP14Parser extends Parser {
 						}
 						break;
 					}
-					}
+					} 
 				}
 				this.state = 1829;
 				this._errHandler.sync(this);
@@ -8813,7 +8815,7 @@ export class CPP14Parser extends Parser {
 					this.state = 1847;
 					this.parameterdeclaration();
 					}
-					}
+					} 
 				}
 				this.state = 1852;
 				this._errHandler.sync(this);
@@ -9336,7 +9338,7 @@ export class CPP14Parser extends Parser {
 						break;
 					}
 					}
-					}
+					} 
 				}
 				this.state = 1942;
 				this._errHandler.sync(this);
@@ -9946,7 +9948,7 @@ export class CPP14Parser extends Parser {
 					this.state = 2028;
 					this.memberdeclarator();
 					}
-					}
+					} 
 				}
 				this.state = 2033;
 				this._errHandler.sync(this);
@@ -10108,7 +10110,7 @@ export class CPP14Parser extends Parser {
 					this.state = 2059;
 					this.virtspecifier();
 					}
-					}
+					} 
 				}
 				this.state = 2064;
 				this._errHandler.sync(this);
@@ -10283,7 +10285,7 @@ export class CPP14Parser extends Parser {
 						break;
 					}
 					}
-					}
+					} 
 				}
 				this.state = 2089;
 				this._errHandler.sync(this);
@@ -10947,7 +10949,7 @@ export class CPP14Parser extends Parser {
 					this.state = 2188;
 					this.templateparameter();
 					}
-					}
+					} 
 				}
 				this.state = 2193;
 				this._errHandler.sync(this);
@@ -11401,7 +11403,7 @@ export class CPP14Parser extends Parser {
 						break;
 					}
 					}
-					}
+					} 
 				}
 				this.state = 2289;
 				this._errHandler.sync(this);
@@ -11991,7 +11993,7 @@ export class CPP14Parser extends Parser {
 						break;
 					}
 					}
-					}
+					} 
 				}
 				this.state = 2386;
 				this._errHandler.sync(this);
