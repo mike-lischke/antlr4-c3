@@ -87,7 +87,7 @@ function createClassSymbolTable(name: string, counts: number[], namespaces?: str
 describe('antlr4-c3', function () {
 
   describe('Symbol table tests', function () {
-    it("Single table base tests", function () {
+    it("Single table base tests", function (done) {
       let symbolTable = createClassSymbolTable("main", [3, 3, 4, 5, 5]);
       let info = symbolTable.getInfo();
       expect(info.dependencyCount, "Test 1.1").to.equal(0);
@@ -163,9 +163,11 @@ describe('antlr4-c3', function () {
       expect(symbolTable.symbolFromPath("main.class2.method2.block2.var1"), "Test 1.32").to.equal(allSymbols[59]);
 
       expect(symbolTable, "Test 1.33").to.equal(symbolTable.getSymbolTable());
+
+      done();
     });
 
-    it("Single table type checks", function () {
+    it("Single table type checks", function (done) {
       // Create a symbol table with all the symbols we have in the lib and query it for some collections.
       // Start with a standard table containing a class with a single method, a global var and a global literal symbol.
       // Hierarchy is not really important here.
@@ -203,9 +205,11 @@ describe('antlr4-c3', function () {
       expect(symbolTable.getNestedSymbolsOfType(c3.TypedSymbol).length, "Test 2.4").to.equal(8);
       expect(symbolTable.getNestedSymbolsOfType(c3.RoutineSymbol).length, "Test 2.5").to.equal(3);
       expect(symbolTable.getNestedSymbolsOfType(c3.VariableSymbol).length, "Test 2.6").to.equal(6);
+
+      done();
     });
 
-    it("Single table stress test", function () {
+    it("Single table stress test", function (done) {
       let symbolTable = createClassSymbolTable("table", [300, 30, 20, 1000, 1000]);
       expect(symbolTable.getAllNestedSymbols().length, "Test 3.1").to.equal(53300);
       expect(symbolTable.getNestedSymbolsOfType(c3.ClassSymbol).length, "Test 3.2").to.equal(300);
@@ -214,9 +218,11 @@ describe('antlr4-c3', function () {
       expect(symbolTable.getNestedSymbolsOfType(c3.VariableSymbol).length, "Test 3.5").to.equal(25000); // Includes class fields.
       expect(symbolTable.getNestedSymbolsOfType(c3.FieldSymbol).length, "Test 3.6").to.equal(6000);
       expect(symbolTable.getNestedSymbolsOfType(c3.LiteralSymbol).length, "Test 3.7").to.equal(1000);
+
+      done();
     });
 
-    it("Single table namespace tests", function () {
+    it("Single table namespace tests", function (done) {
       let symbolTable = createClassSymbolTable("main", [30, 10, 10, 100, 100], ["ns1", "ns2", "ns1.ns3.ns5", "ns1.ns4.ns6.ns8"]);
 
       let namespaces = symbolTable.getNestedSymbolsOfType(c3.NamespaceSymbol);
@@ -228,9 +234,11 @@ describe('antlr4-c3', function () {
       expect(methods.length, "Test 4.2").to.equal(300);
       expect(methods[2].qualifiedName(".", true), "Test 4.3").to.equal("main.ns1.ns3.ns5.class2.method2");
       expect(methods[299].qualifiedName(".", true), "Test 4.4").to.equal("main.ns2.class29.method9");
+
+      done();
     });
 
-    it("Multi table tests", function () {
+    it("Multi table tests", function (done) {
       // Interactions between linked symbol tables. We use 5 tables here:
       // - the main table as in the single table tests.
       // - a system functions table
@@ -270,12 +278,14 @@ describe('antlr4-c3', function () {
       expect(libFunctions.getAllSymbols().length, "Test 3.3").to.equal(445); // Lib functions alone + the namespace.
       expect(libVariables.getAllSymbols().length, "Test 3.4").to.equal(1668); // Lib variables + lib functions + namespaces.
       expect(libFunctions2.getAllSymbols().length, "Test 3.5").to.equal(667); // Lib functions in ns1 only + the namespace.
+
+      done();
     });
 
   });
 
   describe('Simple expression parser', function () {
-    it("Most simple setup", function () {
+    it("Most simple setup", function (done) {
       // No customization happens here, so the c3 engine only returns lexer tokens.
       let inputStream = new ANTLRInputStream("var c = a + b()");
       let lexer = new ExprLexer(inputStream);
@@ -333,9 +343,10 @@ describe('antlr4-c3', function () {
       expect(candidates.tokens.has(ExprLexer.DIVIDE), "Test 4.21").to.equal(true);
       expect(candidates.tokens.has(ExprLexer.OPEN_PAR), "Test 4.22").to.equal(true);
 
+      done();
     });
 
-    it("Typical setup", function () {
+    it("Typical setup", function (done) {
       let inputStream = new ANTLRInputStream("var c = a + b");
       let lexer = new ExprLexer(inputStream);
       let tokenStream = new CommonTokenStream(lexer);
@@ -397,19 +408,23 @@ describe('antlr4-c3', function () {
         }
         ++i;
       }
+
+      done();
     });
   });
 
   describe('C++14 parser', function () {
-    it('Warmup for C++ parser', function () {
+    it('Warmup for C++ parser', function (done) {
       // No testing here, just the warmup, so we don't have that time counted in our following tests.
       let inputStream = new ANTLRInputStream("");
       let lexer = new CPP14Lexer(inputStream);
       let tokenStream = new CommonTokenStream(lexer);
       let parser = new CPP14Parser(tokenStream);
+
+      done();
     });
 
-    it('C++ example', function () {
+    it('C++ example', function (done) {
       // We are trying here to get useful code completion candidates without adjusting the grammar in any way.
       // We use the grammar as downloaded from the antlr grammar directory and set up the c3 engine
       // instead in a way that still returns useful info. This limits us somewhat.
@@ -580,9 +595,11 @@ describe('antlr4-c3', function () {
       expect(candidates.tokens.has(CPP14Lexer.Export), "Test 6.57").to.equal(false);
       expect(candidates.tokens.has(CPP14Lexer.Private), "Test 6.58").to.equal(false);
       expect(candidates.tokens.has(CPP14Lexer.Protected), "Test 6.59").to.equal(false);
+
+      done();
     });
 
-    it('C++ example with errors in input', function () {
+    it('C++ example with errors in input', function (done) {
       let inputStream = new ANTLRInputStream("class A {\n" +
         "public:\n" +
         "  void test() {\n" +
@@ -639,6 +656,8 @@ describe('antlr4-c3', function () {
       candidates = core.collectCandidates(13); // After the error position -> no suggestions.
       expect(candidates.tokens.size, "Test 7.15").to.equal(0);
       expect(candidates.rules.size, "Test 7.16").to.equal(0);
+
+      done();
     });
   });
 
