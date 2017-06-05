@@ -18,7 +18,7 @@ With the Code Completion Core implementation things become a lot easier. In the 
 
 For showing possible symbols in source code you obviously need a source for all available symbols at the given position. Providing them is usually the task of a symbol table. Its content can be derived from your current source code (with the help of a parser + a parse listener). More static parts (like runtime functions) can be loaded from disk or provided by a hard coded list etc. The symbol table can then answer your question about all symbols of a given type that are visible from a given position. The position usually corresponds to a specific symbol in the symbol table and the structure then allows to easily get visible symbols. The c3 engine comes with a small symbol table implementation, which is however not mandatory to use the library, but instead provides an easy start, if you don't have an own symbol table class already.
 
-While the symbol table provides symbols of a given type, we need to find out which type is actually required. This is the task of the c3 engine. In its simplest setup it will return only keywords that are allowed by the grammar for a given position (which is of course the same position used to find the context for a symbol lookup in your symbol table). Keywords are a fixed set of words (or word sequences) that usually don't live in a symbol table. You can get the actual text strings directly from the parser's vocabulary. The c3 engine only returns the lexer tokens for them.
+While the symbol table provides symbols of a given type, we need to find out which type is actually required. This is the task of the c3 engine. In its simplest setup it will return only keywords (and other lexer symbols) that are allowed by the grammar for a given position (which is of course the same position used to find the context for a symbol lookup in your symbol table). Keywords are a fixed set of words (or word sequences) that usually don't live in a symbol table. You can get the actual text strings directly from the parser's vocabulary. The c3 engine only returns the lexer tokens for them.
 
 In order to also get other types like variables or class names you have to do 2 steps:
 
@@ -93,20 +93,20 @@ This is a pretty standard parser setup here. It's not even necessary to actually
 * the tokens from your input stream
 * vocabulary and rule names for debug output
 
-All these could be passed in individually, but since your parser contains all of that anyway, the API has been designed to take a parser instead. In real world applications you will have a parser anyway (e.g. for error checking), which is perfect as ATN and input provider for the code completion core. But keep in mind: whatever parser you pass in it must have a fully set up token stream.
+All these could be passed in individually, but since your parser contains all of that anyway and we need a parser for predicate execution, the API has been designed to take a parser instead. In real world applications you will have a parser anyway (e.g. for error checking), which is perfect as ATN and input provider for the code completion core. But keep in mind: whatever parser you pass in it must have a fully set up token stream. It's not required that it parsed anything before calling the code completion engine and the current stream positions don't matter either.
 
 The returned candidate collection contains fields for lexer tokens (mostly keywords, but also other tokens if they are not on the ignore list) and parser rule indexes. This collection is defined as:
 
-    export class CandidatesCollection {
-        public tokens: Map<number, number[]> = new Map();
-        public rules: Map<number, number[]> = new Map();
+   class CandidatesCollection {
+        public tokens: Map<number, TokenList>;
+        public rules: RuleList;
     };
 
-where the map keys are the lexer tokens and the rule indexes, respectively. Both can come with additional numbers, which you may or may not use for your implementation. For parser rules the array represents a stack of rule indexes at which the given rule was found during evaluation. That's probably something only rarely used (mostly for debugging), however for the lexer tokens the array consists of further token ids which directly follow the given token in the grammar (if any). That's quite a neat additional feature which allows you to show token sequences to the user if they are always used together. For example consider this SQL rule:
+For the lexer tokens there can be a list of extra tokens which directly follow the given token in the grammar (if any). That's quite a neat additional feature which allows you to show token sequences to the user if they are always used together. For example consider this SQL rule:
 
     createTable: CREATE TABLE (IF NOT EXISTS)? ...;
 
-Here, if a possible candidate is the `IF` keyword, you can also show the entire `IF NOT EXISTS` sequence to the user (and let him complete all 3 words in one go in his/her source code). The engine will return a candidate entry for `IF` with an array containing `NOT` and `EXISTS`. This list will of course update properly when the user comes to `NOT`. Then you will get a candidate entry for `NOT` and an additional list of just `EXISTS`.
+Here, if a possible candidate is the `IF` keyword, you can also show the entire `IF NOT EXISTS` sequence to the user (and let him complete all 3 words in one go in the source code). The engine will return a candidate entry for `IF` with a token list containing `NOT` and `EXISTS`. This list will of course update properly when the user comes to `NOT`. Then you will get a candidate entry for `NOT` and an additional list of just `EXISTS`.
 
 Essential for getting any rule index, which you can use to query your symbol table, is that you specify those you want in the `CodeCompletionCore.preferredRules` field before running `CodeCompletionCore.collectCandidates()`.
 
