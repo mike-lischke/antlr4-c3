@@ -27,65 +27,75 @@ In order to also get other types like variables or class names you have to do 2 
 
 Let's consider a grammar which can parse simple expressions like:
 
-    var a = b + c()
+```typescript
+var a = b + c()
+```
 
 Such a grammar could look like:
 
-    grammar Expr;
-    expression: assignment | simpleExpression;
+```antlr
+grammar Expr;
+expression: assignment | simpleExpression;
 
-    assignment: (VAR | LET) ID EQUAL simpleExpression;
+assignment: (VAR | LET) ID EQUAL simpleExpression;
 
-    simpleExpression
-        : simpleExpression (PLUS | MINUS) simpleExpression
-        | simpleExpression (MULTIPLY | DIVIDE) simpleExpression
-        | variableRef
-        | functionRef
-    ;
+simpleExpression
+    : simpleExpression (PLUS | MINUS) simpleExpression
+    | simpleExpression (MULTIPLY | DIVIDE) simpleExpression
+    | variableRef
+    | functionRef
+;
 
-    variableRef: ID;
-    functionRef: ID OPEN_PAR CLOSE_PAR;
+variableRef: ID;
+functionRef: ID OPEN_PAR CLOSE_PAR;
 
-    VAR: [vV] [aA] [rR];
-    LET: [lL] [eE] [tT];
+VAR: [vV] [aA] [rR];
+LET: [lL] [eE] [tT];
 
-    PLUS: '+';
-    MINUS: '-';
-    MULTIPLY: '*';
-    DIVIDE: '/';
-    EQUAL: '=';
-    OPEN_PAR: '(';
-    CLOSE_PAR: ')';
-    ID: [a-zA-Z] [a-zA-Z0-9_]*;
-    WS: [ \n\r\t] -> channel(HIDDEN);
+PLUS: '+';
+MINUS: '-';
+MULTIPLY: '*';
+DIVIDE: '/';
+EQUAL: '=';
+OPEN_PAR: '(';
+CLOSE_PAR: ')';
+ID: [a-zA-Z] [a-zA-Z0-9_]*;
+WS: [ \n\r\t] -> channel(HIDDEN);
+```
 
 You can see the 2 special rules `variableRef` and `functionRef`, which mostly consist of the `ID` lexer rule. We could have instead used a single `ID` reference in the `simpleExpression` rule. However, this is where your domain knowledge about the language comes in. By making the two use cases explicit you can now exactly tell what to query from your symbol table. As you see we are using parser rules to denote entity types, which is half of the magic here.
 
 The code completion core can return parser rule indexes (as created by ANTLR4 when it generated your files). With a returned candidate `ExprParser.RULE_variableRef` you know that you have to ask your symbol for all visible variables (or functions if you get back `ExprParser.RULE_functionRef`). It's easy to see how this applies to much more complex grammars. The principle is always the same: create an own parser rule for your entity references. If you have an SQL grammar where you drop a table write your rules so:
 
-    dropTable: DROP TABLE tableRef;
-    tableRef: ID;
+```mysql
+dropTable: DROP TABLE tableRef;
+tableRef: ID;
+```
 
 instead of:
 
-    dropTable: DROP TABLE ID;
+```mysql
+dropTable: DROP TABLE ID;
+```
 
 Then tell the c3 engine that you want to get back `tableRef` if it is a valid candidate at a given position.
 
 # Getting Started
 With this knowledge we can now look at a simple code example that shows how to use the engine. For further details check the unit tests for this node module (under the test/ folder).
 
-    let inputStream = new ANTLRInputStream("var c = a + b()");
-    let lexer = new ExprLexer(inputStream);
-    let tokenStream = new CommonTokenStream(lexer);
+```typescript
+let inputStream = new ANTLRInputStream("var c = a + b()");
+let lexer = new ExprLexer(inputStream);
+let tokenStream = new CommonTokenStream(lexer);
 
-    let parser = new ExprParser(tokenStream);
-    let errorListener = new ErrorListener();
-    parser.addErrorListener(errorListener);
-    let tree = parser.expression();
+let parser = new ExprParser(tokenStream);
+let errorListener = new ErrorListener();
+parser.addErrorListener(errorListener);
+let tree = parser.expression();
 
-    let core = new c3.CodeCompletionCore(parser);
-    let candidates = core.collectCandidates(0);
+let core = new c3.CodeCompletionCore(parser);
+let candidates = core.collectCandidates(0);
+```
 
 This is a pretty standard parser setup here. It's not even necessary to actually parse the input. But the c3 engine needs a few things for its work:
 
@@ -97,14 +107,18 @@ All these could be passed in individually, but since your parser contains all of
 
 The returned candidate collection contains fields for lexer tokens (mostly keywords, but also other tokens if they are not on the ignore list) and parser rule indexes. This collection is defined as:
 
-   class CandidatesCollection {
-        public tokens: Map<number, TokenList>;
-        public rules: RuleList;
-    };
+```typescript
+class CandidatesCollection {
+    public tokens: Map<number, TokenList>;
+    public rules: RuleList;
+};
+```
 
 For the lexer tokens there can be a list of extra tokens which directly follow the given token in the grammar (if any). That's quite a neat additional feature which allows you to show token sequences to the user if they are always used together. For example consider this SQL rule:
 
-    createTable: CREATE TABLE (IF NOT EXISTS)? ...;
+```typescript
+createTable: CREATE TABLE (IF NOT EXISTS)? ...;
+```
 
 Here, if a possible candidate is the `IF` keyword, you can also show the entire `IF NOT EXISTS` sequence to the user (and let him complete all 3 words in one go in the source code). The engine will return a candidate entry for `IF` with a token list containing `NOT` and `EXISTS`. This list will of course update properly when the user comes to `NOT`. Then you will get a candidate entry for `NOT` and an additional list of just `EXISTS`.
 
@@ -112,52 +126,55 @@ Essential for getting any rule index, which you can use to query your symbol tab
 
 The final step to get your completion strings is usually something like this:
 
-    let keywords: string[] = [];
-    for (let candidate of candidates.tokens) {
-        keywords.push(parser.vocabulay.getDisplayName(candidate[0]);
+```typescript
+let keywords: string[] = [];
+for (let candidate of candidates.tokens) {
+    keywords.push(parser.vocabulay.getDisplayName(candidate[0]);
+}
+
+let symbol = ...; // Find the symbol that covers your caret position.
+let functionNames: string[] = [];
+let variableNames: string[] = [];
+for (let candidate of candidates.rules) {
+  switch (candidate[0]) {
+    case ExprParser.RULE_functionRef: {
+      let functions = symbol.getSymbolsOfType(c3.FunctionSymbol);
+      for (function of functions)
+        functionNames.push(function.name);
+      break;
     }
 
-    let symbol = ...; // Find the symbol that covers your caret position.
-    let functionNames: string[] = [];
-    let variableNames: string[] = [];
-    for (let candidate of candidates.rules) {
-      switch (candidate[0]) {
-        case ExprParser.RULE_functionRef: {
-          let functions = symbol.getSymbolsOfType(c3.FunctionSymbol);
-          for (function of functions)
-            functionNames.push(function.name);
-          break;
-        }
-
-        case ExprParser.RULE_variableRef: {
-          let variables = symbol.getSymbolsOfType(c3.VariableSymbol);
-          for (variable of variables)
-            functionNames.push(variable.name);
-          break;
-        }
-      }
+    case ExprParser.RULE_variableRef: {
+      let variables = symbol.getSymbolsOfType(c3.VariableSymbol);
+      for (variable of variables)
+        functionNames.push(variable.name);
+      break;
     }
+  }
+}
 
-    // Finally combine all found lists into one for the UI.
-    // We do that in separate steps so that you can apply some ordering to each of your sublists.
-    // Then you also can order symbols groups as a whole depending their importance.
-    let candidates: string[] = [];
-    candidates.push(...keywords);
-    candidates.push(...functionNames);
-    candidates.push(...variableNames);
-
+// Finally combine all found lists into one for the UI.
+// We do that in separate steps so that you can apply some ordering to each of your sublists.
+// Then you also can order symbols groups as a whole depending their importance.
+let candidates: string[] = [];
+candidates.push(...keywords);
+candidates.push(...functionNames);
+candidates.push(...variableNames);
+```
 
 # Fine Tuning
 ## Ignored Tokens
 As mentioned above in the base setup the engine will only return lexer tokens. This will include your keywords, but also many other tokens like operators, which you usually don't want in your completion list. In order to ease usage you can tell the engine which lexer tokens you are not interested in and which therefor should not appear in the result. This can easily be done by assigning a list of token ids to the `ignoredTokens` field before you invoke `collectCandidates()`:
 
-    core.ignoredTokens = new Set([
-      ExprLexer.ID,
-      ExprLexer.PLUS, ExprLexer.MINUS,
-      ExprLexer.MULTIPLY, ExprLexer.DIVIDE,
-      ExprLexer.EQUAL,
-      ExprLexer.OPEN_PAR, ExprLexer.CLOSE_PAR,
-    ]);
+```typescript
+core.ignoredTokens = new Set([
+  ExprLexer.ID,
+  ExprLexer.PLUS, ExprLexer.MINUS,
+  ExprLexer.MULTIPLY, ExprLexer.DIVIDE,
+  ExprLexer.EQUAL,
+  ExprLexer.OPEN_PAR, ExprLexer.CLOSE_PAR,
+]);
+```
 
 ## Preferred Rules
 As mentioned already the `preferredRules` field is an essential part for getting more than just keywords. It lets you specify the parser rules that are interesting for you and should include the rule indexes for the entitites we talked about in the code completion breakdown paragraph above. Whenever the c3 engine hits a lexer token when collecting candidates from a specific ATN state it will check the call stack for it and, if that contains any of the preferred rules, will select that instead of the lexer token. This transformation ensures that the engine returns contextual informations which can actually be used to look up symbols.
