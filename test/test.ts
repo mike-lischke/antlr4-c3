@@ -640,7 +640,7 @@ describe('antlr4-c3:', function () {
       expect(candidates.tokens.has(CPP14Lexer.Protected), "Test 59").to.equal(false);
 
       done();
-    }).timeout(20000);
+    }).timeout(60000);
   });
 
 
