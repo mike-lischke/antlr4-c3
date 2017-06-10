@@ -5,9 +5,8 @@
   "main": "out/index.js",
   "typings": "out/index.d.ts",
   "scripts": {
-    "prepublish": "check-node-version --npm \">=4\"",
-    "prepublishOnly": "tsc && npm run test",
-    "test": "mocha out/test"
+    "prepublishOnly": "npm run test",
+    "test": "npm install typescript && tsc && npm install mocha && mocha out/test"
   },
   "repository": {
     "type": "git",
@@ -17,24 +16,23 @@
     "ANTLR4",
     "code completion",
     "auto completion",
-    "grammar"
+    "grammar",
+    "parser"
   ],
   "dependencies": {
-    "antlr4ts": "^0.4.0-alpha.4"
+    "antlr4ts": "^0.4.0-burt.2"
   },
   "devDependencies": {
     "@types/chai": "^3.4.34",
-    "@types/mocha": "^2.2.32",
-    "@types/node": "^6.0.40",
     "@types/fs-extra": "^3.0.3",
+    "@types/mocha": "^2.2.32",
+    "@types/node": "^6.0.78",
     "antlr4ts-cli": "^0.4.0-alpha.4",
     "chai": "^3.5.0",
-    "mocha": "^2.5.3",
-    "typescript": "^2.0.3",
-    "ts-node": "^1.7.3",
     "fs-extra": "^3.0.1",
+    "mocha": "^2.5.3",
     "path": "^0.12.7",
-    "check-node-version": "^1.1.2"
+    "typescript": "^2.3.4"
   },
   "author": "Mike Lischke",
   "license": "MIT"
