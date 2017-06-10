@@ -5,8 +5,8 @@
   "main": "out/index.js",
   "typings": "out/index.d.ts",
   "scripts": {
-    "prepare": "tsc",
-    "prepublish": "check-node-version --npm \">=4\" || npm run prepare",
+    "prepublish": "check-node-version --npm \">=4\"",
+    "prepublishOnly": "npm run test",
     "test": "tsc && mocha out/test"
   },
   "repository": {

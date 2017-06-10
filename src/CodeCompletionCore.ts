@@ -282,8 +282,6 @@ export class CodeCompletionCore {
      */
     private processRule(startState: ATNState, tokenIndex: number, callStack: number[], indentation: string): RuleEndStatus {
 
-        let result: RuleEndStatus = new Set<number>();
-
         // Start with rule specific handling before going into the ATN walk.
 
         // Check first if we've taken this path with the same input before.
@@ -299,6 +297,8 @@ export class CodeCompletionCore {
                 return positionMap.get(tokenIndex)!;
             }
         }
+
+        let result: RuleEndStatus = new Set<number>();
 
         // For rule start states we determine and cache the follow set, which gives us 3 advantages:
         // 1) We can quickly check if a symbol would be matched when we follow that rule. We can so check in advance
@@ -409,54 +409,68 @@ export class CodeCompletionCore {
             }
 
             let transitions = currentEntry.state.getTransitions();
-            for (let i = transitions.length - 1; i >= 0; --i) {
-                let transition = transitions[i];
-                if (transition.serializationType == TransitionType.RULE) {
-                    let endStatus = this.processRule(transition.target, currentEntry.tokenIndex, callStack, indentation);
-                    for (let position of endStatus) {
-                        statePipeline.push({ state: (<RuleTransition>transition).followState, tokenIndex: position });
-                    }
-                } else if (transition.serializationType == TransitionType.PREDICATE) {
-                    if (this.checkPredicate(transition as PredicateTransition))
-                        statePipeline.push({ state: transition.target, tokenIndex: currentEntry.tokenIndex });
-                } else if (transition.isEpsilon) {
-                    statePipeline.push({ state: transition.target, tokenIndex: currentEntry.tokenIndex });
-                } else if (transition.serializationType == TransitionType.WILDCARD) {
-                    if (atCaret) {
-                        if (!this.translateToRuleIndex(callStack)) {
-                            for (let token of IntervalSet.of(Token.MIN_USER_TOKEN_TYPE, this.atn.maxTokenType).toList())
-                                if (!this.ignoredTokens.has(token))
-                                    this.candidates.tokens.set(token, []);
+            for (let transition of transitions) {
+                switch (transition.serializationType) {
+                    case TransitionType.RULE: {
+                        let endStatus = this.processRule(transition.target, currentEntry.tokenIndex, callStack, indentation);
+                        for (let position of endStatus) {
+                            statePipeline.push({ state: (<RuleTransition>transition).followState, tokenIndex: position });
                         }
-                    } else {
-                        statePipeline.push({ state: transition.target, tokenIndex: currentEntry.tokenIndex + 1 });
+                        break;
                     }
-                } else {
-                    let set = transition.label;
-                    if (set && set.size > 0) {
-                        if (transition.serializationType == TransitionType.NOT_SET) {
-                            set = set.complement(IntervalSet.of(Token.MIN_USER_TOKEN_TYPE, this.atn.maxTokenType));
-                        }
+
+                    case TransitionType.PREDICATE: {
+                        if (this.checkPredicate(transition as PredicateTransition))
+                            statePipeline.push({ state: transition.target, tokenIndex: currentEntry.tokenIndex });
+                        break;
+                    }
+
+                    case TransitionType.WILDCARD: {
                         if (atCaret) {
                             if (!this.translateToRuleIndex(callStack)) {
-                                let list = set.toList();
-                                let addFollowing = list.length == 1;
-                                for (let symbol of list)
-                                    if (!this.ignoredTokens.has(symbol)) {
-                                        if (this.showDebugOutput)
-                                            console.log("=====> collected: ", this.vocabulary.getDisplayName(symbol));
-
-                                        if (addFollowing)
-                                            this.candidates.tokens.set(symbol, this.getFollowingTokens(transition));
-                                        else
-                                            this.candidates.tokens.set(symbol, []);
-                                    }
+                                for (let token of IntervalSet.of(Token.MIN_USER_TOKEN_TYPE, this.atn.maxTokenType).toList())
+                                    if (!this.ignoredTokens.has(token))
+                                        this.candidates.tokens.set(token, []);
                             }
                         } else {
-                            if (set.contains(currentSymbol)) {
-                                if (this.showDebugOutput)
-                                    console.log("=====> consumed: ", this.vocabulary.getDisplayName(currentSymbol));
-                                statePipeline.push({ state: transition.target, tokenIndex: currentEntry.tokenIndex + 1 });
+                            statePipeline.push({ state: transition.target, tokenIndex: currentEntry.tokenIndex + 1 });
+                        }
+                        break;
+                    }
+
+                    default: {
+                        if (transition.isEpsilon) {
+                            // Jump over simple states with a single outgoing epsilon transition.
+                            statePipeline.push({ state: transition.target, tokenIndex: currentEntry.tokenIndex });
+                            continue;
+                        }
+
+                        let set = transition.label;
+                        if (set && set.size > 0) {
+                            if (transition.serializationType == TransitionType.NOT_SET) {
+                                set = set.complement(IntervalSet.of(Token.MIN_USER_TOKEN_TYPE, this.atn.maxTokenType));
+                            }
+                            if (atCaret) {
+                                if (!this.translateToRuleIndex(callStack)) {
+                                    let list = set.toList();
+                                    let addFollowing = list.length == 1;
+                                    for (let symbol of list)
+                                        if (!this.ignoredTokens.has(symbol)) {
+                                            if (this.showDebugOutput)
+                                                console.log("=====> collected: ", this.vocabulary.getDisplayName(symbol));
+
+                                            if (addFollowing)
+                                                this.candidates.tokens.set(symbol, this.getFollowingTokens(transition));
+                                            else
+                                                this.candidates.tokens.set(symbol, []);
+                                        }
+                                }
+                            } else {
+                                if (set.contains(currentSymbol)) {
+                                    if (this.showDebugOutput)
+                                        console.log("=====> consumed: ", this.vocabulary.getDisplayName(currentSymbol));
+                                    statePipeline.push({ state: transition.target, tokenIndex: currentEntry.tokenIndex + 1 });
+                                }
                             }
                         }
                     }
@@ -487,6 +501,7 @@ export class CodeCompletionCore {
         "plus loop back",
         "loop end"
     ]
+
     private generateBaseDescription(state: ATNState): string {
         let stateValue = state.stateNumber == ATNState.INVALID_STATE_NUMBER ? "Invalid" : state.stateNumber;
         return "[" + stateValue + " " + this.atnStateTypeMap[state.stateType] + "] in " + this.ruleNames[state.ruleIndex];
