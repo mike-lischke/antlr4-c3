@@ -6,8 +6,8 @@
   "typings": "out/index.d.ts",
   "scripts": {
     "prepublish": "check-node-version --npm \">=4\"",
-    "prepublishOnly": "npm run test",
-    "test": "tsc && mocha out/test"
+    "prepublishOnly": "tsc && npm run test",
+    "test": "mocha out/test"
   },
   "repository": {
     "type": "git",
