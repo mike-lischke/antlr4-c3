@@ -18,7 +18,7 @@ export type RuleList = number[];
 // Token entries include a list of tokens that directly follow them (see also the "following" member in the FollowSetWithPath class).
 export class CandidatesCollection {
     public tokens: Map<number, TokenList> = new Map();
-    public rules: Set<number> = new Set();
+    public rules: Map<number, RuleList> = new Map();
 };
 
 // A record for a follow set along with the path at which this set was found.
@@ -126,9 +126,13 @@ export class CodeCompletionCore {
 
         if (this.showResult) {
             console.log("\n\nCollected rules:\n");
-            this.candidates.rules.forEach(rule => {
-                console.log(this.ruleNames[rule]);
-            });
+            for (let rule of this.candidates.rules) {
+                let path = "";
+                for (let token of rule[1]) {
+                    path += this.ruleNames[token] + " ";
+                }
+                console.log(this.ruleNames[rule[0]] + ", path: ", path);
+            }
 
             let sortedTokens: Set<string> = new Set();
             for (let token of this.candidates.tokens) {
@@ -167,9 +171,25 @@ export class CodeCompletionCore {
         // if it contains a lower one that is also a preferred rule.
         for (let i = 0; i < ruleStack.length; ++i) {
             if (this.preferredRules.has(ruleStack[i])) {
-                this.candidates.rules.add(ruleStack[i]);
-                if (this.showDebugOutput)
-                    console.log("=====> collected: ", this.ruleNames[i]);
+                // Add the rule to our candidates list along with the current rule path,
+                // but only if there isn't already an entry like that.
+                let path = ruleStack.slice(0, i);
+                let addNew = true;
+                for (let rule of this.candidates.rules) {
+                    if (rule[0] != ruleStack[i] || rule[1].length != path.length)
+                        continue;
+                    // Found an entry for this rule. Same path? If so don't add a new (duplicate) entry.
+                    if (path.every((v, j) => v === rule[1][j])) {
+                        addNew = false;
+                        break;
+                    }
+                }
+
+                if (addNew) {
+                    this.candidates.rules.set(ruleStack[i], path);
+                    if (this.showDebugOutput)
+                        console.log("=====> collected: ", this.ruleNames[i]);
+                }
                 return true;
             }
         }

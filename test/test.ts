@@ -395,7 +395,7 @@ describe('antlr4-c3:', function () {
       // These are what we told the engine above to be preferred rules for us.
       let found = 0;
       for (let candidate of candidates.rules) {
-        switch (candidate) {
+        switch (candidate[0]) {
           case ExprParser.RULE_functionRef: {
             ++found
             break;
@@ -429,6 +429,12 @@ describe('antlr4-c3:', function () {
       );
       let lexer = new CPP14Lexer(inputStream);
       let tokenStream = new CommonTokenStream(lexer);
+
+      /*
+      tokenStream.fill();
+      for (let token of tokenStream.getTokens())
+        console.log(token.toString());
+      */
 
       let parser = new CPP14Parser(tokenStream);
       let errorListener = new ErrorListener();
@@ -503,12 +509,86 @@ describe('antlr4-c3:', function () {
       // The returned list can contain more than one entry for a particular rule, if there are multiple
       // parser rule paths leading to it.
       expect(candidates.rules.size, "Test 44").to.equal(3);
+      expect(candidates.rules.get(CPP14Parser.RULE_namespacename), "Test 45").to.eql([
+        CPP14Parser.RULE_translationunit,
+        CPP14Parser.RULE_declarationseq,
+        CPP14Parser.RULE_declaration,
+        CPP14Parser.RULE_blockdeclaration,
+        CPP14Parser.RULE_simpledeclaration,
+        CPP14Parser.RULE_declspecifierseq,
+        CPP14Parser.RULE_declspecifier,
+        CPP14Parser.RULE_typespecifier,
+        CPP14Parser.RULE_trailingtypespecifier,
+        CPP14Parser.RULE_simpletypespecifier,
+        CPP14Parser.RULE_nestednamespecifier,
+      ]);
+      expect(candidates.rules.get(CPP14Parser.RULE_classname), "Test 46").to.eql([
+        CPP14Parser.RULE_translationunit,
+        CPP14Parser.RULE_declarationseq,
+        CPP14Parser.RULE_declaration,
+        CPP14Parser.RULE_blockdeclaration,
+        CPP14Parser.RULE_simpledeclaration,
+        CPP14Parser.RULE_declspecifierseq,
+        CPP14Parser.RULE_declspecifier,
+        CPP14Parser.RULE_typespecifier,
+        CPP14Parser.RULE_trailingtypespecifier,
+        CPP14Parser.RULE_simpletypespecifier,
+        CPP14Parser.RULE_nestednamespecifier,
+        CPP14Parser.RULE_typename,
+      ]);
 
       // 2) Within the method body.
       //    Note when counting token indexes: the C++14 grammar skips all whitespaces, hence there are no tokens for them.
       candidates = core.collectCandidates(10);
 
       expect(candidates.rules.size, "Test 47").to.equal(1);
+      expect(candidates.rules.get(CPP14Parser.RULE_idexpression), "Test 48").to.eql([
+        CPP14Parser.RULE_translationunit,
+        CPP14Parser.RULE_declarationseq,
+        CPP14Parser.RULE_declaration,
+        CPP14Parser.RULE_functiondefinition,
+        CPP14Parser.RULE_declspecifierseq,
+        CPP14Parser.RULE_declspecifier,
+        CPP14Parser.RULE_typespecifier,
+        CPP14Parser.RULE_classspecifier,
+        CPP14Parser.RULE_memberspecification,
+        CPP14Parser.RULE_memberspecification,
+        CPP14Parser.RULE_memberdeclaration,
+
+        /* TODO: somehow a different path is taken now, find out why.
+        CPP14Parser.RULE_functiondefinition,
+        CPP14Parser.RULE_functionbody,
+        CPP14Parser.RULE_compoundstatement,
+        CPP14Parser.RULE_statementseq,
+        CPP14Parser.RULE_statement,
+        CPP14Parser.RULE_expressionstatement,
+        CPP14Parser.RULE_expression,
+        */
+        CPP14Parser.RULE_memberdeclaratorlist,
+        CPP14Parser.RULE_memberdeclarator,
+        CPP14Parser.RULE_braceorequalinitializer,
+        CPP14Parser.RULE_bracedinitlist,
+        CPP14Parser.RULE_initializerlist,
+        CPP14Parser.RULE_initializerclause,
+
+        CPP14Parser.RULE_assignmentexpression,
+        CPP14Parser.RULE_conditionalexpression,
+        CPP14Parser.RULE_logicalorexpression,
+        CPP14Parser.RULE_logicalandexpression,
+        CPP14Parser.RULE_inclusiveorexpression,
+        CPP14Parser.RULE_exclusiveorexpression,
+        CPP14Parser.RULE_andexpression,
+        CPP14Parser.RULE_equalityexpression,
+        CPP14Parser.RULE_relationalexpression,
+        CPP14Parser.RULE_shiftexpression,
+        CPP14Parser.RULE_additiveexpression,
+        CPP14Parser.RULE_multiplicativeexpression,
+        CPP14Parser.RULE_pmexpression,
+        CPP14Parser.RULE_castexpression,
+        CPP14Parser.RULE_unaryexpression,
+        CPP14Parser.RULE_postfixexpression,
+        CPP14Parser.RULE_primaryexpression,
+      ]);
 
       // We are starting a primary expression in a function body, so everything related to expressions and control flow is allowed here.
       // We only check for a few possible keywords.

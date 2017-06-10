@@ -110,11 +110,11 @@ The returned candidate collection contains fields for lexer tokens (mostly keywo
 ```typescript
 class CandidatesCollection {
     public tokens: Map<number, TokenList>;
-    public rules: RuleList;
+    public rules: Map<number, RuleList>;
 };
 ```
 
-For the lexer tokens there can be a list of extra tokens which directly follow the given token in the grammar (if any). That's quite a neat additional feature which allows you to show token sequences to the user if they are always used together. For example consider this SQL rule:
+where the map keys are the lexer tokens and the rule indices, respectively. Both can come with additional numbers, which you may or may not use for your implementation. For parser rules the list represents the call stack at which the given rule was found during evaluation. This allows to determine a context for rules that are used in different places. For the lexer tokens the list consists of further token ids which directly follow the given token in the grammar (if any). This allows you to show **token sequences** if they are always used together. For example consider this SQL rule:
 
 ```typescript
 createTable: CREATE TABLE (IF NOT EXISTS)? ...;
