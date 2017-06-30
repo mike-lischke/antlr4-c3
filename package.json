@@ -6,7 +6,7 @@
   "typings": "out/index.d.ts",
   "scripts": {
     "prepublishOnly": "npm run test",
-    "test": "npm install typescript && tsc && npm install mocha && mocha out/test"
+    "test": "tsc && mocha out/test"
   },
   "repository": {
     "type": "git",

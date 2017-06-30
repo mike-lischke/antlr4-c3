@@ -223,7 +223,7 @@ describe('antlr4-c3:', function () {
       expect(symbolTable.getNestedSymbolsOfType(c3.LiteralSymbol).length, "Test 7").to.equal(1000);
 
       done();
-    });
+    }).timeout(20000);
 
     it("Single table namespace tests", function (done) {
       let symbolTable = createClassSymbolTable("main", [30, 10, 10, 100, 100], ["ns1", "ns2", "ns1.ns3.ns5", "ns1.ns4.ns6.ns8"]);

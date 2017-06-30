@@ -1,0 +1,39 @@
+{
+    // Use IntelliSense to find out which attributes exist for node debugging
+    // Use hover for the description of the existing attributes
+    // For further information visit https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [{
+            "name": "Launch Program",
+            "type": "node",
+            "request": "launch",
+            "preLaunchTask": "tsc",
+            "program": "${workspaceRoot}/out/index.js",
+            "cwd": "${workspaceRoot}",
+            "outFiles": ["${workspaceRoot}/out/**/*.js"],
+            "sourceMaps": true
+        },
+        {
+            "name": "Mocha",
+            "type": "node",
+            "protocol": "inspector",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": "tsc",
+            "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+            "args": ["--no-timeouts", "--colors", "${workspaceRoot}/out/test/**/*.js"],
+            "stopOnEntry": false,
+            "runtimeExecutable": null,
+            "env": {
+                "NODE_ENV": "testing"
+            },
+            "sourceMaps": true
+        },
+        {
+            "name": "Attach to Process",
+            "type": "node",
+            "request": "attach",
+            "port": 9229
+        }
+    ]
+}
