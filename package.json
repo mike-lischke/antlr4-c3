@@ -6,7 +6,7 @@
   "typings": "out/index.d.ts",
   "scripts": {
     "prepublishOnly": "npm run test",
-    "test": "tsc && mocha out/test"
+    "test": "tsc --version && tsc && mocha out/test"
   },
   "repository": {
     "type": "git",
@@ -30,7 +30,7 @@
     "chai": "^3.5.0",
     "mocha": "^2.5.3",
     "path": "^0.12.7",
-    "typescript": "^2.4.0"
+    "typescript": "~2.3.4"
   },
   "author": "Mike Lischke",
   "license": "MIT"
