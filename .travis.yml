@@ -5,8 +5,10 @@ node_js:
 
 sudo: false
 
+branches:
+  only:
+    - master
+
 install:
-  - npm uninstall typescript
-  - npm uninstall tslint
+  - npm uninstall typescript --no-save
   - npm install
-  - npm update
