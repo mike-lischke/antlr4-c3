@@ -6,7 +6,8 @@
   "typings": "out/index.d.ts",
   "scripts": {
     "prepublishOnly": "npm run test",
-    "test": "tsc --version && tsc && mocha out/test"
+    "test": "tsc --version && tsc && mocha out/test",
+    "generate": "antlr4ts test/CPP14.g4 test/Expr.g4 -no-listener -no-visitor"
   },
   "repository": {
     "type": "git",

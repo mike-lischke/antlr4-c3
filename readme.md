@@ -103,7 +103,7 @@ This is a pretty standard parser setup here. It's not even necessary to actually
 * the tokens from your input stream
 * vocabulary and rule names for debug output
 
-All these could be passed in individually, but since your parser contains all of that anyway and we need a parser for predicate execution, the API has been designed to take a parser instead. In real world applications you will have a parser anyway (e.g. for error checking), which is perfect as ATN and input provider for the code completion core. But keep in mind: whatever parser you pass in it must have a fully set up token stream. It's not required that it parsed anything before calling the code completion engine and the current stream positions don't matter either.
+All these could be passed in individually, but since your parser contains all of that anyway and we need a parser for predicate execution, the API has been designed to take a parser instead (predicates work however only if written for the Javascript/Typescript target). In real world applications you will have a parser anyway (e.g. for error checking), which is perfect as ATN and input provider for the code completion core. But keep in mind: whatever parser you pass in it must have a fully set up token stream. It's not required that it parsed anything before calling the code completion engine and the current stream positions don't matter either.
 
 The returned candidate collection contains fields for lexer tokens (mostly keywords, but also other tokens if they are not on the ignore list) and parser rule indexes. This collection is defined as:
 
@@ -116,11 +116,11 @@ class CandidatesCollection {
 
 where the map keys are the lexer tokens and the rule indices, respectively. Both can come with additional numbers, which you may or may not use for your implementation. For parser rules the list represents the call stack at which the given rule was found during evaluation. This allows to determine a context for rules that are used in different places. For the lexer tokens the list consists of further token ids which directly follow the given token in the grammar (if any). This allows you to show **token sequences** if they are always used together. For example consider this SQL rule:
 
-```typescript
+```antlr
 createTable: CREATE TABLE (IF NOT EXISTS)? ...;
 ```
 
-Here, if a possible candidate is the `IF` keyword, you can also show the entire `IF NOT EXISTS` sequence to the user (and let him complete all 3 words in one go in the source code). The engine will return a candidate entry for `IF` with a token list containing `NOT` and `EXISTS`. This list will of course update properly when the user comes to `NOT`. Then you will get a candidate entry for `NOT` and an additional list of just `EXISTS`.
+Here, if a possible candidate is the `IF` keyword, you can also show the entire `IF NOT EXISTS` sequence to the user (and let him complete all 3 words in one go in the source code). The engine will return a candidate entry for `IF` with a token list containing `NOT` and `EXISTS`. This list will of course update properly when the user comes to `NOT`. Then you will get a candidate entry for `NOT` and an additional list consisting of just `EXISTS`.
 
 Essential for getting any rule index, which you can use to query your symbol table, is that you specify those you want in the `CodeCompletionCore.preferredRules` field before running `CodeCompletionCore.collectCandidates()`.
 
