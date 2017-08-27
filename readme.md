@@ -4,7 +4,9 @@
 
 # antlr4-c3 The ANTLR4 Code Completion Core
 
-This node module contains a grammar agnostic code completion engine for ANTLR4 based parsers, written in TypeScript. The c3 engine is able to provide code completion candidates useful for editors with ANTLR generated parsers, independent of the actual language/grammar used for the generation.
+This project contains a grammar agnostic code completion engine for ANTLR4 based parsers. The c3 engine is able to provide code completion candidates useful for editors with ANTLR generated parsers, independent of the actual language/grammar used for the generation.
+
+The original implementation is provided as a node module, and is written in TypeScript. A port to Java is available under ports/java.
 
 # Abstract
 
