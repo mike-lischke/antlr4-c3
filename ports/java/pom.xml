@@ -78,11 +78,6 @@
   </dependencies>
 
   <build>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
@@ -101,22 +96,14 @@
         <version>${antlr4.version}</version>
         <executions>
           <execution>
-            <id>antlr</id>
-            <goals>
-              <goal>antlr4</goal>
-            </goals>
-            <configuration>
-              <listener>true</listener>
-              <visitor>true</visitor>
-            </configuration>
-          </execution>
-          <execution>
             <id>antlr-test</id>
+            <phase>generate-test-sources</phase>
             <goals>
               <goal>antlr4</goal>
             </goals>
             <configuration>
               <listener>true</listener>
+              <generateTestSources>true</generateTestSources>
               <visitor>true</visitor>
               <sourceDirectory>${basedir}/src/test/antlr4</sourceDirectory>
               <outputDirectory>${project.build.directory}/generated-test-sources/antlr4</outputDirectory>
