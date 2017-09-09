@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.vmware.antlr4-c3</groupId>
   <artifactId>antlr4-c3</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>antlr4-c3</name>
   <description>
     A code completion core implementation for ANTLR4 based parsers
@@ -18,19 +17,38 @@
     </repository>
   </repositories>
 
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
   <scm>
-    <developerConnection>scm:svn:https://github.com/mike-lischke/antlr4-c3.git</developerConnection>
+    <connection>
+      scm:git:nick-stephen/antlr4-c3.git
+    </connection>
+    <url>http://github.com/nick-stephen/antlr4-c3.git</url>
+    <developerConnection>scm:git:git@github.com:nick-stephen/antlr4-c3.git</developerConnection>
+    <tag>HEAD</tag>
   </scm>
+
+  <developers>
+    <developer>
+      <id>nicks</id>
+      <name>Nick Stephen</name>
+      <email>nicks _at_ vmware.com</email>
+      <organization>VMware</organization>
+      <timezone>Europe/Paris</timezone>
+    </developer>
+  </developers>
 
   <distributionManagement>
     <snapshotRepository>
       <id>ossrh</id>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
-    <repository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
   </distributionManagement>
 
   <properties>
@@ -60,20 +78,16 @@
   </dependencies>
 
   <build>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>2.5.3</version>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.7</version>
+        <extensions>true</extensions>
         <configuration>
-          <mavenExecutorId>forked-path</mavenExecutorId>
-          <useReleaseProfile>false</useReleaseProfile>
-          <arguments>-Psonatype-oss-release</arguments>
+          <serverId>ossrh</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
         </configuration>
       </plugin>
       <plugin>
@@ -82,22 +96,14 @@
         <version>${antlr4.version}</version>
         <executions>
           <execution>
-            <id>antlr</id>
-            <goals>
-              <goal>antlr4</goal>
-            </goals>
-            <configuration>
-              <listener>true</listener>
-              <visitor>true</visitor>
-            </configuration>
-          </execution>
-          <execution>
             <id>antlr-test</id>
+            <phase>generate-test-sources</phase>
             <goals>
               <goal>antlr4</goal>
             </goals>
             <configuration>
               <listener>true</listener>
+              <generateTestSources>true</generateTestSources>
               <visitor>true</visitor>
               <sourceDirectory>${basedir}/src/test/antlr4</sourceDirectory>
               <outputDirectory>${project.build.directory}/generated-test-sources/antlr4</outputDirectory>
@@ -121,5 +127,65 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>3.0.1</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.9.1</version>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.5</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.0.0-M1</version>
+      </plugin>
+    </plugins>
+  </reporting>
 
 </project>
