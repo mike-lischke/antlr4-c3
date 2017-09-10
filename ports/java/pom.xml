@@ -3,7 +3,7 @@
   <groupId>com.vmware.antlr4-c3</groupId>
   <artifactId>antlr4-c3</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
   <name>antlr4-c3</name>
   <description>
     A code completion core implementation for ANTLR4 based parsers
@@ -27,10 +27,10 @@
 
   <scm>
     <connection>
-      scm:git:nick-stephen/antlr4-c3.git
+      scm:git:mike-lischke/antlr4-c3.git
     </connection>
-    <url>http://github.com/nick-stephen/antlr4-c3.git</url>
-    <developerConnection>scm:git:git@github.com:nick-stephen/antlr4-c3.git</developerConnection>
+    <url>https://github.com/mike-lischke/antlr4-c3.git</url>
+    <developerConnection>scm:git:git@github.com:mike-lischke/antlr4-c3.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
