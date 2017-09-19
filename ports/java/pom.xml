@@ -3,7 +3,7 @@
   <groupId>com.vmware.antlr4-c3</groupId>
   <artifactId>antlr4-c3</artifactId>
   <packaging>jar</packaging>
-  <version>1.1</version>
+  <version>1.2-SNAPSHOT</version>
   <name>antlr4-c3</name>
   <description>
     A code completion core implementation for ANTLR4 based parsers
