@@ -3,7 +3,7 @@
   <groupId>com.vmware.antlr4-c3</groupId>
   <artifactId>antlr4-c3</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.1</version>
   <name>antlr4-c3</name>
   <description>
     A code completion core implementation for ANTLR4 based parsers
@@ -70,15 +70,19 @@
 
     <dependency>
       <groupId>org.antlr</groupId>
-      <artifactId>antlr4-maven-plugin</artifactId>
+      <artifactId>antlr4</artifactId>
       <version>${antlr4.version}</version>
-      <type>maven-plugin</type>
     </dependency>
-
+    
   </dependencies>
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.7</version>
+      </plugin>
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -185,7 +189,21 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>3.0.0-M1</version>
       </plugin>
+      <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+        <version>2.1.1</version>
+        <configuration>
+          <failBuildOnCVSS>8</failBuildOnCVSS>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>aggregate</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
     </plugins>
   </reporting>
-
 </project>
