@@ -37,7 +37,7 @@ class FollowSetWithPath {
 // Hence it can be shared between all C3 instances, however it dependes on the actual parser class (type).
 class FollowSetsHolder {
     public sets: FollowSetWithPath[];
-    public combined: IntervalSet
+    public combined: IntervalSet;
 };
 
 type FollowSetsPerState = Map<number, FollowSetsHolder>;
@@ -120,11 +120,8 @@ export class CodeCompletionCore {
         let startRule = context ? context.ruleIndex : 0;
         this.processRule(this.atn.ruleToStartState[startRule], 0, callStack, "");
 
-        if (this.showResult)
-            console.log("States processed: " + this.statesProcessed);
-
-
         if (this.showResult) {
+            console.log("States processed: " + this.statesProcessed);
             console.log("\n\nCollected rules:\n");
             for (let rule of this.candidates.rules) {
                 let path = "";
@@ -153,7 +150,7 @@ export class CodeCompletionCore {
     }
 
     /**
-     * Check if the predicate associated with the given transition evaluates to true.
+     * Checks if the predicate associated with the given transition evaluates to true.
      */
     private checkPredicate(transition: PredicateTransition): boolean {
         return transition.predicate.eval(this.parser, ParserRuleContext.emptyContext());
@@ -349,8 +346,6 @@ export class CodeCompletionCore {
         }
 
         callStack.push(startState.ruleIndex);
-        let currentSymbol = this.tokens[tokenIndex];
-
         if (tokenIndex >= this.tokens.length - 1) { // At caret?
             if (this.preferredRules.has(startState.ruleIndex)) {
                 // No need to go deeper when collecting entries and we reach a rule that we want to collect anyway.
@@ -386,6 +381,7 @@ export class CodeCompletionCore {
             // Process the rule if we either could pass it without consuming anything (epsilon transition)
             // or if the current input symbol will be matched somewhere after this entry point.
             // Otherwise stop here.
+            let currentSymbol = this.tokens[tokenIndex];
             if (!followSets.combined.contains(Token.EPSILON) && !followSets.combined.contains(currentSymbol)) {
                 callStack.pop();
                 return result;
@@ -404,7 +400,7 @@ export class CodeCompletionCore {
             currentEntry = statePipeline.pop()!;
             ++this.statesProcessed;
 
-            currentSymbol = this.tokens[currentEntry.tokenIndex];
+            let currentSymbol = this.tokens[currentEntry.tokenIndex];
 
             let atCaret = currentEntry.tokenIndex >= this.tokens.length - 1;
             if (this.showDebugOutput) {
