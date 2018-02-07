@@ -1,6 +1,6 @@
 {
   "name": "antlr4-c3",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "A code completion core implmentation for ANTLR4 based parsers",
   "main": "out/index.js",
   "typings": "out/index.d.ts",
@@ -25,9 +25,9 @@
   },
   "devDependencies": {
     "@types/chai": "^3.4.34",
-    "@types/mocha": "^2.2.32",
-    "@types/node": "^6.0.78",
-    "antlr4ts-cli": "^0.4.0-alpha.4",
+    "@types/mocha": "^2.2.48",
+    "@types/node": "^6.0.97",
+    "antlr4ts-cli": "^0.4.0-canary.37504efa",
     "chai": "^3.5.0",
     "mocha": "^2.5.3",
     "path": "^0.12.7",

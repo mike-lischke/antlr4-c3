@@ -8,6 +8,7 @@
 'use strict';
 
 import { ParserRuleContext } from 'antlr4ts';
+import { ParseTree } from 'antlr4ts/tree/ParseTree';
 
 export class DuplicateSymbolError extends Error { };
 
@@ -83,7 +84,7 @@ export class FundamentalType implements Type {
 // symbols can so provide additional APIs for simpler access to their sub elements, if needed.
 export class Symbol {
     name: string = ""; // The name of the scope or empty if anonymous.
-    context: ParserRuleContext | undefined; // Reference to the parse tree which contains this symbol.
+    context: ParseTree | undefined; // Reference to the parse tree which contains this symbol.
 
     protected parent: Symbol | undefined;
 

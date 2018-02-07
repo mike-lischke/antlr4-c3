@@ -18,15 +18,21 @@ import { CPP14Lexer } from "./CPP14Lexer";
 
 import * as c3 from "../index";
 
-import { ANTLRErrorListener, ANTLRInputStream, CommonTokenStream, ParserRuleContext, Token, Recognizer, RecognitionException } from 'antlr4ts';
+import {
+    ANTLRErrorListener, ANTLRInputStream, CommonTokenStream, ParserRuleContext, Token, Recognizer, RecognitionException,
+    CommonToken
+} from 'antlr4ts';
+import { Override } from "antlr4ts/Decorators";
+import { TerminalNode } from "antlr4ts/tree/TerminalNode";
 
 // Some helper functions + types to create certain setups.
 
-export class ErrorListener implements ANTLRErrorListener<any> {
+export class ErrorListener implements ANTLRErrorListener<CommonToken> {
   errorCount = 0;
 
+  @Override
   syntaxError<T extends Token>(recognizer: Recognizer<T, any>, offendingSymbol: T | undefined, line: number,
-    charPositionInLine: number, msg: string, e: RecognitionException | undefined) {
+    charPositionInLine: number, msg: string, e: RecognitionException | undefined): void {
     ++this.errorCount;
   }
 };
