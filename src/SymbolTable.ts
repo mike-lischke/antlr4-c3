@@ -56,11 +56,11 @@ export interface SymbolTableOptions {
 
 // A single class for all fundamental types. They are distinguished via the kind field.
 export class FundamentalType implements Type {
-    name: string;
+    public name: string;
 
-    get baseTypes(): Type[] { return []; }
-    get kind(): TypeKind { return this.typeKind; }
-    get reference(): ReferenceKind { return this.referenceKind; }
+    public get baseTypes(): Type[] { return []; }
+    public get kind(): TypeKind { return this.typeKind; }
+    public get reference(): ReferenceKind { return this.referenceKind; }
 
     public static readonly integerType: FundamentalType = new FundamentalType("int", TypeKind.Integer, ReferenceKind.Instance);
     public static readonly floatType: FundamentalType = new FundamentalType("float", TypeKind.Float, ReferenceKind.Instance);
@@ -78,112 +78,188 @@ export class FundamentalType implements Type {
     private referenceKind: ReferenceKind;
 }
 
-// The root of the symbol table class hierarchy: a symbol can be any managable entity (like a block), not only
+// The root of the symbol table class hierarchy: a symbol can be any manageable entity (like a block), not only
 // things like variables or classes.
 // We are using a class hierarchy here, instead of an enum or similar, to allow for easy extension and certain
 // symbols can so provide additional APIs for simpler access to their sub elements, if needed.
 export class Symbol {
-    name: string = ""; // The name of the scope or empty if anonymous.
-    context: ParseTree | undefined; // Reference to the parse tree which contains this symbol.
-
-    protected parent: Symbol | undefined;
+    public name: string = ""; // The name of the scope or empty if anonymous.
+    public context: ParseTree | undefined; // Reference to the parse tree which contains this symbol.
 
     constructor(name: string = "") {
         this.name = name;
     }
 
-    // The parent is usually a scoped symbol as only those can have children, but we allow
-    // any symbol here for special scenarios.
-    // This is rather an internal method and should rarely be used by external code.
-    setParent(parent: Symbol | undefined) {
-        this.parent = parent;
+    /**
+     * The parent is usually a scoped symbol as only those can have children, but we allow
+     * any symbol here for special scenarios.
+     * This is rather an internal method and should rarely be used by external code.
+     */
+    public setParent(parent: Symbol | undefined) {
+        this._parent = parent;
     }
 
-    getParent(): Symbol | undefined {
-        return this.parent;
+    public get parent(): Symbol | undefined {
+        return this._parent;
     }
 
-    removeFromParent() {
-        if (this.parent instanceof ScopedSymbol) {
-            (this.parent as ScopedSymbol).removeSymbol(this);
-            this.parent = undefined;
+    /**
+     * Returns the first sibling of this symbol in it's scope.
+     */
+    public get first() : Symbol {
+        if (!(this._parent instanceof ScopedSymbol)) {
+            return this;
+        }
+
+        // Can be undefined if our parent doesn't contain us (corrupted hierarchy).
+        let result = this._parent.firstChild;
+        if (result) {
+            return result;
+        }
+
+        return this;
+    }
+
+    /**
+     * Returns the symbol before this symbol in it's scope.
+     */
+    public get previous(): Symbol {
+        if (!(this._parent instanceof ScopedSymbol)) {
+            return this;
+        }
+
+        let result = this._parent.previousSiblingOf(this);
+        if (result) {
+            return result;
+        }
+
+        return this;
+    }
+
+    /**
+     * Returns the symbol following this symbol in it's scope.
+     */
+    public get next(): Symbol {
+        if (!(this._parent instanceof ScopedSymbol)) {
+            return this;
+        }
+
+        let result = this._parent.nextSiblingOf(this);
+        if (result) {
+            return result;
+        }
+
+        return this;
+    }
+
+    /**
+     * Returns the last sibling of this symbol in it's scope.
+     */
+    public get last(): Symbol {
+        if (!(this._parent instanceof ScopedSymbol)) {
+            return this;
+        }
+
+        let result = this._parent.lastChild;
+        if (result) {
+            return result;
+        }
+
+        return this;
+    }
+
+    public removeFromParent() {
+        if (this._parent instanceof ScopedSymbol) {
+            this._parent.removeSymbol(this);
+            this._parent = undefined;
         }
     }
 
-    // Get the outermost entity (below the symbol table) that holds us.
-    getRoot(): Symbol | undefined {
-        let run = this.parent;
+    /**
+     * Get the outermost entity (below the symbol table) that holds us.
+     */
+    public get root(): Symbol | undefined {
+        let run = this._parent;
         while (run) {
-            if (!run.parent || (run.parent instanceof SymbolTable))
+            if (!run._parent || (run._parent instanceof SymbolTable))
                 return run;
-            run = run.parent;
+            run = run._parent;
         }
         return run;
     }
 
-    // Returns the symbol table we belong too or undefined if we are not yet assigned.
-    getSymbolTable(): SymbolTable | undefined {
+    /**
+     * Returns the symbol table we belong too or undefined if we are not yet assigned.
+     */
+    public get symbolTable(): SymbolTable | undefined {
         if (this instanceof SymbolTable) {
             return this;
         }
 
-        let run = this.parent;
+        let run = this._parent;
         while (run) {
             if (run instanceof SymbolTable)
                 return run;
-            run = run.parent;
+            run = run._parent;
         }
         return undefined;
     }
 
-    // Returns the next enclosing parent of the given type.
-    getParentOfType<T extends Symbol>(t: new (...args: any[]) => T): T | undefined {
-        let run = this.parent;
+    /**
+     * Returns the next enclosing parent of the given type.
+     */
+    public getParentOfType<T extends Symbol>(t: new (...args: any[]) => T): T | undefined {
+        let run = this._parent;
         while (run) {
             if (run instanceof t)
                 return <T>run;
-            run = run.parent;
+            run = run._parent;
         }
         return undefined;
     }
 
-    // The list of symbols from this one up to root.
-    getSymbolPath(): Symbol[] {
+    /**
+     * The list of symbols from this one up to root.
+     */
+    public get symbolPath(): Symbol[] {
         let result: Symbol[] = [];
         let run: Symbol = this;
         while (run) {
             result.push(run);
-            if (!run.parent)
+            if (!run._parent)
                 break;
-            run = run.parent;
+            run = run._parent;
         }
         return result;
     }
 
-    // Create a qualified identifier from this symbol and its parent.
-    // If `full` is true then all parents are traversed in addition to this instance.
-    qualifiedName(separator = ".", full = false, includeAnonymous = false): string {
+    /**
+     * Creates a qualified identifier from this symbol and its parent.
+     * If `full` is true then all parents are traversed in addition to this instance.
+     */
+    public qualifiedName(separator = ".", full = false, includeAnonymous = false): string {
         if (!includeAnonymous && this.name.length == 0)
             return "";
 
         let result: string = this.name.length == 0 ? "<anonymous>" : this.name;
-        let run = this.parent;
+        let run = this._parent;
         while (run) {
             if (includeAnonymous || run.name.length > 0) {
                 result = (run.name.length == 0 ? "<anonymous>" : run.name) + separator + result;
-                if (!full || !run.parent)
+                if (!full || !run._parent)
                     break;
             }
-            run = run.parent;
+            run = run._parent;
         }
         return result;
     }
 
+    protected _parent: Symbol | undefined;
 };
 
 // A symbol with an attached type (variables, fields etc.).
 export class TypedSymbol extends Symbol {
-    type: Type | undefined;
+    public type: Type | undefined;
 
     constructor(name: string, type?: Type) {
         super(name);
@@ -193,9 +269,9 @@ export class TypedSymbol extends Symbol {
 
 // An alias for another type.
 export class TypeAlias extends Symbol implements Type {
-    get baseTypes(): Type[] { return [this.targetType]; }
-    get kind(): TypeKind { return TypeKind.Alias; }
-    get reference(): ReferenceKind { return ReferenceKind.Irrelevant; }
+    public get baseTypes(): Type[] { return [this.targetType]; }
+    public get kind(): TypeKind { return TypeKind.Alias; }
+    public get reference(): ReferenceKind { return ReferenceKind.Irrelevant; }
 
     constructor(name: string, target: Type) {
         super(name);
@@ -211,15 +287,25 @@ export class ScopedSymbol extends Symbol {
         super(name)
     }
 
-    // Adds the given symbol to this scope. If it belongs already to a different scope
-    // it is removed from that before adding it here.
-    addSymbol(symbol: Symbol) {
+    public get children() {
+        return this._children;
+    }
+
+    public clear() {
+        this._children = [];
+    }
+
+    /**
+     * Adds the given symbol to this scope. If it belongs already to a different scope
+     * it is removed from that before adding it here.
+     */
+    public addSymbol(symbol: Symbol) {
         symbol.removeFromParent();
 
         // Check for duplicates first.
-        let symbolTable = this.getSymbolTable();
+        let symbolTable = this.symbolTable;
         if (!symbolTable || !symbolTable.options.allowDuplicateSymbols) {
-            for (let child of this.children) {
+            for (let child of this._children) {
                 if (child == symbol || (symbol.name.length > 0 && child.name == symbol.name)) {
                     let name = symbol.name;
                     if (name.length == 0)
@@ -229,22 +315,24 @@ export class ScopedSymbol extends Symbol {
             }
         }
 
-        this.children.push(symbol);
+        this._children.push(symbol);
         symbol.setParent(this);
     }
 
-    removeSymbol(symbol: Symbol) {
-        let index = this.children.indexOf(symbol);
+    public removeSymbol(symbol: Symbol) {
+        let index = this._children.indexOf(symbol);
         if (index > -1) {
-            this.children.splice(index, 1);
+            this._children.splice(index, 1);
             symbol.setParent(undefined);
         }
     }
 
-    // Returns direct children of a given type.
-    getSymbolsOfType<T extends Symbol>(t: new (...args: any[]) => T): T[] {
+    /**
+     * Returns direct children of a given type.
+     */
+    public getSymbolsOfType<T extends Symbol>(t: new (...args: any[]) => T): T[] {
         let result: T[] = [];
-        for (let child of this.children) {
+        for (let child of this._children) {
             if (child instanceof t)
                 result.push(<T>child);
         }
@@ -252,11 +340,13 @@ export class ScopedSymbol extends Symbol {
         return result;
     }
 
-    // Returns all (nested) children of a given type. Mostly useful for tests.
-    getNestedSymbolsOfType<T extends Symbol>(t: new (...args: any[]) => T): T[] {
+    /**
+     * Returns all (nested) children of a given type.
+     */
+    public getNestedSymbolsOfType<T extends Symbol>(t: new (...args: any[]) => T): T[] {
         let result: T[] = [];
 
-        for (let child of this.children) {
+        for (let child of this._children) {
             if (child instanceof t)
                 result.push(child);
             if (child instanceof ScopedSymbol)
@@ -266,11 +356,13 @@ export class ScopedSymbol extends Symbol {
         return result;
     }
 
-    // Returns symbols from this and all nested scopes in the order they were defined.
-    getAllNestedSymbols(): Symbol[] {
+    /**
+     * Returns symbols from this and all nested scopes in the order they were defined.
+     */
+    public getAllNestedSymbols(): Symbol[] {
         let result: Symbol[] = [];
 
-        for (let child of this.children) {
+        for (let child of this._children) {
             result.push(child);
             if (child instanceof ScopedSymbol)
                 result.push(...child.getAllNestedSymbols());
@@ -279,14 +371,16 @@ export class ScopedSymbol extends Symbol {
         return result;
     }
 
-    // Returns all symbols of the the given type accessible from this scope.
-    // TODO: add optional position dependency (only symbols defined before a given caret pos are viable).
-    getAllSymbols<T extends Symbol>(t: new (...args: any[]) => T, localOnly = false): Symbol[] {
+    /**
+     * Returns all symbols of the the given type accessible from this scope.
+     * TODO: add optional position dependency (only symbols defined before a given caret pos are viable).
+     */
+    public getAllSymbols<T extends Symbol>(t: new (...args: any[]) => T, localOnly = false): Symbol[] {
         let result: Symbol[] = [];
 
         // Special handling for namespaces, which act like grouping symbols in this scope,
         // so we show them as available in this scope.
-        for (let child of this.children) {
+        for (let child of this._children) {
             if (child instanceof t) {
                 result.push(child);
             }
@@ -295,43 +389,47 @@ export class ScopedSymbol extends Symbol {
         }
 
         if (!localOnly) {
-            if (this.parent && this.parent instanceof ScopedSymbol)
-                result.push(...this.parent.getAllSymbols(t));
+            if (this._parent && this._parent instanceof ScopedSymbol)
+                result.push(...this._parent.getAllSymbols(t));
         }
 
         return result;
     }
 
-    // Returns the first symbol, from top to bottom, with a given name from this scope
-    // or any of the parent scopes (conditionally).
-    resolve(name: string, localOnly = false): Symbol | undefined {
-        for (let child of this.children) {
+    /**
+     * Returns the first symbol with a given name, in the order of appearance in this scope
+     * or any of the parent scopes (conditionally).
+     */
+    public resolve(name: string, localOnly = false): Symbol | undefined {
+        for (let child of this._children) {
             if (child.name == name)
                 return child;
         }
 
         // Nothing found locally. Let the parent continue.
         if (!localOnly) {
-            if (this.parent && this.parent instanceof ScopedSymbol)
-                return (this.parent as ScopedSymbol).resolve(name, false);
+            if (this._parent && this._parent instanceof ScopedSymbol)
+                return (this._parent as ScopedSymbol).resolve(name, false);
         }
 
         return undefined;
     }
 
-    // Returns all accessible symbols that have a type assigned.
-    getTypedSymbols(localOnly = true): TypedSymbol[] {
+    /**
+     * Returns all accessible symbols that have a type assigned.
+     */
+    public getTypedSymbols(localOnly = true): TypedSymbol[] {
         let result: TypedSymbol[] = []
 
-        for (let child of this.children) {
+        for (let child of this._children) {
             if (child instanceof TypedSymbol) {
                 result.push(child);
             }
         }
 
         if (!localOnly) {
-            if (this.parent instanceof ScopedSymbol) {
-                let localList = (this.parent as ScopedSymbol).getTypedSymbols(true);
+            if (this._parent instanceof ScopedSymbol) {
+                let localList = (this._parent as ScopedSymbol).getTypedSymbols(true);
                 result.push(...localList);
             }
         }
@@ -339,18 +437,20 @@ export class ScopedSymbol extends Symbol {
         return result;
     }
 
-    // The names of all accessible symbols with a type.
-    getTypedSymbolNames(localOnly = true): string[] {
+    /**
+     * The names of all accessible symbols with a type.
+     */
+    public getTypedSymbolNames(localOnly = true): string[] {
         let result: string[] = [];
-        for (let child of this.children) {
+        for (let child of this._children) {
             if (child instanceof TypedSymbol) {
                 result.push(child.name);
             }
         }
 
         if (!localOnly) {
-            if (this.parent instanceof ScopedSymbol) {
-                let localList = (this.parent as ScopedSymbol).getTypedSymbolNames(true);
+            if (this._parent instanceof ScopedSymbol) {
+                let localList = (this._parent as ScopedSymbol).getTypedSymbolNames(true);
                 result.push(...localList);
             }
         }
@@ -358,12 +458,19 @@ export class ScopedSymbol extends Symbol {
         return result;
     }
 
-    // Returns all direct child symbols with a scope (e.g. classes in a module).
-    getDirectScopes(): ScopedSymbol[] {
+    /**
+     * Returns all direct child symbols with a scope (e.g. classes in a module).
+     */
+    public get directScopes(): ScopedSymbol[] {
         return this.getSymbolsOfType(ScopedSymbol);
     }
 
-    symbolFromPath(path: string, separator: string = "."): Symbol | undefined {
+    /**
+     * Returns the symbol located at the given path through the symbol hierarchy.
+     * @param path The path consisting of symbol names separator by `separator`.
+     * @param separator The character to separate path segments.
+     */
+    public symbolFromPath(path: string, separator: string = "."): Symbol | undefined {
         let elements = path.split(separator);
         let index = 0;
         if (elements[0] == this.name || elements[0].length == 0)
@@ -374,7 +481,7 @@ export class ScopedSymbol extends Symbol {
             if (!(result instanceof ScopedSymbol)) // Some parts left but found a non-scoped symbol?
                 return undefined;
 
-            let child = result.children.find(child => child.name == elements[index]);
+            let child = result._children.find(child => child.name == elements[index]);
             if (!child)
                 return undefined;
             result = child;
@@ -383,10 +490,56 @@ export class ScopedSymbol extends Symbol {
         return result;
     }
 
-    protected children: Symbol[] = []; // All child symbols in definition order.
+    /**
+     * Returns the index of the given child symbol in the child list or -1 if it couldn't be found.
+     */
+    public indexOfChild(child: Symbol): number {
+        return this._children.findIndex((value: Symbol, index: number) => {
+            return value == child;
+        });
+    }
+
+    /**
+     * Returns the symbol after the given child symbol, if one exists.
+     */
+    public nextSiblingOf(child: Symbol): Symbol | undefined {
+        let index = this.indexOfChild(child);
+        if (index == -1 || index >= this._children.length - 1) {
+            return;
+        }
+        return this._children[index + 1];
+    }
+
+    /**
+     * Returns the symbol before the given child symbol, if one exists.
+     */
+    public previousSiblingOf(child: Symbol): Symbol | undefined {
+        let index = this.indexOfChild(child);
+        if (index < 1) {
+            return;
+        }
+        return this._children[index - 1];
+    }
+
+    public get firstChild(): Symbol | undefined {
+        if (this._children.length > 0) {
+            return this._children[0];
+        }
+    }
+
+    public get lastChild(): Symbol | undefined {
+        if (this._children.length > 0) {
+            return this._children[this._children.length - 1];
+        }
+    }
+
+    private _children: Symbol[] = []; // All child symbols in definition order.
 };
 
 export class NamespaceSymbol extends ScopedSymbol {
+}
+
+export class BlockSymbol extends ScopedSymbol {
 }
 
 export class VariableSymbol extends TypedSymbol {
@@ -418,11 +571,11 @@ export class RoutineSymbol extends ScopedSymbol {
         this.returnType = returnType;
     }
 
-    getVariables(localOnly = true): VariableSymbol[] {
+    public getVariables(localOnly = true): VariableSymbol[] {
         return this.getSymbolsOfType(VariableSymbol);
     }
 
-    getParameters(localOnly = true): ParameterSymbol[] {
+    public getParameters(localOnly = true): ParameterSymbol[] {
         return this.getSymbolsOfType(ParameterSymbol);
     }
 };
@@ -438,8 +591,8 @@ export enum MethodFlags {
 
 // A routine which belongs to a class or other outer container structure.
 export class MethodSymbol extends RoutineSymbol {
-    methodFlags = MethodFlags.None;
-    visibility = MemberVisibility.Invalid;
+    public methodFlags = MethodFlags.None;
+    public visibility = MemberVisibility.Invalid;
 
     constructor(name: string, returnType: Type) {
         super(name, returnType);
@@ -447,10 +600,10 @@ export class MethodSymbol extends RoutineSymbol {
 };
 
 export class FieldSymbol extends VariableSymbol {
-    visibility = MemberVisibility.Invalid;
+    public visibility = MemberVisibility.Invalid;
 
-    setter: MethodSymbol | undefined;
-    getter: MethodSymbol | undefined;
+    public setter: MethodSymbol | undefined;
+    public getter: MethodSymbol | undefined;
 
     constructor(name: string, type: Type) {
         super(name, type);
@@ -460,14 +613,16 @@ export class FieldSymbol extends VariableSymbol {
 // Classes and structs.
 export class ClassSymbol extends ScopedSymbol implements Type {
 
-    get baseTypes(): Type[] { return this.superClasses; };
-    get kind(): TypeKind { return TypeKind.Class; }
-    get reference(): ReferenceKind { return this.referenceKind; }
+    public get baseTypes(): Type[] { return this.superClasses; };
+    public get kind(): TypeKind { return TypeKind.Class; }
+    public get reference(): ReferenceKind { return this.referenceKind; }
 
-    isStruct = false;
+    public isStruct = false;
 
-    // Usually only one member, unless the language supports multiple inheritance.
-    readonly superClasses: ClassSymbol[] = [];
+    /**
+     * Usually only one member, unless the language supports multiple inheritance.
+     */
+    public readonly superClasses: ClassSymbol[] = [];
 
     constructor(name: string, referenceKind: ReferenceKind, ...superClass: ClassSymbol[]) {
         super(name);
@@ -475,13 +630,17 @@ export class ClassSymbol extends ScopedSymbol implements Type {
         this.superClasses.push(...superClass); // Standard case: a single super class.
     }
 
-    // Returns a list of all methods.
-    getMethods(includeInherited = false): MethodSymbol[] {
+    /**
+     * Returns a list of all methods.
+     */
+    public getMethods(includeInherited = false): MethodSymbol[] {
         return this.getSymbolsOfType(MethodSymbol);
     }
 
-    // Returns all fields.
-    getFields(includeInherited = false): FieldSymbol[] {
+    /**
+     * Returns all fields.
+     */
+    public getFields(includeInherited = false): FieldSymbol[] {
         return this.getSymbolsOfType(FieldSymbol);
     }
 
@@ -490,12 +649,12 @@ export class ClassSymbol extends ScopedSymbol implements Type {
 
 export class ArrayType extends Symbol implements Type {
 
-    get baseTypes(): Type[] { return []; };
-    get kind(): TypeKind { return TypeKind.Array; }
-    get reference(): ReferenceKind { return this.referenceKind; }
+    public get baseTypes(): Type[] { return []; };
+    public get kind(): TypeKind { return TypeKind.Array; }
+    public get reference(): ReferenceKind { return this.referenceKind; }
 
-    readonly elementType: Type;
-    readonly size: number; // > 0 if fixed length.
+    public readonly elementType: Type;
+    public readonly size: number; // > 0 if fixed length.
 
     constructor(name: string, referenceKind: ReferenceKind, elemType: Type, size = 0) {
         super(name);
@@ -507,96 +666,42 @@ export class ArrayType extends Symbol implements Type {
     private referenceKind: ReferenceKind;
 };
 
-// A few more types for databases.
-export class CatalogSymbol extends ScopedSymbol {
-};
-
-export class SchemaSymbol extends ScopedSymbol {
-};
-
-export class TableSymbol extends ScopedSymbol {
-};
-
-export class ViewSymbol extends ScopedSymbol {
-};
-
-export class EventSymbol extends ScopedSymbol {
-};
-
-export class ColumnSymbol extends TypedSymbol {
-};
-
-export class IndexSymbol extends Symbol { // Made of columns, but doesn't contain them. Hence not a scope.
-};
-
-export class PrimaryKeySymbol extends Symbol { // ditto
-};
-
-export class ForeignKeySymbol extends Symbol { // ditto
-};
-
-export class StoredRoutineSymbol extends RoutineSymbol {
-};
-
-export class TriggerSymbol extends ScopedSymbol {
-};
-
-export class UdfSymbol extends Symbol { // No body nor parameter info.
-};
-
-export class EngineSymbol extends Symbol {
-};
-
-export class TableSpaceSymbol extends Symbol {
-};
-
-export class LogfileGroupSymbol extends Symbol {
-};
-
-export class CharsetSymbol extends Symbol {
-};
-
-export class CollationSymbol extends Symbol {
-};
-
-export class UserVariableSymbol extends VariableSymbol {
-};
-
-export class SystemVariableSymbol extends Symbol {
-};
-
 // The main class managing all the symbols for a top level entity like a file, library or similar.
 export class SymbolTable extends ScopedSymbol {
     constructor(name: string, public readonly options: SymbolTableOptions) {
         super(name);
     }
 
-    clear() {
+    public clear() {
+        super.clear();
         this.dependencies.clear();
-        this.children = [];
     }
 
-    addDependencies(...tables: SymbolTable[]) {
+    public addDependencies(...tables: SymbolTable[]) {
         tables.forEach((value, key) => {
             this.dependencies.add(value);
         });
     }
 
-    removeDependency(table: SymbolTable) {
+    public removeDependency(table: SymbolTable) {
         if (this.dependencies.has(table)) {
             this.dependencies.delete(table);
         }
     }
 
-    // Instance informations, mostly relevant for unit testing.
-    getInfo() {
+    /**
+     * Returns instance informations, mostly relevant for unit testing.
+     */
+    public get info() {
         return {
             dependencyCount: this.dependencies.size,
             symbolCount: this.children.length
         };
     }
 
-    addNewSymbolOfType<T extends Symbol>(t: new (...args: any[]) => T, parent: ScopedSymbol | undefined, ...args: any[]): T {
+    public addNewSymbolOfType<T extends Symbol>(t: new (...args: any[]) => T,
+        parent: ScopedSymbol | undefined, ...args: any[]): T {
+
         let result = new t(...args);
         if (!parent || parent == this) {
             this.addSymbol(result);
@@ -606,11 +711,13 @@ export class SymbolTable extends ScopedSymbol {
         return result;
     }
 
-    // Adds a new namespace to the symbol table or the given parent. The path parameter specifies a single namespace name
-    // or a chain of namespaces (which can be e.g. "outer.intermittant.inner.final").
-    // If any of the parent namespaces is missing they are created implicitly. The final part must not exist however
-    // or you'll get a duplicate symbol error.
-    addNewNamespaceFromPath(parent: ScopedSymbol | undefined, path: string, delimiter = "."): NamespaceSymbol {
+    /**
+     * Adds a new namespace to the symbol table or the given parent. The path parameter specifies a single namespace name
+     * or a chain of namespaces (which can be e.g. "outer.intermittant.inner.final").
+     * If any of the parent namespaces is missing they are created implicitly. The final part must not exist however
+     * or you'll get a duplicate symbol error.
+     */
+    public addNewNamespaceFromPath(parent: ScopedSymbol | undefined, path: string, delimiter = "."): NamespaceSymbol {
         let parts = path.split(delimiter);
         let i = 0;
         let currentParent = (parent == undefined) ? this : parent;
@@ -625,7 +732,7 @@ export class SymbolTable extends ScopedSymbol {
         return this.addNewSymbolOfType(NamespaceSymbol, currentParent, parts[parts.length - 1]);
     }
 
-    getAllSymbols<T extends Symbol>(t?: new (...args: any[]) => T, localOnly: boolean = false): Symbol[] {
+    public getAllSymbols<T extends Symbol>(t?: new (...args: any[]) => T, localOnly: boolean = false): Symbol[] {
         let type = t ? t : Symbol;
         let result = super.getAllSymbols(type, localOnly);
 
@@ -638,7 +745,7 @@ export class SymbolTable extends ScopedSymbol {
         return result;
     }
 
-    resolve(name: string, localOnly = false): Symbol | undefined {
+    public resolve(name: string, localOnly = false): Symbol | undefined {
         let result = super.resolve(name, localOnly);
 
         if (!result && !localOnly) {

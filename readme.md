@@ -6,11 +6,11 @@
 
 This project contains a grammar agnostic code completion engine for ANTLR4 based parsers. The c3 engine is able to provide code completion candidates useful for editors with ANTLR generated parsers, independent of the actual language/grammar used for the generation.
 
-The original implementation is provided as a node module, and is written in TypeScript. A port to Java is available under ports/java.
+The original implementation is provided as a node module, and is written in TypeScript. A port to Java is available under `ports/java`. Implementations under the `ports` folder might not be up to date compared to the Typescript version.
 
 # Abstract
 
-There have been quite a number of requests over the past years for getting support from ANTLR to create a code completion implementation, but so far that turned out as an isolated task with only custom solutions. This library aims to provide a common infrastructure for code completion implementions in a more general way, so that people can share their solutions and provide others with ideas to solve specific problems related to that.
+There have been quite a number of requests over the past years for getting support from ANTLR to create a code completion implementation, but so far that turned out as an isolated task with only custom solutions. This library aims to provide a common infrastructure for code completion implementations in a more general way, so that people can share their solutions and provide others with ideas to solve specific problems related to that.
 
 The c3 engine implementation is based on an idea presented a while ago under [Universal Code Completion using ANTLR3](http://www.soft-gems.net/index.php/tools/47-universal-code-completion-using-antlr3). There a grammar was loaded into a memory structure so that it can be walked through with the current input to find a specific location (usually the caret position) and then collect all possible tokens and special rules, which then describe the possible set of code completion candidates for that position. With ANTLR4 we no longer need to load a grammar, because the grammar structure is now available as part of a parser (via the ATN - [Augmented Transition Network](https://en.wikipedia.org/wiki/Augmented_transition_network)). The ANTLR4 runtime even provides the [LL1Analyzer](https://github.com/antlr/antlr4/blob/master/runtime/Java/src/org/antlr/v4/runtime/atn/LL1Analyzer.java) class, which helps with retrieving follow sets for a given ATN state, but has a few shortcomings and is in general not easy to use.
 
@@ -179,7 +179,7 @@ core.ignoredTokens = new Set([
 ```
 
 ## Preferred Rules
-As mentioned already the `preferredRules` field is an essential part for getting more than just keywords. It lets you specify the parser rules that are interesting for you and should include the rule indexes for the entitites we talked about in the code completion breakdown paragraph above. Whenever the c3 engine hits a lexer token when collecting candidates from a specific ATN state it will check the call stack for it and, if that contains any of the preferred rules, will select that instead of the lexer token. This transformation ensures that the engine returns contextual informations which can actually be used to look up symbols.
+As mentioned already the `preferredRules` field is an essential part for getting more than just keywords. It lets you specify the parser rules that are interesting for you and should include the rule indexes for the entities we talked about in the code completion breakdown paragraph above. Whenever the c3 engine hits a lexer token when collecting candidates from a specific ATN state it will check the call stack for it and, if that contains any of the preferred rules, will select that instead of the lexer token. This transformation ensures that the engine returns contextual informations which can actually be used to look up symbols.
 
 ## Constraining the Search Space
 Walking the ATN can at times be quite expensive, especially for complex grammars with many rules and perhaps (left) recursive expression rules. I have seen millions of visited ATN states for complex input, which will take very long to finish. In such cases it pays off to limit the engine to just a specific rule (and those called by it). For that there is an optional parser rule context parameter in the `collectCandidates()` method. If a context is given the engine will never look outside of this rule. It is necessary that the specified caret position lies within that rule (or any of those called by it) to properly finish the ATN walk.
@@ -193,7 +193,7 @@ It might sound weird to talk about such a trivial thing like the caret position 
 
 ![token position](images/token-position.png)
 
-Each vertical line corresponds to a possible caret position. The first 3 lines clearly belong to token index 0, but the next line is no longer that clear. At that position we already are on token index 1 while visually the caret still belongs to index 0, because it could be that we are just at the end of a word and want to add more letters to it and hence have to provide candidates for that word. However, for token position 5 the situation is different. After the equal sign there are no possible further characters that could belong to it, so in this case position 5 really means 5. Similarly, token position 7 visually belongs to 6, while 8 is really 8. That means in order to find the correct candidates you have to change the token index based on the type of the token that immediately preceeds the caret token.
+Each vertical line corresponds to a possible caret position. The first 3 lines clearly belong to token index 0, but the next line is no longer that clear. At that position we already are on token index 1 while visually the caret still belongs to index 0, because it could be that we are just at the end of a word and want to add more letters to it and hence have to provide candidates for that word. However, for token position 5 the situation is different. After the equal sign there are no possible further characters that could belong to it, so in this case position 5 really means 5. Similarly, token position 7 visually belongs to 6, while 8 is really 8. That means in order to find the correct candidates you have to change the token index based on the type of the token that immediately precedes the caret token.
 
 Things get really tricky however, when your grammar never stores whitespaces (i.e. when using the `skip` lexer action). In that case you won't get token indexes for whitespaces, as demonstrated in the second index line in the image. In such a scenario you cannot even tell (e.g. for token position 1) whether you still have to complete the `var` keyword or want candidates for the `a`. Also the position between the two whitespaces is unclear, since you have no token index for that and have to use other indicators to decide if that position should go to index 3 (`b`) or 4 (`+`). Given these problems it is probably better not to use the `skip` action for your whitespace rule, but simply put whitespaces on a hidden channel instead.
 
@@ -201,8 +201,26 @@ Things get really tricky however, when your grammar never stores whitespaces (i.
 Sometimes you are not getting what you actually expect and you need take a closer look at what the c3 engine is doing. For this situation a few fields have been added which control some debug output dumped to the console:
 
 * `showResult`: Set this field to true to print a summary of what has been processed and collected. It will print the number of visited ATN states as well as all collected tokens and rules (along with their additional info).
-* `showDebugOutput`: This setting enables output of states and symbols (labels) seen for transations as they are processed by the engine. There will also be lines showing when input is consumed and candidates are added to the result.
-* `debugOutputWithTransitions`: This setting only has an effect if `showDebugOutput` is enabled. It adds all transitiions to the output which the engine encountered (not all of them are actually followed, however).
+* `showDebugOutput`: This setting enables output of states and symbols (labels) seen for transitions as they are processed by the engine. There will also be lines showing when input is consumed and candidates are added to the result.
+* `debugOutputWithTransitions`: This setting only has an effect if `showDebugOutput` is enabled. It adds all transitions to the output which the engine encountered (not all of them are actually followed, however).
 * `showRuleStack`: Also this setting only has an effect if `showDebugOutput` is enabled. It will make the engine print the current rule stack whenever it enters a new rule during the walk.
 
 The last two options potentially create a lot of output which can significantly slow down the collection process.
+
+## Release Notes
+
+### 1.1.6
+- Added Java port from Nick Stephen.
+- Added contributors.txt file.
+- A symbol can now store a `ParseTree` reference (which allows for terminal symbols in addition to parser rules).
+- Added navigation functions to `Symbol` and `ScopedSymbol` (first/last child, next/previous sibling) and added tests for that.
+- Fixed formatting and spelling in tests + `SymbolTable`.
+- Updated readme.
+
+### 1.1.1
+- Travis-CI integration
+- Implemented completion optimizations
+
+### 1.0.4
+- First public release
+- Added initial tests, `SymbolTable` and `CodeCompletionCore` classes
