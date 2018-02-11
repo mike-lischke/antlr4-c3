@@ -640,7 +640,7 @@ describe('antlr4-c3:', function () {
             expect(candidates.tokens.has(CPP14Lexer.Export), "Test 57").to.equal(false);
             expect(candidates.tokens.has(CPP14Lexer.Private), "Test 58").to.equal(false);
             expect(candidates.tokens.has(CPP14Lexer.Protected), "Test 59").to.equal(false);
-        });
+        }).timeout(5000);
 
         it('Simple C++ example with errors in input', function () {
             let inputStream = new ANTLRInputStream("class A {\n" +
