@@ -274,56 +274,60 @@ describe('antlr4-c3:', function () {
             // A class member.
             let field7 = variables[217];
             expect(field7, "Test 3").not.to.be.undefined;
-            expect(field7.first, "Test 4").to.equal(variables[210]);
-            expect(field7.last.name, "Test 5").to.equal("method9");
-            expect(field7.previous, "Test 6").to.equal(variables[216]);
-            expect(field7.next, "Test 7").to.equal(variables[218]);
+            expect(field7.firstSibling, "Test 4").to.equal(variables[210]);
+            expect(field7.lastSibling.name, "Test 5").to.equal("method9");
+            expect(field7.previousSibling, "Test 6").to.equal(variables[216]);
+            expect(field7.nextSibling, "Test 7").to.equal(variables[218]);
 
-            expect(field7.first.first.first.first.first, "Test 8").to.equal(field7.first);
-            expect(field7.last.last.last.last.last, "Test 9").to.equal(field7.last);
-            expect(field7.first.last.first.last.first, "Test 10").to.equal(field7.first);
-            expect(field7.last.first.first.last.last, "Test 11").to.equal(field7.last);
+            expect(field7.firstSibling.firstSibling.firstSibling.firstSibling, "Test 8").to.equal(field7.firstSibling);
+            expect(field7.lastSibling.lastSibling.lastSibling.lastSibling, "Test 9").to.equal(field7.lastSibling);
+            expect(field7.firstSibling.lastSibling.firstSibling.firstSibling, "Test 10").to.equal(field7.firstSibling);
+            expect(field7.lastSibling.firstSibling.firstSibling.lastSibling, "Test 11").to.equal(field7.lastSibling);
 
             expect(field7.parent, "Test 12").to.be.instanceof(c3.ClassSymbol);
 
             let parent7 = field7.parent as c3.ClassSymbol;
             expect(parent7.indexOfChild(field7), "Test 13").to.equal(7);
-            expect(parent7.firstChild, "Test 14").to.equal(field7.first);
-            expect(parent7.lastChild, "Test 15").to.equal(field7.last);
+            expect(parent7.firstChild, "Test 14").to.equal(field7.firstSibling);
+            expect(parent7.lastChild, "Test 15").to.equal(field7.lastSibling);
 
             // A local variable (a single one in a block).
             let var1 = variables[286];
             expect(var1, "Test 16").not.to.be.undefined;
-            expect(var1.first, "Test 17").to.equal(var1);
-            expect(var1.last.name, "Test 18").to.equal("var1");
-            expect(var1.previous, "Test 19").to.equal(variables[286]);
-            expect(var1.next, "Test 20").to.equal(variables[286]);
+            expect(var1.firstSibling, "Test 17").to.equal(var1);
+            expect(var1.lastSibling.name, "Test 18").to.equal("var1");
+            expect(var1.previousSibling, "Test 19").to.equal(variables[286]);
+            expect(var1.nextSibling, "Test 20").to.equal(variables[286]);
 
-            expect(var1.first.first.first.first.first, "Test 21").to.equal(var1.first);
-            expect(var1.last.last.last.last.last, "Test 22").to.equal(var1.last);
-            expect(var1.first.last.first.last.first, "Test 23").to.equal(var1.first);
-            expect(var1.last.first.first.last.last, "Test 24").to.equal(var1.last);
+            expect(var1.firstSibling.firstSibling.firstSibling.firstSibling, "Test 21").to.equal(var1.firstSibling);
+            expect(var1.lastSibling.lastSibling.lastSibling.lastSibling, "Test 22").to.equal(var1.lastSibling);
+            expect(var1.firstSibling.lastSibling.firstSibling.firstSibling, "Test 23").to.equal(var1.firstSibling);
+            expect(var1.lastSibling.firstSibling.firstSibling.lastSibling, "Test 24").to.equal(var1.lastSibling);
 
             let block1 = var1.parent as c3.ScopedSymbol;
             expect(block1.indexOfChild(field7), "Test 25").to.equal(-1);
             expect(block1.indexOfChild(var1), "Test 26").to.equal(0);
-            expect(block1.firstChild, "Test 27").to.equal(var1.first);
-            expect(block1.lastChild, "Test 28").to.equal(var1.last);
+            expect(block1.firstChild, "Test 27").to.equal(var1.firstSibling);
+            expect(block1.lastChild, "Test 28").to.equal(var1.lastSibling);
 
             // A global variable (a single one in a block).
             let var15 = variables[315];
             expect(var15, "Test 29").not.to.be.undefined;
-            expect(var15.first, "Test 30").to.equal(symbolTable.firstChild);
-            expect(var15.last.name, "Test 31").to.equal("globalConst33");
-            expect(var15.previous, "Test 32").to.equal(variables[314]);
-            expect(var15.next, "Test 33").to.equal(variables[316]);
+            expect(var15.firstSibling, "Test 30").to.equal(symbolTable.firstChild);
+            expect(var15.lastSibling.name, "Test 31").to.equal("globalConst33");
+            expect(var15.previousSibling, "Test 32").to.equal(variables[314]);
+            expect(var15.nextSibling, "Test 33").to.equal(variables[316]);
 
             expect(var15.parent, "Test 34").to.be.instanceof(c3.SymbolTable);
 
             let st1 = var15.parent as c3.ScopedSymbol;
             expect(st1.indexOfChild(var15), "Test 35").to.equal(25);
-            expect(st1.firstChild, "Test 36").to.equal(var15.first);
-            expect(st1.lastChild, "Test 37").to.equal(var15.last);
+            expect(st1.firstChild, "Test 36").to.equal(var15.firstSibling);
+            expect(st1.lastChild, "Test 37").to.equal(var15.lastSibling);
+
+            let next = variables[284].next;
+            expect(next, "Test 38").not.to.be.undefined;
+            expect(next!.qualifiedName(".", true), "Test 38").to.equal("main.class9.method2.block2");
         });
     });
 

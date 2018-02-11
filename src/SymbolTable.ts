@@ -106,7 +106,7 @@ export class Symbol {
     /**
      * Returns the first sibling of this symbol in it's scope.
      */
-    public get first() : Symbol {
+    public get firstSibling() : Symbol {
         if (!(this._parent instanceof ScopedSymbol)) {
             return this;
         }
@@ -123,7 +123,7 @@ export class Symbol {
     /**
      * Returns the symbol before this symbol in it's scope.
      */
-    public get previous(): Symbol {
+    public get previousSibling(): Symbol {
         if (!(this._parent instanceof ScopedSymbol)) {
             return this;
         }
@@ -139,7 +139,7 @@ export class Symbol {
     /**
      * Returns the symbol following this symbol in it's scope.
      */
-    public get next(): Symbol {
+    public get nextSibling(): Symbol {
         if (!(this._parent instanceof ScopedSymbol)) {
             return this;
         }
@@ -155,7 +155,7 @@ export class Symbol {
     /**
      * Returns the last sibling of this symbol in it's scope.
      */
-    public get last(): Symbol {
+    public get lastSibling(): Symbol {
         if (!(this._parent instanceof ScopedSymbol)) {
             return this;
         }
@@ -166,6 +166,15 @@ export class Symbol {
         }
 
         return this;
+    }
+
+    /**
+     * Returns the next symbol in definition order, regardless of the scope.
+     */
+    public get next(): Symbol | undefined {
+        if (this.parent instanceof ScopedSymbol) {
+            return this.parent.nextOf(this);
+        }
     }
 
     public removeFromParent() {
@@ -500,7 +509,7 @@ export class ScopedSymbol extends Symbol {
     }
 
     /**
-     * Returns the symbol after the given child symbol, if one exists.
+     * Returns the sibling symbol after the given child symbol, if one exists.
      */
     public nextSiblingOf(child: Symbol): Symbol | undefined {
         let index = this.indexOfChild(child);
@@ -511,7 +520,7 @@ export class ScopedSymbol extends Symbol {
     }
 
     /**
-     * Returns the symbol before the given child symbol, if one exists.
+     * Returns the sibling symbol before the given child symbol, if one exists.
      */
     public previousSiblingOf(child: Symbol): Symbol | undefined {
         let index = this.indexOfChild(child);
@@ -530,6 +539,34 @@ export class ScopedSymbol extends Symbol {
     public get lastChild(): Symbol | undefined {
         if (this._children.length > 0) {
             return this._children[this._children.length - 1];
+        }
+    }
+
+    /**
+     * Returns the next symbol in definition order, regardless of the scope.
+     */
+    public nextOf(child: Symbol): Symbol | undefined {
+        if (!(child.parent instanceof ScopedSymbol)) {
+            return;
+        }
+        if (child.parent != this) {
+            return child.parent.nextOf(child);
+        }
+
+        if (child instanceof ScopedSymbol && child.children.length > 0) {
+            return child.children[0];
+        }
+
+        let sibling = this.nextSiblingOf(child);
+        if (sibling) {
+            return sibling;
+        }
+
+        if (this.parent instanceof ScopedSymbol) {
+            let ownSibling = this.parent.nextSiblingOf(this);
+            if (ownSibling) {
+                return ownSibling;
+            }
         }
     }
 
