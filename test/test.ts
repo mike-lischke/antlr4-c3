@@ -296,8 +296,8 @@ describe('antlr4-c3:', function () {
             expect(var1, "Test 16").not.to.be.undefined;
             expect(var1.firstSibling, "Test 17").to.equal(var1);
             expect(var1.lastSibling.name, "Test 18").to.equal("var1");
-            expect(var1.previousSibling, "Test 19").to.equal(variables[286]);
-            expect(var1.nextSibling, "Test 20").to.equal(variables[286]);
+            expect(var1.previousSibling, "Test 19").to.be.undefined;
+            expect(var1.nextSibling, "Test 20").to.undefined;
 
             expect(var1.firstSibling.firstSibling.firstSibling.firstSibling, "Test 21").to.equal(var1.firstSibling);
             expect(var1.lastSibling.lastSibling.lastSibling.lastSibling, "Test 22").to.equal(var1.lastSibling);
@@ -327,7 +327,7 @@ describe('antlr4-c3:', function () {
 
             let next = variables[284].next;
             expect(next, "Test 38").not.to.be.undefined;
-            expect(next!.qualifiedName(".", true), "Test 38").to.equal("main.class9.method2.block2");
+            expect(next!.qualifiedName(".", true), "Test 39").to.equal("main.class9.method2.block1.var1");
         });
     });
 

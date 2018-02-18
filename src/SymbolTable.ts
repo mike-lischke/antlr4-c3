@@ -103,18 +103,9 @@ export class Symbol {
         return this._parent;
     }
 
-    /**
-     * Returns the first sibling of this symbol in it's scope.
-     */
-    public get firstSibling() : Symbol {
-        if (!(this._parent instanceof ScopedSymbol)) {
-            return this;
-        }
-
-        // Can be undefined if our parent doesn't contain us (corrupted hierarchy).
-        let result = this._parent.firstChild;
-        if (result) {
-            return result;
+    public get firstSibling(): Symbol {
+        if (this._parent instanceof ScopedSymbol) {
+            return this._parent.firstChild!;
         }
 
         return this;
@@ -123,7 +114,7 @@ export class Symbol {
     /**
      * Returns the symbol before this symbol in it's scope.
      */
-    public get previousSibling(): Symbol {
+    public get previousSibling(): Symbol | undefined {
         if (!(this._parent instanceof ScopedSymbol)) {
             return this;
         }
@@ -132,14 +123,12 @@ export class Symbol {
         if (result) {
             return result;
         }
-
-        return this;
     }
 
     /**
      * Returns the symbol following this symbol in it's scope.
      */
-    public get nextSibling(): Symbol {
+    public get nextSibling(): Symbol | undefined {
         if (!(this._parent instanceof ScopedSymbol)) {
             return this;
         }
@@ -148,21 +137,11 @@ export class Symbol {
         if (result) {
             return result;
         }
-
-        return this;
     }
 
-    /**
-     * Returns the last sibling of this symbol in it's scope.
-     */
     public get lastSibling(): Symbol {
-        if (!(this._parent instanceof ScopedSymbol)) {
-            return this;
-        }
-
-        let result = this._parent.lastChild;
-        if (result) {
-            return result;
+        if (this._parent instanceof ScopedSymbol) {
+            return this._parent.lastChild!;
         }
 
         return this;
@@ -181,6 +160,16 @@ export class Symbol {
         if (this._parent instanceof ScopedSymbol) {
             this._parent.removeSymbol(this);
             this._parent = undefined;
+        }
+    }
+
+    /**
+     * Returns the first symbol with a given name, in the order of appearance in this scope
+     * or any of the parent scopes (conditionally).
+     */
+    public resolve(name: string, localOnly = false): Symbol | undefined {
+        if (this._parent instanceof ScopedSymbol) {
+            return this._parent.resolve(name, localOnly);
         }
     }
 
@@ -417,8 +406,8 @@ export class ScopedSymbol extends Symbol {
 
         // Nothing found locally. Let the parent continue.
         if (!localOnly) {
-            if (this._parent && this._parent instanceof ScopedSymbol)
-                return (this._parent as ScopedSymbol).resolve(name, false);
+            if (this._parent instanceof ScopedSymbol)
+                return this._parent.resolve(name, false);
         }
 
         return undefined;
@@ -562,12 +551,7 @@ export class ScopedSymbol extends Symbol {
             return sibling;
         }
 
-        if (this.parent instanceof ScopedSymbol) {
-            let ownSibling = this.parent.nextSiblingOf(this);
-            if (ownSibling) {
-                return ownSibling;
-            }
-        }
+        return (this.parent as ScopedSymbol).nextOf(this);
     }
 
     private _children: Symbol[] = []; // All child symbols in definition order.
