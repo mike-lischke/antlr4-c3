@@ -19,8 +19,8 @@ import { CPP14Lexer } from "./CPP14Lexer";
 import * as c3 from "../index";
 
 import {
-    ANTLRErrorListener, ANTLRInputStream, CommonTokenStream, ParserRuleContext, Token, Recognizer, RecognitionException,
-    CommonToken
+    ANTLRErrorListener, ANTLRInputStream, CommonTokenStream, ParserRuleContext, Token, Recognizer,
+    RecognitionException, CommonToken
 } from 'antlr4ts';
 import { Override } from "antlr4ts/Decorators";
 import { TerminalNode } from "antlr4ts/tree/TerminalNode";
@@ -36,6 +36,8 @@ export class ErrorListener implements ANTLRErrorListener<CommonToken> {
         ++this.errorCount;
     }
 };
+
+const dummyNode = new TerminalNode(new CommonToken(-2, "Dummy", undefined, 0, 10, 20));
 
 /**
  * Creates a single symbol table setup with a simple base structure:
@@ -71,7 +73,10 @@ function createClassSymbolTable(name: string, counts: number[], namespaces?: str
             let block1 = symbolTable.addNewSymbolOfType(c3.BlockSymbol, undefined, "block1"); // Block at top level.
             symbolTable.addNewSymbolOfType(c3.VariableSymbol, block1, "var1", 17, c3.FundamentalType.integerType);
             let block2 = symbolTable.addNewSymbolOfType(c3.BlockSymbol, undefined, "block2");
-            symbolTable.addNewSymbolOfType(c3.VariableSymbol, block2, "var1", 3.142, c3.FundamentalType.floatType);
+            let symbol = symbolTable.addNewSymbolOfType(c3.VariableSymbol, block2, "var1", 3.142, c3.FundamentalType.floatType);
+            if (j == 1) {
+                symbol.context = dummyNode;
+            }
 
             // Now move the blocks from global level to the method.
             method.addSymbol(block1);
@@ -328,6 +333,10 @@ describe('antlr4-c3:', function () {
             let next = variables[284].next;
             expect(next, "Test 38").not.to.be.undefined;
             expect(next!.qualifiedName(".", true), "Test 39").to.equal("main.class9.method2.block1.var1");
+
+            let symbol = symbolTable.symbolWithContext(dummyNode);
+            expect(symbol, "Test 40").not.to.be.undefined;
+            expect(symbol!.qualifiedName(".", true), "Test 41").to.equal("main.class0.method1.block2.var1");
         });
     });
 

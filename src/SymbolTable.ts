@@ -766,6 +766,42 @@ export class SymbolTable extends ScopedSymbol {
         return result;
     }
 
+    public symbolWithContext(context: ParseTree): Symbol | undefined {
+
+        function findRecursive(symbol: Symbol): Symbol | undefined {
+            if (symbol.context == context) {
+                return symbol;
+            }
+
+            if (symbol instanceof ScopedSymbol) {
+                for (let child of symbol.children) {
+                    let result = findRecursive(child);
+                    if (result) {
+                        return result;
+                    }
+                }
+            }
+        }
+
+        let symbols = this.getAllSymbols(Symbol);
+        for (let symbol of symbols) {
+            let result = findRecursive(symbol);
+            if (result) {
+                return result;
+            }
+        }
+
+        for (let dependency of this.dependencies) {
+            symbols = dependency.getAllSymbols(Symbol);
+            for (let symbol of symbols) {
+                let result = findRecursive(symbol);
+                if (result) {
+                    return result;
+                }
+            }
+        }
+    }
+
     public resolve(name: string, localOnly = false): Symbol | undefined {
         let result = super.resolve(name, localOnly);
 
