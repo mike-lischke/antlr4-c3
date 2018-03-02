@@ -209,6 +209,11 @@ The last two options potentially create a lot of output which can significantly 
 
 ## Release Notes
 
+### 1.1.7
+- Renamed a number of methods for improved consistency (`next` -> `nextSibling` etc.) and updated some tests.
+- Also simple symbols can be used to resolve other symbols (by delegating this call to their parents, if there's one).
+- Added a method to find a symbol by it's associated context + added a test for that.
+
 ### 1.1.6
 - Added Java port from Nick Stephen.
 - Added contributors.txt file.
