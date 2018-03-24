@@ -26,11 +26,11 @@
   "devDependencies": {
     "@types/chai": "^3.4.34",
     "@types/mocha": "^2.2.48",
-    "@types/node": "^6.0.101",
+    "@types/node": "^6.0.102",
     "chai": "^3.5.0",
     "mocha": "^2.5.3",
     "path": "^0.12.7",
-    "typescript": "~2.3.4"
+    "typescript": "^2.7.2"
   },
   "author": "Mike Lischke",
   "license": "MIT"

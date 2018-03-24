@@ -259,12 +259,13 @@ describe('antlr4-c3:', function () {
             libVariables.addDependencies(libFunctions, libFunctions2);
             main.addDependencies(systemFunctions, libVariables);
 
-            // Note: namespaces are handled in the context of their parent. Symbols in a namespace/module/library are accessible from their parent.
-            expect(main.getAllSymbols().length, "Test 1").to.equal(2232);
-            expect(systemFunctions.getAllSymbols().length, "Test 2").to.equal(334); // System functions alone + the namespace.
-            expect(libFunctions.getAllSymbols().length, "Test 3").to.equal(445); // Lib functions alone + the namespace.
-            expect(libVariables.getAllSymbols().length, "Test 4").to.equal(1668); // Lib variables + lib functions + namespaces.
-            expect(libFunctions2.getAllSymbols().length, "Test 5").to.equal(667); // Lib functions in "ns1" only + the namespace.
+            // Note: namespaces are handled in the context of their parent.
+            // Symbols in a namespace/module/library are accessible from their parent.
+            expect(main.getAllSymbols().size, "Test 1").to.equal(2232);
+            expect(systemFunctions.getAllSymbols().size, "Test 2").to.equal(334); // System functions alone + the namespace.
+            expect(libFunctions.getAllSymbols().size, "Test 3").to.equal(445); // Lib functions alone + the namespace.
+            expect(libVariables.getAllSymbols().size, "Test 4").to.equal(1668); // Lib variables + lib functions + namespaces.
+            expect(libFunctions2.getAllSymbols().size, "Test 5").to.equal(667); // Lib functions in "ns1" only + the namespace.
         });
 
         it("Symbol navigation", function() {

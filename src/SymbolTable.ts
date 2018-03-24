@@ -326,19 +326,6 @@ export class ScopedSymbol extends Symbol {
     }
 
     /**
-     * Returns direct children of a given type.
-     */
-    public getSymbolsOfType<T extends Symbol>(t: new (...args: any[]) => T): T[] {
-        let result: T[] = [];
-        for (let child of this._children) {
-            if (child instanceof t)
-                result.push(<T>child);
-        }
-
-        return result;
-    }
-
-    /**
      * Returns all (nested) children of a given type.
      */
     public getNestedSymbolsOfType<T extends Symbol>(t: new (...args: any[]) => T): T[] {
@@ -356,39 +343,58 @@ export class ScopedSymbol extends Symbol {
 
     /**
      * Returns symbols from this and all nested scopes in the order they were defined.
+     * @param name If given only returns symbols with that name.
      */
-    public getAllNestedSymbols(): Symbol[] {
+    public getAllNestedSymbols(name?: string): Symbol[] {
         let result: Symbol[] = [];
 
         for (let child of this._children) {
-            result.push(child);
+            if (!name || child.name == name) {
+                result.push(child);
+            }
             if (child instanceof ScopedSymbol)
-                result.push(...child.getAllNestedSymbols());
+                result.push(...child.getAllNestedSymbols(name));
         }
 
         return result;
     }
 
     /**
-     * Returns all symbols of the the given type accessible from this scope.
+     * Returns direct children of a given type.
+     */
+    public getSymbolsOfType<T extends Symbol>(t: new (...args: any[]) => T): T[] {
+        let result: T[] = [];
+        for (let child of this._children) {
+            if (child instanceof t)
+                result.push(<T>child);
+        }
+
+        return result;
+    }
+
+    /**
+     * Returns all symbols of the the given type, accessible from this scope (if localOnly is false),
+     * within the owning symbol table.
      * TODO: add optional position dependency (only symbols defined before a given caret pos are viable).
      */
-    public getAllSymbols<T extends Symbol>(t: new (...args: any[]) => T, localOnly = false): Symbol[] {
-        let result: Symbol[] = [];
+    public getAllSymbols<T extends Symbol>(t: new (...args: any[]) => T, localOnly = false): Set<Symbol> {
+        let result: Set<Symbol> = new Set();
 
         // Special handling for namespaces, which act like grouping symbols in this scope,
         // so we show them as available in this scope.
         for (let child of this._children) {
             if (child instanceof t) {
-                result.push(child);
+                result.add(child);
             }
-            if (child instanceof NamespaceSymbol)
-                result.push(...child.getAllSymbols(t, true));
+            if (child instanceof NamespaceSymbol) {
+                child.getAllSymbols(t, true).forEach(result.add, result);
+            }
         }
 
         if (!localOnly) {
-            if (this._parent && this._parent instanceof ScopedSymbol)
-                result.push(...this._parent.getAllSymbols(t));
+            if (this._parent instanceof ScopedSymbol) {
+                this._parent.getAllSymbols(t, true).forEach(result.add, result);
+            }
         }
 
         return result;
@@ -753,13 +759,13 @@ export class SymbolTable extends ScopedSymbol {
         return this.addNewSymbolOfType(NamespaceSymbol, currentParent, parts[parts.length - 1]);
     }
 
-    public getAllSymbols<T extends Symbol>(t?: new (...args: any[]) => T, localOnly: boolean = false): Symbol[] {
+    public getAllSymbols<T extends Symbol>(t?: new (...args: any[]) => T, localOnly: boolean = false): Set<Symbol> {
         let type = t ? t : Symbol;
         let result = super.getAllSymbols(type, localOnly);
 
         if (!localOnly) {
             for (let dependency of this.dependencies) {
-                result.push(...dependency.getAllSymbols(t, localOnly));
+                dependency.getAllSymbols(t, localOnly).forEach(result.add, result);
             }
         }
 
