@@ -131,7 +131,7 @@ The final step to get your completion strings is usually something like this:
 ```typescript
 let keywords: string[] = [];
 for (let candidate of candidates.tokens) {
-    keywords.push(parser.vocabulay.getDisplayName(candidate[0]);
+    keywords.push(parser.vocabulary.getDisplayName(candidate[0]));
 }
 
 let symbol = ...; // Find the symbol that covers your caret position.
