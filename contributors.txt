@@ -50,3 +50,4 @@ CONTRIBUTORS:
 YYYY/MM/DD, github id, Full name, email
 2017/02/21, mike-lischke, Mike Lischke, mike@lischke-online.de
 2017/08/27, nick-stephen, Nick Stephen, nicks _at_ vmware.com
+2018/08/06, nuzelac, Nino Uzelac, uzelac.nino@gmail.com
