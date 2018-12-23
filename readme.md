@@ -211,6 +211,7 @@ The last two options potentially create a lot of output which can significantly 
 
 ### 1.1.11
 - Updated modules with known vulnerabilities.
+- Better handling of recursive rules in code completion (via precedence).
 - Updated to latest antl4ts.
 
 ### 1.1.8
