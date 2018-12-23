@@ -8,7 +8,7 @@
 'use strict';
 
 import { Parser, Vocabulary, Token, TokenStream, RuleContext, ParserRuleContext } from 'antlr4ts';
-import { ATN, ATNState, ATNStateType, Transition, TransitionType, PredicateTransition, RuleTransition, RuleStartState } from 'antlr4ts/atn';
+import { ATN, ATNState, ATNStateType, Transition, TransitionType, PredicateTransition, RuleTransition, RuleStartState, PrecedencePredicateTransition } from 'antlr4ts/atn';
 import { IntervalSet } from 'antlr4ts/misc';
 
 export type TokenList = number[];
@@ -68,9 +68,9 @@ export class CodeCompletionCore {
     private vocabulary: Vocabulary;
     private ruleNames: string[];
     private tokens: TokenList;
+    private precedenceStack: Array<number>;
 
     private tokenStartIndex: number = 0;
-
     private statesProcessed: number = 0;
 
     // A mapping of rule index + token stream position to end token positions.
@@ -100,6 +100,7 @@ export class CodeCompletionCore {
         this.candidates.rules.clear();
         this.candidates.tokens.clear();
         this.statesProcessed = 0;
+        this.precedenceStack = [];
 
         this.tokenStartIndex = context ? context.start.tokenIndex : 0;
         let tokenStream: TokenStream = this.parser.inputStream;
@@ -118,7 +119,7 @@ export class CodeCompletionCore {
 
         let callStack: number[] = [];
         let startRule = context ? context.ruleIndex : 0;
-        this.processRule(this.atn.ruleToStartState[startRule], 0, callStack, "");
+        this.processRule(this.atn.ruleToStartState[startRule], 0, callStack, 0, 0);
 
         if (this.showResult) {
             console.log("States processed: " + this.statesProcessed);
@@ -210,7 +211,7 @@ export class CodeCompletionCore {
             for (let transition of state!.getTransitions()) {
                 if (transition.serializationType == TransitionType.ATOM) {
                     if (!transition.isEpsilon) {
-                        let list = transition.label!.toList();
+                        let list = transition.label!.toArray();
                         if (list.length == 1 && !this.ignoredTokens.has(list[0])) {
                             result.push(list[0]);
                             pipeline.push(transition.target);
@@ -297,7 +298,8 @@ export class CodeCompletionCore {
      * The result can be empty in case we hit only non-epsilon transitions that didn't match the current input or if we
      * hit the caret position.
      */
-    private processRule(startState: ATNState, tokenIndex: number, callStack: number[], indentation: string): RuleEndStatus {
+    private processRule(startState: RuleStartState, tokenIndex: number, callStack: number[], precedence: number,
+        indentation: number): RuleEndStatus {
 
         // Start with rule specific handling before going into the ATN walk.
 
@@ -357,7 +359,7 @@ export class CodeCompletionCore {
                     let fullPath = callStack.slice();
                     fullPath.push(...set.path);
                     if (!this.translateToRuleIndex(fullPath)) {
-                        for (let symbol of set.intervals.toList())
+                        for (let symbol of set.intervals.toArray())
                             if (!this.ignoredTokens.has(symbol)) {
                                 if (this.showDebugOutput) {
                                     console.log("=====> collected: ", this.vocabulary.getDisplayName(symbol));
@@ -388,6 +390,10 @@ export class CodeCompletionCore {
             }
         }
 
+        if (startState.isPrecedenceRule) {
+            this.precedenceStack.push(precedence);
+        }
+
         // The current state execution pipeline contains all yet-to-be-processed ATN states in this rule.
         // For each such state we store the token index + a list of rules that lead to it.
         let statePipeline: PipelineEntry[] = [];
@@ -404,31 +410,28 @@ export class CodeCompletionCore {
 
             let atCaret = currentEntry.tokenIndex >= this.tokens.length - 1;
             if (this.showDebugOutput) {
-                this.printDescription(indentation, currentEntry.state, this.generateBaseDescription(currentEntry.state), currentEntry.tokenIndex);
+                this.printDescription(indentation, currentEntry.state, this.generateBaseDescription(currentEntry.state),
+                    currentEntry.tokenIndex);
                 if (this.showRuleStack)
                     this.printRuleState(callStack);
             }
 
-            switch (currentEntry.state.stateType) {
-                case ATNStateType.RULE_START: // Happens only for the first state in this rule, not subrules.
-                    indentation += "  ";
-                    break;
-
-                case ATNStateType.RULE_STOP: {
-                    // Record the token index we are at, to report it to the caller.
-                    result.add(currentEntry.tokenIndex);
-                    continue;
-                }
-
-                default:
-                    break;
+            if (currentEntry.state.stateType == ATNStateType.RULE_STOP) {
+                // Record the token index we are at, to report it to the caller.
+                result.add(currentEntry.tokenIndex);
+                continue;
             }
 
             let transitions = currentEntry.state.getTransitions();
+
+            // We simulate here the same precedence handling as the parser does, which uses hard coded values.
+            // For rules that are not left recursive this value is ignored (since there is no precedence transition).
             for (let transition of transitions) {
                 switch (transition.serializationType) {
                     case TransitionType.RULE: {
-                        let endStatus = this.processRule(transition.target, currentEntry.tokenIndex, callStack, indentation);
+                        let ruleTransition = transition as RuleTransition;
+                        let endStatus = this.processRule(transition.target as RuleStartState, currentEntry.tokenIndex,
+                            callStack, ruleTransition.precedence, indentation + 1);
                         for (let position of endStatus) {
                             statePipeline.push({ state: (<RuleTransition>transition).followState, tokenIndex: position });
                         }
@@ -441,10 +444,18 @@ export class CodeCompletionCore {
                         break;
                     }
 
+                    case TransitionType.PRECEDENCE: {
+                        const predTransition = transition as PrecedencePredicateTransition;
+                        if (predTransition.precedence >= this.precedenceStack[this.precedenceStack.length - 1])
+                            statePipeline.push({ state: transition.target, tokenIndex: currentEntry.tokenIndex });
+
+                        break;
+                    }
+
                     case TransitionType.WILDCARD: {
                         if (atCaret) {
                             if (!this.translateToRuleIndex(callStack)) {
-                                for (let token of IntervalSet.of(Token.MIN_USER_TOKEN_TYPE, this.atn.maxTokenType).toList())
+                                for (let token of IntervalSet.of(Token.MIN_USER_TOKEN_TYPE, this.atn.maxTokenType).toArray())
                                     if (!this.ignoredTokens.has(token))
                                         this.candidates.tokens.set(token, []);
                             }
@@ -471,7 +482,7 @@ export class CodeCompletionCore {
                             }
                             if (atCaret) {
                                 if (!this.translateToRuleIndex(callStack)) {
-                                    let list = set.toList();
+                                    let list = set.toArray();
                                     let addFollowing = list.length == 1;
                                     for (let symbol of list)
                                         if (!this.ignoredTokens.has(symbol)) {
@@ -498,6 +509,9 @@ export class CodeCompletionCore {
         }
 
         callStack.pop();
+        if (startState.isPrecedenceRule) {
+            this.precedenceStack.pop();
+        }
 
         // Cache the result, for later lookup to avoid duplicate walks.
         positionMap.set(tokenIndex, result);
@@ -526,15 +540,16 @@ export class CodeCompletionCore {
         return "[" + stateValue + " " + this.atnStateTypeMap[state.stateType] + "] in " + this.ruleNames[state.ruleIndex];
     }
 
-    private printDescription(currentIndent: string, state: ATNState, baseDescription: string, tokenIndex: number) {
+    private printDescription(indentation: number, state: ATNState, baseDescription: string, tokenIndex: number) {
 
-        let output = currentIndent;
+        const indent = "  ".repeat(indentation);
+        let output = indent;
 
         let transitionDescription = "";
         if (this.debugOutputWithTransitions) {
             for (let transition of state.getTransitions()) {
                 let labels = "";
-                let symbols: number[] = transition.label ? transition.label.toList() : [];
+                let symbols: number[] = transition.label ? transition.label.toArray() : [];
                 if (symbols.length > 2) {
                     // Only print start and end symbols to avoid large lists in debug output.
                     labels = this.vocabulary.getDisplayName(symbols[0]) + " .. " + this.vocabulary.getDisplayName(symbols[symbols.length - 1]);
@@ -547,7 +562,7 @@ export class CodeCompletionCore {
                 }
                 if (labels.length == 0)
                     labels = "ε";
-                transitionDescription += "\n" + currentIndent + "\t(" + labels + ") " + "[" + transition.target.stateNumber + " " +
+                transitionDescription += "\n" + indent + "\t(" + labels + ") " + "[" + transition.target.stateNumber + " " +
                     this.atnStateTypeMap[transition.target.stateType] + "] in " + this.ruleNames[transition.target.ruleIndex];
             }
         }
