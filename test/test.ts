@@ -467,7 +467,7 @@ describe('antlr4-c3:', function () {
             // 6) On the whitespace just after the variable reference 'a' (but it could still be a function reference!)
             candidates = core.collectCandidates(7);
             expect(candidates.tokens.size, "Test 11").to.equal(0);
-            expect(candidates.rules.size, "Test 12").to.equal(2);
+            expect(candidates.rules.size, "Test 12").to.equal(1);
         });
     });
 
