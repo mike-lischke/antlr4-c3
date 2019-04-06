@@ -21,16 +21,16 @@
     "parser"
   ],
   "dependencies": {
-    "antlr4ts": "^0.5.0-alpha.0"
+    "antlr4ts": "^0.5.0-alpha.3"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
-    "@types/mocha": "^5.2.5",
-    "@types/node": "^10.12.18",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^10.14.4",
     "chai": ">=4.2.0",
-    "mocha": ">=5.2.0",
+    "mocha": "^6.0.2",
     "path": ">=0.12.7",
-    "typescript": "^3.2.2"
+    "typescript": "^3.4.2"
   },
   "author": "Mike Lischke",
   "license": "MIT"

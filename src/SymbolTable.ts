@@ -1,13 +1,12 @@
 /*
  * This file is released under the MIT license.
- * Copyright (c) 2017, Mike Lischke
+ * Copyright (c) 2017, 2019, Mike Lischke
  *
  * See LICENSE file for more info.
  */
 
 'use strict';
 
-import { ParserRuleContext } from 'antlr4ts';
 import { ParseTree } from 'antlr4ts/tree/ParseTree';
 
 export class DuplicateSymbolError extends Error { };
@@ -112,7 +111,7 @@ export class Symbol {
     }
 
     /**
-     * Returns the symbol before this symbol in it's scope.
+     * Returns the symbol before this symbol in its scope.
      */
     public get previousSibling(): Symbol | undefined {
         if (!(this._parent instanceof ScopedSymbol)) {
@@ -126,7 +125,7 @@ export class Symbol {
     }
 
     /**
-     * Returns the symbol following this symbol in it's scope.
+     * Returns the symbol following this symbol in its scope.
      */
     public get nextSibling(): Symbol | undefined {
         if (!(this._parent instanceof ScopedSymbol)) {
