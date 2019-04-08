@@ -193,7 +193,7 @@ public class TestCodeCompletionCore {
         // 6) On the whitespace after the 'a'
         candidates = core.collectCandidates(7, null);
         assertEquals(0, candidates.tokens.size());
-        assertEquals(2, candidates.rules.size());
+        assertEquals(1, candidates.rules.size());
 
         // Here we get 2 rule indexes
         found = 0;
@@ -213,7 +213,7 @@ public class TestCodeCompletionCore {
                     assert (false);
             }
         }
-        assertEquals(2, found);
+        assertEquals(1, found);
     }
 
 }

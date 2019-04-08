@@ -553,9 +553,6 @@ public class CodeCompletionCore {
 
                     default: {
                         if (transition.isEpsilon()) {
-                            if (atCaret) {
-                                this.translateToRuleIndex(callStack);
-                            }
                             // Jump over simple states with a single outgoing epsilon transition.
                             statePipeline.addLast(new PipelineEntry(transition.target, currentEntry.tokenIndex));
                             continue;
