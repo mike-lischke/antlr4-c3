@@ -1,6 +1,6 @@
 {
   "name": "antlr4-c3",
-  "version": "1.1.11",
+  "version": "1.1.13",
   "description": "A code completion core implmentation for ANTLR4 based parsers",
   "main": "out/index.js",
   "typings": "out/index.d.ts",
@@ -29,9 +29,9 @@
     "@types/node": "^10.14.4",
     "antlr4ts-cli": "^0.5.0-alpha.3",
     "chai": ">=4.2.0",
-    "mocha": "^6.0.2",
+    "mocha": "^6.1.4",
     "path": ">=0.12.7",
-    "typescript": "^3.4.2"
+    "typescript": "^3.4.4"
   },
   "author": "Mike Lischke",
   "license": "MIT"

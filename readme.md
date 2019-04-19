@@ -209,7 +209,10 @@ The last two options potentially create a lot of output which can significantly 
 
 ## Release Notes
 
-### 1.1.11
+### 1.1.13
+- Unpublished version
+
+### 1.1.12
 - Updated modules with known vulnerabilities.
 - Better handling of recursive rules in code completion (via precedence).
 - Updated to latest antl4ts.
