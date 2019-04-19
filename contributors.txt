@@ -10,7 +10,7 @@ you have the right to release code contributions or other content free
 of any obligations to third parties and are granting Mike Lischke and
 antlr4-c3 project contributors, henceforth referred to as The antlr4-c3
 Project, a license to incorporate it into The antlr4-c3 tools
-(such as vscode-antlr4) or related works under the MIT
+(such as vscode-antlr4) or related work under the MIT
 license. You understand that The antlr4-c3 Project may or may not
 incorporate your contribution and you warrant and represent the
 following:
