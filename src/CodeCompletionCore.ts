@@ -186,7 +186,7 @@ export class CodeCompletionCore {
                 if (addNew) {
                     this.candidates.rules.set(ruleStack[i], path);
                     if (this.showDebugOutput)
-                        console.log("=====> collected: ", this.ruleNames[i]);
+                        console.log("=====> collected: ", this.ruleNames[ruleStack[i]]);
                 }
                 return true;
             }
