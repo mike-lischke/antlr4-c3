@@ -231,7 +231,7 @@ export class CodeCompletionCore {
      */
     private determineFollowSets(start: ATNState, stop: ATNState): FollowSetWithPath[] {
         let result: FollowSetWithPath[] = [];
-        let seen: Set<PipelineEntry> = new Set();
+        let seen: Set<ATNState> = new Set();
         let ruleStack: number[] = [];
         this.collectFollowSets(start, stop, result, seen, ruleStack);
 
@@ -242,19 +242,12 @@ export class CodeCompletionCore {
      * Collects possible tokens which could be matched following the given ATN state. This is essentially the same
      * algorithm as used in the LL1Analyzer class, but here we consider predicates also and use no parser rule context.
      */
-    private collectFollowSets(s: ATNState, stopState: ATNState, followSets: FollowSetWithPath[], seen: Set<PipelineEntry>, ruleStack: number[]) {
+    private collectFollowSets(s: ATNState, stopState: ATNState, followSets: FollowSetWithPath[], seen: Set<ATNState>, ruleStack: number[]) {
 
-        const entry = new PipelineEntry();
-        entry.state = s;
-        entry.tokenIndex = Infinity;
-        if (ruleStack.length > 0) {
-            entry.tokenIndex = ruleStack[ruleStack.length - 1];
-        }
-
-        if (seen.has(entry))
+        if (seen.has(s))
             return;
 
-        seen.add(entry);
+        seen.add(s);
 
         if (s == stopState || s.stateType == ATNStateType.RULE_STOP) {
             let set = new FollowSetWithPath();
