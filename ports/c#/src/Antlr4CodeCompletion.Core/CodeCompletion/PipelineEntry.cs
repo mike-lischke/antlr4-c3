@@ -1,4 +1,7 @@
 using Antlr4.Runtime.Atn;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Antlr4CodeCompletion.Core.CodeCompletion
 {
@@ -11,7 +14,8 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
     /// language/grammar used for the generation.
     /// https://github.com/mike-lischke/antlr4-c3
     /// </remarks>
-    internal class PipelineEntry
+    [DebuggerDisplay("PipelineEntry: state = {State} , tokenIndex = {TokenIndex}")]
+    internal class PipelineEntry : IEquatable<PipelineEntry>
     {
         internal ATNState State { get; }
         internal int TokenIndex { get; }
@@ -20,6 +24,26 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
         {
             this.State = state;
             this.TokenIndex = tokenIndex;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as PipelineEntry);
+        }
+
+        public bool Equals(PipelineEntry other)
+        {
+            return other != null &&
+                   EqualityComparer<ATNState>.Default.Equals(State, other.State) &&
+                   TokenIndex == other.TokenIndex;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -944266740;
+            hashCode = hashCode * -1521134295 + EqualityComparer<ATNState>.Default.GetHashCode(State);
+            hashCode = hashCode * -1521134295 + TokenIndex.GetHashCode();
+            return hashCode;
         }
     }
 }

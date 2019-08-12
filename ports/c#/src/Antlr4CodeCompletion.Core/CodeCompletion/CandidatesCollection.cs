@@ -1,4 +1,6 @@
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Antlr4CodeCompletion.Core.CodeCompletion
 {
@@ -11,7 +13,8 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
     /// language/grammar used for the generation.
     /// https://github.com/mike-lischke/antlr4-c3
     /// </remarks>
-    public class CandidatesCollection
+    [DebuggerDisplay("CandidatesCollection: tokens = {Tokens} , rules = {Rules} , ruleStrings = {RulePositions}")]
+    public class CandidatesCollection : IEquatable<CandidatesCollection>
     {
         /// <summary>
         /// Collection of Rule candidates, each with the callstack of rules to
@@ -31,9 +34,26 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
         /// </summary>
         public IDictionary<int, IList<int>> RulePositions = new Dictionary<int, IList<int>>();
 
-        public override string ToString()
+        public override bool Equals(object obj)
         {
-            return "CandidatesCollection{" + "tokens=" + Tokens + ", rules=" + Rules + ", ruleStrings=" + RulePositions + '}';
+            return Equals(obj as CandidatesCollection);
+        }
+
+        public bool Equals(CandidatesCollection other)
+        {
+            return other != null &&
+                   EqualityComparer<IDictionary<int, IList<int>>>.Default.Equals(Rules, other.Rules) &&
+                   EqualityComparer<IDictionary<int, IList<int>>>.Default.Equals(Tokens, other.Tokens) &&
+                   EqualityComparer<IDictionary<int, IList<int>>>.Default.Equals(RulePositions, other.RulePositions);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -1987583628;
+            hashCode = hashCode * -1521134295 + EqualityComparer<IDictionary<int, IList<int>>>.Default.GetHashCode(Rules);
+            hashCode = hashCode * -1521134295 + EqualityComparer<IDictionary<int, IList<int>>>.Default.GetHashCode(Tokens);
+            hashCode = hashCode * -1521134295 + EqualityComparer<IDictionary<int, IList<int>>>.Default.GetHashCode(RulePositions);
+            return hashCode;
         }
     }
 }
