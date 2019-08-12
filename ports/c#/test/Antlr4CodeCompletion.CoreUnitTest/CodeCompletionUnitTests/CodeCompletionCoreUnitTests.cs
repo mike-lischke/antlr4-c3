@@ -1,4 +1,4 @@
-using Antlr4.Runtime;
+﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Atn;
 using Antlr4CodeCompletion.Core.CodeCompletion;
 using Antlr4CodeCompletion.CoreUnitTest.Grammar;
@@ -54,8 +54,8 @@ namespace Antlr4CodeCompletion.CoreUnitTest.CodeCompletionUnitTests
             Check.That(candidates.Tokens).ContainsKey(ExprLexer.LET);
             Check.That(candidates.Tokens).ContainsKey(ExprLexer.ID);
 
-            Check.That(candidates.Tokens[ExprLexer.VAR]).IsEquivalentTo(new[] { ExprLexer.ID, ExprLexer.EQUAL });
-            Check.That(candidates.Tokens[ExprLexer.LET]).IsEquivalentTo(new[] { ExprLexer.ID, ExprLexer.EQUAL });
+            Check.That(candidates.Tokens[ExprLexer.VAR]).IsEqualTo(new[] { ExprLexer.ID, ExprLexer.EQUAL });
+            Check.That(candidates.Tokens[ExprLexer.LET]).IsEqualTo(new[] { ExprLexer.ID, ExprLexer.EQUAL });
             Check.That(candidates.Tokens[ExprLexer.ID]).HasSize(0);
 
             // 2) On the first whitespace. In real implementations you would do some additional checks where in the whitespace
