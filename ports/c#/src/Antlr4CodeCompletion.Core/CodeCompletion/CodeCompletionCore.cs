@@ -1,9 +1,8 @@
+using System.Collections.Generic;
+using System.Linq;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Atn;
 using Antlr4.Runtime.Misc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Antlr4CodeCompletion.Core.CodeCompletion
 {
@@ -21,7 +20,7 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
         #region Fields
 
         private readonly ISet<int> ignoredTokens = new HashSet<int>();
-        private ISet<int> preferredRules = new HashSet<int>();
+        private readonly ISet<int> preferredRules = new HashSet<int>();
 
         private readonly Parser parser;
         private readonly ATN atn;
@@ -50,18 +49,15 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
             this.parser = parser;
             this.atn = parser.Atn;
 
-            this.ignoredTokens = ignoredTokens != null ? ignoredTokens : new HashSet<int>();
-            this.preferredRules = preferredRules != null ? preferredRules : new HashSet<int>();
+            this.ignoredTokens = ignoredTokens ?? new HashSet<int>();
+            this.preferredRules = preferredRules ?? new HashSet<int>();
         }
 
         #endregion
 
         #region Public methods
 
-        public CandidatesCollection GetCandidates(int caretTokenIndex = 0, ParserRuleContext context = null)
-        {
-            return CollectCandidates(caretTokenIndex, context);
-        }
+        public CandidatesCollection GetCandidates(int caretTokenIndex = 0, ParserRuleContext context = null) => this.CollectCandidates(caretTokenIndex, context);
 
         /// <summary>
         /// This is the main entry point. The caret token index specifies the token stream index for the token which currently
@@ -79,10 +75,10 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
             this.tokenStartIndex = context != null ? context.start.TokenIndex : 0;
             var tokenStream = this.parser.InputStream as ITokenStream;
 
-            int currentIndex = tokenStream.Index;
+            var currentIndex = tokenStream.Index;
             tokenStream.Seek(this.tokenStartIndex);
-            tokens = new List<IToken>();
-            int offset = 1;
+            this.tokens = new List<IToken>();
+            var offset = 1;
 
             while (true)
             {
@@ -98,14 +94,14 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
             tokenStream.Seek(currentIndex);
 
             var callStack = new LinkedList<int>();
-            int startRule = context != null ? context.RuleIndex : 0;
-            ProcessRule(this.atn.ruleToStartState[startRule], 0, callStack, "\n");
+            var startRule = context != null ? context.RuleIndex : 0;
+            this.ProcessRule(this.atn.ruleToStartState[startRule], 0, callStack, "\n");
 
             tokenStream.Seek(currentIndex);
 
             // now post-process the rule candidates and find the last occurrences
             // of each preferred rule and extract its start and end in the input stream
-            foreach (var ruleId in preferredRules)
+            foreach (var ruleId in this.preferredRules)
             {
                 var shortcut = this.shortcutMap.ContainsKey(ruleId) ? this.shortcutMap[ruleId] : null;
                 if (shortcut == null || shortcut.Count <= 0)
@@ -120,29 +116,29 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
 
                 if (endSet.Count <= 0)
                 {
-                    endToken = tokens.Count - 1;
+                    endToken = this.tokens.Count - 1;
                 }
                 else
                 {
                     endToken = shortcut[startToken].Max();
                 }
 
-                var startOffset = tokens[startToken].StartIndex;
+                var startOffset = this.tokens[startToken].StartIndex;
                 int endOffset;
 
-                if (tokens[endToken].Type == TokenConstants.Eof)
+                if (this.tokens[endToken].Type == TokenConstants.Eof)
                 {
                     // if last token is EOF, include trailing whitespace
-                    endOffset = tokens[endToken].StartIndex;
+                    endOffset = this.tokens[endToken].StartIndex;
                 }
                 else
                 {
                     // if last token is not EOF, limit to matching tokens which excludes trailing whitespace
-                    endOffset = tokens[endToken - 1].StopIndex + 1;
+                    endOffset = this.tokens[endToken - 1].StopIndex + 1;
                 }
 
                 var ruleStartStop = new[] { startOffset, endOffset };
-                candidates.RulePositions[ruleId] = ruleStartStop;
+                this.candidates.RulePositions[ruleId] = ruleStartStop;
             }
 
             return this.candidates;
@@ -156,10 +152,7 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
         /// <summary>
         /// Check if the predicate associated with the given transition evaluates to true.
         /// </summary>
-        private bool CheckPredicate(PredicateTransition transition)
-        {
-            return transition.Predicate.Eval(this.parser, ParserRuleContext.EmptyContext);
-        }
+        private bool CheckPredicate(PredicateTransition transition) => transition.Predicate.Eval(this.parser, ParserRuleContext.EmptyContext);
 
         /// <summary>
         /// Walks the rule chain upwards to see if that matches any of the preferred rules.
@@ -174,15 +167,15 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
 
             // Loop over the rule stack from highest to lowest rule level. This way we properly handle the higher rule
             // if it contains a lower one that is also a preferred rule.
-            for (int i = 0; i < ruleStack.Count; ++i)
+            for (var i = 0; i < ruleStack.Count; ++i)
             {
-                if (preferredRules.Contains(ruleStack[i]))
+                if (this.preferredRules.Contains(ruleStack[i]))
                 {
                     // Add the rule to our candidates list along with the current rule path,
                     // but only if there isn't already an entry like that.
                     var path = ruleStack.GetRange(0, i);
-                    bool addNew = true;
-                    foreach (var entry in candidates.Rules)
+                    var addNew = true;
+                    foreach (var entry in this.candidates.Rules)
                     {
                         if (!entry.Key.Equals(ruleStack[i]) || entry.Value.Count != path.Count)
                         {
@@ -199,7 +192,7 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
 
                     if (addNew)
                     {
-                        candidates.Rules[ruleStack[i]] = path;
+                        this.candidates.Rules[ruleStack[i]] = path;
                     }
 
                     return true;
@@ -258,7 +251,7 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
             var seen = new HashSet<ATNState>();
             var ruleStack = new LinkedList<int>();
 
-            CollectFollowSets(start, stop, result, seen, ruleStack);
+            this.CollectFollowSets(start, stop, result, seen, ruleStack);
 
             return result;
         }
@@ -279,9 +272,11 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
 
             if (startState.Equals(stopState) || startState.StateType == StateType.RuleStop)
             {
-                var set = new FollowSetWithPath();
-                set.Intervals = IntervalSet.Of(TokenConstants.Epsilon);
-                set.Path = new List<int>(ruleStack);
+                var set = new FollowSetWithPath
+                {
+                    Intervals = IntervalSet.Of(TokenConstants.Epsilon),
+                    Path = new List<int>(ruleStack)
+                };
                 followSets.AddLast(set);
                 return;
             }
@@ -314,9 +309,11 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
                 }
                 else if (transition.TransitionType == TransitionType.Wildcard)
                 {
-                    var set = new FollowSetWithPath();
-                    set.Intervals = IntervalSet.Of(TokenConstants.MinUserTokenType, this.atn.maxTokenType);
-                    set.Path = new List<int>(ruleStack);
+                    var set = new FollowSetWithPath
+                    {
+                        Intervals = IntervalSet.Of(TokenConstants.MinUserTokenType, this.atn.maxTokenType),
+                        Path = new List<int>(ruleStack)
+                    };
                     followSets.AddLast(set);
                 }
                 else
@@ -329,10 +326,12 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
                             label = label.Complement(IntervalSet.Of(TokenConstants.MinUserTokenType, this.atn.maxTokenType));
                         }
 
-                        var set = new FollowSetWithPath();
-                        set.Intervals = label;
-                        set.Path = new List<int>(ruleStack);
-                        set.Following = GetFollowingTokens(transition);
+                        var set = new FollowSetWithPath
+                        {
+                            Intervals = label,
+                            Path = new List<int>(ruleStack),
+                            Following = this.GetFollowingTokens(transition)
+                        };
                         followSets.AddLast(set);
                     }
                 }
@@ -344,13 +343,12 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
         /// The result can be empty in case we hit only non-epsilon transitions that didn't match the current input or if we
         /// hit the caret position.
         /// </summary>
-        private ISet<int> ProcessRule(ATNState startState, int tokenIndex, LinkedList<int> callStack, String indentation)
+        private ISet<int> ProcessRule(ATNState startState, int tokenIndex, LinkedList<int> callStack, string indentation)
         {
             // Start with rule specific handling before going into the ATN walk.
 
             // Check first if we've taken this path with the same input before.
-            IDictionary<int, ISet<int>> positionMap;
-            if (!this.shortcutMap.TryGetValue(startState.ruleIndex, out positionMap))
+            if (!this.shortcutMap.TryGetValue(startState.ruleIndex, out var positionMap))
             {
                 positionMap = new Dictionary<int, ISet<int>>();
                 this.shortcutMap[startState.ruleIndex] = positionMap;
@@ -372,21 +370,19 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
             // 3) We get this lookup for free with any 2nd or further visit of the same rule, which often happens
             //    in non trivial grammars, especially with (recursive) expressions and of course when invoking code completion
             //    multiple times.
-            FollowSetsPerState setsPerState;
-            if (!followSetsByATN.TryGetValue(this.parser.GetType().Name, out setsPerState))
+            if (!this.followSetsByATN.TryGetValue(this.parser.GetType().Name, out var setsPerState))
             {
                 setsPerState = new FollowSetsPerState();
-                followSetsByATN[this.parser.GetType().Name] = setsPerState;
+                this.followSetsByATN[this.parser.GetType().Name] = setsPerState;
             }
 
-            FollowSetsHolder followSets;
-            if (!setsPerState.TryGetValue(startState.stateNumber, out followSets))
+            if (!setsPerState.TryGetValue(startState.stateNumber, out var followSets))
             {
                 followSets = new FollowSetsHolder();
                 setsPerState[startState.stateNumber] = followSets;
 
                 var stop = this.atn.ruleToStopState[startState.ruleIndex];
-                followSets.Sets = DetermineFollowSets(startState, stop).ToList();
+                followSets.Sets = this.DetermineFollowSets(startState, stop).ToList();
 
                 // Sets are split by path to allow translating them to preferred rules. But for quick hit tests
                 // it is also useful to have a set with all symbols combined.
@@ -399,9 +395,9 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
             }
 
             callStack.AddLast(startState.ruleIndex);
-            int currentSymbol = tokens[tokenIndex].Type;
+            var currentSymbol = this.tokens[tokenIndex].Type;
 
-            if (tokenIndex >= tokens.Count - 1)
+            if (tokenIndex >= this.tokens.Count - 1)
             {
                 // At caret?
                 if (this.preferredRules.Contains(startState.ruleIndex))
@@ -421,9 +417,9 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
                             fullPath.AddLast(item);
                         }
 
-                        if (!TranslateToRuleIndex(fullPath.ToList()))
+                        if (!this.TranslateToRuleIndex(fullPath.ToList()))
                         {
-                            foreach (int symbol in set.Intervals.ToList())
+                            foreach (var symbol in set.Intervals.ToList())
                             {
                                 if (!this.ignoredTokens.Contains(symbol))
                                 {
@@ -475,9 +471,9 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
                 statePipeline.RemoveLast();
                 ++this.statesProcessed;
 
-                currentSymbol = tokens[currentEntry.TokenIndex].Type;
+                currentSymbol = this.tokens[currentEntry.TokenIndex].Type;
 
-                bool atCaret = currentEntry.TokenIndex >= tokens.Count - 1;
+                var atCaret = currentEntry.TokenIndex >= this.tokens.Count - 1;
 
                 switch (currentEntry.State.StateType)
                 {
@@ -501,96 +497,96 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
                     switch (transition.TransitionType)
                     {
                         case TransitionType.Rule:
+                        {
+                            var endStatus = this.ProcessRule(transition.target, currentEntry.TokenIndex, callStack, indentation);
+                            foreach (var position in endStatus)
                             {
-                                var endStatus = ProcessRule(transition.target, currentEntry.TokenIndex, callStack, indentation);
-                                foreach (var position in endStatus)
-                                {
-                                    statePipeline.AddLast(new PipelineEntry(((RuleTransition)transition).followState, position));
-                                }
-                                break;
+                                statePipeline.AddLast(new PipelineEntry(((RuleTransition)transition).followState, position));
                             }
+                            break;
+                        }
 
                         case TransitionType.Predicate:
+                        {
+                            if (this.CheckPredicate((PredicateTransition)transition))
                             {
-                                if (CheckPredicate((PredicateTransition)transition))
-                                {
-                                    statePipeline.AddLast(new PipelineEntry(transition.target, currentEntry.TokenIndex));
-                                }
-                                break;
+                                statePipeline.AddLast(new PipelineEntry(transition.target, currentEntry.TokenIndex));
                             }
+                            break;
+                        }
 
                         case TransitionType.Wildcard:
+                        {
+                            if (atCaret)
                             {
+                                if (!this.TranslateToRuleIndex(callStack.ToList()))
+                                {
+                                    foreach (var token in IntervalSet.Of(TokenConstants.MinUserTokenType, this.atn.maxTokenType).ToList())
+                                    {
+                                        if (!this.ignoredTokens.Contains(token))
+                                        {
+                                            this.candidates.Tokens[token] = new List<int>();
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                statePipeline.AddLast(new PipelineEntry(transition.target, currentEntry.TokenIndex + 1));
+                            }
+                            break;
+                        }
+
+                        default:
+                        {
+                            if (transition.IsEpsilon)
+                            {
+                                // Jump over simple states with a single outgoing epsilon transition.
+                                statePipeline.AddLast(new PipelineEntry(transition.target, currentEntry.TokenIndex));
+                                continue;
+                            }
+
+                            var set = transition.Label;
+                            if (set != null && set.Count > 0)
+                            {
+                                if (transition.TransitionType == TransitionType.NotSet)
+                                {
+                                    set = set.Complement(IntervalSet.Of(TokenConstants.MinUserTokenType, this.atn.maxTokenType));
+                                }
+
                                 if (atCaret)
                                 {
-                                    if (!TranslateToRuleIndex(callStack.ToList()))
+                                    if (!this.TranslateToRuleIndex(callStack.ToList()))
                                     {
-                                        foreach (int token in IntervalSet.Of(TokenConstants.MinUserTokenType, this.atn.maxTokenType).ToList())
+                                        var list = set.ToList();
+                                        var isAddFollowing = list.Count == 1;
+
+                                        foreach (var symbol in list)
                                         {
-                                            if (!this.ignoredTokens.Contains(token))
+                                            if (!this.ignoredTokens.Contains(symbol))
                                             {
-                                                this.candidates.Tokens[token] = new List<int>();
+                                                if (isAddFollowing)
+                                                {
+                                                    this.candidates.Tokens[symbol] = this.GetFollowingTokens(transition);
+                                                }
+                                                else
+                                                {
+                                                    this.candidates.Tokens[symbol] = new List<int>();
+                                                }
                                             }
                                         }
                                     }
                                 }
                                 else
                                 {
-                                    statePipeline.AddLast(new PipelineEntry(transition.target, currentEntry.TokenIndex + 1));
-                                }
-                                break;
-                            }
-
-                        default:
-                            {
-                                if (transition.IsEpsilon)
-                                {
-                                    // Jump over simple states with a single outgoing epsilon transition.
-                                    statePipeline.AddLast(new PipelineEntry(transition.target, currentEntry.TokenIndex));
-                                    continue;
-                                }
-
-                                var set = transition.Label;
-                                if (set != null && set.Count > 0)
-                                {
-                                    if (transition.TransitionType == TransitionType.NotSet)
+                                    if (set.Contains(currentSymbol))
                                     {
-                                        set = set.Complement(IntervalSet.Of(TokenConstants.MinUserTokenType, this.atn.maxTokenType));
-                                    }
-
-                                    if (atCaret)
-                                    {
-                                        if (!this.TranslateToRuleIndex(callStack.ToList()))
-                                        {
-                                            var list = set.ToList();
-                                            bool isAddFollowing = list.Count == 1;
-
-                                            foreach (int symbol in list)
-                                            {
-                                                if (!this.ignoredTokens.Contains(symbol))
-                                                {
-                                                    if (isAddFollowing)
-                                                    {
-                                                        this.candidates.Tokens[symbol] = GetFollowingTokens(transition);
-                                                    }
-                                                    else
-                                                    {
-                                                        this.candidates.Tokens[symbol] = new List<int>();
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (set.Contains(currentSymbol))
-                                        {
-                                            statePipeline.AddLast(new PipelineEntry(transition.target, currentEntry.TokenIndex + 1));
-                                        }
+                                        statePipeline.AddLast(new PipelineEntry(transition.target, currentEntry.TokenIndex + 1));
                                     }
                                 }
                             }
-                            break;
+                        }
+                        break;
                     }
                 }
             }

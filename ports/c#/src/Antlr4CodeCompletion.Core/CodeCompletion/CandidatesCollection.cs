@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -20,39 +20,33 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
         /// Collection of Rule candidates, each with the callstack of rules to
         /// reach the candidate
         /// </summary>
-        public IDictionary<int, IList<int>> Rules = new Dictionary<int, IList<int>>();
+        public IDictionary<int, IList<int>> Rules { get; set; } = new Dictionary<int, IList<int>>();
 
         /// <summary>
         /// Collection of Token ID candidates, each with a follow-on List of
         /// subsequent tokens
         /// </summary>
-        public IDictionary<int, IList<int>> Tokens = new Dictionary<int, IList<int>>();
+        public IDictionary<int, IList<int>> Tokens { get; set; } = new Dictionary<int, IList<int>>();
 
         /// <summary>
         /// Collection of matched Preferred Rules each with their start and end
         /// offsets
         /// </summary>
-        public IDictionary<int, IList<int>> RulePositions = new Dictionary<int, IList<int>>();
+        public IDictionary<int, IList<int>> RulePositions { get; set; } = new Dictionary<int, IList<int>>();
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as CandidatesCollection);
-        }
+        public override bool Equals(object obj) => this.Equals(obj as CandidatesCollection);
 
-        public bool Equals(CandidatesCollection other)
-        {
-            return other != null &&
-                   EqualityComparer<IDictionary<int, IList<int>>>.Default.Equals(Rules, other.Rules) &&
-                   EqualityComparer<IDictionary<int, IList<int>>>.Default.Equals(Tokens, other.Tokens) &&
-                   EqualityComparer<IDictionary<int, IList<int>>>.Default.Equals(RulePositions, other.RulePositions);
-        }
+        public bool Equals(CandidatesCollection other) => other != null &&
+                   EqualityComparer<IDictionary<int, IList<int>>>.Default.Equals(this.Rules, other.Rules) &&
+                   EqualityComparer<IDictionary<int, IList<int>>>.Default.Equals(this.Tokens, other.Tokens) &&
+                   EqualityComparer<IDictionary<int, IList<int>>>.Default.Equals(this.RulePositions, other.RulePositions);
 
         public override int GetHashCode()
         {
             var hashCode = -1987583628;
-            hashCode = hashCode * -1521134295 + EqualityComparer<IDictionary<int, IList<int>>>.Default.GetHashCode(Rules);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IDictionary<int, IList<int>>>.Default.GetHashCode(Tokens);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IDictionary<int, IList<int>>>.Default.GetHashCode(RulePositions);
+            hashCode = (hashCode * -1521134295) + EqualityComparer<IDictionary<int, IList<int>>>.Default.GetHashCode(this.Rules);
+            hashCode = (hashCode * -1521134295) + EqualityComparer<IDictionary<int, IList<int>>>.Default.GetHashCode(this.Tokens);
+            hashCode = (hashCode * -1521134295) + EqualityComparer<IDictionary<int, IList<int>>>.Default.GetHashCode(this.RulePositions);
             return hashCode;
         }
     }

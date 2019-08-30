@@ -14,12 +14,12 @@ namespace Antlr4CodeCompletion.CoreUnitTest.Utils
     /// </remarks>
     public class CountingErrorListener : BaseErrorListener
     {
-        public int ErrorCount = 0;
+        public int ErrorCount { get; set; } = 0;
 
         public override void SyntaxError([NotNull] IRecognizer recognizer, [Nullable] IToken offendingSymbol, int line, int charPositionInLine, [NotNull] string msg, [Nullable] RecognitionException e)
         {
             base.SyntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e);
-            ErrorCount++;
+            this.ErrorCount++;
         }
     }
 }
