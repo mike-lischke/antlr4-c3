@@ -1,7 +1,7 @@
-using Antlr4.Runtime.Misc;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Antlr4.Runtime.Misc;
 
 namespace Antlr4CodeCompletion.Core.CodeCompletion
 {
@@ -21,25 +21,19 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
         internal IntervalSet Intervals { get; set; }
         internal IList<int> Path { get; set; }
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as FollowSetWithPath);
-        }
+        public override bool Equals(object obj) => this.Equals(obj as FollowSetWithPath);
 
-        public bool Equals(FollowSetWithPath other)
-        {
-            return other != null &&
-                   EqualityComparer<IList<int>>.Default.Equals(Following, other.Following) &&
-                   EqualityComparer<IntervalSet>.Default.Equals(Intervals, other.Intervals) &&
-                   EqualityComparer<IList<int>>.Default.Equals(Path, other.Path);
-        }
+        public bool Equals(FollowSetWithPath other) => other != null &&
+                   EqualityComparer<IList<int>>.Default.Equals(this.Following, other.Following) &&
+                   EqualityComparer<IntervalSet>.Default.Equals(this.Intervals, other.Intervals) &&
+                   EqualityComparer<IList<int>>.Default.Equals(this.Path, other.Path);
 
         public override int GetHashCode()
         {
             var hashCode = 904860839;
-            hashCode = hashCode * -1521134295 + EqualityComparer<IList<int>>.Default.GetHashCode(Following);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IntervalSet>.Default.GetHashCode(Intervals);
-            hashCode = hashCode * -1521134295 + EqualityComparer<IList<int>>.Default.GetHashCode(Path);
+            hashCode = (hashCode * -1521134295) + EqualityComparer<IList<int>>.Default.GetHashCode(this.Following);
+            hashCode = (hashCode * -1521134295) + EqualityComparer<IntervalSet>.Default.GetHashCode(this.Intervals);
+            hashCode = (hashCode * -1521134295) + EqualityComparer<IList<int>>.Default.GetHashCode(this.Path);
             return hashCode;
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace Antlr4CodeCompletion.CoreUnitTest.Grammar
 {
-    partial class ExprParser
+    public partial class ExprParser
     {
     }
 }

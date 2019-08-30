@@ -1,13 +1,13 @@
-﻿using Antlr4.Runtime;
+using System.Collections.Generic;
+using Antlr4.Runtime;
 using Antlr4.Runtime.Atn;
 using Antlr4CodeCompletion.Core.CodeCompletion;
 using Antlr4CodeCompletion.CoreUnitTest.Grammar;
 using Antlr4CodeCompletion.CoreUnitTest.Utils;
 using NFluent;
-using System.Collections.Generic;
 using Xunit;
 
-namespace Antlr4CodeCompletion.CoreUnitTest.CodeCompletionUnitTests
+namespace Antlr4CodeCompletion.CoreUnitTest.CodeCompletion
 {
     /// <summary>
     /// </summary>
@@ -153,22 +153,22 @@ namespace Antlr4CodeCompletion.CoreUnitTest.CodeCompletionUnitTests
 
             // Here we get 2 rule indexes, derived from 2 different IDs possible at this caret position.
             // These are what we told the engine above to be preferred rules for us.
-            int found = 0;
+            var found = 0;
             foreach (var candidate in candidates.Rules)
             {
                 switch (candidate.Key)
                 {
                     case ExprParser.RULE_functionRef:
-                        {
-                            found++;
-                            break;
-                        }
+                    {
+                        found++;
+                        break;
+                    }
 
                     case ExprParser.RULE_variableRef:
-                        {
-                            found++;
-                            break;
-                        }
+                    {
+                        found++;
+                        break;
+                    }
                 }
             }
 
@@ -186,16 +186,16 @@ namespace Antlr4CodeCompletion.CoreUnitTest.CodeCompletionUnitTests
                 switch (candidate.Key)
                 {
                     case ExprParser.RULE_functionRef:
-                        {
-                            found++;
-                            break;
-                        }
+                    {
+                        found++;
+                        break;
+                    }
 
                     case ExprParser.RULE_variableRef:
-                        {
-                            found++;
-                            break;
-                        }
+                    {
+                        found++;
+                        break;
+                    }
                 }
             }
 

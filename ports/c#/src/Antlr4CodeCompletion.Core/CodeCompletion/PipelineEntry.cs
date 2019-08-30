@@ -1,7 +1,7 @@
-using Antlr4.Runtime.Atn;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Antlr4.Runtime.Atn;
 
 namespace Antlr4CodeCompletion.Core.CodeCompletion
 {
@@ -26,23 +26,17 @@ namespace Antlr4CodeCompletion.Core.CodeCompletion
             this.TokenIndex = tokenIndex;
         }
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as PipelineEntry);
-        }
+        public override bool Equals(object obj) => this.Equals(obj as PipelineEntry);
 
-        public bool Equals(PipelineEntry other)
-        {
-            return other != null &&
-                   EqualityComparer<ATNState>.Default.Equals(State, other.State) &&
-                   TokenIndex == other.TokenIndex;
-        }
+        public bool Equals(PipelineEntry other) => other != null &&
+                   EqualityComparer<ATNState>.Default.Equals(this.State, other.State) &&
+                   this.TokenIndex == other.TokenIndex;
 
         public override int GetHashCode()
         {
             var hashCode = -944266740;
-            hashCode = hashCode * -1521134295 + EqualityComparer<ATNState>.Default.GetHashCode(State);
-            hashCode = hashCode * -1521134295 + TokenIndex.GetHashCode();
+            hashCode = (hashCode * -1521134295) + EqualityComparer<ATNState>.Default.GetHashCode(this.State);
+            hashCode = (hashCode * -1521134295) + this.TokenIndex.GetHashCode();
             return hashCode;
         }
     }
