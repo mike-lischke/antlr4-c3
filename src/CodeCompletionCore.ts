@@ -1,4 +1,4 @@
-/*
+﻿/*
  * This file is released under the MIT license.
  * Copyright (c) 2016, 2017, Mike Lischke
  *
@@ -9,7 +9,7 @@
 
 import { Parser, Vocabulary, Token, TokenStream, RuleContext, ParserRuleContext } from 'antlr4ts';
 import { ATN, ATNState, ATNStateType, Transition, TransitionType, PredicateTransition, RuleTransition, RuleStartState, PrecedencePredicateTransition } from 'antlr4ts/atn';
-import { IntervalSet } from 'antlr4ts/misc';
+import { IntervalSet } from 'antlr4ts/misc/IntervalSet';
 
 export type TokenList = number[];
 export type RuleList = number[];
