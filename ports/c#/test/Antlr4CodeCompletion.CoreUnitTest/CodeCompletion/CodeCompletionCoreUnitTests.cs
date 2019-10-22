@@ -120,8 +120,8 @@ namespace Antlr4CodeCompletion.CoreUnitTest.CodeCompletion
             var preferredRules = new HashSet<int>() { ExprParser.RULE_functionRef, ExprParser.RULE_variableRef };
 
             // Ignore operators and the generic ID token.
-            var ignoredTokens = new HashSet<int>() { ExprLexer.ID, ExprLexer.PLUS, ExprLexer.MINUS,
-                ExprLexer.MULTIPLY, ExprLexer.DIVIDE, ExprLexer.EQUAL };
+            var ignoredTokens = new HashSet<int>() { ExprLexer.PLUS, ExprLexer.MINUS,
+                 ExprLexer.MULTIPLY, ExprLexer.DIVIDE };
 
             var core = new CodeCompletionCore(parser, preferredRules, ignoredTokens);
 
@@ -132,13 +132,23 @@ namespace Antlr4CodeCompletion.CoreUnitTest.CodeCompletion
             Check.That(candidates.Tokens).ContainsKey(ExprLexer.VAR);
             Check.That(candidates.Tokens).ContainsKey(ExprLexer.LET);
 
-            Check.That(candidates.Tokens[ExprLexer.VAR]).HasSize(2);
-            Check.That(candidates.Tokens[ExprLexer.LET]).HasSize(2);
+            Check.That(candidates.Tokens
+                .TryGetValue(ExprLexer.VAR, out var varCandidates))
+                .IsTrue();
+            Check.That(candidates.Tokens
+                .TryGetValue(ExprLexer.LET, out var letCandidates))
+                .IsTrue();
 
-            Check.That(candidates.Tokens[ExprLexer.VAR]).IsEqualTo(new[] { ExprLexer.ID, ExprLexer.EQUAL });
-            Check.That(candidates.Tokens[ExprLexer.LET]).IsEqualTo(new[] { ExprLexer.ID, ExprLexer.EQUAL });
+            Check.That(varCandidates).HasSize(2);
+            Check.That(letCandidates).HasSize(2);
+
+            Check.That(varCandidates).IsEqualTo(new[] { ExprLexer.ID, ExprLexer.EQUAL });
+            Check.That(letCandidates).IsEqualTo(new[] { ExprLexer.ID, ExprLexer.EQUAL });
 
             // 2) On the variable name ('c').
+            ignoredTokens = new HashSet<int>() { ExprLexer.ID, ExprLexer.PLUS, ExprLexer.MINUS,
+                 ExprLexer.MULTIPLY, ExprLexer.DIVIDE, ExprLexer.EQUAL };
+            core = new CodeCompletionCore(parser, preferredRules, ignoredTokens);
             candidates = core.CollectCandidates(2, null);
             Check.That(candidates.Tokens).HasSize(0);
 
