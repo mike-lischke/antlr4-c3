@@ -158,16 +158,16 @@ export class CodeCompletionCore {
     }
 
     /**
-     * Walks the rule chain upwards to see if that matches any of the preferred rules.
+     * Walks the rule chain downwards to see if that matches any of the preferred rules.
      * If found, that rule is added to the collection candidates and true is returned.
      */
     private translateToRuleIndex(ruleStack: RuleList): boolean {
         if (this.preferredRules.size == 0)
             return false;
 
-        // Loop over the rule stack from highest to lowest rule level. This way we properly handle the higher rule
-        // if it contains a lower one that is also a preferred rule.
-        for (let i = 0; i < ruleStack.length; ++i) {
+        // Loop over the rule stack from lowest to highest rule level. This way we properly handle the lower rule
+        // if it is a child of a higher one that is also a preferred rule.
+        for (let i = ruleStack.length - 1; i >= 0; i--) {
             if (this.preferredRules.has(ruleStack[i])) {
                 // Add the rule to our candidates list along with the current rule path,
                 // but only if there isn't already an entry like that.

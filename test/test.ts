@@ -10,7 +10,7 @@
 import * as fs from "fs"
 import * as path from "path"
 
-import { expect, should, assert } from 'chai';
+import { expect, assert } from 'chai';
 import { ExprParser } from "./ExprParser";
 import { ExprLexer } from "./ExprLexer";
 import { CPP14Parser } from "./CPP14Parser";
@@ -19,8 +19,13 @@ import { CPP14Lexer } from "./CPP14Lexer";
 import * as c3 from "../index";
 
 import {
-    ANTLRErrorListener, ANTLRInputStream, CommonTokenStream, ParserRuleContext, Token, Recognizer,
-    RecognitionException, CommonToken
+    ANTLRErrorListener,
+    ANTLRInputStream,
+    CommonToken,
+    CommonTokenStream,
+    RecognitionException,
+    Recognizer,
+    Token
 } from 'antlr4ts';
 import { Override } from "antlr4ts/Decorators";
 import { TerminalNode } from "antlr4ts/tree/TerminalNode";
@@ -596,8 +601,9 @@ describe('antlr4-c3:', function () {
             //    Note when counting token indexes: the C++14 grammar skips all whitespaces, hence there are no tokens for them.
             candidates = core.collectCandidates(10);
 
-            expect(candidates.rules.size, "Test 47").to.equal(1);
-            expect(candidates.rules.get(CPP14Parser.RULE_idexpression), "Test 48").to.eql([
+            expect(candidates.rules.size, "Test 47").to.equal(3);
+
+            const idexpressionStack = [
                 CPP14Parser.RULE_translationunit,
                 CPP14Parser.RULE_declarationseq,
                 CPP14Parser.RULE_declaration,
@@ -634,22 +640,36 @@ describe('antlr4-c3:', function () {
                 CPP14Parser.RULE_unaryexpression,
                 CPP14Parser.RULE_postfixexpression,
                 CPP14Parser.RULE_primaryexpression,
+            ];
+            expect(candidates.rules.get(CPP14Parser.RULE_idexpression), "Test 48").to.eql(idexpressionStack);
+            expect(candidates.rules.get(CPP14Parser.RULE_classname), "Test 49").to.eql([
+                ...idexpressionStack,
+                CPP14Parser.RULE_idexpression,
+                CPP14Parser.RULE_qualifiedid,
+                CPP14Parser.RULE_nestednamespecifier,
+                CPP14Parser.RULE_typename,
+            ]);
+            expect(candidates.rules.get(CPP14Parser.RULE_namespacename), "Test 50").to.eql([
+                ...idexpressionStack,
+                CPP14Parser.RULE_idexpression,
+                CPP14Parser.RULE_qualifiedid,
+                CPP14Parser.RULE_nestednamespecifier,
             ]);
 
             // We are starting a primary expression in a function body, so everything related to expressions and control flow is allowed here.
             // We only check for a few possible keywords.
-            expect(candidates.tokens.size, "Test 49").to.equal(81);
-            expect(candidates.tokens.has(CPP14Lexer.If), "Test 50").to.equal(true);
-            expect(candidates.tokens.has(CPP14Lexer.This), "Test 51").to.equal(true);
-            expect(candidates.tokens.has(CPP14Lexer.New), "Test 52").to.equal(true);
-            expect(candidates.tokens.has(CPP14Lexer.Case), "Test 53").to.equal(true);
-            expect(candidates.tokens.has(CPP14Lexer.While), "Test 54").to.equal(true);
-            expect(candidates.tokens.has(CPP14Lexer.Throw), "Test 55").to.equal(true);
+            expect(candidates.tokens.size, "Test 51").to.equal(81);
+            expect(candidates.tokens.has(CPP14Lexer.If), "Test 52").to.equal(true);
+            expect(candidates.tokens.has(CPP14Lexer.This), "Test 53").to.equal(true);
+            expect(candidates.tokens.has(CPP14Lexer.New), "Test 54").to.equal(true);
+            expect(candidates.tokens.has(CPP14Lexer.Case), "Test 55").to.equal(true);
+            expect(candidates.tokens.has(CPP14Lexer.While), "Test 56").to.equal(true);
+            expect(candidates.tokens.has(CPP14Lexer.Throw), "Test 57").to.equal(true);
 
-            expect(candidates.tokens.has(CPP14Lexer.Override), "Test 56").to.equal(false);
-            expect(candidates.tokens.has(CPP14Lexer.Export), "Test 57").to.equal(false);
-            expect(candidates.tokens.has(CPP14Lexer.Private), "Test 58").to.equal(false);
-            expect(candidates.tokens.has(CPP14Lexer.Protected), "Test 59").to.equal(false);
+            expect(candidates.tokens.has(CPP14Lexer.Override), "Test 58").to.equal(false);
+            expect(candidates.tokens.has(CPP14Lexer.Export), "Test 59").to.equal(false);
+            expect(candidates.tokens.has(CPP14Lexer.Private), "Test 60").to.equal(false);
+            expect(candidates.tokens.has(CPP14Lexer.Protected), "Test 61").to.equal(false);
         }).timeout(5000);
 
         it('Simple C++ example with errors in input', function () {
@@ -747,22 +767,66 @@ describe('antlr4-c3:', function () {
 
             let candidates = core.collectCandidates(3469);
 
-            expect(candidates.rules.size, "Test 47").to.equal(1);
+            expect(candidates.rules.size, "Test 47").to.equal(3);
+
+            const idexpressionStack = [
+                CPP14Parser.RULE_translationunit,
+                CPP14Parser.RULE_declarationseq,
+                CPP14Parser.RULE_declaration,
+                CPP14Parser.RULE_functiondefinition,
+                CPP14Parser.RULE_functionbody,
+                CPP14Parser.RULE_compoundstatement,
+                CPP14Parser.RULE_statementseq,
+                CPP14Parser.RULE_statement,
+                CPP14Parser.RULE_expressionstatement,
+                CPP14Parser.RULE_expression,
+                CPP14Parser.RULE_assignmentexpression,
+                CPP14Parser.RULE_conditionalexpression,
+                CPP14Parser.RULE_logicalorexpression,
+                CPP14Parser.RULE_logicalandexpression,
+                CPP14Parser.RULE_inclusiveorexpression,
+                CPP14Parser.RULE_exclusiveorexpression,
+                CPP14Parser.RULE_andexpression,
+                CPP14Parser.RULE_equalityexpression,
+                CPP14Parser.RULE_relationalexpression,
+                CPP14Parser.RULE_shiftexpression,
+                CPP14Parser.RULE_additiveexpression,
+                CPP14Parser.RULE_multiplicativeexpression,
+                CPP14Parser.RULE_pmexpression,
+                CPP14Parser.RULE_castexpression,
+                CPP14Parser.RULE_unaryexpression,
+                CPP14Parser.RULE_postfixexpression,
+                CPP14Parser.RULE_primaryexpression,
+            ];
+            expect(candidates.rules.get(CPP14Parser.RULE_idexpression), "Test 48").to.eql(idexpressionStack);
+            expect(candidates.rules.get(CPP14Parser.RULE_classname), "Test 49").to.eql([
+                ...idexpressionStack,
+                CPP14Parser.RULE_idexpression,
+                CPP14Parser.RULE_qualifiedid,
+                CPP14Parser.RULE_nestednamespecifier,
+                CPP14Parser.RULE_typename,
+            ]);
+            expect(candidates.rules.get(CPP14Parser.RULE_namespacename), "Test 50").to.eql([
+                ...idexpressionStack,
+                CPP14Parser.RULE_idexpression,
+                CPP14Parser.RULE_qualifiedid,
+                CPP14Parser.RULE_nestednamespecifier,
+            ]);
 
             // We are starting a primary expression in a function body, so everything related to expressions and control flow is allowed here.
             // We only check for a few possible keywords.
-            expect(candidates.tokens.size, "Test 49").to.equal(81);
-            expect(candidates.tokens.has(CPP14Lexer.If), "Test 50").to.equal(true);
-            expect(candidates.tokens.has(CPP14Lexer.This), "Test 51").to.equal(true);
-            expect(candidates.tokens.has(CPP14Lexer.New), "Test 52").to.equal(true);
-            expect(candidates.tokens.has(CPP14Lexer.Case), "Test 53").to.equal(true);
-            expect(candidates.tokens.has(CPP14Lexer.While), "Test 54").to.equal(true);
-            expect(candidates.tokens.has(CPP14Lexer.Throw), "Test 55").to.equal(true);
+            expect(candidates.tokens.size, "Test 51").to.equal(81);
+            expect(candidates.tokens.has(CPP14Lexer.If), "Test 52").to.equal(true);
+            expect(candidates.tokens.has(CPP14Lexer.This), "Test 53").to.equal(true);
+            expect(candidates.tokens.has(CPP14Lexer.New), "Test 54").to.equal(true);
+            expect(candidates.tokens.has(CPP14Lexer.Case), "Test 55").to.equal(true);
+            expect(candidates.tokens.has(CPP14Lexer.While), "Test 56").to.equal(true);
+            expect(candidates.tokens.has(CPP14Lexer.Throw), "Test 57").to.equal(true);
 
-            expect(candidates.tokens.has(CPP14Lexer.Override), "Test 56").to.equal(false);
-            expect(candidates.tokens.has(CPP14Lexer.Export), "Test 57").to.equal(false);
-            expect(candidates.tokens.has(CPP14Lexer.Private), "Test 58").to.equal(false);
-            expect(candidates.tokens.has(CPP14Lexer.Protected), "Test 59").to.equal(false);
+            expect(candidates.tokens.has(CPP14Lexer.Override), "Test 58").to.equal(false);
+            expect(candidates.tokens.has(CPP14Lexer.Export), "Test 59").to.equal(false);
+            expect(candidates.tokens.has(CPP14Lexer.Private), "Test 60").to.equal(false);
+            expect(candidates.tokens.has(CPP14Lexer.Protected), "Test 61").to.equal(false);
         }).timeout(60000);
     });
 

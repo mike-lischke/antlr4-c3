@@ -54,3 +54,4 @@ YYYY/MM/DD, github id, Full name, email
 2019/04/06, kaidjohnson, Kai Johnson, kaidjohnson@gmail.com
 2019/06/26, bbourbie, Benoît Bourbié, bbourbie@splunk.com
 2019/08/11, jphilipps, Jonathan Philipps, jphilipps@mail.de
+2020/02/05, kpainter-atl, Kyle Painter, kpainter@atlassian.com
