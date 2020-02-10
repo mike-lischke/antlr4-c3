@@ -62,6 +62,8 @@ export class CodeCompletionCore {
     public ignoredTokens: Set<number>;        // Tokens which should not appear in the candidates set.
     public preferredRules: Set<number>;       // Rules which replace any candidate token they contain.
                                               // This allows to return descriptive rules (e.g. className, instead of ID/identifier).
+    public translateRulesTopDown = false;     // Specify if preferred rules should translated top-down (higher index rule returns first)
+                                              // or bottom-up (lower index rule returns first).
 
     private parser: Parser;
     private atn: ATN;
@@ -158,38 +160,62 @@ export class CodeCompletionCore {
     }
 
     /**
-     * Walks the rule chain downwards to see if that matches any of the preferred rules.
-     * If found, that rule is added to the collection candidates and true is returned.
+     * Walks the rule chain upwards or downwards (depending on translateRulesTopDown) to see if that matches any of the
+     * preferred rules. If found, that rule is added to the collection candidates and true is returned.
      */
-    private translateToRuleIndex(ruleStack: RuleList): boolean {
+    private translateStackToRuleIndex(ruleStack: RuleList): boolean {
         if (this.preferredRules.size == 0)
             return false;
 
-        // Loop over the rule stack from lowest to highest rule level. This way we properly handle the lower rule
-        // if it is a child of a higher one that is also a preferred rule.
-        for (let i = ruleStack.length - 1; i >= 0; i--) {
-            if (this.preferredRules.has(ruleStack[i])) {
-                // Add the rule to our candidates list along with the current rule path,
-                // but only if there isn't already an entry like that.
-                let path = ruleStack.slice(0, i);
-                let addNew = true;
-                for (let rule of this.candidates.rules) {
-                    if (rule[0] != ruleStack[i] || rule[1].length != path.length)
-                        continue;
-                    // Found an entry for this rule. Same path? If so don't add a new (duplicate) entry.
-                    if (path.every((v, j) => v === rule[1][j])) {
-                        addNew = false;
-                        break;
-                    }
+        // Change the direction we iterate over the rule stack
+        if (this.translateRulesTopDown) {
+            // Loop over the rule stack from lowest to highest rule level. This will prioritise a lower preferred rule
+            // if it is a child of a higher one that is also a preferred rule.
+            for (let i = ruleStack.length - 1; i >= 0; i--) {
+                if (this.translateToRuleIndex(i, ruleStack)) {
+                    return true;
                 }
-
-                if (addNew) {
-                    this.candidates.rules.set(ruleStack[i], path);
-                    if (this.showDebugOutput)
-                        console.log("=====> collected: ", this.ruleNames[ruleStack[i]]);
-                }
-                return true;
             }
+        } else {
+            // Loop over the rule stack from highest to lowest rule level. This will prioritise a higher preferred rule
+            // if it contains a lower one that is also a preferred rule.
+            for (let i = 0; i < ruleStack.length; i++) {
+                if (this.translateToRuleIndex(i, ruleStack)) {
+                    return true;
+                }
+            }
+        }
+
+
+        return false;
+    }
+
+    /**
+     * Given the index of a rule from a rule chain, check if that matches any of the preferred rules. If it matches,
+     * that rule is added to the collection candidates and true is returned.
+     */
+    private translateToRuleIndex(i: number, ruleStack: RuleList): boolean {
+        if (this.preferredRules.has(ruleStack[i])) {
+            // Add the rule to our candidates list along with the current rule path,
+            // but only if there isn't already an entry like that.
+            let path = ruleStack.slice(0, i);
+            let addNew = true;
+            for (let rule of this.candidates.rules) {
+                if (rule[0] != ruleStack[i] || rule[1].length != path.length)
+                    continue;
+                // Found an entry for this rule. Same path? If so don't add a new (duplicate) entry.
+                if (path.every((v, j) => v === rule[1][j])) {
+                    addNew = false;
+                    break;
+                }
+            }
+
+            if (addNew) {
+                this.candidates.rules.set(ruleStack[i], path);
+                if (this.showDebugOutput)
+                    console.log("=====> collected: ", this.ruleNames[ruleStack[i]]);
+            }
+            return true;
         }
 
         return false;
@@ -351,14 +377,14 @@ export class CodeCompletionCore {
         if (tokenIndex >= this.tokens.length - 1) { // At caret?
             if (this.preferredRules.has(startState.ruleIndex)) {
                 // No need to go deeper when collecting entries and we reach a rule that we want to collect anyway.
-                this.translateToRuleIndex(callStack);
+                this.translateStackToRuleIndex(callStack);
             } else {
                 // Convert all follow sets to either single symbols or their associated preferred rule and add
                 // the result to our candidates list.
                 for (let set of followSets.sets) {
                     let fullPath = callStack.slice();
                     fullPath.push(...set.path);
-                    if (!this.translateToRuleIndex(fullPath)) {
+                    if (!this.translateStackToRuleIndex(fullPath)) {
                         for (let symbol of set.intervals.toArray())
                             if (!this.ignoredTokens.has(symbol)) {
                                 if (this.showDebugOutput) {
@@ -454,7 +480,7 @@ export class CodeCompletionCore {
 
                     case TransitionType.WILDCARD: {
                         if (atCaret) {
-                            if (!this.translateToRuleIndex(callStack)) {
+                            if (!this.translateStackToRuleIndex(callStack)) {
                                 for (let token of IntervalSet.of(Token.MIN_USER_TOKEN_TYPE, this.atn.maxTokenType).toArray())
                                     if (!this.ignoredTokens.has(token))
                                         this.candidates.tokens.set(token, []);
@@ -478,7 +504,7 @@ export class CodeCompletionCore {
                                 set = set.complement(IntervalSet.of(Token.MIN_USER_TOKEN_TYPE, this.atn.maxTokenType));
                             }
                             if (atCaret) {
-                                if (!this.translateToRuleIndex(callStack)) {
+                                if (!this.translateStackToRuleIndex(callStack)) {
                                     let list = set.toArray();
                                     let addFollowing = list.length == 1;
                                     for (let symbol of list)
