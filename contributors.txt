@@ -55,3 +55,4 @@ YYYY/MM/DD, github id, Full name, email
 2019/06/26, bbourbie, Benoît Bourbié, bbourbie@splunk.com
 2019/08/11, jphilipps, Jonathan Philipps, jphilipps@mail.de
 2020/02/10, kyle-painter, Kyle Painter, kpainter101@gmail.com
+2020/08/06, tamcgoey, Thomas McGoey-Smith, thomas@sourdough.dev
