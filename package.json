@@ -24,14 +24,14 @@
     "antlr4ts": "^0.5.0-alpha.3"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.7",
-    "@types/mocha": "^5.2.6",
-    "@types/node": "^10.14.4",
+    "@types/chai": "^4.2.12",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^10.17.28",
     "antlr4ts-cli": "^0.5.0-alpha.3",
     "chai": ">=4.2.0",
-    "mocha": "^6.1.4",
+    "mocha": "^6.2.3",
     "path": ">=0.12.7",
-    "typescript": "^3.4.4"
+    "typescript": "^3.9.7"
   },
   "author": "Mike Lischke",
   "license": "MIT"
