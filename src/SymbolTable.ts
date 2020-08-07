@@ -1,6 +1,6 @@
 /*
  * This file is released under the MIT license.
- * Copyright (c) 2017, 2019, Mike Lischke
+ * Copyright (c) 2017, 2020, Mike Lischke
  *
  * See LICENSE file for more info.
  */
@@ -738,8 +738,8 @@ export class SymbolTable extends ScopedSymbol {
     }
 
     /**
-     * Adds a new namespace to the symbol table or the given parent. The path parameter specifies a single namespace name
-     * or a chain of namespaces (which can be e.g. "outer.intermittant.inner.final").
+     * Adds a new namespace to the symbol table or the given parent. The path parameter specifies a single namespace
+     * name or a chain of namespaces (which can be e.g. "outer.intermittent.inner.final").
      * If any of the parent namespaces is missing they are created implicitly. The final part must not exist however
      * or you'll get a duplicate symbol error.
      */
