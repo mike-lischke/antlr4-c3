@@ -112,11 +112,15 @@ The returned candidate collection contains fields for lexer tokens (mostly keywo
 ```typescript
 class CandidatesCollection {
     public tokens: Map<number, TokenList>;
-    public rules: Map<number, RuleList>;
+    public rules: Map<number, CandidateRule>;
 };
 ```
 
-where the map keys are the lexer tokens and the rule indices, respectively. Both can come with additional numbers, which you may or may not use for your implementation. For parser rules the list represents the call stack at which the given rule was found during evaluation. This allows to determine a context for rules that are used in different places. For the lexer tokens the list consists of further token ids which directly follow the given token in the grammar (if any). This allows you to show **token sequences** if they are always used together. For example consider this SQL rule:
+where the map keys are the lexer tokens and the rule indices, respectively. Both can come with additional values, which you may or may not use for your implementation. 
+
+For parser rules the value includes a `startTokenIndex`, which reflects the index of the starting token within the evaluated rule. This allows consumers to determine the range of tokens that should be replaced or matched against when resolving symbols for your rule. The value also contains a rule list which represents the call stack at which the given rule was found during evaluation. This allows consumers to determine a context for rules that are used in different places. 
+
+For the lexer tokens the list consists of further token ids which directly follow the given token in the grammar (if any). This allows you to show **token sequences** if they are always used together. For example consider this SQL rule:
 
 ```antlr
 createTable: CREATE TABLE (IF NOT EXISTS)? ...;
