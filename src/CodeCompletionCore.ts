@@ -15,14 +15,28 @@ import {
 import { IntervalSet } from 'antlr4ts/misc/IntervalSet';
 
 export type TokenList = number[];
+
+export type CandidateRule = {
+    startTokenIndex: number,
+    ruleList: RuleList,
+}
+
+export type RuleWithStartToken = {
+    startTokenIndex: number,
+    ruleIndex: number;
+}
+
+export type RuleWithStartTokenList = RuleWithStartToken[];
 export type RuleList = number[];
 
-// All the candidates which have been found. Tokens and rules are separated (both use a numeric value).
+// All the candidates which have been found. Tokens and rules are separated.
 // Token entries include a list of tokens that directly follow them (see also the "following" member in the
 // FollowSetWithPath class).
+// Rule entries include the index of the starting token within the evaluated rule, along with a call stack of rules
+// found during evaluation.
 export class CandidatesCollection {
     public tokens: Map<number, TokenList> = new Map();
-    public rules: Map<number, RuleList> = new Map();
+    public rules: Map<number, CandidateRule> = new Map();
 };
 
 // A record for a follow set along with the path at which this set was found.
@@ -51,7 +65,7 @@ type RuleEndStatus = Set<number>;
 
 class PipelineEntry {
     state: ATNState;
-    tokenIndex: number;
+    tokenListIndex: number;
 };
 
 // The main class for doing the collection process.
@@ -76,7 +90,7 @@ export class CodeCompletionCore {
     private atn: ATN;
     private vocabulary: Vocabulary;
     private ruleNames: string[];
-    private tokens: TokenList;
+    private tokens: Token[];
     private precedenceStack: Array<number>;
 
     private tokenStartIndex: number = 0;
@@ -121,13 +135,13 @@ export class CodeCompletionCore {
         let offset = 1;
         while (true) {
             let token = tokenStream.LT(offset++);
-            this.tokens.push(token.type);
+            this.tokens.push(token);
             if (token.tokenIndex >= caretTokenIndex || token.type == Token.EOF)
                 break;
         }
         tokenStream.seek(currentIndex);
 
-        let callStack: number[] = [];
+        let callStack: RuleWithStartTokenList = [];
         let startRule = context ? context.ruleIndex : 0;
         this.processRule(this.atn.ruleToStartState[startRule], 0, callStack, 0, 0);
 
@@ -136,7 +150,7 @@ export class CodeCompletionCore {
             console.log("\n\nCollected rules:\n");
             for (let rule of this.candidates.rules) {
                 let path = "";
-                for (let token of rule[1]) {
+                for (let token of rule[1].ruleList) {
                     path += this.ruleNames[token] + " ";
                 }
                 console.log(this.ruleNames[rule[0]] + ", path: ", path);
@@ -171,7 +185,7 @@ export class CodeCompletionCore {
      * Walks the rule chain upwards or downwards (depending on translateRulesTopDown) to see if that matches any of the
      * preferred rules. If found, that rule is added to the collection candidates and true is returned.
      */
-    private translateStackToRuleIndex(ruleStack: RuleList): boolean {
+    private translateStackToRuleIndex(ruleWithStartTokenList: RuleWithStartTokenList): boolean {
         if (this.preferredRules.size == 0)
             return false;
 
@@ -179,16 +193,16 @@ export class CodeCompletionCore {
         if (this.translateRulesTopDown) {
             // Loop over the rule stack from lowest to highest rule level. This will prioritize a lower preferred rule
             // if it is a child of a higher one that is also a preferred rule.
-            for (let i = ruleStack.length - 1; i >= 0; i--) {
-                if (this.translateToRuleIndex(i, ruleStack)) {
+            for (let i = ruleWithStartTokenList.length - 1; i >= 0; i--) {
+                if (this.translateToRuleIndex(i, ruleWithStartTokenList)) {
                     return true;
                 }
             }
         } else {
             // Loop over the rule stack from highest to lowest rule level. This will prioritize a higher preferred rule
             // if it contains a lower one that is also a preferred rule.
-            for (let i = 0; i < ruleStack.length; i++) {
-                if (this.translateToRuleIndex(i, ruleStack)) {
+            for (let i = 0; i < ruleWithStartTokenList.length; i++) {
+                if (this.translateToRuleIndex(i, ruleWithStartTokenList)) {
                     return true;
                 }
             }
@@ -202,26 +216,30 @@ export class CodeCompletionCore {
      * Given the index of a rule from a rule chain, check if that matches any of the preferred rules. If it matches,
      * that rule is added to the collection candidates and true is returned.
      */
-    private translateToRuleIndex(i: number, ruleStack: RuleList): boolean {
-        if (this.preferredRules.has(ruleStack[i])) {
+    private translateToRuleIndex(i: number, ruleWithStartTokenList: RuleWithStartTokenList): boolean {
+        const { ruleIndex, startTokenIndex } = ruleWithStartTokenList[i];
+        if (this.preferredRules.has(ruleIndex)) {
             // Add the rule to our candidates list along with the current rule path,
             // but only if there isn't already an entry like that.
-            let path = ruleStack.slice(0, i);
+            let path = ruleWithStartTokenList.slice(0, i).map(({ ruleIndex }) => ruleIndex);
             let addNew = true;
             for (let rule of this.candidates.rules) {
-                if (rule[0] != ruleStack[i] || rule[1].length != path.length)
+                if (rule[0] != ruleIndex || rule[1].ruleList.length != path.length)
                     continue;
                 // Found an entry for this rule. Same path? If so don't add a new (duplicate) entry.
-                if (path.every((v, j) => v === rule[1][j])) {
+                if (path.every((v, j) => v === rule[1].ruleList[j])) {
                     addNew = false;
                     break;
                 }
             }
 
             if (addNew) {
-                this.candidates.rules.set(ruleStack[i], path);
+                this.candidates.rules.set(ruleIndex, {
+                    startTokenIndex,
+                    ruleList: path,
+                });
                 if (this.showDebugOutput)
-                    console.log("=====> collected: ", this.ruleNames[ruleStack[i]]);
+                    console.log("=====> collected: ", this.ruleNames[ruleIndex]);
             }
             return true;
         }
@@ -334,7 +352,7 @@ export class CodeCompletionCore {
      * The result can be empty in case we hit only non-epsilon transitions that didn't match the current input or if we
      * hit the caret position.
      */
-    private processRule(startState: RuleStartState, tokenIndex: number, callStack: number[], precedence: number,
+    private processRule(startState: RuleStartState, tokenListIndex: number, callStack: RuleWithStartTokenList, precedence: number,
         indentation: number): RuleEndStatus {
 
         // Start with rule specific handling before going into the ATN walk.
@@ -345,11 +363,11 @@ export class CodeCompletionCore {
             positionMap = new Map();
             this.shortcutMap.set(startState.ruleIndex, positionMap);
         } else {
-            if (positionMap.has(tokenIndex)) {
+            if (positionMap.has(tokenListIndex)) {
                 if (this.showDebugOutput) {
                     console.log("=====> shortcut");
                 }
-                return positionMap.get(tokenIndex)!;
+                return positionMap.get(tokenListIndex)!;
             }
         }
 
@@ -383,8 +401,15 @@ export class CodeCompletionCore {
             followSets.combined = combined;
         }
 
-        callStack.push(startState.ruleIndex);
-        if (tokenIndex >= this.tokens.length - 1) { // At caret?
+        // Get the token index where our rule starts from our (possibly filtered) token list
+        const startTokenIndex = this.tokens[tokenListIndex].tokenIndex;
+
+        callStack.push({
+            startTokenIndex,
+            ruleIndex: startState.ruleIndex,
+        });
+
+        if (tokenListIndex >= this.tokens.length - 1) { // At caret?
             if (this.preferredRules.has(startState.ruleIndex)) {
                 // No need to go deeper when collecting entries and we reach a rule that we want to collect anyway.
                 this.translateStackToRuleIndex(callStack);
@@ -393,7 +418,14 @@ export class CodeCompletionCore {
                 // the result to our candidates list.
                 for (let set of followSets.sets) {
                     let fullPath = callStack.slice();
-                    fullPath.push(...set.path);
+
+                    // Rules derived from our followSet will always start at the same token as our current rule
+                    const followSetPath = set.path.map(path => ({
+                        startTokenIndex,
+                        ruleIndex: path,
+                    }));
+
+                    fullPath.push(...followSetPath);
                     if (!this.translateStackToRuleIndex(fullPath)) {
                         for (let symbol of set.intervals.toArray())
                             if (!this.ignoredTokens.has(symbol)) {
@@ -420,7 +452,7 @@ export class CodeCompletionCore {
             // Process the rule if we either could pass it without consuming anything (epsilon transition)
             // or if the current input symbol will be matched somewhere after this entry point.
             // Otherwise stop here.
-            let currentSymbol = this.tokens[tokenIndex];
+            let currentSymbol = this.tokens[tokenListIndex].type;
             if (!followSets.combined.contains(Token.EPSILON) && !followSets.combined.contains(currentSymbol)) {
                 callStack.pop();
                 return result;
@@ -437,25 +469,25 @@ export class CodeCompletionCore {
         let currentEntry;
 
         // Bootstrap the pipeline.
-        statePipeline.push({ state: startState, tokenIndex: tokenIndex });
+        statePipeline.push({ state: startState, tokenListIndex: tokenListIndex });
 
         while (statePipeline.length > 0) {
             currentEntry = statePipeline.pop()!;
             ++this.statesProcessed;
 
-            let currentSymbol = this.tokens[currentEntry.tokenIndex];
+            let currentSymbol = this.tokens[currentEntry.tokenListIndex].type;
 
-            let atCaret = currentEntry.tokenIndex >= this.tokens.length - 1;
+            let atCaret = currentEntry.tokenListIndex >= this.tokens.length - 1;
             if (this.showDebugOutput) {
                 this.printDescription(indentation, currentEntry.state, this.generateBaseDescription(currentEntry.state),
-                    currentEntry.tokenIndex);
+                    currentEntry.tokenListIndex);
                 if (this.showRuleStack)
                     this.printRuleState(callStack);
             }
 
             if (currentEntry.state.stateType == ATNStateType.RULE_STOP) {
                 // Record the token index we are at, to report it to the caller.
-                result.add(currentEntry.tokenIndex);
+                result.add(currentEntry.tokenListIndex);
                 continue;
             }
 
@@ -467,24 +499,24 @@ export class CodeCompletionCore {
                 switch (transition.serializationType) {
                     case TransitionType.RULE: {
                         let ruleTransition = transition as RuleTransition;
-                        let endStatus = this.processRule(transition.target as RuleStartState, currentEntry.tokenIndex,
+                        let endStatus = this.processRule(transition.target as RuleStartState, currentEntry.tokenListIndex,
                             callStack, ruleTransition.precedence, indentation + 1);
                         for (let position of endStatus) {
-                            statePipeline.push({ state: (<RuleTransition>transition).followState, tokenIndex: position });
+                            statePipeline.push({ state: (<RuleTransition>transition).followState, tokenListIndex: position });
                         }
                         break;
                     }
 
                     case TransitionType.PREDICATE: {
                         if (this.checkPredicate(transition as PredicateTransition))
-                            statePipeline.push({ state: transition.target, tokenIndex: currentEntry.tokenIndex });
+                            statePipeline.push({ state: transition.target, tokenListIndex: currentEntry.tokenListIndex });
                         break;
                     }
 
                     case TransitionType.PRECEDENCE: {
                         const predTransition = transition as PrecedencePredicateTransition;
                         if (predTransition.precedence >= this.precedenceStack[this.precedenceStack.length - 1])
-                            statePipeline.push({ state: transition.target, tokenIndex: currentEntry.tokenIndex });
+                            statePipeline.push({ state: transition.target, tokenListIndex: currentEntry.tokenListIndex });
 
                         break;
                     }
@@ -499,7 +531,7 @@ export class CodeCompletionCore {
                                 }
                             }
                         } else {
-                            statePipeline.push({ state: transition.target, tokenIndex: currentEntry.tokenIndex + 1 });
+                            statePipeline.push({ state: transition.target, tokenListIndex: currentEntry.tokenListIndex + 1 });
                         }
                         break;
                     }
@@ -507,7 +539,7 @@ export class CodeCompletionCore {
                     default: {
                         if (transition.isEpsilon) {
                             // Jump over simple states with a single outgoing epsilon transition.
-                            statePipeline.push({ state: transition.target, tokenIndex: currentEntry.tokenIndex });
+                            statePipeline.push({ state: transition.target, tokenListIndex: currentEntry.tokenListIndex });
                             continue;
                         }
 
@@ -537,7 +569,7 @@ export class CodeCompletionCore {
                                         console.log("=====> consumed: ", this.vocabulary.getDisplayName(currentSymbol));
                                     statePipeline.push({
                                         state: transition.target,
-                                        tokenIndex: currentEntry.tokenIndex + 1
+                                        tokenListIndex: currentEntry.tokenListIndex + 1
                                     });
                                 }
                             }
@@ -553,7 +585,7 @@ export class CodeCompletionCore {
         }
 
         // Cache the result, for later lookup to avoid duplicate walks.
-        positionMap.set(tokenIndex, result);
+        positionMap.set(tokenListIndex, result);
 
         return result;
     }
@@ -615,14 +647,14 @@ export class CodeCompletionCore {
         console.log(output + "Current state: " + baseDescription + transitionDescription);
     }
 
-    private printRuleState(stack: number[]) {
+    private printRuleState(stack: RuleWithStartTokenList) {
         if (stack.length == 0) {
             console.log("<empty stack>");
             return;
         }
 
         for (let rule of stack)
-            console.log(this.ruleNames[rule]);
+            console.log(this.ruleNames[rule.ruleIndex]);
     }
 
 }

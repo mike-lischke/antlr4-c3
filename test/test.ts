@@ -450,30 +450,93 @@ describe('antlr4-c3:', function () {
 
             // Here we get 2 rule indexes, derived from 2 different IDs possible at this caret position.
             // These are what we told the engine above to be preferred rules for us.
-            let found = 0;
-            for (let candidate of candidates.rules) {
-                switch (candidate[0]) {
-                    case ExprParser.RULE_functionRef: {
-                        ++found
-                        break;
-                    }
-
-                    case ExprParser.RULE_variableRef: {
-                        ++found;
-                        break;
-                    }
-
-                    default:
-                        assert(false);
-                }
-            }
-            expect(found, "Test 11").to.equal(2);
+            expect(candidates.rules.size, "Test 11").to.equal(2);
+            expect(candidates.rules.get(ExprParser.RULE_functionRef)?.startTokenIndex, "Test 12").to.equal(6);
+            expect(candidates.rules.get(ExprParser.RULE_variableRef)?.startTokenIndex, "Test 13").to.equal(6);
 
             // 6) On the whitespace just after the variable reference 'a' (but it could still be a function reference!)
             candidates = core.collectCandidates(7);
-            expect(candidates.tokens.size, "Test 11").to.equal(0);
-            expect(candidates.rules.size, "Test 12").to.equal(1);
+            expect(candidates.tokens.size, "Test 14").to.equal(0);
+            expect(candidates.rules.size, "Test 15").to.equal(1);
+            // Our function rule should start at the ID reference of token 'a'
+            expect(candidates.rules.get(ExprParser.RULE_functionRef)?.startTokenIndex, "Test 16").to.equal(6);
         });
+
+        it('Recursive preferred rule', function() {
+            let inputStream = new ANTLRInputStream("var c = a + b");
+            let lexer = new ExprLexer(inputStream);
+            let tokenStream = new CommonTokenStream(lexer);
+
+            let parser = new ExprParser(tokenStream);
+            let errorListener = new ErrorListener();
+            parser.addErrorListener(errorListener);
+            let tree = parser.expression();
+            expect(errorListener.errorCount, "Test 1").equals(0);
+
+            let core = new c3.CodeCompletionCore(parser);
+
+            // Tell the engine to return certain rules to us, which we could use to look up values in a symbol table.
+            core.preferredRules = new Set([ExprParser.RULE_simpleExpression]);
+
+            // 1) On the variable reference 'a'.
+            let candidates = core.collectCandidates(6);
+            expect(candidates.rules.size, "Test 2").to.equal(1);
+            // The start token of the simpleExpression rule begins at token 'a'
+            expect(candidates.rules.get(ExprParser.RULE_simpleExpression)?.startTokenIndex, "Test 3").to.equal(6);
+
+            // 2) On the variable reference 'b'.
+            core.translateRulesTopDown = false;
+            candidates = core.collectCandidates(10);
+            expect(candidates.rules.size, "Test 4").to.equal(1);
+
+            // When translateRulesTopDown is false, startTokenIndex should match the start token for the lower index
+            // (less specific) rule in the expression, which is 'a'.
+            expect(candidates.rules.get(ExprParser.RULE_simpleExpression)?.startTokenIndex, "Test 5").to.equal(6);
+
+            // 3) On the variable reference 'b' topDown preferred rules.
+            core.translateRulesTopDown = true;
+            candidates = core.collectCandidates(10);
+            expect(candidates.rules.size, "Test 6").to.equal(1);
+
+            // When translateRulesTopDown is true, startTokenIndex should match the start token for the higher index
+            // (more specific) rule in the expression, which is 'b'.
+            expect(candidates.rules.get(ExprParser.RULE_simpleExpression)?.startTokenIndex, "Test 7").to.equal(10);
+        })
+
+        it('Candidate rules with different start tokens', () => {
+            let inputStream = new ANTLRInputStream("var c = a + b");
+            let lexer = new ExprLexer(inputStream);
+            let tokenStream = new CommonTokenStream(lexer);
+
+            let parser = new ExprParser(tokenStream);
+            let errorListener = new ErrorListener();
+            parser.addErrorListener(errorListener);
+            let tree = parser.expression();
+            expect(errorListener.errorCount, "Test 1").equals(0);
+
+            let core = new c3.CodeCompletionCore(parser);
+
+            // Tell the engine to return certain rules to us, which we could use to look up values in a symbol table.
+            core.preferredRules = new Set([ExprParser.RULE_assignment, ExprParser.RULE_variableRef]);
+
+            // Return higher index rules first, meaning we could get both assignment and variableRef rules as candidates
+            core.translateRulesTopDown = true;
+
+            // 1) On the token 'var'.
+            let candidates = core.collectCandidates(0);
+            expect(candidates.rules.size, "Test 2").to.equal(2);
+            // // The start token of the assignment and variableRef rules begin at token 'var'
+            expect(candidates.rules.get(ExprParser.RULE_assignment)?.startTokenIndex, "Test 3").to.equal(0);
+            expect(candidates.rules.get(ExprParser.RULE_variableRef)?.startTokenIndex, "Test 4").to.equal(0);
+
+            // 2) On the variable reference 'a'.
+            candidates = core.collectCandidates(6);
+            expect(candidates.rules.size, "Test 5").to.equal(2);
+            // The start token of the assignment rule begins at token 'var'
+            expect(candidates.rules.get(ExprParser.RULE_assignment)?.startTokenIndex, "Test 6").to.equal(0);
+            // The start token of the variableRef rule begins at token 'a'
+            expect(candidates.rules.get(ExprParser.RULE_variableRef)?.startTokenIndex, "Test 7").to.equal(6);
+        })
     });
 
     describe('C++14 parser:', function () {
@@ -569,7 +632,7 @@ describe('antlr4-c3:', function () {
             // The returned list can contain more than one entry for a particular rule, if there are multiple
             // parser rule paths leading to it.
             expect(candidates.rules.size, "Test 44").to.equal(3);
-            expect(candidates.rules.get(CPP14Parser.RULE_namespacename), "Test 45").to.eql([
+            expect(candidates.rules.get(CPP14Parser.RULE_namespacename)?.ruleList, "Test 45").to.eql([
                 CPP14Parser.RULE_translationunit,
                 CPP14Parser.RULE_declarationseq,
                 CPP14Parser.RULE_declaration,
@@ -582,7 +645,7 @@ describe('antlr4-c3:', function () {
                 CPP14Parser.RULE_simpletypespecifier,
                 CPP14Parser.RULE_nestednamespecifier,
             ]);
-            expect(candidates.rules.get(CPP14Parser.RULE_classname), "Test 46").to.eql([
+            expect(candidates.rules.get(CPP14Parser.RULE_classname)?.ruleList, "Test 46").to.eql([
                 CPP14Parser.RULE_translationunit,
                 CPP14Parser.RULE_declarationseq,
                 CPP14Parser.RULE_declaration,
@@ -641,22 +704,22 @@ describe('antlr4-c3:', function () {
             ];
 
             expect(candidates.rules.size, "Test 47").to.equal(1);
-            expect(candidates.rules.get(CPP14Parser.RULE_idexpression), "Test 48").to.eql(idexpressionStack);
+            expect(candidates.rules.get(CPP14Parser.RULE_idexpression)?.ruleList, "Test 48").to.eql(idexpressionStack);
 
             // We should receive more specific rules when translating top down.
             core.translateRulesTopDown = true;
             candidates = core.collectCandidates(10);
 
             expect(candidates.rules.size, "Test 49").to.equal(3);
-            expect(candidates.rules.get(CPP14Parser.RULE_idexpression), "Test 50").to.eql(idexpressionStack);
-            expect(candidates.rules.get(CPP14Parser.RULE_classname), "Test 51").to.eql([
+            expect(candidates.rules.get(CPP14Parser.RULE_idexpression)?.ruleList, "Test 50").to.eql(idexpressionStack);
+            expect(candidates.rules.get(CPP14Parser.RULE_classname)?.ruleList, "Test 51").to.eql([
                 ...idexpressionStack,
                 CPP14Parser.RULE_idexpression,
                 CPP14Parser.RULE_qualifiedid,
                 CPP14Parser.RULE_nestednamespecifier,
                 CPP14Parser.RULE_typename,
             ]);
-            expect(candidates.rules.get(CPP14Parser.RULE_namespacename), "Test 52").to.eql([
+            expect(candidates.rules.get(CPP14Parser.RULE_namespacename)?.ruleList, "Test 52").to.eql([
                 ...idexpressionStack,
                 CPP14Parser.RULE_idexpression,
                 CPP14Parser.RULE_qualifiedid,
@@ -805,22 +868,22 @@ describe('antlr4-c3:', function () {
             ];
 
             expect(candidates.rules.size, "Test 47").to.equal(1);
-            expect(candidates.rules.get(CPP14Parser.RULE_idexpression), "Test 48").to.eql(idexpressionStack);
+            expect(candidates.rules.get(CPP14Parser.RULE_idexpression)?.ruleList, "Test 48").to.eql(idexpressionStack);
 
             // We should receive more specific rules when translating top down.
             core.translateRulesTopDown = true;
             candidates = core.collectCandidates(3469);
 
             expect(candidates.rules.size, "Test 49").to.equal(3);
-            expect(candidates.rules.get(CPP14Parser.RULE_idexpression), "Test 50").to.eql(idexpressionStack);
-            expect(candidates.rules.get(CPP14Parser.RULE_classname), "Test 51").to.eql([
+            expect(candidates.rules.get(CPP14Parser.RULE_idexpression)?.ruleList, "Test 50").to.eql(idexpressionStack);
+            expect(candidates.rules.get(CPP14Parser.RULE_classname)?.ruleList, "Test 51").to.eql([
                 ...idexpressionStack,
                 CPP14Parser.RULE_idexpression,
                 CPP14Parser.RULE_qualifiedid,
                 CPP14Parser.RULE_nestednamespecifier,
                 CPP14Parser.RULE_typename,
             ]);
-            expect(candidates.rules.get(CPP14Parser.RULE_namespacename), "Test 52").to.eql([
+            expect(candidates.rules.get(CPP14Parser.RULE_namespacename)?.ruleList, "Test 52").to.eql([
                 ...idexpressionStack,
                 CPP14Parser.RULE_idexpression,
                 CPP14Parser.RULE_qualifiedid,
