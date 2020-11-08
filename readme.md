@@ -214,7 +214,9 @@ The last two options potentially create a lot of output which can significantly 
 ## Release Notes
 
 ### 1.1.13
-- Unpublished version
+- Added a C# port of the library (thanks to Jonathan Philipps)
+- Optionally allow to walk the rule stack on matching a preferred rule either top-down or bottom-up (which changes how preference is given to multiple preferred rules in a single stack).
+- Rule candidates now include the start token index of where they matched.
 
 ### 1.1.12
 - Updated modules with known vulnerabilities.
