@@ -20,7 +20,7 @@ With the Code Completion Core implementation things become a lot easier. In the 
 
 For showing possible symbols in source code you obviously need a source for all available symbols at the given position. Providing them is usually the task of a symbol table. Its content can be derived from your current source code (with the help of a parser + a parse listener). More static parts (like runtime functions) can be loaded from disk or provided by a hard coded list etc. The symbol table can then answer your question about all symbols of a given type that are visible from a given position. The position usually corresponds to a specific symbol in the symbol table and the structure then allows to easily get visible symbols. The c3 engine comes with a small symbol table implementation, which is however not mandatory to use the library, but instead provides an easy start, if you don't have an own symbol table class already.
 
-While the symbol table provides symbols of a given type, we need to find out which type is actually required. This is the task of the c3 engine. In its simplest setup it will return only keywords (and other lexer symbols) that are allowed by the grammar for a given position (which is of course the same position used to find the context for a symbol lookup in your symbol table). Keywords are a fixed set of words (or word sequences) that usually don't live in a symbol table. You can get the actual text strings directly from the parser's vocabulary. The c3 engine only returns the lexer tokens for them.
+While the symbol table provides symbols of a given type, we need to find out which type is actually required. This is the task of the c3 engine. In its simplest setup it will return only keywords (and other lexer symbols) that are allowed by the grammar for a given position (which is of course the same position used to find the context for a symbol lookup in your symbol table). Keywords are a fixed set of words (or word sequences) that usually don't live in a symbol table. You can get the actual text strings directly from the parser vocabulary. The c3 engine only returns the lexer tokens for them.
 
 In order to also get other types like variables or class names you have to do 2 steps:
 
@@ -116,9 +116,9 @@ class CandidatesCollection {
 };
 ```
 
-where the map keys are the lexer tokens and the rule indices, respectively. Both can come with additional values, which you may or may not use for your implementation. 
+where the map keys are the lexer tokens and the rule indices, respectively. Both can come with additional values, which you may or may not use for your implementation.
 
-For parser rules the value includes a `startTokenIndex`, which reflects the index of the starting token within the evaluated rule. This allows consumers to determine the range of tokens that should be replaced or matched against when resolving symbols for your rule. The value also contains a rule list which represents the call stack at which the given rule was found during evaluation. This allows consumers to determine a context for rules that are used in different places. 
+For parser rules the value includes a `startTokenIndex`, which reflects the index of the starting token within the evaluated rule. This allows consumers to determine the range of tokens that should be replaced or matched against when resolving symbols for your rule. The value also contains a rule list which represents the call stack at which the given rule was found during evaluation. This allows consumers to determine a context for rules that are used in different places.
 
 For the lexer tokens the list consists of further token ids which directly follow the given token in the grammar (if any). This allows you to show **token sequences** if they are always used together. For example consider this SQL rule:
 
@@ -160,7 +160,7 @@ for (let candidate of candidates.rules) {
 }
 
 // Finally combine all found lists into one for the UI.
-// We do that in separate steps so that you can apply some ordering to each of your sublists.
+// We do that in separate steps so that you can apply some ordering to each of your sub lists.
 // Then you also can order symbols groups as a whole depending their importance.
 let candidates: string[] = [];
 candidates.push(...keywords);
@@ -183,7 +183,7 @@ core.ignoredTokens = new Set([
 ```
 
 ## Preferred Rules
-As mentioned already the `preferredRules` field is an essential part for getting more than just keywords. It lets you specify the parser rules that are interesting for you and should include the rule indexes for the entities we talked about in the code completion breakdown paragraph above. Whenever the c3 engine hits a lexer token when collecting candidates from a specific ATN state it will check the call stack for it and, if that contains any of the preferred rules, will select that instead of the lexer token. This transformation ensures that the engine returns contextual informations which can actually be used to look up symbols.
+As mentioned already the `preferredRules` field is an essential part for getting more than just keywords. It lets you specify the parser rules that are interesting for you and should include the rule indexes for the entities we talked about in the code completion breakdown paragraph above. Whenever the c3 engine hits a lexer token when collecting candidates from a specific ATN state it will check the call stack for it and, if that contains any of the preferred rules, will select that instead of the lexer token. This transformation ensures that the engine returns contextual information which can actually be used to look up symbols.
 
 ## Constraining the Search Space
 Walking the ATN can at times be quite expensive, especially for complex grammars with many rules and perhaps (left) recursive expression rules. I have seen millions of visited ATN states for complex input, which will take very long to finish. In such cases it pays off to limit the engine to just a specific rule (and those called by it). For that there is an optional parser rule context parameter in the `collectCandidates()` method. If a context is given the engine will never look outside of this rule. It is necessary that the specified caret position lies within that rule (or any of those called by it) to properly finish the ATN walk.
@@ -213,6 +213,9 @@ The last two options potentially create a lot of output which can significantly 
 
 ## Release Notes
 
+### 1.1.14
+- Unreleased version
+
 ### 1.1.13
 - Added a C# port of the library (thanks to Jonathan Philipps)
 - Optionally allow to walk the rule stack on matching a preferred rule either top-down or bottom-up (which changes how preference is given to multiple preferred rules in a single stack).
@@ -221,7 +224,7 @@ The last two options potentially create a lot of output which can significantly 
 ### 1.1.12
 - Updated modules with known vulnerabilities.
 - Better handling of recursive rules in code completion (via precedence).
-- Updated to latest antl4ts.
+- Updated to latest antlr4ts.
 
 ### 1.1.8
 - Renamed a number of methods for improved consistency (`next` -> `nextSibling` etc.) and updated some tests.
