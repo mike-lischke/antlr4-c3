@@ -632,6 +632,7 @@ describe('antlr4-c3:', function () {
             // The returned list can contain more than one entry for a particular rule, if there are multiple
             // parser rule paths leading to it.
             expect(candidates.rules.size, "Test 44").to.equal(3);
+            /* The test used to check for the following path, but by changing the algorithm, we find a shorter path first
             expect(candidates.rules.get(CPP14Parser.RULE_namespacename)?.ruleList, "Test 45").to.eql([
                 CPP14Parser.RULE_translationunit,
                 CPP14Parser.RULE_declarationseq,
@@ -644,18 +645,26 @@ describe('antlr4-c3:', function () {
                 CPP14Parser.RULE_trailingtypespecifier,
                 CPP14Parser.RULE_simpletypespecifier,
                 CPP14Parser.RULE_nestednamespecifier,
+            ]);*/
+            expect(candidates.rules.get(CPP14Parser.RULE_namespacename)?.ruleList, "Test 45").to.eql([
+                CPP14Parser.RULE_translationunit,
+                CPP14Parser.RULE_declarationseq,
+                CPP14Parser.RULE_declaration,
+                CPP14Parser.RULE_functiondefinition,
+                CPP14Parser.RULE_declarator,
+                CPP14Parser.RULE_ptrdeclarator,
+                CPP14Parser.RULE_ptroperator,
+                CPP14Parser.RULE_nestednamespecifier,
             ]);
+            //Same as above
             expect(candidates.rules.get(CPP14Parser.RULE_classname)?.ruleList, "Test 46").to.eql([
                 CPP14Parser.RULE_translationunit,
                 CPP14Parser.RULE_declarationseq,
                 CPP14Parser.RULE_declaration,
-                CPP14Parser.RULE_blockdeclaration,
-                CPP14Parser.RULE_simpledeclaration,
-                CPP14Parser.RULE_declspecifierseq,
-                CPP14Parser.RULE_declspecifier,
-                CPP14Parser.RULE_typespecifier,
-                CPP14Parser.RULE_trailingtypespecifier,
-                CPP14Parser.RULE_simpletypespecifier,
+                CPP14Parser.RULE_functiondefinition,
+                CPP14Parser.RULE_declarator,
+                CPP14Parser.RULE_ptrdeclarator,
+                CPP14Parser.RULE_ptroperator,
                 CPP14Parser.RULE_nestednamespecifier,
                 CPP14Parser.RULE_typename,
             ]);
@@ -685,7 +694,6 @@ describe('antlr4-c3:', function () {
                 CPP14Parser.RULE_initializerclause,
 
                 CPP14Parser.RULE_assignmentexpression,
-                CPP14Parser.RULE_conditionalexpression,
                 CPP14Parser.RULE_logicalorexpression,
                 CPP14Parser.RULE_logicalandexpression,
                 CPP14Parser.RULE_inclusiveorexpression,
@@ -703,8 +711,10 @@ describe('antlr4-c3:', function () {
                 CPP14Parser.RULE_primaryexpression,
             ];
 
-            expect(candidates.rules.size, "Test 47").to.equal(1);
+            expect(candidates.rules.size, "Test 47").to.equal(3);
             expect(candidates.rules.get(CPP14Parser.RULE_idexpression)?.ruleList, "Test 48").to.eql(idexpressionStack);
+            expect(candidates.rules.get(CPP14Parser.RULE_classname)?.ruleList, "Test 48.1").not.to.be.undefined;
+            expect(candidates.rules.get(CPP14Parser.RULE_namespacename)?.ruleList, "Test 48.2").not.to.be.undefined;
 
             // We should receive more specific rules when translating top down.
             core.translateRulesTopDown = true;
@@ -713,22 +723,20 @@ describe('antlr4-c3:', function () {
             expect(candidates.rules.size, "Test 49").to.equal(3);
             expect(candidates.rules.get(CPP14Parser.RULE_idexpression)?.ruleList, "Test 50").to.eql(idexpressionStack);
             expect(candidates.rules.get(CPP14Parser.RULE_classname)?.ruleList, "Test 51").to.eql([
-                ...idexpressionStack,
-                CPP14Parser.RULE_idexpression,
-                CPP14Parser.RULE_qualifiedid,
+                ...idexpressionStack.slice(0, idexpressionStack.length - 1),
+                CPP14Parser.RULE_simpletypespecifier,
                 CPP14Parser.RULE_nestednamespecifier,
                 CPP14Parser.RULE_typename,
             ]);
             expect(candidates.rules.get(CPP14Parser.RULE_namespacename)?.ruleList, "Test 52").to.eql([
-                ...idexpressionStack,
-                CPP14Parser.RULE_idexpression,
-                CPP14Parser.RULE_qualifiedid,
+                ...idexpressionStack.slice(0, idexpressionStack.length - 1),
+                CPP14Parser.RULE_simpletypespecifier,
                 CPP14Parser.RULE_nestednamespecifier,
             ]);
 
             // We are starting a primary expression in a function body, so everything related to expressions and control flow is allowed here.
             // We only check for a few possible keywords.
-            expect(candidates.tokens.size, "Test 53").to.equal(81);
+            expect(candidates.tokens.size, "Test 53").to.equal(82);
             expect(candidates.tokens.has(CPP14Lexer.If), "Test 54").to.equal(true);
             expect(candidates.tokens.has(CPP14Lexer.This), "Test 55").to.equal(true);
             expect(candidates.tokens.has(CPP14Lexer.New), "Test 56").to.equal(true);
@@ -783,7 +791,7 @@ describe('antlr4-c3:', function () {
 
             candidates = core.collectCandidates(12); // At the closing parenthesis -> again everything in an expression allowed (no control flow this time, tho).
 
-            expect(candidates.tokens.size, "Test 4").to.equal(64);
+            expect(candidates.tokens.size, "Test 4").to.equal(65);
             expect(candidates.tokens.has(CPP14Lexer.If), "Test 5").to.equal(false);
             expect(candidates.tokens.has(CPP14Lexer.This), "Test 6").to.equal(true);
             expect(candidates.tokens.has(CPP14Lexer.New), "Test 7").to.equal(true);
@@ -846,28 +854,17 @@ describe('antlr4-c3:', function () {
                 CPP14Parser.RULE_compoundstatement,
                 CPP14Parser.RULE_statementseq,
                 CPP14Parser.RULE_statement,
-                CPP14Parser.RULE_expressionstatement,
-                CPP14Parser.RULE_expression,
-                CPP14Parser.RULE_assignmentexpression,
-                CPP14Parser.RULE_conditionalexpression,
-                CPP14Parser.RULE_logicalorexpression,
-                CPP14Parser.RULE_logicalandexpression,
-                CPP14Parser.RULE_inclusiveorexpression,
-                CPP14Parser.RULE_exclusiveorexpression,
-                CPP14Parser.RULE_andexpression,
-                CPP14Parser.RULE_equalityexpression,
-                CPP14Parser.RULE_relationalexpression,
-                CPP14Parser.RULE_shiftexpression,
-                CPP14Parser.RULE_additiveexpression,
-                CPP14Parser.RULE_multiplicativeexpression,
-                CPP14Parser.RULE_pmexpression,
-                CPP14Parser.RULE_castexpression,
-                CPP14Parser.RULE_unaryexpression,
-                CPP14Parser.RULE_postfixexpression,
-                CPP14Parser.RULE_primaryexpression,
+                CPP14Parser.RULE_declarationstatement,
+                CPP14Parser.RULE_blockdeclaration,
+                CPP14Parser.RULE_simpledeclaration,
+                CPP14Parser.RULE_initdeclaratorlist,
+                CPP14Parser.RULE_initdeclarator,
+                CPP14Parser.RULE_declarator,
+                CPP14Parser.RULE_noptrdeclarator,
+                CPP14Parser.RULE_declaratorid
             ];
 
-            expect(candidates.rules.size, "Test 47").to.equal(1);
+            expect(candidates.rules.size, "Test 47").to.equal(3);
             expect(candidates.rules.get(CPP14Parser.RULE_idexpression)?.ruleList, "Test 48").to.eql(idexpressionStack);
 
             // We should receive more specific rules when translating top down.
@@ -892,7 +889,7 @@ describe('antlr4-c3:', function () {
 
             // We are starting a primary expression in a function body, so everything related to expressions and control flow is allowed here.
             // We only check for a few possible keywords.
-            expect(candidates.tokens.size, "Test 53").to.equal(81);
+            expect(candidates.tokens.size, "Test 53").to.equal(82);
             expect(candidates.tokens.has(CPP14Lexer.If), "Test 54").to.equal(true);
             expect(candidates.tokens.has(CPP14Lexer.This), "Test 55").to.equal(true);
             expect(candidates.tokens.has(CPP14Lexer.New), "Test 56").to.equal(true);

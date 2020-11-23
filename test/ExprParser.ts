@@ -41,9 +41,11 @@ export class ExprParser extends Parser {
 	public static readonly RULE_simpleExpression = 2;
 	public static readonly RULE_variableRef = 3;
 	public static readonly RULE_functionRef = 4;
+	public static readonly RULE_identifier = 5;
 	// tslint:disable:no-trailing-whitespace
 	public static readonly ruleNames: string[] = [
-		"expression", "assignment", "simpleExpression", "variableRef", "functionRef",
+		"expression", "assignment", "simpleExpression", "variableRef", "functionRef", 
+		"identifier",
 	];
 
 	private static readonly _LITERAL_NAMES: Array<string | undefined> = [
@@ -81,21 +83,21 @@ export class ExprParser extends Parser {
 		let _localctx: ExpressionContext = new ExpressionContext(this._ctx, this.state);
 		this.enterRule(_localctx, 0, ExprParser.RULE_expression);
 		try {
-			this.state = 12;
+			this.state = 14;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case ExprParser.VAR:
 			case ExprParser.LET:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 10;
+				this.state = 12;
 				this.assignment();
 				}
 				break;
 			case ExprParser.ID:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 11;
+				this.state = 13;
 				this.simpleExpression(0);
 				}
 				break;
@@ -125,7 +127,7 @@ export class ExprParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 14;
+			this.state = 16;
 			_la = this._input.LA(1);
 			if (!(_la === ExprParser.VAR || _la === ExprParser.LET)) {
 			this._errHandler.recoverInline(this);
@@ -137,11 +139,11 @@ export class ExprParser extends Parser {
 				this._errHandler.reportMatch(this);
 				this.consume();
 			}
-			this.state = 15;
-			this.match(ExprParser.ID);
-			this.state = 16;
-			this.match(ExprParser.EQUAL);
 			this.state = 17;
+			this.match(ExprParser.ID);
+			this.state = 18;
+			this.match(ExprParser.EQUAL);
+			this.state = 19;
 			this.simpleExpression(0);
 			}
 		}
@@ -179,25 +181,25 @@ export class ExprParser extends Parser {
 			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 22;
+			this.state = 24;
 			this._errHandler.sync(this);
 			switch ( this.interpreter.adaptivePredict(this._input, 1, this._ctx) ) {
 			case 1:
 				{
-				this.state = 20;
+				this.state = 22;
 				this.variableRef();
 				}
 				break;
 
 			case 2:
 				{
-				this.state = 21;
+				this.state = 23;
 				this.functionRef();
 				}
 				break;
 			}
 			this._ctx._stop = this._input.tryLT(-1);
-			this.state = 32;
+			this.state = 34;
 			this._errHandler.sync(this);
 			_alt = this.interpreter.adaptivePredict(this._input, 3, this._ctx);
 			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
@@ -207,18 +209,18 @@ export class ExprParser extends Parser {
 					}
 					_prevctx = _localctx;
 					{
-					this.state = 30;
+					this.state = 32;
 					this._errHandler.sync(this);
 					switch ( this.interpreter.adaptivePredict(this._input, 2, this._ctx) ) {
 					case 1:
 						{
 						_localctx = new SimpleExpressionContext(_parentctx, _parentState);
 						this.pushNewRecursionContext(_localctx, _startState, ExprParser.RULE_simpleExpression);
-						this.state = 24;
+						this.state = 26;
 						if (!(this.precpred(this._ctx, 4))) {
 							throw new FailedPredicateException(this, "this.precpred(this._ctx, 4)");
 						}
-						this.state = 25;
+						this.state = 27;
 						_la = this._input.LA(1);
 						if (!(_la === ExprParser.PLUS || _la === ExprParser.MINUS)) {
 						this._errHandler.recoverInline(this);
@@ -230,7 +232,7 @@ export class ExprParser extends Parser {
 							this._errHandler.reportMatch(this);
 							this.consume();
 						}
-						this.state = 26;
+						this.state = 28;
 						this.simpleExpression(5);
 						}
 						break;
@@ -239,11 +241,11 @@ export class ExprParser extends Parser {
 						{
 						_localctx = new SimpleExpressionContext(_parentctx, _parentState);
 						this.pushNewRecursionContext(_localctx, _startState, ExprParser.RULE_simpleExpression);
-						this.state = 27;
+						this.state = 29;
 						if (!(this.precpred(this._ctx, 3))) {
 							throw new FailedPredicateException(this, "this.precpred(this._ctx, 3)");
 						}
-						this.state = 28;
+						this.state = 30;
 						_la = this._input.LA(1);
 						if (!(_la === ExprParser.MULTIPLY || _la === ExprParser.DIVIDE)) {
 						this._errHandler.recoverInline(this);
@@ -255,14 +257,14 @@ export class ExprParser extends Parser {
 							this._errHandler.reportMatch(this);
 							this.consume();
 						}
-						this.state = 29;
+						this.state = 31;
 						this.simpleExpression(4);
 						}
 						break;
 					}
 					}
 				}
-				this.state = 34;
+				this.state = 36;
 				this._errHandler.sync(this);
 				_alt = this.interpreter.adaptivePredict(this._input, 3, this._ctx);
 			}
@@ -289,8 +291,8 @@ export class ExprParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 35;
-			this.match(ExprParser.ID);
+			this.state = 37;
+			this.identifier();
 			}
 		}
 		catch (re) {
@@ -314,12 +316,37 @@ export class ExprParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 37;
-			this.match(ExprParser.ID);
-			this.state = 38;
-			this.match(ExprParser.OPEN_PAR);
 			this.state = 39;
+			this.identifier();
+			this.state = 40;
+			this.match(ExprParser.OPEN_PAR);
+			this.state = 41;
 			this.match(ExprParser.CLOSE_PAR);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public identifier(): IdentifierContext {
+		let _localctx: IdentifierContext = new IdentifierContext(this._ctx, this.state);
+		this.enterRule(_localctx, 10, ExprParser.RULE_identifier);
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 43;
+			this.match(ExprParser.ID);
 			}
 		}
 		catch (re) {
@@ -356,26 +383,27 @@ export class ExprParser extends Parser {
 	}
 
 	public static readonly _serializedATN: string =
-		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\r,\x04\x02\t" +
-		"\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x03\x02\x03" +
-		"\x02\x05\x02\x0F\n\x02\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x04" +
-		"\x03\x04\x03\x04\x05\x04\x19\n\x04\x03\x04\x03\x04\x03\x04\x03\x04\x03" +
-		"\x04\x03\x04\x07\x04!\n\x04\f\x04\x0E\x04$\v\x04\x03\x05\x03\x05\x03\x06" +
-		"\x03\x06\x03\x06\x03\x06\x03\x06\x02\x02\x03\x06\x07\x02\x02\x04\x02\x06" +
-		"\x02\b\x02\n\x02\x02\x05\x03\x02\x03\x04\x03\x02\x05\x06\x03\x02\x07\b" +
-		"\x02*\x02\x0E\x03\x02\x02\x02\x04\x10\x03\x02\x02\x02\x06\x18\x03\x02" +
-		"\x02\x02\b%\x03\x02\x02\x02\n\'\x03\x02\x02\x02\f\x0F\x05\x04\x03\x02" +
-		"\r\x0F\x05\x06\x04\x02\x0E\f\x03\x02\x02\x02\x0E\r\x03\x02\x02\x02\x0F" +
-		"\x03\x03\x02\x02\x02\x10\x11\t\x02\x02\x02\x11\x12\x07\f\x02\x02\x12\x13" +
-		"\x07\t\x02\x02\x13\x14\x05\x06\x04\x02\x14\x05\x03\x02\x02\x02\x15\x16" +
-		"\b\x04\x01\x02\x16\x19\x05\b\x05\x02\x17\x19\x05\n\x06\x02\x18\x15\x03" +
-		"\x02\x02\x02\x18\x17\x03\x02\x02\x02\x19\"\x03\x02\x02\x02\x1A\x1B\f\x06" +
-		"\x02\x02\x1B\x1C\t\x03\x02\x02\x1C!\x05\x06\x04\x07\x1D\x1E\f\x05\x02" +
-		"\x02\x1E\x1F\t\x04\x02\x02\x1F!\x05\x06\x04\x06 \x1A\x03\x02\x02\x02 " +
-		"\x1D\x03\x02\x02\x02!$\x03\x02\x02\x02\" \x03\x02\x02\x02\"#\x03\x02\x02" +
-		"\x02#\x07\x03\x02\x02\x02$\"\x03\x02\x02\x02%&\x07\f\x02\x02&\t\x03\x02" +
-		"\x02\x02\'(\x07\f\x02\x02()\x07\n\x02\x02)*\x07\v\x02\x02*\v\x03\x02\x02" +
-		"\x02\x06\x0E\x18 \"";
+		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\r0\x04\x02\t" +
+		"\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07\t" +
+		"\x07\x03\x02\x03\x02\x05\x02\x11\n\x02\x03\x03\x03\x03\x03\x03\x03\x03" +
+		"\x03\x03\x03\x04\x03\x04\x03\x04\x05\x04\x1B\n\x04\x03\x04\x03\x04\x03" +
+		"\x04\x03\x04\x03\x04\x03\x04\x07\x04#\n\x04\f\x04\x0E\x04&\v\x04\x03\x05" +
+		"\x03\x05\x03\x06\x03\x06\x03\x06\x03\x06\x03\x07\x03\x07\x03\x07\x02\x02" +
+		"\x03\x06\b\x02\x02\x04\x02\x06\x02\b\x02\n\x02\f\x02\x02\x05\x03\x02\x03" +
+		"\x04\x03\x02\x05\x06\x03\x02\x07\b\x02-\x02\x10\x03\x02\x02\x02\x04\x12" +
+		"\x03\x02\x02\x02\x06\x1A\x03\x02\x02\x02\b\'\x03\x02\x02\x02\n)\x03\x02" +
+		"\x02\x02\f-\x03\x02\x02\x02\x0E\x11\x05\x04\x03\x02\x0F\x11\x05\x06\x04" +
+		"\x02\x10\x0E\x03\x02\x02\x02\x10\x0F\x03\x02\x02\x02\x11\x03\x03\x02\x02" +
+		"\x02\x12\x13\t\x02\x02\x02\x13\x14\x07\f\x02\x02\x14\x15\x07\t\x02\x02" +
+		"\x15\x16\x05\x06\x04\x02\x16\x05\x03\x02\x02\x02\x17\x18\b\x04\x01\x02" +
+		"\x18\x1B\x05\b\x05\x02\x19\x1B\x05\n\x06\x02\x1A\x17\x03\x02\x02\x02\x1A" +
+		"\x19\x03\x02\x02\x02\x1B$\x03\x02\x02\x02\x1C\x1D\f\x06\x02\x02\x1D\x1E" +
+		"\t\x03\x02\x02\x1E#\x05\x06\x04\x07\x1F \f\x05\x02\x02 !\t\x04\x02\x02" +
+		"!#\x05\x06\x04\x06\"\x1C\x03\x02\x02\x02\"\x1F\x03\x02\x02\x02#&\x03\x02" +
+		"\x02\x02$\"\x03\x02\x02\x02$%\x03\x02\x02\x02%\x07\x03\x02\x02\x02&$\x03" +
+		"\x02\x02\x02\'(\x05\f\x07\x02(\t\x03\x02\x02\x02)*\x05\f\x07\x02*+\x07" +
+		"\n\x02\x02+,\x07\v\x02\x02,\v\x03\x02\x02\x02-.\x07\f\x02\x02.\r\x03\x02" +
+		"\x02\x02\x06\x10\x1A\"$";
 	public static __ATN: ATN;
 	public static get _ATN(): ATN {
 		if (!ExprParser.__ATN) {
@@ -447,7 +475,9 @@ export class SimpleExpressionContext extends ParserRuleContext {
 
 
 export class VariableRefContext extends ParserRuleContext {
-	public ID(): TerminalNode { return this.getToken(ExprParser.ID, 0); }
+	public identifier(): IdentifierContext {
+		return this.getRuleContext(0, IdentifierContext);
+	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
@@ -457,7 +487,9 @@ export class VariableRefContext extends ParserRuleContext {
 
 
 export class FunctionRefContext extends ParserRuleContext {
-	public ID(): TerminalNode { return this.getToken(ExprParser.ID, 0); }
+	public identifier(): IdentifierContext {
+		return this.getRuleContext(0, IdentifierContext);
+	}
 	public OPEN_PAR(): TerminalNode { return this.getToken(ExprParser.OPEN_PAR, 0); }
 	public CLOSE_PAR(): TerminalNode { return this.getToken(ExprParser.CLOSE_PAR, 0); }
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
@@ -465,6 +497,16 @@ export class FunctionRefContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return ExprParser.RULE_functionRef; }
+}
+
+
+export class IdentifierContext extends ParserRuleContext {
+	public ID(): TerminalNode { return this.getToken(ExprParser.ID, 0); }
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return ExprParser.RULE_identifier; }
 }
 
 

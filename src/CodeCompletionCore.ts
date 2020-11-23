@@ -254,7 +254,6 @@ export class CodeCompletionCore {
     private getFollowingTokens(transition: Transition): number[] {
         let result: number[] = [];
 
-        let seen: ATNState[] = [];
         let pipeline: ATNState[] = [transition.target];
 
         while (pipeline.length > 0) {
@@ -283,9 +282,9 @@ export class CodeCompletionCore {
      */
     private determineFollowSets(start: ATNState, stop: ATNState): FollowSetWithPath[] {
         let result: FollowSetWithPath[] = [];
-        let seen: Set<ATNState> = new Set();
+        let stateStack: ATNState[] = [];
         let ruleStack: number[] = [];
-        this.collectFollowSets(start, stop, result, seen, ruleStack);
+        this.collectFollowSets(start, stop, result, stateStack, ruleStack);
 
         return result;
     }
@@ -294,19 +293,20 @@ export class CodeCompletionCore {
      * Collects possible tokens which could be matched following the given ATN state. This is essentially the same
      * algorithm as used in the LL1Analyzer class, but here we consider predicates also and use no parser rule context.
      */
-    private collectFollowSets(s: ATNState, stopState: ATNState, followSets: FollowSetWithPath[], seen: Set<ATNState>,
+    private collectFollowSets(s: ATNState, stopState: ATNState, followSets: FollowSetWithPath[], stateStack: ATNState[],
         ruleStack: number[]) {
 
-        if (seen.has(s))
+        if(stateStack.find(x => x == s)) {
             return;
-
-        seen.add(s);
+        }
+        stateStack.push(s);
 
         if (s == stopState || s.stateType == ATNStateType.RULE_STOP) {
             let set = new FollowSetWithPath();
             set.intervals = IntervalSet.of(Token.EPSILON);
             set.path = ruleStack.slice();
             followSets.push(set);
+            stateStack.pop();
             return;
         }
 
@@ -317,14 +317,14 @@ export class CodeCompletionCore {
                     continue;
 
                 ruleStack.push(ruleTransition.target.ruleIndex);
-                this.collectFollowSets(transition.target, stopState, followSets, seen, ruleStack);
+                this.collectFollowSets(transition.target, stopState, followSets, stateStack, ruleStack);
                 ruleStack.pop();
 
             } else if (transition.serializationType == TransitionType.PREDICATE) {
                 if (this.checkPredicate(transition as PredicateTransition))
-                    this.collectFollowSets(transition.target, stopState, followSets, seen, ruleStack);
+                    this.collectFollowSets(transition.target, stopState, followSets, stateStack, ruleStack);
             } else if (transition.isEpsilon) {
-                this.collectFollowSets(transition.target, stopState, followSets, seen, ruleStack);
+                this.collectFollowSets(transition.target, stopState, followSets, stateStack, ruleStack);
             } else if (transition.serializationType == TransitionType.WILDCARD) {
                 let set = new FollowSetWithPath();
                 set.intervals = IntervalSet.of(Token.MIN_USER_TOKEN_TYPE, this.atn.maxTokenType);
@@ -344,6 +344,7 @@ export class CodeCompletionCore {
                 }
             }
         }
+        stateStack.pop();
     }
 
     /**
