@@ -13,12 +13,14 @@ simpleExpression
 ;
 
 variableRef
-    : ID
+    : identifier
 ;
 
 functionRef
-    : ID OPEN_PAR CLOSE_PAR
+    : identifier OPEN_PAR CLOSE_PAR
 ;
+
+identifier: ID;
 
 VAR: [vV] [aA] [rR];
 LET: [lL] [eE] [tT];
