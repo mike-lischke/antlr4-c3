@@ -713,8 +713,17 @@ describe('antlr4-c3:', function () {
 
             expect(candidates.rules.size, "Test 47").to.equal(3);
             expect(candidates.rules.get(CPP14Parser.RULE_idexpression)?.ruleList, "Test 48").to.eql(idexpressionStack);
-            expect(candidates.rules.get(CPP14Parser.RULE_classname)?.ruleList, "Test 48.1").not.to.be.undefined;
-            expect(candidates.rules.get(CPP14Parser.RULE_namespacename)?.ruleList, "Test 48.2").not.to.be.undefined;
+            expect(candidates.rules.get(CPP14Parser.RULE_classname)?.ruleList, "Test 48.1").to.eql([
+                ...idexpressionStack.slice(0, idexpressionStack.length - 1),
+                CPP14Parser.RULE_simpletypespecifier,
+                CPP14Parser.RULE_nestednamespecifier,
+                CPP14Parser.RULE_typename,
+            ]);
+            expect(candidates.rules.get(CPP14Parser.RULE_namespacename)?.ruleList, "Test 48.2").to.eql([
+                ...idexpressionStack.slice(0, idexpressionStack.length - 1),
+                CPP14Parser.RULE_simpletypespecifier,
+                CPP14Parser.RULE_nestednamespecifier,
+            ]);
 
             // We should receive more specific rules when translating top down.
             core.translateRulesTopDown = true;
