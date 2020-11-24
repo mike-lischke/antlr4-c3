@@ -757,6 +757,9 @@ describe('antlr4-c3:', function () {
             expect(candidates.tokens.has(CPP14Lexer.Export), "Test 61").to.equal(false);
             expect(candidates.tokens.has(CPP14Lexer.Private), "Test 62").to.equal(false);
             expect(candidates.tokens.has(CPP14Lexer.Protected), "Test 63").to.equal(false);
+
+            //Fixing issue #12 causes this to be included that was previously not returned
+            expect(candidates.tokens.has(CPP14Lexer.Decltype), "Test 64").to.equal(true);
         }).timeout(5000);
 
         it('Simple C++ example with errors in input', function () {
@@ -813,9 +816,12 @@ describe('antlr4-c3:', function () {
             expect(candidates.tokens.has(CPP14Lexer.Private), "Test 13").to.equal(false);
             expect(candidates.tokens.has(CPP14Lexer.Protected), "Test 14").to.equal(false);
 
+            //Fixing issue #12 causes this to be included that was previously not returned
+            expect(candidates.tokens.has(CPP14Lexer.Decltype), "Test 15").to.equal(true);
+
             candidates = core.collectCandidates(13); // After the error position -> no suggestions.
-            expect(candidates.tokens.size, "Test 15").to.equal(0);
-            expect(candidates.rules.size, "Test 16").to.equal(0);
+            expect(candidates.tokens.size, "Test 16").to.equal(0);
+            expect(candidates.rules.size, "Test 17").to.equal(0);
         });
 
         it('Real C++ file', function () {
@@ -910,6 +916,9 @@ describe('antlr4-c3:', function () {
             expect(candidates.tokens.has(CPP14Lexer.Export), "Test 61").to.equal(false);
             expect(candidates.tokens.has(CPP14Lexer.Private), "Test 62").to.equal(false);
             expect(candidates.tokens.has(CPP14Lexer.Protected), "Test 63").to.equal(false);
+
+            //Fixing issue #12 causes this to be included that was previously not returned
+            expect(candidates.tokens.has(CPP14Lexer.Decltype), "Test 64").to.equal(true);
         }).timeout(60000);
     });
 
