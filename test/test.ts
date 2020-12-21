@@ -33,7 +33,7 @@ import { TerminalNode } from "antlr4ts/tree/TerminalNode";
 // Some helper functions + types to create certain setups.
 
 export class ErrorListener implements ANTLRErrorListener<CommonToken> {
-    errorCount = 0;
+    public errorCount = 0;
 
     @Override
     syntaxError<T extends Token>(recognizer: Recognizer<T, any>, offendingSymbol: T | undefined, line: number,
@@ -52,9 +52,9 @@ const dummyNode = new TerminalNode(new CommonToken(-2, "Dummy", undefined, 0, 10
  * If namespaces are given then the classes are distributed among them in a round-robin fashion.
  */
 function createClassSymbolTable(name: string, counts: number[], namespaces?: string[]): c3.SymbolTable {
-    let symbolTable = new c3.SymbolTable(name, { allowDuplicateSymbols: false });
+    const symbolTable = new c3.SymbolTable(name, { allowDuplicateSymbols: false });
 
-    let nsSymbols: (c3.NamespaceSymbol | undefined)[] = [undefined];
+    const nsSymbols: (c3.NamespaceSymbol | undefined)[] = [undefined];
     let nsIndex = 0;
     let nsCount = 1;
     if (namespaces && namespaces.length > 0) {
@@ -78,7 +78,8 @@ function createClassSymbolTable(name: string, counts: number[], namespaces?: str
             let block1 = symbolTable.addNewSymbolOfType(c3.BlockSymbol, undefined, "block1"); // Block at top level.
             symbolTable.addNewSymbolOfType(c3.VariableSymbol, block1, "var1", 17, c3.FundamentalType.integerType);
             let block2 = symbolTable.addNewSymbolOfType(c3.BlockSymbol, undefined, "block2");
-            let symbol = symbolTable.addNewSymbolOfType(c3.VariableSymbol, block2, "var1", 3.142, c3.FundamentalType.floatType);
+            let symbol = symbolTable.addNewSymbolOfType(c3.VariableSymbol, block2, "var1", 3.142,
+                c3.FundamentalType.floatType);
             if (j == 1) {
                 symbol.context = dummyNode;
             }
@@ -94,11 +95,13 @@ function createClassSymbolTable(name: string, counts: number[], namespaces?: str
     }
 
     for (let i = 0; i < counts[3]; ++i) {
-        symbolTable.addNewSymbolOfType(c3.VariableSymbol, undefined, "globalVar" + i, 42, c3.FundamentalType.integerType);
+        symbolTable.addNewSymbolOfType(c3.VariableSymbol, undefined, "globalVar" + i, 42,
+            c3.FundamentalType.integerType);
     }
 
     for (let i = 0; i < counts[4]; ++i) {
-        symbolTable.addNewSymbolOfType(c3.LiteralSymbol, undefined, "globalConst" + i, "string constant", c3.FundamentalType.stringType);
+        symbolTable.addNewSymbolOfType(c3.LiteralSymbol, undefined, "globalConst" + i, "string constant",
+            c3.FundamentalType.stringType);
     }
 
     return symbolTable;
@@ -110,8 +113,8 @@ describe('antlr4-c3:', function () {
 
     describe('Symbol table tests:', function () {
         it("Single table base tests", function () {
-            let symbolTable = createClassSymbolTable("main", [3, 3, 4, 5, 5]);
-            let info = symbolTable.info;
+            const symbolTable = createClassSymbolTable("main", [3, 3, 4, 5, 5]);
+            const info = symbolTable.info;
             expect(info.dependencyCount, "Test 1").to.equal(0);
             expect(info.symbolCount, "Test 2").to.equal(13); // 5 + 5 top level symbols + 3 classes.
 
@@ -126,17 +129,17 @@ describe('antlr4-c3:', function () {
                 }
             }
 
-            let class1 = symbolTable.resolve("class1");
+            const class1 = symbolTable.resolve("class1");
             expect(class1, "Test 4").is.instanceof(c3.ClassSymbol);
-            let method2 = (class1 as c3.ClassSymbol).resolve("method2");
+            const method2 = (class1 as c3.ClassSymbol).resolve("method2");
             expect(method2, "Test 5").is.instanceof(c3.MethodSymbol);
-            let scopes = (method2 as c3.MethodSymbol).directScopes;
+            const scopes = (method2 as c3.MethodSymbol).directScopes;
             expect(scopes.length, "Test 6").equals(2); // 2 anonymous blocks.
             expect(scopes[0], "Test 7").is.instanceof(c3.ScopedSymbol);
 
-            let block1 = scopes[0] as c3.ScopedSymbol;
+            const block1 = scopes[0] as c3.ScopedSymbol;
             try {
-                let duplicateMethod = symbolTable.addNewSymbolOfType(c3.MethodSymbol, undefined, "method2");
+                const duplicateMethod = symbolTable.addNewSymbolOfType(c3.MethodSymbol, undefined, "method2");
                 (class1 as c3.ClassSymbol).addSymbol(duplicateMethod); // Must throw.
                 assert(false);
             } catch (e) {
@@ -161,7 +164,7 @@ describe('antlr4-c3:', function () {
             expect((method2 as c3.MethodSymbol).getSymbolsOfType(c3.ScopedSymbol).length, "Test 15").to.equal(2);
             expect(block1.resolve("class1", false), "Test 16").to.equal(class1);
 
-            let path = variable!.symbolPath;
+            const path = variable!.symbolPath;
             expect(path.length, "Test 17").to.equal(5);
             expect(path[0].name, "Test 18").to.equal("var1");
             expect(path[1].name, "Test 19").to.equal("block1");
@@ -177,7 +180,7 @@ describe('antlr4-c3:', function () {
             expect(variable!.qualifiedName(".", true, false), "Test 28").to.equal("main.class1.method2.block1.var1");
             expect(variable!.qualifiedName(".", true, true), "Test 29").to.equal("main.class1.method2.block1.var1");
 
-            let allSymbols = symbolTable.getAllNestedSymbols();
+            const allSymbols = symbolTable.getAllNestedSymbols();
             expect(allSymbols.length, "Test 30").to.equal(70);
 
             let symbolPath = allSymbols[59].qualifiedName(".", true);
@@ -189,14 +192,14 @@ describe('antlr4-c3:', function () {
 
         it("Single table type checks", function () {
             // Create a symbol table with all the symbols we have in the lib and query it for some collections.
-            // Start with a standard table containing a class with a single method, a global var and a global literal symbol.
-            // Hierarchy is not really important here.
-            let symbolTable = createClassSymbolTable("main", [1, 1, 1, 1, 1]);
+            // Start with a standard table containing a class with a single method, a global var and a global
+            // literal symbol. Hierarchy is not really important here.
+            const symbolTable = createClassSymbolTable("main", [1, 1, 1, 1, 1]);
 
             // Now add all the other symbols.
-            let alias = symbolTable.addNewSymbolOfType(c3.TypeAlias, undefined, "newBool", c3.FundamentalType.boolType);
-            let routine = symbolTable.addNewSymbolOfType(c3.RoutineSymbol, undefined, "routine1", c3.FundamentalType.integerType);
-            let field = symbolTable.addNewSymbolOfType(c3.FieldSymbol, undefined, "field1", c3.FundamentalType.floatType);
+            symbolTable.addNewSymbolOfType(c3.TypeAlias, undefined, "newBool", c3.FundamentalType.boolType);
+            symbolTable.addNewSymbolOfType(c3.RoutineSymbol, undefined, "routine1", c3.FundamentalType.integerType);
+            symbolTable.addNewSymbolOfType(c3.FieldSymbol, undefined, "field1", c3.FundamentalType.floatType);
 
         });
 
@@ -212,14 +215,15 @@ describe('antlr4-c3:', function () {
         }).timeout(20000);
 
         it("Single table namespace tests", function () {
-            let symbolTable = createClassSymbolTable("main", [30, 10, 10, 100, 100], ["ns1", "ns2", "ns1.ns3.ns5", "ns1.ns4.ns6.ns8"]);
+            const symbolTable = createClassSymbolTable("main", [30, 10, 10, 100, 100], ["ns1", "ns2", "ns1.ns3.ns5",
+                "ns1.ns4.ns6.ns8"]);
 
-            let namespaces = symbolTable.getNestedSymbolsOfType(c3.NamespaceSymbol);
+            const namespaces = symbolTable.getNestedSymbolsOfType(c3.NamespaceSymbol);
             expect(namespaces.length, "Test 1").to.equal(7);
 
             // This call does a depth-first search, so all the deeper nested namespaces appear at the lower indexes
             // and the less nested ones at the end of the list.
-            let methods = symbolTable.getNestedSymbolsOfType(c3.MethodSymbol);
+            const methods = symbolTable.getNestedSymbolsOfType(c3.MethodSymbol);
             expect(methods.length, "Test 2").to.equal(300);
             expect(methods[2].qualifiedName(".", true), "Test 3").to.equal("main.ns1.ns3.ns5.class2.method2");
             expect(methods[299].qualifiedName(".", true), "Test 4").to.equal("main.ns2.class29.method9");
@@ -231,31 +235,31 @@ describe('antlr4-c3:', function () {
             // - a system functions table
             // - a table with variables, which has 2 other dependencies (functions in same namespace as system
             //   functions and one in a different namespace)
-            let main = createClassSymbolTable("main", [30, 10, 10, 100, 100]);
-            let systemFunctions = new c3.SymbolTable("system functions", { allowDuplicateSymbols: false });
-            let namespace1 = systemFunctions.addNewSymbolOfType(c3.NamespaceSymbol, undefined, "ns1");
+            const main = createClassSymbolTable("main", [30, 10, 10, 100, 100]);
+            const systemFunctions = new c3.SymbolTable("system functions", { allowDuplicateSymbols: false });
+            const namespace1 = systemFunctions.addNewSymbolOfType(c3.NamespaceSymbol, undefined, "ns1");
             for (let i = 0; i < 333; ++i) {
                 systemFunctions.addNewSymbolOfType(c3.RoutineSymbol, namespace1, "func" + i);
             }
             main.addDependencies(systemFunctions);
 
-            let libFunctions = new c3.SymbolTable("library functions", { allowDuplicateSymbols: false });
-            let namespace2 = libFunctions.addNewSymbolOfType(c3.NamespaceSymbol, undefined, "ns2");
+            const libFunctions = new c3.SymbolTable("library functions", { allowDuplicateSymbols: false });
+            const namespace2 = libFunctions.addNewSymbolOfType(c3.NamespaceSymbol, undefined, "ns2");
             for (let i = 0; i < 444; ++i) {
                 // Same names as in the system functions but different namespace.
                 libFunctions.addNewSymbolOfType(c3.RoutineSymbol, namespace2, "func" + i);
             }
 
-            let libVariables = new c3.SymbolTable("library variables", { allowDuplicateSymbols: false });
+            const libVariables = new c3.SymbolTable("library variables", { allowDuplicateSymbols: false });
 
             // Like for the system functions.
-            let namespace3 = libVariables.addNewSymbolOfType(c3.NamespaceSymbol, undefined, "ns1");
+            const namespace3 = libVariables.addNewSymbolOfType(c3.NamespaceSymbol, undefined, "ns1");
             for (let i = 0; i < 555; ++i) {
                 libVariables.addNewSymbolOfType(c3.VariableSymbol, namespace3, "var" + i);
             }
 
-            let libFunctions2 = new c3.SymbolTable("library functions 2", { allowDuplicateSymbols: false });
-            let namespace4 = libFunctions2.addNewSymbolOfType(c3.NamespaceSymbol, undefined, "ns1");
+            const libFunctions2 = new c3.SymbolTable("library functions 2", { allowDuplicateSymbols: false });
+            const namespace4 = libFunctions2.addNewSymbolOfType(c3.NamespaceSymbol, undefined, "ns1");
             for (let i = 0; i < 666; ++i) {
                 // Same names as in the system functions but different namespace.
                 libFunctions2.addNewSymbolOfType(c3.RoutineSymbol, namespace4, "func" + i);
@@ -274,16 +278,16 @@ describe('antlr4-c3:', function () {
         });
 
         it("Symbol navigation", function() {
-            let symbolTable = createClassSymbolTable("main", [10, 10, 10, 20, 34], []);
+            const symbolTable = createClassSymbolTable("main", [10, 10, 10, 20, 34], []);
 
-            let namespaces = symbolTable.getNestedSymbolsOfType(c3.NamespaceSymbol);
+            const namespaces = symbolTable.getNestedSymbolsOfType(c3.NamespaceSymbol);
             expect(namespaces.length, "Test 1").to.equal(0);
 
-            let variables = symbolTable.getNestedSymbolsOfType(c3.VariableSymbol);
+            const variables = symbolTable.getNestedSymbolsOfType(c3.VariableSymbol);
             expect(variables.length, "Test 2").to.equal(320);
 
             // A class member.
-            let field7 = variables[217];
+            const field7 = variables[217];
             expect(field7, "Test 3").not.to.be.undefined;
             expect(field7.firstSibling, "Test 4").to.equal(variables[210]);
             expect(field7.lastSibling.name, "Test 5").to.equal("method9");
@@ -297,7 +301,7 @@ describe('antlr4-c3:', function () {
 
             expect(field7.parent, "Test 12").to.be.instanceof(c3.ClassSymbol);
 
-            let parent7 = field7.parent as c3.ClassSymbol;
+            const parent7 = field7.parent as c3.ClassSymbol;
             expect(parent7.indexOfChild(field7), "Test 13").to.equal(7);
             expect(parent7.firstChild, "Test 14").to.equal(field7.firstSibling);
             expect(parent7.lastChild, "Test 15").to.equal(field7.lastSibling);
@@ -315,14 +319,14 @@ describe('antlr4-c3:', function () {
             expect(var1.firstSibling.lastSibling.firstSibling.firstSibling, "Test 23").to.equal(var1.firstSibling);
             expect(var1.lastSibling.firstSibling.firstSibling.lastSibling, "Test 24").to.equal(var1.lastSibling);
 
-            let block1 = var1.parent as c3.ScopedSymbol;
+            const block1 = var1.parent as c3.ScopedSymbol;
             expect(block1.indexOfChild(field7), "Test 25").to.equal(-1);
             expect(block1.indexOfChild(var1), "Test 26").to.equal(0);
             expect(block1.firstChild, "Test 27").to.equal(var1.firstSibling);
             expect(block1.lastChild, "Test 28").to.equal(var1.lastSibling);
 
             // A global variable (a single one in a block).
-            let var15 = variables[315];
+            const var15 = variables[315];
             expect(var15, "Test 29").not.to.be.undefined;
             expect(var15.firstSibling, "Test 30").to.equal(symbolTable.firstChild);
             expect(var15.lastSibling.name, "Test 31").to.equal("globalConst33");
@@ -331,16 +335,16 @@ describe('antlr4-c3:', function () {
 
             expect(var15.parent, "Test 34").to.be.instanceof(c3.SymbolTable);
 
-            let st1 = var15.parent as c3.ScopedSymbol;
+            const st1 = var15.parent as c3.ScopedSymbol;
             expect(st1.indexOfChild(var15), "Test 35").to.equal(25);
             expect(st1.firstChild, "Test 36").to.equal(var15.firstSibling);
             expect(st1.lastChild, "Test 37").to.equal(var15.lastSibling);
 
-            let next = variables[284].next;
+            const next = variables[284].next;
             expect(next, "Test 38").not.to.be.undefined;
             expect(next!.qualifiedName(".", true), "Test 39").to.equal("main.class9.method2.block1.var1");
 
-            let symbol = symbolTable.symbolWithContext(dummyNode);
+            const symbol = symbolTable.symbolWithContext(dummyNode);
             expect(symbol, "Test 40").not.to.be.undefined;
             expect(symbol!.qualifiedName(".", true), "Test 41").to.equal("main.class0.method1.block2.var1");
         });
@@ -349,17 +353,17 @@ describe('antlr4-c3:', function () {
     describe('Simple expression parser:', function () {
         it("Most simple setup", function () {
             // No customization happens here, so the c3 engine only returns lexer tokens.
-            let inputStream = new ANTLRInputStream("var c = a + b()");
-            let lexer = new ExprLexer(inputStream);
-            let tokenStream = new CommonTokenStream(lexer);
+            const inputStream = new ANTLRInputStream("var c = a + b()");
+            const lexer = new ExprLexer(inputStream);
+            const tokenStream = new CommonTokenStream(lexer);
 
-            let parser = new ExprParser(tokenStream);
-            let errorListener = new ErrorListener();
+            const parser = new ExprParser(tokenStream);
+            const errorListener = new ErrorListener();
             parser.addErrorListener(errorListener);
-            let tree = parser.expression();
+            const tree = parser.expression();
             expect(errorListener.errorCount, "Test 1").equals(0);
 
-            let core = new c3.CodeCompletionCore(parser);
+            const core = new c3.CodeCompletionCore(parser);
 
             // 1) At the input start.
             let candidates = core.collectCandidates(0);
@@ -407,17 +411,17 @@ describe('antlr4-c3:', function () {
         });
 
         it("Typical setup", function () {
-            let inputStream = new ANTLRInputStream("var c = a + b");
-            let lexer = new ExprLexer(inputStream);
-            let tokenStream = new CommonTokenStream(lexer);
+            const inputStream = new ANTLRInputStream("var c = a + b");
+            const lexer = new ExprLexer(inputStream);
+            const tokenStream = new CommonTokenStream(lexer);
 
-            let parser = new ExprParser(tokenStream);
-            let errorListener = new ErrorListener();
+            const parser = new ExprParser(tokenStream);
+            const errorListener = new ErrorListener();
             parser.addErrorListener(errorListener);
-            let tree = parser.expression();
+            const tree = parser.expression();
             expect(errorListener.errorCount, "Test 1").equals(0);
 
-            let core = new c3.CodeCompletionCore(parser);
+            const core = new c3.CodeCompletionCore(parser);
 
             // Ignore operators and the generic ID token.
             core.ignoredTokens = new Set([ExprLexer.ID, ExprLexer.PLUS, ExprLexer.MINUS, ExprLexer.MULTIPLY, ExprLexer.DIVIDE, ExprLexer.EQUAL]);
@@ -458,22 +462,23 @@ describe('antlr4-c3:', function () {
             candidates = core.collectCandidates(7);
             expect(candidates.tokens.size, "Test 14").to.equal(0);
             expect(candidates.rules.size, "Test 15").to.equal(1);
+
             // Our function rule should start at the ID reference of token 'a'
             expect(candidates.rules.get(ExprParser.RULE_functionRef)?.startTokenIndex, "Test 16").to.equal(6);
         });
 
         it('Recursive preferred rule', function() {
-            let inputStream = new ANTLRInputStream("var c = a + b");
-            let lexer = new ExprLexer(inputStream);
-            let tokenStream = new CommonTokenStream(lexer);
+            const inputStream = new ANTLRInputStream("var c = a + b");
+            const lexer = new ExprLexer(inputStream);
+            const tokenStream = new CommonTokenStream(lexer);
 
-            let parser = new ExprParser(tokenStream);
-            let errorListener = new ErrorListener();
+            const parser = new ExprParser(tokenStream);
+            const errorListener = new ErrorListener();
             parser.addErrorListener(errorListener);
-            let tree = parser.expression();
+            const tree = parser.expression();
             expect(errorListener.errorCount, "Test 1").equals(0);
 
-            let core = new c3.CodeCompletionCore(parser);
+            const core = new c3.CodeCompletionCore(parser);
 
             // Tell the engine to return certain rules to us, which we could use to look up values in a symbol table.
             core.preferredRules = new Set([ExprParser.RULE_simpleExpression]);
@@ -504,17 +509,17 @@ describe('antlr4-c3:', function () {
         })
 
         it('Candidate rules with different start tokens', () => {
-            let inputStream = new ANTLRInputStream("var c = a + b");
-            let lexer = new ExprLexer(inputStream);
-            let tokenStream = new CommonTokenStream(lexer);
+            const inputStream = new ANTLRInputStream("var c = a + b");
+            const lexer = new ExprLexer(inputStream);
+            const tokenStream = new CommonTokenStream(lexer);
 
-            let parser = new ExprParser(tokenStream);
-            let errorListener = new ErrorListener();
+            const parser = new ExprParser(tokenStream);
+            const errorListener = new ErrorListener();
             parser.addErrorListener(errorListener);
-            let tree = parser.expression();
+            const tree = parser.expression();
             expect(errorListener.errorCount, "Test 1").equals(0);
 
-            let core = new c3.CodeCompletionCore(parser);
+            const core = new c3.CodeCompletionCore(parser);
 
             // Tell the engine to return certain rules to us, which we could use to look up values in a symbol table.
             core.preferredRules = new Set([ExprParser.RULE_assignment, ExprParser.RULE_variableRef]);
@@ -544,14 +549,14 @@ describe('antlr4-c3:', function () {
             // We are trying here to get useful code completion candidates without adjusting the grammar in any way.
             // We use the grammar as downloaded from the ANTLR grammar directory and set up the c3 engine
             // instead in a way that still returns useful info. This limits us somewhat.
-            let inputStream = new ANTLRInputStream("class A {\n" +
+            const inputStream = new ANTLRInputStream("class A {\n" +
                 "public:\n" +
                 "  void test() {\n" +
                 "  }\n" +
                 "};\n"
             );
-            let lexer = new CPP14Lexer(inputStream);
-            let tokenStream = new CommonTokenStream(lexer);
+            const lexer = new CPP14Lexer(inputStream);
+            const tokenStream = new CommonTokenStream(lexer);
 
             /*
             tokenStream.fill();
@@ -559,13 +564,13 @@ describe('antlr4-c3:', function () {
               console.log(token.toString());
             */
 
-            let parser = new CPP14Parser(tokenStream);
-            let errorListener = new ErrorListener();
+            const parser = new CPP14Parser(tokenStream);
+            const errorListener = new ErrorListener();
             parser.addErrorListener(errorListener);
-            let tree = parser.translationunit();
+            const tree = parser.translationunit();
             expect(errorListener.errorCount, "Test 1").equals(0);
 
-            let core = new c3.CodeCompletionCore(parser);
+            const core = new c3.CodeCompletionCore(parser);
 
             // Ignore operators and the generic ID token.
             core.ignoredTokens = new Set([
@@ -763,24 +768,24 @@ describe('antlr4-c3:', function () {
         }).timeout(5000);
 
         it('Simple C++ example with errors in input', function () {
-            let inputStream = new ANTLRInputStream("class A {\n" +
+            const inputStream = new ANTLRInputStream("class A {\n" +
                 "public:\n" +
                 "  void test() {\n" +
                 "    if ()" +
                 "  }\n" +
                 "};\n"
             );
-            let lexer = new CPP14Lexer(inputStream);
-            let tokenStream = new CommonTokenStream(lexer);
+            const lexer = new CPP14Lexer(inputStream);
+            const tokenStream = new CommonTokenStream(lexer);
 
-            let parser = new CPP14Parser(tokenStream);
+            const parser = new CPP14Parser(tokenStream);
             parser.removeErrorListeners();
-            let errorListener = new ErrorListener();
+            const errorListener = new ErrorListener();
             parser.addErrorListener(errorListener);
-            let tree = parser.translationunit();
+            const tree = parser.translationunit();
             expect(errorListener.errorCount, "Test 1").equals(3);
 
-            let core = new c3.CodeCompletionCore(parser);
+            const core = new c3.CodeCompletionCore(parser);
 
             // Ignore operators and the generic ID token.
             core.ignoredTokens = new Set([
@@ -827,10 +832,10 @@ describe('antlr4-c3:', function () {
         it('Real C++ file', function () {
             this.slow(10000);
 
-            let source = fs.readFileSync(path.join(__dirname, "../../test/Parser.cpp")).toString();
-            let inputStream = new ANTLRInputStream(source);
-            let lexer = new CPP14Lexer(inputStream);
-            let tokenStream = new CommonTokenStream(lexer);
+            const source = fs.readFileSync(path.join(__dirname, "../../test/Parser.cpp")).toString();
+            const inputStream = new ANTLRInputStream(source);
+            const lexer = new CPP14Lexer(inputStream);
+            const tokenStream = new CommonTokenStream(lexer);
 
             /*
             tokenStream.fill();
@@ -838,13 +843,13 @@ describe('antlr4-c3:', function () {
               console.log(token.toString());
             */
 
-            let parser = new CPP14Parser(tokenStream);
-            let errorListener = new ErrorListener();
+            const parser = new CPP14Parser(tokenStream);
+            const errorListener = new ErrorListener();
             parser.addErrorListener(errorListener);
-            let tree = parser.translationunit();
+            const tree = parser.translationunit();
             expect(errorListener.errorCount, "Test 1").equals(0);
 
-            let core = new c3.CodeCompletionCore(parser);
+            const core = new c3.CodeCompletionCore(parser);
 
             // Ignore operators and the generic ID token.
             core.ignoredTokens = new Set([

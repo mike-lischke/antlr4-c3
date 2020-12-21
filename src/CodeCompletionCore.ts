@@ -71,20 +71,30 @@ class PipelineEntry {
 // The main class for doing the collection process.
 export class CodeCompletionCore {
     // Debugging options. Print human readable ATN state and other info.
-    public showResult = false;                 // Not dependent on showDebugOutput. Prints the collected rules + tokens
-    // to terminal.
-    public showDebugOutput = false;            // Enables printing ATN state info to terminal.
-    public debugOutputWithTransitions = false; // Only relevant when showDebugOutput is true. Enables transition
-    // printing for a state.
-    public showRuleStack = false;              // Also depends on showDebugOutput. Enables call stack printing for each
-    // rule recursion.
 
-    // Tailoring of the result.
-    public ignoredTokens: Set<number>;        // Tokens which should not appear in the candidates set.
-    public preferredRules: Set<number>;       // Rules which replace any candidate token they contain.
-                                              // This allows to return descriptive rules (e.g. className, instead of ID/identifier).
-    public translateRulesTopDown = false;     // Specify if preferred rules should translated top-down (higher index rule returns first)
-                                              // or bottom-up (lower index rule returns first).
+    // Not dependent on showDebugOutput. Prints the collected rules + tokens to terminal.
+    public showResult = false;
+
+    // Enables printing ATN state info to terminal.
+    public showDebugOutput = false;
+
+    // Only relevant when showDebugOutput is true. Enables transition printing for a state.
+    public debugOutputWithTransitions = false;
+
+    // Also depends on showDebugOutput. Enables call stack printing for each rule recursion.
+    public showRuleStack = false;
+
+    // Tailoring of the result:
+    // Tokens which should not appear in the candidates set.
+    public ignoredTokens: Set<number>;
+
+    // Rules which replace any candidate token they contain.
+    // This allows to return descriptive rules (e.g. className, instead of ID/identifier).
+    public preferredRules: Set<number>;
+
+    // Specify if preferred rules should translated top-down (higher index rule returns first) or
+    // bottom-up (lower index rule returns first).
+    public translateRulesTopDown = false;
 
     private parser: Parser;
     private atn: ATN;
@@ -296,7 +306,7 @@ export class CodeCompletionCore {
     private collectFollowSets(s: ATNState, stopState: ATNState, followSets: FollowSetWithPath[], stateStack: ATNState[],
         ruleStack: number[]) {
 
-        if(stateStack.find(x => x == s)) {
+        if (stateStack.find(x => x == s)) {
             return;
         }
         stateStack.push(s);

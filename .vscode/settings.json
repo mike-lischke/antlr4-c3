@@ -8,5 +8,8 @@
         "plaintext",
         "antlr",
         "javascript"
+    ],
+    "cSpell.words": [
+        "ANTLR"
     ]
 }
