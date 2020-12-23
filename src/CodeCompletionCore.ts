@@ -139,17 +139,16 @@ export class CodeCompletionCore {
         this.tokenStartIndex = context ? context.start.tokenIndex : 0;
         let tokenStream: TokenStream = this.parser.inputStream;
 
-        let currentIndex = tokenStream.index;
-        tokenStream.seek(this.tokenStartIndex);
         this.tokens = [];
-        let offset = 1;
+        let offset = this.tokenStartIndex;
         while (true) {
-            let token = tokenStream.LT(offset++);
-            this.tokens.push(token);
+            const token = tokenStream.get(offset++);
+            if (token.channel === Token.DEFAULT_CHANNEL) {
+                this.tokens.push(token);
+            }
             if (token.tokenIndex >= caretTokenIndex || token.type == Token.EOF)
                 break;
         }
-        tokenStream.seek(currentIndex);
 
         let callStack: RuleWithStartTokenList = [];
         let startRule = context ? context.ruleIndex : 0;
@@ -243,8 +242,6 @@ export class CodeCompletionCore {
                 if (path.every((v, j) => v === rule[1].ruleList[j])) {
                     addNew = false;
                     break;
-                } else {
-                    console.log("gotcha");
                 }
             }
 
