@@ -716,7 +716,7 @@ export class SymbolTable extends ScopedSymbol {
     }
 
     /**
-     * Returns instance informations, mostly relevant for unit testing.
+     * Returns instance information, mostly relevant for unit testing.
      */
     public get info() {
         return {

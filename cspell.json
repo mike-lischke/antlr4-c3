@@ -1,0 +1,12 @@
+{
+    "version": "0.1",
+    "words": [
+        "ANTLR",
+        "Struct",
+        "structs",
+        "whitespaces"
+    ],
+    "ignoreWords": [
+        "philipps"
+    ]
+}

@@ -213,8 +213,8 @@ The last two options potentially create a lot of output which can significantly 
 
 ## Release Notes
 
-### 1.1.14
-- Unreleased version
+### 1.1.15
+- Fixed a problem with seen states in the follow set determination.
 
 ### 1.1.13
 - Added a C# port of the library (thanks to Jonathan Philipps)
