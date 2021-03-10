@@ -145,9 +145,17 @@ export class CodeCompletionCore {
             const token = tokenStream.get(offset++);
             if (token.channel === Token.DEFAULT_CHANNEL) {
                 this.tokens.push(token);
+
+                if (token.tokenIndex >= caretTokenIndex || token.type == Token.EOF) {
+                    break;
+                }
             }
-            if (token.tokenIndex >= caretTokenIndex || token.type == Token.EOF)
+
+            // Do not check for the token index here, as we want to end with the first unhidden token on or after
+            // the caret.
+            if (token.type == Token.EOF) {
                 break;
+            }
         }
 
         let callStack: RuleWithStartTokenList = [];

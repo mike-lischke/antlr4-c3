@@ -1,6 +1,6 @@
 /*
  * This file is released under the MIT license.
- * Copyright (c) 2016, 2017 Mike Lischke
+ * Copyright (c) 2016, 2021 Mike Lischke
  *
  * See LICENSE file for more info.
  */
@@ -209,7 +209,9 @@ describe('antlr4-c3:', function () {
             expect(symbolTable.getNestedSymbolsOfType(c3.ClassSymbol).length, "Test 2").to.equal(300);
             expect(symbolTable.getNestedSymbolsOfType(c3.MethodSymbol).length, "Test 3").to.equal(9000);
             expect(symbolTable.getNestedSymbolsOfType(c3.ScopedSymbol).length, "Test 4").to.equal(27300);
-            expect(symbolTable.getNestedSymbolsOfType(c3.VariableSymbol).length, "Test 5").to.equal(25000); // Includes class fields.
+
+            // Includes class fields.
+            expect(symbolTable.getNestedSymbolsOfType(c3.VariableSymbol).length, "Test 5").to.equal(25000);
             expect(symbolTable.getNestedSymbolsOfType(c3.FieldSymbol).length, "Test 6").to.equal(6000);
             expect(symbolTable.getNestedSymbolsOfType(c3.LiteralSymbol).length, "Test 7").to.equal(1000);
         }).timeout(20000);
@@ -271,10 +273,18 @@ describe('antlr4-c3:', function () {
             // Note: namespaces are handled in the context of their parent.
             // Symbols in a namespace/module/library are accessible from their parent.
             expect(main.getAllSymbols().size, "Test 1").to.equal(2232);
-            expect(systemFunctions.getAllSymbols().size, "Test 2").to.equal(334); // System functions alone + the namespace.
-            expect(libFunctions.getAllSymbols().size, "Test 3").to.equal(445); // Lib functions alone + the namespace.
-            expect(libVariables.getAllSymbols().size, "Test 4").to.equal(1668); // Lib variables + lib functions + namespaces.
-            expect(libFunctions2.getAllSymbols().size, "Test 5").to.equal(667); // Lib functions in "ns1" only + the namespace.
+
+            // System functions alone + the namespace.
+            expect(systemFunctions.getAllSymbols().size, "Test 2").to.equal(334);
+
+            // Lib functions alone + the namespace.
+            expect(libFunctions.getAllSymbols().size, "Test 3").to.equal(445);
+
+            // Lib variables + lib functions + namespaces.
+            expect(libVariables.getAllSymbols().size, "Test 4").to.equal(1668);
+
+            // Lib functions in "ns1" only + the namespace.
+            expect(libFunctions2.getAllSymbols().size, "Test 5").to.equal(667);
         });
 
         it("Symbol navigation", function() {
@@ -379,39 +389,35 @@ describe('antlr4-c3:', function () {
 
             // 2) On the first whitespace. In real implementations you would do some additional checks where in the
             //    whitespace the caret is, as the outcome is different depending on that position.
-            //    In this test we are visually at the end of the `var` keyword, so we should get `var`, `let` and ID as
-            //    possible candidates.
             candidates = core.collectCandidates(1);
-            expect(candidates.tokens.size, "Test 9").to.equal(3);
+            expect(candidates.tokens.size, "Test 9").to.equal(1);
             expect(candidates.tokens.has(ExprLexer.ID), "Test 10").to.equal(true);
-            expect(candidates.tokens.has(ExprLexer.VAR), "Test 11").to.equal(true);
-            expect(candidates.tokens.has(ExprLexer.LET), "Test 12").to.equal(true);
 
             // 3) On the variable name ('c').
             candidates = core.collectCandidates(2);
-            expect(candidates.tokens.size, "Test 13").to.equal(1);
-            expect(candidates.tokens.has(ExprLexer.ID), "Test 14").to.equal(true);
+            expect(candidates.tokens.size, "Test 11").to.equal(1);
+            expect(candidates.tokens.has(ExprLexer.ID), "Test 12").to.equal(true);
 
             // 4) On the equal sign (ignoring whitespace positions from now on).
             candidates = core.collectCandidates(4);
-            expect(candidates.tokens.size, "Test 15").to.equal(1);
-            expect(candidates.tokens.has(ExprLexer.EQUAL), "Test 16").to.equal(true);
+            expect(candidates.tokens.size, "Test 13").to.equal(1);
+            expect(candidates.tokens.has(ExprLexer.EQUAL), "Test 14").to.equal(true);
 
             // 5) On the variable reference 'a'. But since we have not configure the c3 engine to return us var refs
             //    (or function refs for that matter) we only get an ID here.
             candidates = core.collectCandidates(6);
-            expect(candidates.tokens.size, "Test 17").to.equal(1);
-            expect(candidates.tokens.has(ExprLexer.ID), "Test 18").to.equal(true);
+            expect(candidates.tokens.size, "Test 15").to.equal(1);
+            expect(candidates.tokens.has(ExprLexer.ID), "Test 16").to.equal(true);
 
-            // 6) On the '+' operator. Usually you would not show operators as candidates, but we have not set up the c3 engine
-            //    yet to not return them.
+            // 6) On the '+' operator. Usually you would not show operators as candidates, but we have not set up the
+            //    c3 engine yet to not return them.
             candidates = core.collectCandidates(8);
-            expect(candidates.tokens.size, "Test 19").to.equal(5);
-            expect(candidates.tokens.has(ExprLexer.PLUS), "Test 20").to.equal(true);
-            expect(candidates.tokens.has(ExprLexer.MINUS), "Test 21").to.equal(true);
-            expect(candidates.tokens.has(ExprLexer.MULTIPLY), "Test 22").to.equal(true);
-            expect(candidates.tokens.has(ExprLexer.DIVIDE), "Test 23").to.equal(true);
-            expect(candidates.tokens.has(ExprLexer.OPEN_PAR), "Test 24").to.equal(true);
+            expect(candidates.tokens.size, "Test 17").to.equal(5);
+            expect(candidates.tokens.has(ExprLexer.PLUS), "Test 18").to.equal(true);
+            expect(candidates.tokens.has(ExprLexer.MINUS), "Test 19").to.equal(true);
+            expect(candidates.tokens.has(ExprLexer.MULTIPLY), "Test 20").to.equal(true);
+            expect(candidates.tokens.has(ExprLexer.DIVIDE), "Test 21").to.equal(true);
+            expect(candidates.tokens.has(ExprLexer.OPEN_PAR), "Test 22").to.equal(true);
         });
 
         it("Typical setup", function () {
@@ -428,8 +434,9 @@ describe('antlr4-c3:', function () {
             const core = new c3.CodeCompletionCore(parser);
 
             // Ignore operators and the generic ID token.
-            core.ignoredTokens = new Set([ExprLexer.ID, ExprLexer.PLUS, ExprLexer.MINUS, ExprLexer.MULTIPLY,
-                ExprLexer.DIVIDE, ExprLexer.EQUAL]);
+            core.ignoredTokens = new Set([
+                ExprLexer.ID, ExprLexer.PLUS, ExprLexer.MINUS, ExprLexer.MULTIPLY, ExprLexer.DIVIDE, ExprLexer.EQUAL
+            ]);
 
             // Tell the engine to return certain rules to us, which we could use to look up values in a symbol table.
             core.preferredRules = new Set([ExprParser.RULE_functionRef, ExprParser.RULE_variableRef]);
@@ -465,8 +472,8 @@ describe('antlr4-c3:', function () {
 
             // 6) On the whitespace just after the variable reference 'a' (but it could still be a function reference!)
             candidates = core.collectCandidates(7);
-            expect(candidates.tokens.size, "Test 14").to.equal(0); // No ID token, since we set to ignore it.
-            expect(candidates.rules.size, "Test 15").to.equal(2);
+            expect(candidates.tokens.size, "Test 14").to.equal(0);
+            expect(candidates.rules.size, "Test 15").to.equal(1);
 
             // Our function rule should start at the ID reference of token 'a'
             expect(candidates.rules.get(ExprParser.RULE_functionRef)?.startTokenIndex, "Test 16").to.equal(6);
@@ -590,7 +597,9 @@ describe('antlr4-c3:', function () {
             // For a C++ grammar you can of course get many candidates of all kind. For this test we focus only on a few,
             // namely namespace, class and variable references. For variable references there is no own rule, only an
             // "idexpression" as part of the primary expression.
-            core.preferredRules = new Set([CPP14Parser.RULE_classname, CPP14Parser.RULE_namespacename, CPP14Parser.RULE_idexpression]);
+            core.preferredRules = new Set([
+                CPP14Parser.RULE_classname, CPP14Parser.RULE_namespacename, CPP14Parser.RULE_idexpression
+            ]);
 
             // 1) At the input start.
             let candidates = core.collectCandidates(0);
@@ -642,20 +651,6 @@ describe('antlr4-c3:', function () {
             // The returned list can contain more than one entry for a particular rule, if there are multiple
             // parser rule paths leading to it.
             expect(candidates.rules.size, "Test 44").to.equal(3);
-            /* The test used to check for the following path, but by changing the algorithm, we find a shorter path first
-            expect(candidates.rules.get(CPP14Parser.RULE_namespacename)?.ruleList, "Test 45").to.eql([
-                CPP14Parser.RULE_translationunit,
-                CPP14Parser.RULE_declarationseq,
-                CPP14Parser.RULE_declaration,
-                CPP14Parser.RULE_blockdeclaration,
-                CPP14Parser.RULE_simpledeclaration,
-                CPP14Parser.RULE_declspecifierseq,
-                CPP14Parser.RULE_declspecifier,
-                CPP14Parser.RULE_typespecifier,
-                CPP14Parser.RULE_trailingtypespecifier,
-                CPP14Parser.RULE_simpletypespecifier,
-                CPP14Parser.RULE_nestednamespecifier,
-            ]);*/
             expect(candidates.rules.get(CPP14Parser.RULE_namespacename)?.ruleList, "Test 45").to.eql([
                 CPP14Parser.RULE_translationunit,
                 CPP14Parser.RULE_declarationseq,
@@ -680,7 +675,8 @@ describe('antlr4-c3:', function () {
             ]);
 
             // 2) Within the method body.
-            //    Note when counting token indexes: the C++14 grammar skips all whitespaces, hence there are no tokens for them.
+            //    Note when counting token indexes: the C++14 grammar skips all whitespaces,
+            //    hence there are no tokens for them.
             candidates = core.collectCandidates(10);
 
             const idexpressionStack = [
@@ -753,8 +749,8 @@ describe('antlr4-c3:', function () {
                 CPP14Parser.RULE_nestednamespecifier,
             ]);
 
-            // We are starting a primary expression in a function body, so everything related to expressions and control flow is allowed here.
-            // We only check for a few possible keywords.
+            // We are starting a primary expression in a function body, so everything related to expressions and
+            // control flow is allowed here. We only check for a few possible keywords.
             expect(candidates.tokens.size, "Test 53").to.equal(82);
             expect(candidates.tokens.has(CPP14Lexer.If), "Test 54").to.equal(true);
             expect(candidates.tokens.has(CPP14Lexer.This), "Test 55").to.equal(true);
@@ -802,7 +798,9 @@ describe('antlr4-c3:', function () {
                 CPP14Lexer.Doublecolon, CPP14Lexer.Semi,
             ]);
 
-            core.preferredRules = new Set([CPP14Parser.RULE_classname, CPP14Parser.RULE_namespacename, CPP14Parser.RULE_idexpression]);
+            core.preferredRules = new Set([
+                CPP14Parser.RULE_classname, CPP14Parser.RULE_namespacename, CPP14Parser.RULE_idexpression
+            ]);
 
             core.showDebugOutput = false;
             core.showRuleStack = false;
@@ -811,7 +809,9 @@ describe('antlr4-c3:', function () {
             expect(candidates.tokens.size, "Test 2").to.equal(1);
             expect(candidates.tokens.has(CPP14Lexer.LeftParen), "Test 3").to.equal(true);
 
-            candidates = core.collectCandidates(12); // At the closing parenthesis -> again everything in an expression allowed (no control flow this time, tho).
+            // At the closing parenthesis -> again everything in an expression allowed
+            // (no control flow this time, though).
+            candidates = core.collectCandidates(12);
 
             expect(candidates.tokens.size, "Test 4").to.equal(65);
             expect(candidates.tokens.has(CPP14Lexer.If), "Test 5").to.equal(false);
@@ -866,7 +866,9 @@ describe('antlr4-c3:', function () {
                 CPP14Lexer.Doublecolon, CPP14Lexer.Semi,
             ]);
 
-            core.preferredRules = new Set([CPP14Parser.RULE_classname, CPP14Parser.RULE_namespacename, CPP14Parser.RULE_idexpression]);
+            core.preferredRules = new Set([
+                CPP14Parser.RULE_classname, CPP14Parser.RULE_namespacename, CPP14Parser.RULE_idexpression
+            ]);
 
             let candidates = core.collectCandidates(3469);
 
@@ -912,8 +914,8 @@ describe('antlr4-c3:', function () {
                 CPP14Parser.RULE_nestednamespecifier,
             ]);
 
-            // We are starting a primary expression in a function body, so everything related to expressions and control flow is allowed here.
-            // We only check for a few possible keywords.
+            // We are starting a primary expression in a function body, so everything related to expressions and
+            // control flow is allowed here. We only check for a few possible keywords.
             expect(candidates.tokens.size, "Test 53").to.equal(82);
             expect(candidates.tokens.has(CPP14Lexer.If), "Test 54").to.equal(true);
             expect(candidates.tokens.has(CPP14Lexer.This), "Test 55").to.equal(true);
@@ -927,7 +929,7 @@ describe('antlr4-c3:', function () {
             expect(candidates.tokens.has(CPP14Lexer.Private), "Test 62").to.equal(false);
             expect(candidates.tokens.has(CPP14Lexer.Protected), "Test 63").to.equal(false);
 
-            //Fixing issue #12 causes this to be included that was previously not returned
+            // Fixing issue #12 causes this to be included that was previously not returned.
             expect(candidates.tokens.has(CPP14Lexer.Decltype), "Test 64").to.equal(true);
         }).timeout(60000);
     });
