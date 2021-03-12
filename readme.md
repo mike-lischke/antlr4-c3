@@ -213,6 +213,9 @@ The last two options potentially create a lot of output which can significantly 
 
 ## Release Notes
 
+### 1.1.16
+- Fixed an issue where wrong tokens were collected for code completion.
+
 ### 1.1.15
 - Fixed a problem with seen states in the follow set determination.
 

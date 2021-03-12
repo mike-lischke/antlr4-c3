@@ -1,12 +1,12 @@
 {
   "name": "antlr4-c3",
-  "version": "1.1.15",
+  "version": "1.1.16",
   "description": "A code completion core implementation for ANTLR4 based parsers",
   "main": "out/index.js",
   "typings": "out/index.d.ts",
   "scripts": {
     "prepublishOnly": "npm run test",
-    "test": "tsc --version && tsc && mocha out/test",
+    "test": "tsc --version && npm run generate && tsc && mocha out/test",
     "generate": "antlr4ts test/CPP14.g4 test/Expr.g4 -no-listener -no-visitor"
   },
   "repository": {
@@ -24,13 +24,13 @@
     "antlr4ts": "^0.5.0-alpha.3"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.12",
-    "@types/mocha": "^8.0.1",
-    "@types/node": "^14.0.27",
-    "antlr4ts-cli": "^0.5.0-alpha.3",
-    "chai": ">=4.2.0",
-    "mocha": "^8.1.1",
-    "path": ">=0.12.7",
+    "@types/chai": "^4.2.15",
+    "@types/mocha": "^8.2.1",
+    "@types/node": "^14.14.34",
+    "antlr4ts-cli": "^0.5.0-alpha.4",
+    "chai": "^4.3.3",
+    "mocha": "^8.3.2",
+    "path": "^0.12.7",
     "typescript": "^3.9.7"
   },
   "author": "Mike Lischke",

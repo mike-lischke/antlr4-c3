@@ -1,4 +1,4 @@
-// Generated from test/Expr.g4 by ANTLR 4.7.3-SNAPSHOT
+// Generated from test/Expr.g4 by ANTLR 4.9.0-SNAPSHOT
 
 
 import { ATN } from "antlr4ts/atn/ATN";
@@ -73,6 +73,10 @@ export class ExprParser extends Parser {
 
 	// @Override
 	public get serializedATN(): string { return ExprParser._serializedATN; }
+
+	protected createFailedPredicateException(predicate?: string, message?: string): FailedPredicateException {
+		return new FailedPredicateException(this, predicate, message);
+	}
 
 	constructor(input: TokenStream) {
 		super(input);
@@ -218,7 +222,7 @@ export class ExprParser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, ExprParser.RULE_simpleExpression);
 						this.state = 26;
 						if (!(this.precpred(this._ctx, 4))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 4)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 4)");
 						}
 						this.state = 27;
 						_la = this._input.LA(1);
@@ -243,7 +247,7 @@ export class ExprParser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, ExprParser.RULE_simpleExpression);
 						this.state = 29;
 						if (!(this.precpred(this._ctx, 3))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 3)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 3)");
 						}
 						this.state = 30;
 						_la = this._input.LA(1);

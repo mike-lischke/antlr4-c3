@@ -1,4 +1,4 @@
-// Generated from test/CPP14.g4 by ANTLR 4.7.3-SNAPSHOT
+// Generated from test/CPP14.g4 by ANTLR 4.9.0-SNAPSHOT
 
 
 	import { InputMismatchException } from 'antlr4ts/InputMismatchException';
@@ -486,6 +486,10 @@ export class CPP14Parser extends Parser {
 	// @Override
 	public get serializedATN(): string { return CPP14Parser._serializedATN; }
 
+	protected createFailedPredicateException(predicate?: string, message?: string): FailedPredicateException {
+		return new FailedPredicateException(this, predicate, message);
+	}
+
 	constructor(input: TokenStream) {
 		super(input);
 		this._interp = new ParserATNSimulator(CPP14Parser._ATN, this);
@@ -842,7 +846,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_nestednamespecifier);
 						this.state = 447;
 						if (!(this.precpred(this._ctx, 2))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 2)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
 						}
 						this.state = 448;
 						this.match(CPP14Parser.Identifier);
@@ -857,7 +861,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_nestednamespecifier);
 						this.state = 450;
 						if (!(this.precpred(this._ctx, 1))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 						}
 						this.state = 452;
 						this._errHandler.sync(this);
@@ -1110,7 +1114,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_capturelist);
 					this.state = 489;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 490;
 					this.match(CPP14Parser.Comma);
@@ -1565,7 +1569,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_postfixexpression);
 						this.state = 598;
 						if (!(this.precpred(this._ctx, 19))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 19)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 19)");
 						}
 						this.state = 599;
 						this.match(CPP14Parser.LeftBracket);
@@ -1582,7 +1586,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_postfixexpression);
 						this.state = 603;
 						if (!(this.precpred(this._ctx, 18))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 18)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 18)");
 						}
 						this.state = 604;
 						this.match(CPP14Parser.LeftBracket);
@@ -1599,7 +1603,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_postfixexpression);
 						this.state = 608;
 						if (!(this.precpred(this._ctx, 17))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 17)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 17)");
 						}
 						this.state = 609;
 						this.match(CPP14Parser.LeftParen);
@@ -1624,7 +1628,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_postfixexpression);
 						this.state = 614;
 						if (!(this.precpred(this._ctx, 12))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 12)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 12)");
 						}
 						this.state = 615;
 						this.match(CPP14Parser.Dot);
@@ -1649,7 +1653,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_postfixexpression);
 						this.state = 620;
 						if (!(this.precpred(this._ctx, 11))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 11)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 11)");
 						}
 						this.state = 621;
 						this.match(CPP14Parser.Arrow);
@@ -1674,7 +1678,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_postfixexpression);
 						this.state = 626;
 						if (!(this.precpred(this._ctx, 10))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 10)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 10)");
 						}
 						this.state = 627;
 						this.match(CPP14Parser.Dot);
@@ -1689,7 +1693,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_postfixexpression);
 						this.state = 629;
 						if (!(this.precpred(this._ctx, 9))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 9)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 9)");
 						}
 						this.state = 630;
 						this.match(CPP14Parser.Arrow);
@@ -1704,7 +1708,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_postfixexpression);
 						this.state = 632;
 						if (!(this.precpred(this._ctx, 8))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 8)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 8)");
 						}
 						this.state = 633;
 						this.match(CPP14Parser.PlusPlus);
@@ -1717,7 +1721,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_postfixexpression);
 						this.state = 634;
 						if (!(this.precpred(this._ctx, 7))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 7)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 7)");
 						}
 						this.state = 635;
 						this.match(CPP14Parser.MinusMinus);
@@ -2322,7 +2326,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_noptrnewdeclarator);
 					this.state = 747;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 748;
 					this.match(CPP14Parser.LeftBracket);
@@ -2603,7 +2607,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_pmexpression);
 						this.state = 797;
 						if (!(this.precpred(this._ctx, 2))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 2)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
 						}
 						this.state = 798;
 						this.match(CPP14Parser.DotStar);
@@ -2618,7 +2622,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_pmexpression);
 						this.state = 800;
 						if (!(this.precpred(this._ctx, 1))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 						}
 						this.state = 801;
 						this.match(CPP14Parser.ArrowStar);
@@ -2692,7 +2696,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_multiplicativeexpression);
 						this.state = 811;
 						if (!(this.precpred(this._ctx, 3))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 3)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 3)");
 						}
 						this.state = 812;
 						this.match(CPP14Parser.Star);
@@ -2707,7 +2711,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_multiplicativeexpression);
 						this.state = 814;
 						if (!(this.precpred(this._ctx, 2))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 2)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
 						}
 						this.state = 815;
 						this.match(CPP14Parser.Div);
@@ -2722,7 +2726,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_multiplicativeexpression);
 						this.state = 817;
 						if (!(this.precpred(this._ctx, 1))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 						}
 						this.state = 818;
 						this.match(CPP14Parser.Mod);
@@ -2796,7 +2800,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_additiveexpression);
 						this.state = 828;
 						if (!(this.precpred(this._ctx, 2))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 2)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
 						}
 						this.state = 829;
 						this.match(CPP14Parser.Plus);
@@ -2811,7 +2815,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_additiveexpression);
 						this.state = 831;
 						if (!(this.precpred(this._ctx, 1))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 						}
 						this.state = 832;
 						this.match(CPP14Parser.Minus);
@@ -2885,7 +2889,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_shiftexpression);
 						this.state = 842;
 						if (!(this.precpred(this._ctx, 2))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 2)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
 						}
 						this.state = 843;
 						this.match(CPP14Parser.LeftShift);
@@ -2900,7 +2904,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_shiftexpression);
 						this.state = 845;
 						if (!(this.precpred(this._ctx, 1))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 						}
 						this.state = 846;
 						this.rightShift();
@@ -2974,7 +2978,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_relationalexpression);
 						this.state = 857;
 						if (!(this.precpred(this._ctx, 4))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 4)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 4)");
 						}
 						this.state = 858;
 						this.match(CPP14Parser.Less);
@@ -2989,7 +2993,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_relationalexpression);
 						this.state = 860;
 						if (!(this.precpred(this._ctx, 3))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 3)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 3)");
 						}
 						this.state = 861;
 						this.match(CPP14Parser.Greater);
@@ -3004,7 +3008,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_relationalexpression);
 						this.state = 863;
 						if (!(this.precpred(this._ctx, 2))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 2)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
 						}
 						this.state = 864;
 						this.match(CPP14Parser.LessEqual);
@@ -3019,7 +3023,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_relationalexpression);
 						this.state = 866;
 						if (!(this.precpred(this._ctx, 1))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 						}
 						this.state = 867;
 						this.match(CPP14Parser.GreaterEqual);
@@ -3093,7 +3097,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_equalityexpression);
 						this.state = 877;
 						if (!(this.precpred(this._ctx, 2))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 2)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
 						}
 						this.state = 878;
 						this.match(CPP14Parser.Equal);
@@ -3108,7 +3112,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_equalityexpression);
 						this.state = 880;
 						if (!(this.precpred(this._ctx, 1))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 						}
 						this.state = 881;
 						this.match(CPP14Parser.NotEqual);
@@ -3178,7 +3182,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_andexpression);
 					this.state = 891;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 892;
 					this.match(CPP14Parser.And);
@@ -3246,7 +3250,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_exclusiveorexpression);
 					this.state = 902;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 903;
 					this.match(CPP14Parser.Caret);
@@ -3314,7 +3318,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_inclusiveorexpression);
 					this.state = 913;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 914;
 					this.match(CPP14Parser.Or);
@@ -3382,7 +3386,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_logicalandexpression);
 					this.state = 924;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 925;
 					this.match(CPP14Parser.AndAnd);
@@ -3450,7 +3454,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_logicalorexpression);
 					this.state = 935;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 936;
 					this.match(CPP14Parser.OrOr);
@@ -3719,7 +3723,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_expression);
 					this.state = 976;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 977;
 					this.match(CPP14Parser.Comma);
@@ -4126,7 +4130,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_statementseq);
 					this.state = 1050;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 1051;
 					this.statement();
@@ -4745,7 +4749,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_declarationseq);
 					this.state = 1171;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 1172;
 					this.declaration();
@@ -6406,7 +6410,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_enumeratorlist);
 					this.state = 1418;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 1419;
 					this.match(CPP14Parser.Comma);
@@ -7148,7 +7152,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_attributespecifierseq);
 					this.state = 1538;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 1539;
 					this.attributespecifier();
@@ -7361,7 +7365,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_attributelist);
 						this.state = 1581;
 						if (!(this.precpred(this._ctx, 3))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 3)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 3)");
 						}
 						this.state = 1582;
 						this.match(CPP14Parser.Comma);
@@ -7384,7 +7388,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_attributelist);
 						this.state = 1586;
 						if (!(this.precpred(this._ctx, 1))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 						}
 						this.state = 1587;
 						this.match(CPP14Parser.Comma);
@@ -7621,7 +7625,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_balancedtokenseq);
 					this.state = 1618;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 1619;
 					this.balancedtoken();
@@ -7746,7 +7750,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_initdeclaratorlist);
 					this.state = 1642;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 1643;
 					this.match(CPP14Parser.Comma);
@@ -7971,7 +7975,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_noptrdeclarator);
 						this.state = 1678;
 						if (!(this.precpred(this._ctx, 3))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 3)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 3)");
 						}
 						this.state = 1679;
 						this.parametersandqualifiers();
@@ -7984,7 +7988,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_noptrdeclarator);
 						this.state = 1680;
 						if (!(this.precpred(this._ctx, 2))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 2)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
 						}
 						this.state = 1681;
 						this.match(CPP14Parser.LeftBracket);
@@ -8642,7 +8646,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_noptrabstractdeclarator);
 						this.state = 1789;
 						if (!(this.precpred(this._ctx, 5))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 5)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 5)");
 						}
 						this.state = 1790;
 						this.parametersandqualifiers();
@@ -8655,7 +8659,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_noptrabstractdeclarator);
 						this.state = 1791;
 						if (!(this.precpred(this._ctx, 3))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 3)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 3)");
 						}
 						this.state = 1792;
 						this.match(CPP14Parser.LeftBracket);
@@ -8797,7 +8801,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_noptrabstractpackdeclarator);
 						this.state = 1814;
 						if (!(this.precpred(this._ctx, 3))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 3)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 3)");
 						}
 						this.state = 1815;
 						this.parametersandqualifiers();
@@ -8810,7 +8814,7 @@ export class CPP14Parser extends Parser {
 						this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_noptrabstractpackdeclarator);
 						this.state = 1816;
 						if (!(this.precpred(this._ctx, 2))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 2)");
+							throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
 						}
 						this.state = 1817;
 						this.match(CPP14Parser.LeftBracket);
@@ -8962,7 +8966,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_parameterdeclarationlist);
 					this.state = 1845;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 1846;
 					this.match(CPP14Parser.Comma);
@@ -9479,7 +9483,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_initializerlist);
 					this.state = 1932;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 1933;
 					this.match(CPP14Parser.Comma);
@@ -10103,7 +10107,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_memberdeclaratorlist);
 					this.state = 2026;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 2027;
 					this.match(CPP14Parser.Comma);
@@ -10271,7 +10275,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_virtspecifierseq);
 					this.state = 2058;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 2059;
 					this.virtspecifier();
@@ -10438,7 +10442,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_basespecifierlist);
 					this.state = 2079;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 2080;
 					this.match(CPP14Parser.Comma);
@@ -11116,7 +11120,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_templateparameterlist);
 					this.state = 2186;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 2187;
 					this.match(CPP14Parser.Comma);
@@ -11564,7 +11568,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_templateargumentlist);
 					this.state = 2279;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 2280;
 					this.match(CPP14Parser.Comma);
@@ -12158,7 +12162,7 @@ export class CPP14Parser extends Parser {
 					this.pushNewRecursionContext(_localctx, _startState, CPP14Parser.RULE_typeidlist);
 					this.state = 2376;
 					if (!(this.precpred(this._ctx, 1))) {
-						throw new FailedPredicateException(this, "this.precpred(this._ctx, 1)");
+						throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 					}
 					this.state = 2377;
 					this.match(CPP14Parser.Comma);
@@ -17456,7 +17460,7 @@ export class VirtspecifierContext extends ParserRuleContext {
 
 
 export class PurespecifierContext extends ParserRuleContext {
-	public _val: Token;
+	public _val!: Token;
 	public Assign(): TerminalNode { return this.getToken(CPP14Parser.Assign, 0); }
 	public Octalliteral(): TerminalNode { return this.getToken(CPP14Parser.Octalliteral, 0); }
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
