@@ -85,6 +85,8 @@ Then tell the c3 engine that you want to get back `tableRef` if it is a valid ca
 # Getting Started
 With this knowledge we can now look at a simple code example that shows how to use the engine. For further details check the unit tests for this node module (under the test/ folder).
 
+> Since this library is made for ANTLR4 based parser, it requires the same [typescript runtime](https://github.com/tunnelvisionlabs/antlr4ts) as your parser (namely antlr4s). You have to make sure you can actually parse input before continuing with antlr4-c3.
+
 ```typescript
 let inputStream = new ANTLRInputStream("var c = a + b()");
 let lexer = new ExprLexer(inputStream);
