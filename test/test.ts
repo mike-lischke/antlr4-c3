@@ -5,12 +5,12 @@
  * See LICENSE file for more info.
  */
 
-"use strict";
+// spell-checker: disable
 
-import * as fs from "fs"
-import * as path from "path"
+import * as fs from "fs";
+import * as path from "path";
 
-import { expect, assert } from 'chai';
+import { expect, assert } from "chai";
 import { ExprParser } from "./ExprParser";
 import { ExprLexer } from "./ExprLexer";
 import { CPP14Parser } from "./CPP14Parser";
@@ -19,14 +19,8 @@ import { CPP14Lexer } from "./CPP14Lexer";
 import * as c3 from "../index";
 
 import {
-    ANTLRErrorListener,
-    ANTLRInputStream,
-    CommonToken,
-    CommonTokenStream,
-    RecognitionException,
-    Recognizer,
-    Token
-} from 'antlr4ts';
+    ANTLRErrorListener, CharStreams, CommonToken, CommonTokenStream, RecognitionException, Recognizer, Token,
+} from "antlr4ts";
 import { Override } from "antlr4ts/Decorators";
 import { TerminalNode } from "antlr4ts/tree/TerminalNode";
 
@@ -36,11 +30,11 @@ export class ErrorListener implements ANTLRErrorListener<CommonToken> {
     public errorCount = 0;
 
     @Override
-    syntaxError<T extends Token>(recognizer: Recognizer<T, any>, offendingSymbol: T | undefined, line: number,
+    public syntaxError<T extends Token>(recognizer: Recognizer<T, any>, offendingSymbol: T | undefined, line: number,
         charPositionInLine: number, msg: string, e: RecognitionException | undefined): void {
         ++this.errorCount;
     }
-};
+}
 
 const dummyNode = new TerminalNode(new CommonToken(-2, "Dummy", undefined, 0, 10, 20));
 
@@ -50,37 +44,43 @@ const dummyNode = new TerminalNode(new CommonToken(-2, "Dummy", undefined, 0, 10
  *   - two blocks in each method and 1 variable in each block.
  * In addition to that some global symbols are added ([3] variables, [4] literals).
  * If namespaces are given then the classes are distributed among them in a round-robin fashion.
+ *
+ * @param name The name of the new symbol table.
+ * @param counts An array containing the numbers for the objects to create.
+ * @param namespaces A list of namespace names to create.
+ * @returns A promise resolving to the created symbol table.
  */
-function createClassSymbolTable(name: string, counts: number[], namespaces?: string[]): c3.SymbolTable {
+const createClassSymbolTable = async (name: string, counts: number[],
+    namespaces?: string[]): Promise<c3.SymbolTable> => {
     const symbolTable = new c3.SymbolTable(name, { allowDuplicateSymbols: false });
 
-    const nsSymbols: (c3.NamespaceSymbol | undefined)[] = [undefined];
+    const nsSymbols: Array<c3.NamespaceSymbol | undefined> = [undefined];
     let nsIndex = 0;
     let nsCount = 1;
     if (namespaces && namespaces.length > 0) {
         nsCount = namespaces.length;
         for (let i = 0; i < nsCount; ++i) {
-            nsSymbols[i] = symbolTable.addNewNamespaceFromPath(undefined, namespaces[i]);
+            nsSymbols[i] = await symbolTable.addNewNamespaceFromPath(undefined, namespaces[i]);
         }
     }
 
     for (let i = 0; i < counts[0]; ++i) {
-        let classSymbol = symbolTable.addNewSymbolOfType(c3.ClassSymbol, nsSymbols[nsIndex], "class" + i);
+        const classSymbol = symbolTable.addNewSymbolOfType(c3.ClassSymbol, nsSymbols[nsIndex], `class${i}`);
 
         for (let j = 0; j < counts[2]; ++j) {
-            let field = symbolTable.addNewSymbolOfType(c3.FieldSymbol, classSymbol, "field" + j);
+            symbolTable.addNewSymbolOfType(c3.FieldSymbol, classSymbol, `field${j}`);
         }
 
         for (let j = 0; j < counts[1]; ++j) {
-            let method = symbolTable.addNewSymbolOfType(c3.MethodSymbol, classSymbol, "method" + j);
+            const method = symbolTable.addNewSymbolOfType(c3.MethodSymbol, classSymbol, `method${j}`);
 
             // Blocks are created and added in an alternative way.
-            let block1 = symbolTable.addNewSymbolOfType(c3.BlockSymbol, undefined, "block1"); // Block at top level.
+            const block1 = symbolTable.addNewSymbolOfType(c3.BlockSymbol, undefined, "block1"); // Block at top level.
             symbolTable.addNewSymbolOfType(c3.VariableSymbol, block1, "var1", 17, c3.FundamentalType.integerType);
-            let block2 = symbolTable.addNewSymbolOfType(c3.BlockSymbol, undefined, "block2");
-            let symbol = symbolTable.addNewSymbolOfType(c3.VariableSymbol, block2, "var1", 3.142,
+            const block2 = symbolTable.addNewSymbolOfType(c3.BlockSymbol, undefined, "block2");
+            const symbol = symbolTable.addNewSymbolOfType(c3.VariableSymbol, block2, "var1", 3.142,
                 c3.FundamentalType.floatType);
-            if (j == 1) {
+            if (j === 1) {
                 symbol.context = dummyNode;
             }
 
@@ -90,30 +90,29 @@ function createClassSymbolTable(name: string, counts: number[], namespaces?: str
         }
 
         ++nsIndex;
-        if (nsIndex == nsCount)
-            nsIndex = 0;
+        if (nsIndex === nsCount) {nsIndex = 0;}
     }
 
     for (let i = 0; i < counts[3]; ++i) {
-        symbolTable.addNewSymbolOfType(c3.VariableSymbol, undefined, "globalVar" + i, 42,
+        symbolTable.addNewSymbolOfType(c3.VariableSymbol, undefined, `globalVar${i}`, 42,
             c3.FundamentalType.integerType);
     }
 
     for (let i = 0; i < counts[4]; ++i) {
-        symbolTable.addNewSymbolOfType(c3.LiteralSymbol, undefined, "globalConst" + i, "string constant",
+        symbolTable.addNewSymbolOfType(c3.LiteralSymbol, undefined, `globalConst${i}`, "string constant",
             c3.FundamentalType.stringType);
     }
 
     return symbolTable;
-}
+};
 
 // Begin of the tests.
-describe('antlr4-c3:', function () {
+describe("antlr4-c3:", function () {
     this.slow(1000);
 
-    describe('Symbol table tests:', function () {
-        it("Single table base tests", function () {
-            const symbolTable = createClassSymbolTable("main", [3, 3, 4, 5, 5]);
+    describe("Symbol table tests:", () => {
+        it("Single table base tests", async () => {
+            const symbolTable = await createClassSymbolTable("main", [3, 3, 4, 5, 5]);
             const info = symbolTable.info;
             expect(info.dependencyCount, "Test 1").to.equal(0);
             expect(info.symbolCount, "Test 2").to.equal(13); // 5 + 5 top level symbols + 3 classes.
@@ -129,15 +128,15 @@ describe('antlr4-c3:', function () {
                 }
             }
 
-            const class1 = symbolTable.resolve("class1");
+            const class1 = await symbolTable.resolve("class1");
             expect(class1, "Test 4").is.instanceof(c3.ClassSymbol);
-            const method2 = (class1 as c3.ClassSymbol).resolve("method2");
+            const method2 = await (class1 as c3.ClassSymbol).resolve("method2");
             expect(method2, "Test 5").is.instanceof(c3.MethodSymbol);
-            const scopes = (method2 as c3.MethodSymbol).directScopes;
+            const scopes = await (method2 as c3.MethodSymbol).directScopes;
             expect(scopes.length, "Test 6").equals(2); // 2 anonymous blocks.
             expect(scopes[0], "Test 7").is.instanceof(c3.ScopedSymbol);
 
-            const block1 = scopes[0] as c3.ScopedSymbol;
+            const block1 = scopes[0] ;
             try {
                 const duplicateMethod = symbolTable.addNewSymbolOfType(c3.MethodSymbol, undefined, "method2");
                 (class1 as c3.ClassSymbol).addSymbol(duplicateMethod); // Must throw.
@@ -150,27 +149,30 @@ describe('antlr4-c3:', function () {
                 }
             }
 
-            let variable = scopes[0].resolve("globalVar3"); // Resolves to the global var 3.
+            let variable = await scopes[0].resolve("globalVar3"); // Resolves to the global var 3.
             expect(variable, "Test 9").to.be.instanceof(c3.VariableSymbol);
             expect(variable!.root, "Test 10").to.equal(symbolTable);
 
-            variable = scopes[0].resolve("globalVar3", true); // Try only local vars.
+            variable = await scopes[0].resolve("globalVar3", true); // Try only local vars.
             expect(variable, "Test 11").to.equal(undefined);
 
-            variable = scopes[0].resolve("var1"); // Now resolves to local var.
+            variable = await scopes[0].resolve("var1"); // Now resolves to local var.
             expect(variable!.root, "Test 12").to.equal(class1);
             expect(variable!.getParentOfType(c3.MethodSymbol), "Test 13").to.equal(method2);
-            expect((class1 as c3.ClassSymbol).getSymbolsOfType(c3.MethodSymbol).length, "Test 14").to.equal(3);
-            expect((method2 as c3.MethodSymbol).getSymbolsOfType(c3.ScopedSymbol).length, "Test 15").to.equal(2);
-            expect(block1.resolve("class1", false), "Test 16").to.equal(class1);
 
-            const path = variable!.symbolPath;
-            expect(path.length, "Test 17").to.equal(5);
-            expect(path[0].name, "Test 18").to.equal("var1");
-            expect(path[1].name, "Test 19").to.equal("block1");
-            expect(path[2].name, "Test 20").to.equal("method2");
-            expect(path[3].name, "Test 21").to.equal("class1");
-            expect(path[4].name, "Test 22").to.equal("main");
+            const methods = await (class1 as c3.ClassSymbol).getSymbolsOfType(c3.MethodSymbol);
+            expect(methods.length, "Test 14").to.equal(3);
+            const symbols = await (method2 as c3.MethodSymbol).getSymbolsOfType(c3.ScopedSymbol);
+            expect(symbols.length, "Test 15").to.equal(2);
+            expect(await block1.resolve("class1", false), "Test 16").to.equal(class1);
+
+            const symbolPaths = variable!.symbolPath;
+            expect(symbolPaths.length, "Test 17").to.equal(5);
+            expect(symbolPaths[0].name, "Test 18").to.equal("var1");
+            expect(symbolPaths[1].name, "Test 19").to.equal("block1");
+            expect(symbolPaths[2].name, "Test 20").to.equal("method2");
+            expect(symbolPaths[3].name, "Test 21").to.equal("class1");
+            expect(symbolPaths[4].name, "Test 22").to.equal("main");
 
             expect(method2!.qualifiedName(), "Test 23").to.equal("class1.method2");
             expect(method2!.qualifiedName("-", true), "Test 24").to.equal("main-class1-method2");
@@ -180,21 +182,23 @@ describe('antlr4-c3:', function () {
             expect(variable!.qualifiedName(".", true, false), "Test 28").to.equal("main.class1.method2.block1.var1");
             expect(variable!.qualifiedName(".", true, true), "Test 29").to.equal("main.class1.method2.block1.var1");
 
-            const allSymbols = symbolTable.getAllNestedSymbols();
+            const allSymbols = await symbolTable.getAllNestedSymbols();
             expect(allSymbols.length, "Test 30").to.equal(70);
 
-            let symbolPath = allSymbols[59].qualifiedName(".", true);
-            expect(symbolPath, "Test 31").to.equal("main.class2.method2.block2.var1");
-            expect(symbolTable.symbolFromPath("main.class2.method2.block2.var1"), "Test 32").to.equal(allSymbols[59]);
+            const symbolPath = allSymbols[59].qualifiedName(".", true);
+            expect(symbolPath, "Test 31").to.equal("main.class2.method0.block2");
+
+            const foundSymbol = symbolTable.symbolFromPath("main.class2.method0.block2.var1");
+            expect(foundSymbol, "Test 32").to.equal(allSymbols[61]);
 
             expect(symbolTable, "Test 33").to.equal(symbolTable.symbolTable);
         });
 
-        it("Single table type checks", function () {
+        it("Single table type checks", async () => {
             // Create a symbol table with all the symbols we have in the lib and query it for some collections.
             // Start with a standard table containing a class with a single method, a global var and a global
             // literal symbol. Hierarchy is not really important here.
-            const symbolTable = createClassSymbolTable("main", [1, 1, 1, 1, 1]);
+            const symbolTable = await createClassSymbolTable("main", [1, 1, 1, 1, 1]);
 
             // Now add all the other symbols.
             symbolTable.addNewSymbolOfType(c3.TypeAlias, undefined, "newBool", c3.FundamentalType.boolType);
@@ -203,45 +207,53 @@ describe('antlr4-c3:', function () {
 
         });
 
-        it("Single table stress test", function () {
-            let symbolTable = createClassSymbolTable("table", [300, 30, 20, 1000, 1000]);
-            expect(symbolTable.getAllNestedSymbols().length, "Test 1").to.equal(53300);
-            expect(symbolTable.getNestedSymbolsOfType(c3.ClassSymbol).length, "Test 2").to.equal(300);
-            expect(symbolTable.getNestedSymbolsOfType(c3.MethodSymbol).length, "Test 3").to.equal(9000);
-            expect(symbolTable.getNestedSymbolsOfType(c3.ScopedSymbol).length, "Test 4").to.equal(27300);
+        it("Single table stress test", async () => {
+            const symbolTable = await createClassSymbolTable("table", [300, 30, 20, 1000, 1000]);
+
+            let symbols = await symbolTable.getAllNestedSymbols();
+            expect(symbols.length, "Test 1").to.equal(53300);
+            symbols = await symbolTable.getNestedSymbolsOfType(c3.ClassSymbol);
+            expect(symbols.length, "Test 2").to.equal(300);
+            symbols = await symbolTable.getNestedSymbolsOfType(c3.MethodSymbol);
+            expect(symbols.length, "Test 3").to.equal(9000);
+            symbols = await symbolTable.getNestedSymbolsOfType(c3.ScopedSymbol);
+            expect(symbols.length, "Test 4").to.equal(27300);
 
             // Includes class fields.
-            expect(symbolTable.getNestedSymbolsOfType(c3.VariableSymbol).length, "Test 5").to.equal(25000);
-            expect(symbolTable.getNestedSymbolsOfType(c3.FieldSymbol).length, "Test 6").to.equal(6000);
-            expect(symbolTable.getNestedSymbolsOfType(c3.LiteralSymbol).length, "Test 7").to.equal(1000);
+            symbols = await symbolTable.getNestedSymbolsOfType(c3.VariableSymbol);
+            expect(symbols.length, "Test 5").to.equal(25000);
+            symbols = await symbolTable.getNestedSymbolsOfType(c3.FieldSymbol);
+            expect(symbols.length, "Test 6").to.equal(6000);
+            symbols = await symbolTable.getNestedSymbolsOfType(c3.LiteralSymbol);
+            expect(symbols.length, "Test 7").to.equal(1000);
         }).timeout(20000);
 
-        it("Single table namespace tests", function () {
-            const symbolTable = createClassSymbolTable("main", [30, 10, 10, 100, 100], ["ns1", "ns2", "ns1.ns3.ns5",
-                "ns1.ns4.ns6.ns8"]);
+        it("Single table namespace tests", async () => {
+            const symbolTable = await createClassSymbolTable("main", [30, 10, 10, 100, 100], ["ns1", "ns2",
+                "ns1.ns3.ns5", "ns1.ns4.ns6.ns8"]);
 
-            const namespaces = symbolTable.getNestedSymbolsOfType(c3.NamespaceSymbol);
+            const namespaces = await symbolTable.getNestedSymbolsOfType(c3.NamespaceSymbol);
             expect(namespaces.length, "Test 1").to.equal(7);
 
             // This call does a depth-first search, so all the deeper nested namespaces appear at the lower indexes
             // and the less nested ones at the end of the list.
-            const methods = symbolTable.getNestedSymbolsOfType(c3.MethodSymbol);
+            const methods = await symbolTable.getNestedSymbolsOfType(c3.MethodSymbol);
             expect(methods.length, "Test 2").to.equal(300);
             expect(methods[2].qualifiedName(".", true), "Test 3").to.equal("main.ns1.ns3.ns5.class2.method2");
             expect(methods[299].qualifiedName(".", true), "Test 4").to.equal("main.ns2.class29.method9");
         });
 
-        it("Multi table tests", function () {
+        it("Multi table tests", async () => {
             // Interactions between linked symbol tables. We use 5 tables here:
             // - the main table as in the single table tests.
             // - a system functions table
             // - a table with variables, which has 2 other dependencies (functions in same namespace as system
             //   functions and one in a different namespace)
-            const main = createClassSymbolTable("main", [30, 10, 10, 100, 100]);
+            const main = await createClassSymbolTable("main", [30, 10, 10, 100, 100]);
             const systemFunctions = new c3.SymbolTable("system functions", { allowDuplicateSymbols: false });
             const namespace1 = systemFunctions.addNewSymbolOfType(c3.NamespaceSymbol, undefined, "ns1");
             for (let i = 0; i < 333; ++i) {
-                systemFunctions.addNewSymbolOfType(c3.RoutineSymbol, namespace1, "func" + i);
+                systemFunctions.addNewSymbolOfType(c3.RoutineSymbol, namespace1, `func${i}`);
             }
             main.addDependencies(systemFunctions);
 
@@ -249,7 +261,7 @@ describe('antlr4-c3:', function () {
             const namespace2 = libFunctions.addNewSymbolOfType(c3.NamespaceSymbol, undefined, "ns2");
             for (let i = 0; i < 444; ++i) {
                 // Same names as in the system functions but different namespace.
-                libFunctions.addNewSymbolOfType(c3.RoutineSymbol, namespace2, "func" + i);
+                libFunctions.addNewSymbolOfType(c3.RoutineSymbol, namespace2, `func${i}`);
             }
 
             const libVariables = new c3.SymbolTable("library variables", { allowDuplicateSymbols: false });
@@ -257,14 +269,14 @@ describe('antlr4-c3:', function () {
             // Like for the system functions.
             const namespace3 = libVariables.addNewSymbolOfType(c3.NamespaceSymbol, undefined, "ns1");
             for (let i = 0; i < 555; ++i) {
-                libVariables.addNewSymbolOfType(c3.VariableSymbol, namespace3, "var" + i);
+                libVariables.addNewSymbolOfType(c3.VariableSymbol, namespace3, `var${i}`);
             }
 
             const libFunctions2 = new c3.SymbolTable("library functions 2", { allowDuplicateSymbols: false });
             const namespace4 = libFunctions2.addNewSymbolOfType(c3.NamespaceSymbol, undefined, "ns1");
             for (let i = 0; i < 666; ++i) {
                 // Same names as in the system functions but different namespace.
-                libFunctions2.addNewSymbolOfType(c3.RoutineSymbol, namespace4, "func" + i);
+                libFunctions2.addNewSymbolOfType(c3.RoutineSymbol, namespace4, `func${i}`);
             }
 
             libVariables.addDependencies(libFunctions, libFunctions2);
@@ -272,37 +284,40 @@ describe('antlr4-c3:', function () {
 
             // Note: namespaces are handled in the context of their parent.
             // Symbols in a namespace/module/library are accessible from their parent.
-            expect(main.getAllSymbols().size, "Test 1").to.equal(2232);
+            const allSymbols = await main.getAllSymbols();
+            expect(allSymbols.length, "Test 1").to.equal(2232);
 
             // System functions alone + the namespace.
-            expect(systemFunctions.getAllSymbols().size, "Test 2").to.equal(334);
+            expect((await systemFunctions.getAllSymbols()).length, "Test 2").to.equal(334);
 
             // Lib functions alone + the namespace.
-            expect(libFunctions.getAllSymbols().size, "Test 3").to.equal(445);
+            expect((await libFunctions.getAllSymbols()).length, "Test 3").to.equal(445);
 
             // Lib variables + lib functions + namespaces.
-            expect(libVariables.getAllSymbols().size, "Test 4").to.equal(1668);
+            expect((await libVariables.getAllSymbols()).length, "Test 4").to.equal(1668);
 
             // Lib functions in "ns1" only + the namespace.
-            expect(libFunctions2.getAllSymbols().size, "Test 5").to.equal(667);
+            expect((await libFunctions2.getAllSymbols()).length, "Test 5").to.equal(667);
         });
 
-        it("Symbol navigation", function() {
-            const symbolTable = createClassSymbolTable("main", [10, 10, 10, 20, 34], []);
+        it("Symbol navigation", async () => {
+            const symbolTable = await createClassSymbolTable("main", [10, 10, 10, 20, 34], []);
 
-            const namespaces = symbolTable.getNestedSymbolsOfType(c3.NamespaceSymbol);
+            const namespaces = await symbolTable.getNestedSymbolsOfType(c3.NamespaceSymbol);
             expect(namespaces.length, "Test 1").to.equal(0);
 
-            const variables = symbolTable.getNestedSymbolsOfType(c3.VariableSymbol);
+            // Does not include constant values (which are literals). Still such variables may appear in
+            // below navigation methods and are compared by name, instead of reference.
+            const variables = await symbolTable.getNestedSymbolsOfType(c3.VariableSymbol);
             expect(variables.length, "Test 2").to.equal(320);
 
             // A class member.
-            const field7 = variables[217];
+            const field7 = variables[202];
             expect(field7, "Test 3").not.to.be.undefined;
-            expect(field7.firstSibling, "Test 4").to.equal(variables[210]);
+            expect(field7.firstSibling, "Test 4").to.equal(variables[200]);
             expect(field7.lastSibling.name, "Test 5").to.equal("method9");
-            expect(field7.previousSibling, "Test 6").to.equal(variables[216]);
-            expect(field7.nextSibling, "Test 7").to.equal(variables[218]);
+            expect(field7.previousSibling, "Test 6").to.equal(variables[201]);
+            expect(field7.nextSibling, "Test 7").to.equal(variables[203]);
 
             expect(field7.firstSibling.firstSibling.firstSibling.firstSibling, "Test 8").to.equal(field7.firstSibling);
             expect(field7.lastSibling.lastSibling.lastSibling.lastSibling, "Test 9").to.equal(field7.lastSibling);
@@ -312,12 +327,12 @@ describe('antlr4-c3:', function () {
             expect(field7.parent, "Test 12").to.be.instanceof(c3.ClassSymbol);
 
             const parent7 = field7.parent as c3.ClassSymbol;
-            expect(parent7.indexOfChild(field7), "Test 13").to.equal(7);
+            expect(parent7.indexOfChild(field7), "Test 13").to.equal(2);
             expect(parent7.firstChild, "Test 14").to.equal(field7.firstSibling);
             expect(parent7.lastChild, "Test 15").to.equal(field7.lastSibling);
 
             // A local variable (a single one in a block).
-            let var1 = variables[286];
+            const var1 = variables[286];
             expect(var1, "Test 16").not.to.be.undefined;
             expect(var1.firstSibling, "Test 17").to.equal(var1);
             expect(var1.lastSibling.name, "Test 18").to.equal("var1");
@@ -335,42 +350,42 @@ describe('antlr4-c3:', function () {
             expect(block1.firstChild, "Test 27").to.equal(var1.firstSibling);
             expect(block1.lastChild, "Test 28").to.equal(var1.lastSibling);
 
-            // A global variable (a single one in a block).
-            const var15 = variables[315];
+            // A global variable.
+            const var15 = variables[19];
             expect(var15, "Test 29").not.to.be.undefined;
             expect(var15.firstSibling, "Test 30").to.equal(symbolTable.firstChild);
             expect(var15.lastSibling.name, "Test 31").to.equal("globalConst33");
-            expect(var15.previousSibling, "Test 32").to.equal(variables[314]);
-            expect(var15.nextSibling, "Test 33").to.equal(variables[316]);
+            expect(var15.previousSibling, "Test 32").to.equal(variables[18]);
+            expect(var15.nextSibling?.name, "Test 33").to.equal("globalConst0");
 
             expect(var15.parent, "Test 34").to.be.instanceof(c3.SymbolTable);
 
             const st1 = var15.parent as c3.ScopedSymbol;
-            expect(st1.indexOfChild(var15), "Test 35").to.equal(25);
+            expect(st1.indexOfChild(var15), "Test 35").to.equal(29);
             expect(st1.firstChild, "Test 36").to.equal(var15.firstSibling);
             expect(st1.lastChild, "Test 37").to.equal(var15.lastSibling);
 
             const next = variables[284].next;
             expect(next, "Test 38").not.to.be.undefined;
-            expect(next!.qualifiedName(".", true), "Test 39").to.equal("main.class9.method2.block1.var1");
+            expect(next!.qualifiedName(".", true), "Test 39").to.equal("main.class8.method7.block1.var1");
 
-            const symbol = symbolTable.symbolWithContext(dummyNode);
+            const symbol = await symbolTable.symbolWithContext(dummyNode);
             expect(symbol, "Test 40").not.to.be.undefined;
             expect(symbol!.qualifiedName(".", true), "Test 41").to.equal("main.class0.method1.block2.var1");
         });
     });
 
-    describe('Simple expression parser:', function () {
-        it("Most simple setup", function () {
+    describe("Simple expression parser:", () => {
+        it("Most simple setup", () => {
             // No customization happens here, so the c3 engine only returns lexer tokens.
-            const inputStream = new ANTLRInputStream("var c = a + b()");
+            const inputStream = CharStreams.fromString("var c = a + b()");
             const lexer = new ExprLexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
 
             const parser = new ExprParser(tokenStream);
             const errorListener = new ErrorListener();
             parser.addErrorListener(errorListener);
-            const tree = parser.expression();
+            parser.expression();
             expect(errorListener.errorCount, "Test 1").equals(0);
 
             const core = new c3.CodeCompletionCore(parser);
@@ -420,22 +435,22 @@ describe('antlr4-c3:', function () {
             expect(candidates.tokens.has(ExprLexer.OPEN_PAR), "Test 22").to.equal(true);
         });
 
-        it("Typical setup", function () {
-            const inputStream = new ANTLRInputStream("var c = a + b");
+        it("Typical setup", () => {
+            const inputStream = CharStreams.fromString("var c = a + b");
             const lexer = new ExprLexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
 
             const parser = new ExprParser(tokenStream);
             const errorListener = new ErrorListener();
             parser.addErrorListener(errorListener);
-            const tree = parser.expression();
+            parser.expression();
             expect(errorListener.errorCount, "Test 1").equals(0);
 
             const core = new c3.CodeCompletionCore(parser);
 
             // Ignore operators and the generic ID token.
             core.ignoredTokens = new Set([
-                ExprLexer.ID, ExprLexer.PLUS, ExprLexer.MINUS, ExprLexer.MULTIPLY, ExprLexer.DIVIDE, ExprLexer.EQUAL
+                ExprLexer.ID, ExprLexer.PLUS, ExprLexer.MINUS, ExprLexer.MULTIPLY, ExprLexer.DIVIDE, ExprLexer.EQUAL,
             ]);
 
             // Tell the engine to return certain rules to us, which we could use to look up values in a symbol table.
@@ -479,15 +494,15 @@ describe('antlr4-c3:', function () {
             expect(candidates.rules.get(ExprParser.RULE_functionRef)?.startTokenIndex, "Test 16").to.equal(6);
         });
 
-        it('Recursive preferred rule', function() {
-            const inputStream = new ANTLRInputStream("var c = a + b");
+        it("Recursive preferred rule", () => {
+            const inputStream = CharStreams.fromString("var c = a + b");
             const lexer = new ExprLexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
 
             const parser = new ExprParser(tokenStream);
             const errorListener = new ErrorListener();
             parser.addErrorListener(errorListener);
-            const tree = parser.expression();
+            parser.expression();
             expect(errorListener.errorCount, "Test 1").equals(0);
 
             const core = new c3.CodeCompletionCore(parser);
@@ -518,17 +533,17 @@ describe('antlr4-c3:', function () {
             // When translateRulesTopDown is true, startTokenIndex should match the start token for the higher index
             // (more specific) rule in the expression, which is 'b'.
             expect(candidates.rules.get(ExprParser.RULE_simpleExpression)?.startTokenIndex, "Test 7").to.equal(10);
-        })
+        });
 
-        it('Candidate rules with different start tokens', () => {
-            const inputStream = new ANTLRInputStream("var c = a + b");
+        it("Candidate rules with different start tokens", () => {
+            const inputStream = CharStreams.fromString("var c = a + b");
             const lexer = new ExprLexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
 
             const parser = new ExprParser(tokenStream);
             const errorListener = new ErrorListener();
             parser.addErrorListener(errorListener);
-            const tree = parser.expression();
+            parser.expression();
             expect(errorListener.errorCount, "Test 1").equals(0);
 
             const core = new c3.CodeCompletionCore(parser);
@@ -553,19 +568,19 @@ describe('antlr4-c3:', function () {
             expect(candidates.rules.get(ExprParser.RULE_assignment)?.startTokenIndex, "Test 6").to.equal(0);
             // The start token of the variableRef rule begins at token 'a'
             expect(candidates.rules.get(ExprParser.RULE_variableRef)?.startTokenIndex, "Test 7").to.equal(6);
-        })
+        });
     });
 
-    describe('C++14 parser:', function () {
-        it('Simple C++ example', function () {
+    describe("C++14 parser:", () => {
+        it("Simple C++ example", () => {
             // We are trying here to get useful code completion candidates without adjusting the grammar in any way.
             // We use the grammar as downloaded from the ANTLR grammar directory and set up the c3 engine
             // instead in a way that still returns useful info. This limits us somewhat.
-            const inputStream = new ANTLRInputStream("class A {\n" +
+            const inputStream = CharStreams.fromString("class A {\n" +
                 "public:\n" +
                 "  void test() {\n" +
                 "  }\n" +
-                "};\n"
+                "};\n",
             );
             const lexer = new CPP14Lexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
@@ -579,7 +594,7 @@ describe('antlr4-c3:', function () {
             const parser = new CPP14Parser(tokenStream);
             const errorListener = new ErrorListener();
             parser.addErrorListener(errorListener);
-            const tree = parser.translationunit();
+            parser.translationunit();
             expect(errorListener.errorCount, "Test 1").equals(0);
 
             const core = new c3.CodeCompletionCore(parser);
@@ -594,11 +609,11 @@ describe('antlr4-c3:', function () {
                 CPP14Lexer.Doublecolon, CPP14Lexer.Semi,
             ]);
 
-            // For a C++ grammar you can of course get many candidates of all kind. For this test we focus only on a few,
-            // namely namespace, class and variable references. For variable references there is no own rule, only an
-            // "idexpression" as part of the primary expression.
+            // For a C++ grammar you can of course get many candidates of all kind. For this test we focus only on a
+            // few, namely namespace, class and variable references. For variable references there is no own rule, only
+            // an "idexpression" as part of the primary expression.
             core.preferredRules = new Set([
-                CPP14Parser.RULE_classname, CPP14Parser.RULE_namespacename, CPP14Parser.RULE_idexpression
+                CPP14Parser.RULE_classname, CPP14Parser.RULE_namespacename, CPP14Parser.RULE_idexpression,
             ]);
 
             // 1) At the input start.
@@ -768,13 +783,13 @@ describe('antlr4-c3:', function () {
             expect(candidates.tokens.has(CPP14Lexer.Decltype), "Test 64").to.equal(true);
         }).timeout(5000);
 
-        it('Simple C++ example with errors in input', function () {
-            const inputStream = new ANTLRInputStream("class A {\n" +
+        it("Simple C++ example with errors in input", () => {
+            const inputStream = CharStreams.fromString("class A {\n" +
                 "public:\n" +
                 "  void test() {\n" +
                 "    if ()" +
                 "  }\n" +
-                "};\n"
+                "};\n",
             );
             const lexer = new CPP14Lexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
@@ -783,7 +798,7 @@ describe('antlr4-c3:', function () {
             parser.removeErrorListeners();
             const errorListener = new ErrorListener();
             parser.addErrorListener(errorListener);
-            const tree = parser.translationunit();
+            parser.translationunit();
             expect(errorListener.errorCount, "Test 1").equals(3);
 
             const core = new c3.CodeCompletionCore(parser);
@@ -799,7 +814,7 @@ describe('antlr4-c3:', function () {
             ]);
 
             core.preferredRules = new Set([
-                CPP14Parser.RULE_classname, CPP14Parser.RULE_namespacename, CPP14Parser.RULE_idexpression
+                CPP14Parser.RULE_classname, CPP14Parser.RULE_namespacename, CPP14Parser.RULE_idexpression,
             ]);
 
             core.showDebugOutput = false;
@@ -834,11 +849,11 @@ describe('antlr4-c3:', function () {
             expect(candidates.rules.size, "Test 17").to.equal(0);
         });
 
-        it('Real C++ file', function () {
+        it("Real C++ file", () => {
             this.slow(10000);
 
             const source = fs.readFileSync(path.join(__dirname, "../../test/Parser.cpp")).toString();
-            const inputStream = new ANTLRInputStream(source);
+            const inputStream = CharStreams.fromString(source);
             const lexer = new CPP14Lexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
 
@@ -851,7 +866,7 @@ describe('antlr4-c3:', function () {
             const parser = new CPP14Parser(tokenStream);
             const errorListener = new ErrorListener();
             parser.addErrorListener(errorListener);
-            const tree = parser.translationunit();
+            parser.translationunit();
             expect(errorListener.errorCount, "Test 1").equals(0);
 
             const core = new c3.CodeCompletionCore(parser);
@@ -867,7 +882,7 @@ describe('antlr4-c3:', function () {
             ]);
 
             core.preferredRules = new Set([
-                CPP14Parser.RULE_classname, CPP14Parser.RULE_namespacename, CPP14Parser.RULE_idexpression
+                CPP14Parser.RULE_classname, CPP14Parser.RULE_namespacename, CPP14Parser.RULE_idexpression,
             ]);
 
             let candidates = core.collectCandidates(3469);
@@ -888,7 +903,7 @@ describe('antlr4-c3:', function () {
                 CPP14Parser.RULE_initdeclarator,
                 CPP14Parser.RULE_declarator,
                 CPP14Parser.RULE_noptrdeclarator,
-                CPP14Parser.RULE_declaratorid
+                CPP14Parser.RULE_declaratorid,
             ];
 
             expect(candidates.rules.size, "Test 47").to.equal(3);

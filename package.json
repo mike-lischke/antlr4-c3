@@ -1,13 +1,14 @@
 {
   "name": "antlr4-c3",
-  "version": "1.1.16",
+  "version": "2.0.0",
   "description": "A code completion core implementation for ANTLR4 based parsers",
   "main": "out/index.js",
   "typings": "out/index.d.ts",
   "scripts": {
     "prepublishOnly": "npm run test",
     "test": "tsc --version && npm run generate && tsc && mocha out/test",
-    "generate": "antlr4ts test/CPP14.g4 test/Expr.g4 -no-listener -no-visitor"
+    "generate": "antlr4ts test/CPP14.g4 test/Expr.g4 -no-listener -no-visitor",
+    "eslint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -21,17 +22,28 @@
     "parser"
   ],
   "dependencies": {
-    "antlr4ts": "^0.5.0-alpha.3"
+    "antlr4ts": "^0.5.0-alpha.4"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.15",
-    "@types/mocha": "^8.2.1",
-    "@types/node": "^14.14.34",
+    "@types/chai": "^4.2.21",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.7.13",
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/eslint-plugin-tslint": "^4.31.0",
+    "@typescript-eslint/parser": "^4.31.0",
     "antlr4ts-cli": "^0.5.0-alpha.4",
-    "chai": "^4.3.3",
-    "mocha": "^8.3.2",
+    "chai": "^4.3.4",
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jsdoc": "^36.0.8",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
+    "eslint-plugin-promise": "^5.1.0",
+    "mocha": "^9.1.1",
     "path": "^0.12.7",
-    "typescript": "^3.9.7"
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.2"
   },
   "author": "Mike Lischke",
   "license": "MIT"
