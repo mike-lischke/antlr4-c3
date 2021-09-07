@@ -284,20 +284,23 @@ describe("antlr4-c3:", function () {
 
             // Note: namespaces are handled in the context of their parent.
             // Symbols in a namespace/module/library are accessible from their parent.
-            const allSymbols = await main.getAllSymbols();
+            let allSymbols = await main.getAllSymbols();
             expect(allSymbols.length, "Test 1").to.equal(2232);
 
+            allSymbols = await main.getAllSymbols(c3.RoutineSymbol);
+            expect(allSymbols.length, "Test 2").to.equal(1443);
+
             // System functions alone + the namespace.
-            expect((await systemFunctions.getAllSymbols()).length, "Test 2").to.equal(334);
+            expect((await systemFunctions.getAllSymbols()).length, "Test 3").to.equal(334);
 
             // Lib functions alone + the namespace.
-            expect((await libFunctions.getAllSymbols()).length, "Test 3").to.equal(445);
+            expect((await libFunctions.getAllSymbols()).length, "Test 4").to.equal(445);
 
             // Lib variables + lib functions + namespaces.
-            expect((await libVariables.getAllSymbols()).length, "Test 4").to.equal(1668);
+            expect((await libVariables.getAllSymbols()).length, "Test 5").to.equal(1668);
 
             // Lib functions in "ns1" only + the namespace.
-            expect((await libFunctions2.getAllSymbols()).length, "Test 5").to.equal(667);
+            expect((await libFunctions2.getAllSymbols()).length, "Test 6").to.equal(667);
         });
 
         it("Symbol navigation", async () => {

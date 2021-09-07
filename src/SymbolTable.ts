@@ -866,12 +866,12 @@ export class SymbolTable extends ScopedSymbol {
         return this.addNewSymbolOfType(NamespaceSymbol, currentParent, parts[parts.length - 1]);
     }
 
-    public async getAllSymbols(type?: typeof Symbol, localOnly = false): Promise<Symbol[]> {
-        const result = await super.getAllSymbols(type ?? Symbol, localOnly);
+    public async getAllSymbols<T extends Symbol>(t?: new (...args: any[]) => T, localOnly = false): Promise<Symbol[]> {
+        const result = await super.getAllSymbols(t ?? Symbol, localOnly);
 
         if (!localOnly) {
             const dependencyResults = await Promise.all([...this.dependencies].map((dependency) => (
-                dependency.getAllSymbols(type, localOnly)
+                dependency.getAllSymbols(t, localOnly)
             )));
 
             dependencyResults.forEach((value) => {
