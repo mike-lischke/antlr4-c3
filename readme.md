@@ -213,6 +213,9 @@ The last two options potentially create a lot of output which can significantly 
 
 ## Release Notes
 
+### 2.0.2
+- `getAllSymbols<T>` now returns symbols of type T (instead of `Symbol`), like all other enumeration methods.
+
 ### 2.0.1
 - Breaking change: some of the methods in the symbol table implementation, which may require extra work return now promises (symbol collections and resolver methods). This allows also to override them and return asynchronous results which are constructed from external resources (like database symbols).
 

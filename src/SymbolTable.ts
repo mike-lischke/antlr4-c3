@@ -438,8 +438,8 @@ export class ScopedSymbol extends Symbol {
      *          false), within the owning symbol table.
      */
     public async getAllSymbols<T extends Symbol>(t: new (...args: any[]) => T,
-        localOnly = false): Promise<Symbol[]> {
-        const result: Symbol[] = [];
+        localOnly = false): Promise<T[]> {
+        const result: T[] = [];
 
         // Special handling for namespaces, which act like grouping symbols in this scope,
         // so we show them as available in this scope.
@@ -866,8 +866,8 @@ export class SymbolTable extends ScopedSymbol {
         return this.addNewSymbolOfType(NamespaceSymbol, currentParent, parts[parts.length - 1]);
     }
 
-    public async getAllSymbols<T extends Symbol>(t?: new (...args: any[]) => T, localOnly = false): Promise<Symbol[]> {
-        const result = await super.getAllSymbols(t ?? Symbol, localOnly);
+    public async getAllSymbols<T extends Symbol>(t: new (...args: any[]) => T, localOnly = false): Promise<T[]> {
+        const result: T[] = await super.getAllSymbols(t, localOnly);
 
         if (!localOnly) {
             const dependencyResults = await Promise.all([...this.dependencies].map((dependency) => (
