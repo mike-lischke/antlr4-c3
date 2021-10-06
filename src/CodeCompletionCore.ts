@@ -70,7 +70,7 @@ interface IPipelineEntry {
 
 // The main class for doing the collection process.
 export class CodeCompletionCore {
-    private static followSetsByATN = new Map<string, FollowSetsPerState>();
+    protected followSetsByATN = new Map<string, FollowSetsPerState>();
 
     private static atnStateTypeMap: string[] = [
         "invalid",
@@ -461,10 +461,10 @@ export class CodeCompletionCore {
         // 3) We get this lookup for free with any 2nd or further visit of the same rule, which often happens
         //    in non trivial grammars, especially with (recursive) expressions and of course when invoking code
         //    completion multiple times.
-        let setsPerState = CodeCompletionCore.followSetsByATN.get(this.parser.constructor.name);
+        let setsPerState = this.followSetsByATN.get(this.parser.constructor.name);
         if (!setsPerState) {
             setsPerState = new Map();
-            CodeCompletionCore.followSetsByATN.set(this.parser.constructor.name, setsPerState);
+            this.followSetsByATN.set(this.parser.constructor.name, setsPerState);
         }
 
         let followSets = setsPerState.get(startState.stateNumber);
