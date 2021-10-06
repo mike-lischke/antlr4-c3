@@ -1,7 +1,10 @@
 grammar PredicatedFooBar;
-@members {
+
+@parser::members {
     public hasBar = false;
 }
+
+
 nonEmptyExpression: expression
                   | EOF /* workaround for empty input */
                   ;

@@ -956,48 +956,93 @@ describe("antlr4-c3:", function () {
 
     
     describe("Predicated foo bar:", () => {
-        const inputStream = CharStreams.fromString("bar");
+        const inputStream = CharStreams.fromString("");
 
-        it("PredicatedFooBar, bar-rule disabled", () => {
-            const lexer = new PredicatedFooBarLexer(inputStream);
-            const tokenStream = new CommonTokenStream(lexer);
+        it("`bar` disabled, then enabled", () => {
+            {
+                const lexer = new PredicatedFooBarLexer(inputStream);
+                const tokenStream = new CommonTokenStream(lexer);
 
-            const parser = new PredicatedFooBarParser(tokenStream);
-            parser.expression();
+                const parser = new PredicatedFooBarParser(tokenStream);
+                parser.nonEmptyExpression();
 
-            const core = new c3.CodeCompletionCore(parser);
+                const core = new c3.CodeCompletionCore(parser);
 
-            // 1) At the input start.
-            let candidates = core.collectCandidates(0);
-            // delete workaround token
-            candidates.tokens.delete(PredicatedFooBarParser.EOF);
+                // 1) At the input start.
+                let candidates = core.collectCandidates(0);
+                // delete workaround token
+                candidates.tokens.delete(PredicatedFooBarParser.EOF);
 
-            expect(candidates.tokens.size, "Test 1").to.equal(1);
-            expect(candidates.tokens.has(PredicatedFooBarParser.FOO), "Test 2").to.equal(true);
-            expect(candidates.tokens.has(PredicatedFooBarParser.BAR), "Test 2").to.equal(false);
+                expect(candidates.tokens.size, "Test 1").to.equal(1);
+                expect(candidates.tokens.has(PredicatedFooBarParser.FOO), "Test 2").to.equal(true);
+                expect(candidates.tokens.has(PredicatedFooBarParser.BAR), "Test 2").to.equal(false);
+            }
+
+            {
+                const lexer = new PredicatedFooBarLexer(inputStream);
+
+                const tokenStream = new CommonTokenStream(lexer);
+
+                const parser = new PredicatedFooBarParser(tokenStream);
+                
+                parser.hasBar = true;   // enable the `bar`-rule
+                parser.nonEmptyExpression();
+
+                const core = new c3.CodeCompletionCore(parser);
+
+                // 1) At the input start.
+                let candidates = core.collectCandidates(0);
+                // delete workaround token
+                candidates.tokens.delete(PredicatedFooBarParser.EOF);
+
+                expect(candidates.tokens.size, "Test 1a").to.equal(2);
+                expect(candidates.tokens.has(PredicatedFooBarParser.FOO), "Test 2a").to.equal(true);
+                expect(candidates.tokens.has(PredicatedFooBarParser.BAR), "Test 2a").to.equal(true);
+            }
         });
 
-        it("PredicatedFooBar, bar-rule enabled", () => {
-            const lexer = new PredicatedFooBarLexer(inputStream);
-            lexer.hasBar = true;   // enable the `bar`-rule
+        it("`bar` enabled, then disabled", () => {
 
-            const tokenStream = new CommonTokenStream(lexer);
+            {
+                const lexer = new PredicatedFooBarLexer(inputStream);
 
-            const parser = new PredicatedFooBarParser(tokenStream);
+                const tokenStream = new CommonTokenStream(lexer);
+
+                const parser = new PredicatedFooBarParser(tokenStream);
+                
+                parser.hasBar = true;   // enable the `bar`-rule
+                parser.nonEmptyExpression();
+
+                const core = new c3.CodeCompletionCore(parser);
+
+                // 1) At the input start.
+                let candidates = core.collectCandidates(0);
+                // delete workaround token
+                candidates.tokens.delete(PredicatedFooBarParser.EOF);
+
+                expect(candidates.tokens.size, "Test 1").to.equal(2);
+                expect(candidates.tokens.has(PredicatedFooBarParser.FOO), "Test 2").to.equal(true);
+                expect(candidates.tokens.has(PredicatedFooBarParser.BAR), "Test 2").to.equal(true);
+            }
             
-            parser.hasBar = true;   // enable the `bar`-rule
-            parser.nonEmptyExpression();
+            {
+                const lexer = new PredicatedFooBarLexer(inputStream);
+                const tokenStream = new CommonTokenStream(lexer);
 
-            const core = new c3.CodeCompletionCore(parser);
+                const parser = new PredicatedFooBarParser(tokenStream);
+                parser.nonEmptyExpression();
 
-            // 1) At the input start.
-            let candidates = core.collectCandidates(0);
-            // delete workaround token
-            candidates.tokens.delete(PredicatedFooBarParser.EOF);
+                const core = new c3.CodeCompletionCore(parser);
 
-            expect(candidates.tokens.size, "Test 1a").to.equal(2);
-            expect(candidates.tokens.has(PredicatedFooBarParser.FOO), "Test 2a").to.equal(true);
-            expect(candidates.tokens.has(PredicatedFooBarParser.BAR), "Test 2a").to.equal(true);
+                // 1) At the input start.
+                let candidates = core.collectCandidates(0);
+                // delete workaround token
+                candidates.tokens.delete(PredicatedFooBarParser.EOF);
+
+                expect(candidates.tokens.size, "Test 1b").to.equal(1);
+                expect(candidates.tokens.has(PredicatedFooBarParser.FOO), "Test 2b").to.equal(true);
+                expect(candidates.tokens.has(PredicatedFooBarParser.BAR), "Test 2b").to.equal(false);
+            }
         });
 
     });
