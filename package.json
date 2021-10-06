@@ -7,7 +7,7 @@
   "scripts": {
     "prepublishOnly": "npm run test",
     "test": "tsc --version && npm run generate && tsc && mocha out/test",
-    "generate": "antlr4ts test/CPP14.g4 test/Expr.g4 -no-listener -no-visitor -o test",
+    "generate": "antlr4ts test/CPP14.g4 test/Expr.g4 test/PredicatedFooBar.g4 -no-listener -no-visitor -o test",
     "eslint": "eslint ."
   },
   "repository": {
