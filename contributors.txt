@@ -57,3 +57,4 @@ YYYY/MM/DD, github id, Full name, email
 2020/02/10, kyle-painter, Kyle Painter, kpainter101@gmail.com
 2020/08/06, tamcgoey, Thomas McGoey-Smith, thomas@sourdough.dev
 2020/11/24, alessiostalla, Alessio Stalla, alessiostalla@gmail.com
+2021/10/07, ccomendant, Constantin Comendant, constantin@vastlimits.com
