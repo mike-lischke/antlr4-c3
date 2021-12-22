@@ -11,10 +11,10 @@ import * as fs from "fs";
 import * as path from "path";
 
 import { expect, assert } from "chai";
-import { ExprParser } from "./ExprParser";
-import { ExprLexer } from "./ExprLexer";
-import { CPP14Parser } from "./CPP14Parser";
-import { CPP14Lexer } from "./CPP14Lexer";
+import { ExprParser } from "./generated/ExprParser";
+import { ExprLexer } from "./generated/ExprLexer";
+import { CPP14Parser } from "./generated/CPP14Parser";
+import { CPP14Lexer } from "./generated/CPP14Lexer";
 
 import * as c3 from "../index";
 

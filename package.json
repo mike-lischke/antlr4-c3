@@ -6,8 +6,8 @@
   "typings": "out/index.d.ts",
   "scripts": {
     "prepublishOnly": "npm run test",
-    "test": "tsc --version && npm run generate && tsc && mocha out/test",
-    "generate": "antlr4ts test/CPP14.g4 test/Expr.g4 -no-listener -no-visitor",
+    "test": "tsc --version && npm run generate && tsc && npm run eslint && mocha out/test",
+    "generate": "antlr4ts test/CPP14.g4 test/Expr.g4 -no-listener -no-visitor -o test/generated -Xexact-output-dir",
     "eslint": "eslint ."
   },
   "repository": {

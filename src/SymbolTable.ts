@@ -1,6 +1,6 @@
 /*
  * This file is released under the MIT license.
- * Copyright (c) 2017, 2020, Mike Lischke
+ * Copyright (c) 2017, 2021, Mike Lischke
  *
  * See LICENSE file for more info.
  */
@@ -94,21 +94,11 @@ export class Symbol {
     public name = "";           // The name of the scope or empty if anonymous.
     public context?: ParseTree; // Reference to the parse tree which contains this symbol.
 
+    // eslint-disable-next-line no-use-before-define
     private theParent?: Symbol;
 
     public constructor(name = "") {
         this.name = name;
-    }
-
-    /**
-     * The parent is usually a scoped symbol as only those can have children, but we allow
-     * any symbol here for special scenarios.
-     * This is rather an internal method and should rarely be used by external code.
-     *
-     * @param parent The new parent to use.
-     */
-    public setParent(parent: Symbol | undefined): void {
-        this.theParent = parent;
     }
 
     public get parent(): Symbol | undefined {
@@ -164,29 +154,6 @@ export class Symbol {
         return undefined;
     }
 
-    public removeFromParent(): void {
-        if (this.theParent instanceof ScopedSymbol) {
-            this.theParent.removeSymbol(this);
-            this.theParent = undefined;
-        }
-    }
-
-    /**
-     *
-     * @param name The name of the symbol to find.
-     * @param localOnly If true only child symbols are returned, otherwise also symbols from the parent of this symbol
-     *                  (recursively).
-     * @returns the first symbol with a given name, in the order of appearance in this scope
-     *          or any of the parent scopes (conditionally).
-     */
-    public async resolve(name: string, localOnly = false): Promise<Symbol | undefined> {
-        if (this.theParent instanceof ScopedSymbol) {
-            return this.theParent.resolve(name, localOnly);
-        }
-
-        return Promise.resolve(undefined);
-    }
-
     /**
      * @returns the outermost entity (below the symbol table) that holds us.
      */
@@ -220,20 +187,6 @@ export class Symbol {
     }
 
     /**
-     * @param t The type of objects to return.
-     * @returns the next enclosing parent of the given type.
-     */
-    public getParentOfType<T extends Symbol>(t: new (...args: any[]) => T): T | undefined {
-        let run = this.theParent;
-        while (run) {
-            if (run instanceof t) { return run; }
-            run = run.theParent;
-        }
-
-        return undefined;
-    }
-
-    /**
      * @returns the list of symbols from this one up to root.
      */
     public get symbolPath(): Symbol[] {
@@ -248,6 +201,54 @@ export class Symbol {
         }
 
         return result;
+    }
+
+    /**
+     * The parent is usually a scoped symbol as only those can have children, but we allow
+     * any symbol here for special scenarios.
+     * This is rather an internal method and should rarely be used by external code.
+     *
+     * @param parent The new parent to use.
+     */
+    public setParent(parent: Symbol | undefined): void {
+        this.theParent = parent;
+    }
+
+    public removeFromParent(): void {
+        if (this.theParent instanceof ScopedSymbol) {
+            this.theParent.removeSymbol(this);
+            this.theParent = undefined;
+        }
+    }
+
+    /**
+     *
+     * @param name The name of the symbol to find.
+     * @param localOnly If true only child symbols are returned, otherwise also symbols from the parent of this symbol
+     *                  (recursively).
+     * @returns the first symbol with a given name, in the order of appearance in this scope
+     *          or any of the parent scopes (conditionally).
+     */
+    public async resolve(name: string, localOnly = false): Promise<Symbol | undefined> {
+        if (this.theParent instanceof ScopedSymbol) {
+            return this.theParent.resolve(name, localOnly);
+        }
+
+        return Promise.resolve(undefined);
+    }
+
+    /**
+     * @param t The type of objects to return.
+     * @returns the next enclosing parent of the given type.
+     */
+    public getParentOfType<T extends Symbol>(t: new (...args: any[]) => T): T | undefined {
+        let run = this.theParent;
+        while (run) {
+            if (run instanceof t) { return run; }
+            run = run.theParent;
+        }
+
+        return undefined;
     }
 
     /**
@@ -294,16 +295,16 @@ export class TypedSymbol extends Symbol {
 
 // An alias for another type.
 export class TypeAlias extends Symbol implements Type {
-    public get baseTypes(): Type[] { return [this.targetType]; }
-    public get kind(): TypeKind { return TypeKind.Alias; }
-    public get reference(): ReferenceKind { return ReferenceKind.Irrelevant; }
-
     private targetType: Type;
 
     public constructor(name: string, target: Type) {
         super(name);
         this.targetType = target;
     }
+
+    public get baseTypes(): Type[] { return [this.targetType]; }
+    public get kind(): TypeKind { return TypeKind.Alias; }
+    public get reference(): ReferenceKind { return ReferenceKind.Irrelevant; }
 }
 
 // A symbol with a scope (so it can have child symbols).
@@ -315,9 +316,32 @@ export class ScopedSymbol extends Symbol {
         super(name);
     }
 
+    /**
+     * @returns A promise resolving to all direct child symbols with a scope (e.g. classes in a module).
+     */
+    public get directScopes(): Promise<ScopedSymbol[]> {
+        return this.getSymbolsOfType(ScopedSymbol);
+    }
+
     public get children(): Symbol[] {
         // eslint-disable-next-line no-underscore-dangle
         return this._children;
+    }
+
+    public get firstChild(): Symbol | undefined {
+        if (this.children.length > 0) {
+            return this.children[0];
+        }
+
+        return undefined;
+    }
+
+    public get lastChild(): Symbol | undefined {
+        if (this.children.length > 0) {
+            return this.children[this.children.length - 1];
+        }
+
+        return undefined;
     }
 
     public clear(): void {
@@ -544,13 +568,6 @@ export class ScopedSymbol extends Symbol {
     }
 
     /**
-     * @returns A promise resolving to all direct child symbols with a scope (e.g. classes in a module).
-     */
-    public get directScopes(): Promise<ScopedSymbol[]> {
-        return this.getSymbolsOfType(ScopedSymbol);
-    }
-
-    /**
      * @returns the symbol located at the given path through the symbol hierarchy.
      * @param path The path consisting of symbol names separator by `separator`.
      * @param separator The character to separate path segments.
@@ -614,22 +631,6 @@ export class ScopedSymbol extends Symbol {
         }
 
         return this.children[index - 1];
-    }
-
-    public get firstChild(): Symbol | undefined {
-        if (this.children.length > 0) {
-            return this.children[0];
-        }
-
-        return undefined;
-    }
-
-    public get lastChild(): Symbol | undefined {
-        if (this.children.length > 0) {
-            return this.children[this.children.length - 1];
-        }
-
-        return undefined;
     }
 
     /**
@@ -733,15 +734,10 @@ export class FieldSymbol extends VariableSymbol {
 // Classes and structs.
 export class ClassSymbol extends ScopedSymbol implements Type {
 
-    public get baseTypes(): Type[] { return this.superClasses; }
-    public get kind(): TypeKind { return TypeKind.Class; }
-    public get reference(): ReferenceKind { return this.referenceKind; }
-
     public isStruct = false;
 
-    /**
-     * Usually only one member, unless the language supports multiple inheritance.
-     */
+    // Usually only one member, unless the language supports multiple inheritance.
+    // eslint-disable-next-line no-use-before-define
     public readonly superClasses: ClassSymbol[] = [];
 
     private referenceKind: ReferenceKind;
@@ -751,6 +747,10 @@ export class ClassSymbol extends ScopedSymbol implements Type {
         this.referenceKind = referenceKind;
         this.superClasses.push(...superClass); // Standard case: a single super class.
     }
+
+    public get baseTypes(): Type[] { return this.superClasses; }
+    public get kind(): TypeKind { return TypeKind.Class; }
+    public get reference(): ReferenceKind { return this.referenceKind; }
 
     /**
      * @param includeInherited Not used.
@@ -772,10 +772,6 @@ export class ClassSymbol extends ScopedSymbol implements Type {
 
 export class ArrayType extends Symbol implements Type {
 
-    public get baseTypes(): Type[] { return []; }
-    public get kind(): TypeKind { return TypeKind.Array; }
-    public get reference(): ReferenceKind { return this.referenceKind; }
-
     public readonly elementType: Type;
     public readonly size: number; // > 0 if fixed length.
 
@@ -787,15 +783,30 @@ export class ArrayType extends Symbol implements Type {
         this.elementType = elemType;
         this.size = size;
     }
+
+    public get baseTypes(): Type[] { return []; }
+    public get kind(): TypeKind { return TypeKind.Array; }
+    public get reference(): ReferenceKind { return this.referenceKind; }
 }
 
 // The main class managing all the symbols for a top level entity like a file, library or similar.
 export class SymbolTable extends ScopedSymbol {
     // Other symbol information available to this instance.
+    // eslint-disable-next-line no-use-before-define
     protected dependencies: Set<SymbolTable> = new Set();
 
     public constructor(name: string, public readonly options: SymbolTableOptions) {
         super(name);
+    }
+
+    /**
+     * @returns instance information, mostly relevant for unit testing.
+     */
+    public get info() {
+        return {
+            dependencyCount: this.dependencies.size,
+            symbolCount: this.children.length,
+        };
     }
 
     public clear() {
@@ -815,18 +826,8 @@ export class SymbolTable extends ScopedSymbol {
         }
     }
 
-    /**
-     * @returns instance information, mostly relevant for unit testing.
-     */
-    public get info() {
-        return {
-            dependencyCount: this.dependencies.size,
-            symbolCount: this.children.length,
-        };
-    }
-
-    public addNewSymbolOfType<T extends Symbol>(t: new (...args: any[]) => T,
-        parent: ScopedSymbol | undefined, ...args: any[]): T {
+    public addNewSymbolOfType<T extends Symbol>(t: new (...args: unknown[]) => T,
+        parent: ScopedSymbol | undefined, ...args: unknown[]): T {
 
         const result = new t(...args);
         if (!parent || parent === this) {

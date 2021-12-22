@@ -12,7 +12,8 @@
         "plugin:jsdoc/recommended"
     ],
     "ignorePatterns": [
-        "**/generated/*"
+        "**/generated/*",
+        "out/*"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
