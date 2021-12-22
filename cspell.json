@@ -1,5 +1,5 @@
 {
-    "version": "0.1",
+    "version": "0.2",
     "words": [
         "ANTLR",
         "Struct",
@@ -8,5 +8,8 @@
     ],
     "ignoreWords": [
         "philipps"
+    ],
+    "ignorePaths": [
+        ".eslintrc.json"
     ]
 }

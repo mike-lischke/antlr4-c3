@@ -19,9 +19,7 @@
         "project": "tsconfig.json",
         "sourceType": "module",
         "implicitStrict": true,
-        "ecmaFeatures": {
-            "jsx": false
-        },
+        "ecmaFeatures": {},
         "ecmaVersion": 8
     },
     "plugins": [
@@ -32,9 +30,6 @@
         "eslint-plugin-import"
     ],
     "settings": {
-        "react": {
-            "version": "detect"
-        }
     },
     "rules": {
         "no-explicit-any": "off",
@@ -352,19 +347,7 @@
         ],
         "use-isnan": "error",
         "valid-typeof": "off",
-        "no-restricted-properties": [
-            "error",
-            {
-                "object": "require",
-                "property": "ensure",
-                "message": "Please use import() instead. More info: https://facebook.github.io/create-react-app/docs/code-splitting"
-            },
-            {
-                "object": "System",
-                "property": "import",
-                "message": "Please use import() instead. More info: https://facebook.github.io/create-react-app/docs/code-splitting"
-            }
-        ],
+
         "getter-return": [
             "warn"
         ],
@@ -393,7 +376,6 @@
         ],
         "id-match": "error",
         "import/order": "off",
-        "import/no-webpack-loader-syntax": "off",
         "max-classes-per-file": [
             "error",
             1
