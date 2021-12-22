@@ -1,4 +1,6 @@
-[![NPM](https://nodei.co/npm/antlr4-c3.png?downloads=true&downloadRank=true)](https://nodei.co/npm/antlr4-c3/)
+![](https://img.shields.io/github/license/mike-lischke/antlr4-c3?style=for-the-badge)
+![](https://img.shields.io/npm/dw/antlr4-c3?style=for-the-badge)
+![GitHub branch checks state](https://img.shields.io/github/checks-status/mike-lischke/antlr4-c3/master?style=for-the-badge)
 
 # antlr4-c3 The ANTLR4 Code Completion Core
 
