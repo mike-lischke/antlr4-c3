@@ -222,10 +222,12 @@ export class Symbol {
     }
 
     /**
+     * Asynchronously looks up a symbol with a given name, in a bottom-up manner.
      *
      * @param name The name of the symbol to find.
      * @param localOnly If true only child symbols are returned, otherwise also symbols from the parent of this symbol
      *                  (recursively).
+     *
      * @returns the first symbol with a given name, in the order of appearance in this scope
      *          or any of the parent scopes (conditionally).
      */
@@ -238,7 +240,26 @@ export class Symbol {
     }
 
     /**
+     * Synchronously looks up a symbol with a given name, in a bottom-up manner.
+     *
+     * @param name The name of the symbol to find.
+     * @param localOnly If true only child symbols are returned, otherwise also symbols from the parent of this symbol
+     *                  (recursively).
+     *
+     * @returns the first symbol with a given name, in the order of appearance in this scope
+     *          or any of the parent scopes (conditionally).
+     */
+    public resolveSync(name: string, localOnly = false): Symbol | undefined {
+        if (this.theParent instanceof ScopedSymbol) {
+            return this.theParent.resolveSync(name, localOnly);
+        }
+
+        return undefined;
+    }
+
+    /**
      * @param t The type of objects to return.
+     *
      * @returns the next enclosing parent of the given type.
      */
     public getParentOfType<T extends Symbol>(t: new (...args: any[]) => T): T | undefined {
@@ -258,6 +279,7 @@ export class Symbol {
      * @param separator The string to be used between the parts.
      * @param full A flag indicating if the full path is to be returned.
      * @param includeAnonymous Use a special string for empty scope names.
+     *
      * @returns the constructed qualified identifier.
      */
     public qualifiedName(separator = ".", full = false, includeAnonymous = false): string {
@@ -386,7 +408,10 @@ export class ScopedSymbol extends Symbol {
     }
 
     /**
+     * Asynchronously retrieves child symbols of a given type from this symbol.
+     *
      * @param t The type of of the objects to return.
+     *
      * @returns A promise resolving to all (nested) children of the given type.
      */
     public async getNestedSymbolsOfType<T extends Symbol>(t: new (...args: any[]) => T): Promise<T[]> {
@@ -411,7 +436,31 @@ export class ScopedSymbol extends Symbol {
     }
 
     /**
+     * Synchronously retrieves child symbols of a given type from this symbol.
+     *
+     * @param t The type of of the objects to return.
+     *
+     * @returns A promise resolving to all (nested) children of the given type.
+     */
+    public getNestedSymbolsOfTypeSync<T extends Symbol>(t: new (...args: any[]) => T): T[] {
+        const result: T[] = [];
+
+        this.children.forEach((child) => {
+            if (child instanceof t) {
+                result.push(child);
+            }
+
+            if (child instanceof ScopedSymbol) {
+                result.push(...child.getNestedSymbolsOfTypeSync(t));
+            }
+        });
+
+        return result;
+    }
+
+    /**
      * @param name If given only returns symbols with that name.
+     *
      * @returns A promise resolving to symbols from this and all nested scopes in the order they were defined.
      */
     public async getAllNestedSymbols(name?: string): Promise<Symbol[]> {
@@ -436,7 +485,29 @@ export class ScopedSymbol extends Symbol {
     }
 
     /**
+     * @param name If given only returns symbols with that name.
+     *
+     * @returns A promise resolving to symbols from this and all nested scopes in the order they were defined.
+     */
+    public getAllNestedSymbolsSync(name?: string): Symbol[] {
+        const result: Symbol[] = [];
+
+        this.children.forEach((child) => {
+            if (!name || child.name === name) {
+                result.push(child);
+            }
+
+            if (child instanceof ScopedSymbol) {
+                result.push(...child.getAllNestedSymbolsSync(name));
+            }
+        });
+
+        return result;
+    }
+
+    /**
      * @param t The type of of the objects to return.
+     *
      * @returns A promise resolving to direct children of a given type.
      */
     public getSymbolsOfType<T extends Symbol>(t: new (...args: any[]) => T): Promise<T[]> {
@@ -458,6 +529,7 @@ export class ScopedSymbol extends Symbol {
      * @param t The type of the objects to return.
      * @param localOnly If true only child symbols are returned, otherwise also symbols from the parent of this symbol
      *                  (recursively).
+     *
      * @returns A promise resolving to all symbols of the the given type, accessible from this scope (if localOnly is
      *          false), within the owning symbol table.
      */
@@ -489,9 +561,46 @@ export class ScopedSymbol extends Symbol {
     }
 
     /**
+     * TODO: add optional position dependency (only symbols defined before a given caret pos are viable).
+     *
+     * @param t The type of the objects to return.
+     * @param localOnly If true only child symbols are returned, otherwise also symbols from the parent of this symbol
+     *                  (recursively).
+     *
+     * @returns A promise resolving to all symbols of the the given type, accessible from this scope (if localOnly is
+     *          false), within the owning symbol table.
+     */
+    public getAllSymbolsSync<T extends Symbol>(t: new (...args: any[]) => T, localOnly = false): T[] {
+        const result: T[] = [];
+
+        // Special handling for namespaces, which act like grouping symbols in this scope,
+        // so we show them as available in this scope.
+        for (const child of this.children) {
+            if (child instanceof t) {
+                result.push(child);
+            }
+
+            if (child instanceof NamespaceSymbol) {
+                const childSymbols = child.getAllSymbolsSync(t, true);
+                result.push(...childSymbols);
+            }
+        }
+
+        if (!localOnly) {
+            if (this.parent instanceof ScopedSymbol) {
+                const childSymbols = this.getAllSymbolsSync(t, true);
+                result.push(...childSymbols);
+            }
+        }
+
+        return result;
+    }
+
+    /**
      * @param name The name of the symbol to resolve.
      * @param localOnly If true only child symbols are returned, otherwise also symbols from the parent of this symbol
      *                  (recursively).
+     *
      * @returns the first symbol with a given name, in the order of appearance in this scope
      *          or any of the parent scopes (conditionally).
      */
@@ -519,8 +628,35 @@ export class ScopedSymbol extends Symbol {
     }
 
     /**
+     * @param name The name of the symbol to resolve.
      * @param localOnly If true only child symbols are returned, otherwise also symbols from the parent of this symbol
      *                  (recursively).
+     *
+     * @returns the first symbol with a given name, in the order of appearance in this scope
+     *          or any of the parent scopes (conditionally).
+     */
+    public resolveSync(name: string, localOnly = false): Symbol | undefined {
+        for (const child of this.children) {
+            if (child.name === name) {
+                return child;
+            }
+        }
+
+        // Nothing found locally. Let the parent continue.
+        if (!localOnly) {
+            if (this.parent instanceof ScopedSymbol) {
+                return this.parent.resolveSync(name, false);
+
+            }
+        }
+
+        return undefined;
+    }
+
+    /**
+     * @param localOnly If true only child symbols are returned, otherwise also symbols from the parent of this symbol
+     *                  (recursively).
+     *
      * @returns all accessible symbols that have a type assigned.
      */
     public getTypedSymbols(localOnly = true): TypedSymbol[] {
@@ -547,6 +683,7 @@ export class ScopedSymbol extends Symbol {
      *
      * @param localOnly If true only child symbols are returned, otherwise also symbols from the parent of this symbol
      *                  (recursively).
+     *
      * @returns A list of names.
      */
     public getTypedSymbolNames(localOnly = true): string[] {
@@ -568,9 +705,10 @@ export class ScopedSymbol extends Symbol {
     }
 
     /**
-     * @returns the symbol located at the given path through the symbol hierarchy.
      * @param path The path consisting of symbol names separator by `separator`.
      * @param separator The character to separate path segments.
+     *
+     * @returns the symbol located at the given path through the symbol hierarchy.
      */
     public symbolFromPath(path: string, separator = "."): Symbol | undefined {
         const elements = path.split(separator);
@@ -601,6 +739,7 @@ export class ScopedSymbol extends Symbol {
 
     /**
      * @param child The child to search for.
+     *
      * @returns the index of the given child symbol in the child list or -1 if it couldn't be found.
      */
     public indexOfChild(child: Symbol): number {
@@ -609,6 +748,7 @@ export class ScopedSymbol extends Symbol {
 
     /**
      * @param child The reference node.
+     *
      * @returns the sibling symbol after the given child symbol, if one exists.
      */
     public nextSiblingOf(child: Symbol): Symbol | undefined {
@@ -622,6 +762,7 @@ export class ScopedSymbol extends Symbol {
 
     /**
      * @param child The reference node.
+     *
      * @returns the sibling symbol before the given child symbol, if one exists.
      */
     public previousSiblingOf(child: Symbol): Symbol | undefined {
@@ -635,6 +776,7 @@ export class ScopedSymbol extends Symbol {
 
     /**
      * @param child The reference node.
+     *
      * @returns the next symbol in definition order, regardless of the scope.
      */
     public nextOf(child: Symbol): Symbol | undefined {
@@ -754,6 +896,7 @@ export class ClassSymbol extends ScopedSymbol implements Type {
 
     /**
      * @param includeInherited Not used.
+     *
      * @returns a list of all methods.
      */
     public getMethods(includeInherited = false): Promise<MethodSymbol[]> {
@@ -762,6 +905,7 @@ export class ClassSymbol extends ScopedSymbol implements Type {
 
     /**
      * @param includeInherited Not used.
+     *
      * @returns all fields.
      */
     public getFields(includeInherited = false): Promise<FieldSymbol[]> {
@@ -840,14 +984,15 @@ export class SymbolTable extends ScopedSymbol {
     }
 
     /**
-     * Adds a new namespace to the symbol table or the given parent. The path parameter specifies a single namespace
-     * name or a chain of namespaces (which can be e.g. "outer.intermittent.inner.final").
+     * Asynchronously adds a new namespace to the symbol table or the given parent. The path parameter specifies a
+     * single namespace name or a chain of namespaces (which can be e.g. "outer.intermittent.inner.final").
      * If any of the parent namespaces is missing they are created implicitly. The final part must not exist however
      * or you'll get a duplicate symbol error.
      *
      * @param parent The parent to add the namespace to.
      * @param path The namespace path.
      * @param delimiter The delimiter used in the path.
+     *
      * @returns The new symbol.
      */
     public async addNewNamespaceFromPath(parent: ScopedSymbol | undefined, path: string,
@@ -867,6 +1012,44 @@ export class SymbolTable extends ScopedSymbol {
         return this.addNewSymbolOfType(NamespaceSymbol, currentParent, parts[parts.length - 1]);
     }
 
+    /**
+     * Synchronously adds a new namespace to the symbol table or the given parent. The path parameter specifies a
+     * single namespace name or a chain of namespaces (which can be e.g. "outer.intermittent.inner.final").
+     * If any of the parent namespaces is missing they are created implicitly. The final part must not exist however
+     * or you'll get a duplicate symbol error.
+     *
+     * @param parent The parent to add the namespace to.
+     * @param path The namespace path.
+     * @param delimiter The delimiter used in the path.
+     *
+     * @returns The new symbol.
+     */
+    public addNewNamespaceFromPathSync(parent: ScopedSymbol | undefined, path: string,
+        delimiter = "."): NamespaceSymbol {
+        const parts = path.split(delimiter);
+        let i = 0;
+        let currentParent = (parent === undefined) ? this : parent;
+
+        while (i < parts.length - 1) {
+            let namespace = currentParent.resolveSync(parts[i], true) as NamespaceSymbol;
+            if (namespace === undefined) {
+                namespace = this.addNewSymbolOfType(NamespaceSymbol, currentParent, parts[i]);
+            }
+            currentParent = namespace;
+            ++i;
+        }
+
+        return this.addNewSymbolOfType(NamespaceSymbol, currentParent, parts[parts.length - 1]);
+    }
+
+    /**
+     * Asynchronously returns all symbols from this scope (and optionally those from dependencies) of a specific type.
+     *
+     * @param t The type of the symbols to return.
+     * @param localOnly If true do not search dependencies.
+     *
+     * @returns A promise which resolves when all symbols are collected.
+     */
     public async getAllSymbols<T extends Symbol>(t: new (...args: any[]) => T, localOnly = false): Promise<T[]> {
         const result: T[] = await super.getAllSymbols(t, localOnly);
 
@@ -884,9 +1067,30 @@ export class SymbolTable extends ScopedSymbol {
     }
 
     /**
-     * Looks for a symbol which is connected with a given parse tree context.
+     * Synchronously returns all symbols from this scope (and optionally those from dependencies) of a specific type.
+     *
+     * @param t The type of the symbols to return.
+     * @param localOnly If true do not search dependencies.
+     *
+     * @returns A promise which resolves when all symbols are collected.
+     */
+    public getAllSymbolsSync<T extends Symbol>(t: new (...args: any[]) => T, localOnly = false): T[] {
+        const result: T[] = super.getAllSymbolsSync(t, localOnly);
+
+        if (!localOnly) {
+            this.dependencies.forEach((dependency) => {
+                result.push(...dependency.getAllSymbolsSync(t, localOnly));
+            });
+        }
+
+        return result;
+    }
+
+    /**
+     * Asynchronously looks for a symbol which is connected with a given parse tree context.
      *
      * @param context The context to search for.
+     *
      * @returns A promise resolving to the found symbol or undefined.
      */
     public async symbolWithContext(context: ParseTree): Promise<Symbol | undefined> {
@@ -894,6 +1098,7 @@ export class SymbolTable extends ScopedSymbol {
          * Local function to find a symbol recursively.
          *
          * @param symbol The symbol to search through.
+         *
          * @returns The symbol with the given context, if found.
          */
         const findRecursive = (symbol: Symbol): Symbol | undefined => {
@@ -932,10 +1137,61 @@ export class SymbolTable extends ScopedSymbol {
     }
 
     /**
-     * Resolves a name to a symbol.
+     * Synchronously looks for a symbol which is connected with a given parse tree context.
+     *
+     * @param context The context to search for.
+     *
+     * @returns A promise resolving to the found symbol or undefined.
+     */
+    public symbolWithContextSync(context: ParseTree): Symbol | undefined {
+        /**
+         * Local function to find a symbol recursively.
+         *
+         * @param symbol The symbol to search through.
+         *
+         * @returns The symbol with the given context, if found.
+         */
+        const findRecursive = (symbol: Symbol): Symbol | undefined => {
+            if (symbol.context === context) {
+                return symbol;
+            }
+
+            if (symbol instanceof ScopedSymbol) {
+                for (const child of symbol.children) {
+                    const result = findRecursive(child);
+                    if (result) {
+                        return result;
+                    }
+                }
+            }
+        };
+
+
+        let symbols = this.getAllSymbolsSync(Symbol);
+        for (const symbol of symbols) {
+            const result = findRecursive(symbol);
+            if (result) {
+                return result;
+            }
+        }
+
+        for (const dependency of this.dependencies) {
+            symbols = dependency.getAllSymbolsSync(Symbol);
+            for (const symbol of symbols) {
+                const result = findRecursive(symbol);
+                if (result) {
+                    result;
+                }
+            }
+        }
+    }
+
+    /**
+     * Asynchronously resolves a name to a symbol.
      *
      * @param name The name of the symbol to find.
      * @param localOnly A flag indicating if only this symbol table should be used or also its dependencies.
+     *
      * @returns The found symbol or undefined.
      */
     public async resolve(name: string, localOnly = false): Promise<Symbol | undefined> {
@@ -943,6 +1199,28 @@ export class SymbolTable extends ScopedSymbol {
         if (!result && !localOnly) {
             for (const dependency of this.dependencies) {
                 result = await dependency.resolve(name, false);
+                if (result) {
+                    return result;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Synchronously resolves a name to a symbol.
+     *
+     * @param name The name of the symbol to find.
+     * @param localOnly A flag indicating if only this symbol table should be used or also its dependencies.
+     *
+     * @returns The found symbol or undefined.
+     */
+    public resolveSync(name: string, localOnly = false): Symbol | undefined {
+        let result = super.resolveSync(name, localOnly);
+        if (!result && !localOnly) {
+            for (const dependency of this.dependencies) {
+                result = dependency.resolveSync(name, false);
                 if (result) {
                     return result;
                 }
