@@ -1,6 +1,5 @@
 ![](https://img.shields.io/github/license/mike-lischke/antlr4-c3?style=for-the-badge)
 ![](https://img.shields.io/npm/dw/antlr4-c3?style=for-the-badge)
-![GitHub branch checks state](https://img.shields.io/github/checks-status/mike-lischke/antlr4-c3/master?style=for-the-badge)
 
 # antlr4-c3 The ANTLR4 Code Completion Core
 
@@ -214,6 +213,12 @@ Sometimes you are not getting what you actually expect and you need take a close
 The last two options potentially create a lot of output which can significantly slow down the collection process.
 
 ## Release Notes
+
+### 2.1.0
+- It turned out that synchronous symbol retrieval methods have their value, so I brought them back by adding `...Sync()` variants of all methods with an async behavior.
+- Brought back and extended project tests on Github.
+- Upgraded module dependencies.
+- Cleaned up the code again, now with latest eslint settings.
 
 ### 2.0.2
 - `getAllSymbols<T>` now returns symbols of type T (instead of `Symbol`), like all other enumeration methods.

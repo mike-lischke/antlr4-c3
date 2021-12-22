@@ -16,3 +16,6 @@ package
 *.tgz
 ports/
 .vscode/
+.eslintrc.json
+.github/
+cspell.json
