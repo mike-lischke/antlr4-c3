@@ -40,7 +40,7 @@ const dummyNode = new TerminalNode(new CommonToken(-2, "Dummy", undefined, 0, 10
 
 /**
  * Creates a single symbol table setup with a simple base structure:
- *   - [0] classes with [1] methods and [2] fields
+ *   - [0] classes and interfaces, with [1] methods and [2] fields
  *   - two blocks in each method and 1 variable in each block.
  * In addition to that some global symbols are added ([3] variables, [4] literals).
  * If namespaces are given then the classes are distributed among them in a round-robin fashion.
@@ -65,16 +65,19 @@ const createClassSymbolTable = async (name: string, counts: number[],
     }
 
     for (let i = 0; i < counts[0]; ++i) {
-        const classSymbol = symbolTable.addNewSymbolOfType(c3.ClassSymbol, nsSymbols[nsIndex], `class${i}`);
+        const classSymbol = symbolTable.addNewSymbolOfType(c3.ClassSymbol, nsSymbols[nsIndex], `class${i}`, [], []);
+        const interfaceSymbol = symbolTable.addNewSymbolOfType(c3.InterfaceSymbol, undefined, `interface${i}`, []);
 
         for (let j = 0; j < counts[2]; ++j) {
             symbolTable.addNewSymbolOfType(c3.FieldSymbol, classSymbol, `field${j}`);
+            symbolTable.addNewSymbolOfType(c3.FieldSymbol, interfaceSymbol, `field${j}`);
         }
 
         for (let j = 0; j < counts[1]; ++j) {
             const method = symbolTable.addNewSymbolOfType(c3.MethodSymbol, classSymbol, `method${j}`);
+            symbolTable.addNewSymbolOfType(c3.MethodSymbol, interfaceSymbol, `method${j}`);
 
-            // Blocks are created and added in an alternative way.
+            // Blocks are created and added in an alternative way (only for classes).
             const block1 = symbolTable.addNewSymbolOfType(c3.BlockSymbol, undefined, "block1"); // Block at top level.
             symbolTable.addNewSymbolOfType(c3.VariableSymbol, block1, "var1", 17, c3.FundamentalType.integerType);
             const block2 = symbolTable.addNewSymbolOfType(c3.BlockSymbol, undefined, "block2");
@@ -115,7 +118,7 @@ describe("antlr4-c3:", function () {
             const symbolTable = await createClassSymbolTable("main", [3, 3, 4, 5, 5]);
             const info = symbolTable.info;
             expect(info.dependencyCount, "Test 1").to.equal(0);
-            expect(info.symbolCount, "Test 2").to.equal(13); // 5 + 5 top level symbols + 3 classes.
+            expect(info.symbolCount, "Test 2").to.equal(16); // 5 + 5 top level symbols + 3 classes + 3 interfaces.
 
             try {
                 symbolTable.addNewSymbolOfType(c3.VariableSymbol, undefined, "globalVar3");
@@ -183,13 +186,13 @@ describe("antlr4-c3:", function () {
             expect(variable!.qualifiedName(".", true, true), "Test 29").to.equal("main.class1.method2.block1.var1");
 
             const allSymbols = await symbolTable.getAllNestedSymbols();
-            expect(allSymbols.length, "Test 30").to.equal(70);
+            expect(allSymbols.length, "Test 30").to.equal(94);
 
             const symbolPath = allSymbols[59].qualifiedName(".", true);
-            expect(symbolPath, "Test 31").to.equal("main.class2.method0.block2");
+            expect(symbolPath, "Test 31").to.equal("main.class1.method2.block1.var1");
 
             const foundSymbol = symbolTable.symbolFromPath("main.class2.method0.block2.var1");
-            expect(foundSymbol, "Test 32").to.equal(allSymbols[61]);
+            expect(foundSymbol, "Test 32").to.equal(allSymbols[78]);
 
             expect(symbolTable, "Test 33").to.equal(symbolTable.symbolTable);
         });
@@ -205,25 +208,26 @@ describe("antlr4-c3:", function () {
             symbolTable.addNewSymbolOfType(c3.RoutineSymbol, undefined, "routine1", c3.FundamentalType.integerType);
             symbolTable.addNewSymbolOfType(c3.FieldSymbol, undefined, "field1", c3.FundamentalType.floatType);
 
+            // TODO: finish this test.
         });
 
         it("Single table stress test", async () => {
             const symbolTable = await createClassSymbolTable("table", [300, 30, 20, 1000, 1000]);
 
             let symbols = await symbolTable.getAllNestedSymbols();
-            expect(symbols.length, "Test 1").to.equal(53300);
+            expect(symbols.length, "Test 1").to.equal(68600);
             symbols = await symbolTable.getNestedSymbolsOfType(c3.ClassSymbol);
             expect(symbols.length, "Test 2").to.equal(300);
             symbols = await symbolTable.getNestedSymbolsOfType(c3.MethodSymbol);
-            expect(symbols.length, "Test 3").to.equal(9000);
+            expect(symbols.length, "Test 3").to.equal(18000);
             symbols = await symbolTable.getNestedSymbolsOfType(c3.ScopedSymbol);
-            expect(symbols.length, "Test 4").to.equal(27300);
+            expect(symbols.length, "Test 4").to.equal(36600);
 
             // Includes class fields.
             symbols = await symbolTable.getNestedSymbolsOfType(c3.VariableSymbol);
-            expect(symbols.length, "Test 5").to.equal(25000);
+            expect(symbols.length, "Test 5").to.equal(31000);
             symbols = await symbolTable.getNestedSymbolsOfType(c3.FieldSymbol);
-            expect(symbols.length, "Test 6").to.equal(6000);
+            expect(symbols.length, "Test 6").to.equal(12000);
             symbols = await symbolTable.getNestedSymbolsOfType(c3.LiteralSymbol);
             expect(symbols.length, "Test 7").to.equal(1000);
         }).timeout(20000);
@@ -238,7 +242,7 @@ describe("antlr4-c3:", function () {
             // This call does a depth-first search, so all the deeper nested namespaces appear at the lower indexes
             // and the less nested ones at the end of the list.
             const methods = await symbolTable.getNestedSymbolsOfType(c3.MethodSymbol);
-            expect(methods.length, "Test 2").to.equal(300);
+            expect(methods.length, "Test 2").to.equal(600);
             expect(methods[2].qualifiedName(".", true), "Test 3").to.equal("main.ns1.ns3.ns5.class2.method2");
             expect(methods[299].qualifiedName(".", true), "Test 4").to.equal("main.ns2.class29.method9");
         });
@@ -285,7 +289,7 @@ describe("antlr4-c3:", function () {
             // Note: namespaces are handled in the context of their parent.
             // Symbols in a namespace/module/library are accessible from their parent.
             let allSymbols = await main.getAllSymbols(c3.Symbol);
-            expect(allSymbols.length, "Test 1").to.equal(2232);
+            expect(allSymbols.length, "Test 1").to.equal(2262);
 
             allSymbols = await main.getAllSymbols(c3.RoutineSymbol);
             expect(allSymbols.length, "Test 2").to.equal(1443);
@@ -312,25 +316,25 @@ describe("antlr4-c3:", function () {
             // Does not include constant values (which are literals). Still such variables may appear in
             // below navigation methods and are compared by name, instead of reference.
             const variables = await symbolTable.getNestedSymbolsOfType(c3.VariableSymbol);
-            expect(variables.length, "Test 2").to.equal(320);
+            expect(variables.length, "Test 2").to.equal(420);
 
             // A class member.
-            const field7 = variables[202];
+            const field7 = variables[211];
             expect(field7, "Test 3").not.to.be.undefined;
-            expect(field7.firstSibling, "Test 4").to.equal(variables[200]);
+            expect(field7.firstSibling, "Test 4").to.equal(variables[210]);
             expect(field7.lastSibling.name, "Test 5").to.equal("method9");
-            expect(field7.previousSibling, "Test 6").to.equal(variables[201]);
-            expect(field7.nextSibling, "Test 7").to.equal(variables[203]);
+            expect(field7.previousSibling, "Test 6").to.equal(variables[210]);
+            expect(field7.nextSibling, "Test 7").to.equal(variables[212]);
 
             expect(field7.firstSibling.firstSibling.firstSibling.firstSibling, "Test 8").to.equal(field7.firstSibling);
             expect(field7.lastSibling.lastSibling.lastSibling.lastSibling, "Test 9").to.equal(field7.lastSibling);
             expect(field7.firstSibling.lastSibling.firstSibling.firstSibling, "Test 10").to.equal(field7.firstSibling);
             expect(field7.lastSibling.firstSibling.firstSibling.lastSibling, "Test 11").to.equal(field7.lastSibling);
 
-            expect(field7.parent, "Test 12").to.be.instanceof(c3.ClassSymbol);
+            expect(field7.parent, "Test 12").to.be.instanceof(c3.InterfaceSymbol);
 
-            const parent7 = field7.parent as c3.ClassSymbol;
-            expect(parent7.indexOfChild(field7), "Test 13").to.equal(2);
+            const parent7 = field7.parent as c3.InterfaceSymbol;
+            expect(parent7.indexOfChild(field7), "Test 13").to.equal(1);
             expect(parent7.firstChild, "Test 14").to.equal(field7.firstSibling);
             expect(parent7.lastChild, "Test 15").to.equal(field7.lastSibling);
 
@@ -364,13 +368,13 @@ describe("antlr4-c3:", function () {
             expect(var15.parent, "Test 34").to.be.instanceof(c3.SymbolTable);
 
             const st1 = var15.parent as c3.ScopedSymbol;
-            expect(st1.indexOfChild(var15), "Test 35").to.equal(29);
+            expect(st1.indexOfChild(var15), "Test 35").to.equal(39);
             expect(st1.firstChild, "Test 36").to.equal(var15.firstSibling);
             expect(st1.lastChild, "Test 37").to.equal(var15.lastSibling);
 
             const next = variables[284].next;
             expect(next, "Test 38").not.to.be.undefined;
-            expect(next!.qualifiedName(".", true), "Test 39").to.equal("main.class8.method7.block1.var1");
+            expect(next!.qualifiedName(".", true), "Test 39").to.equal("main.class6.method7.block1.var1");
 
             const symbol = await symbolTable.symbolWithContext(dummyNode);
             expect(symbol, "Test 40").not.to.be.undefined;

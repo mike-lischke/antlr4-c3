@@ -12,11 +12,24 @@ import { ParseTree } from "antlr4ts/tree/ParseTree";
 export class DuplicateSymbolError extends Error { }
 
 export enum MemberVisibility {
-    Invalid = -1,
-    Public = 0,
-    Protected,
-    Private,
-    Library,
+    Unknown,      // Not specified, default depends on the language and type.
+    Open,         // Used in Swift, member can be accessed outside of the defining module and extended.
+    Public,       // Like Open, but in Swift such a type cannot be extended.
+    Protected,    // Member is only accessible in the defining class and any derived class.
+    Private,      // Member can only be accessed from the defining class.
+    FilePrivate,  // Used in Swift, member can be accessed from everywhere in a defining module, not outside however.
+    Library,      // Custom enum for special usage.
+}
+
+export enum Modifier {
+    Static,
+    Final,
+    Sealed,
+    Abstract,
+    Deprecated,
+    Virtual,
+    Const,
+    Overwritten,
 }
 
 export enum TypeKind {
@@ -27,6 +40,7 @@ export enum TypeKind {
     Date,
 
     Class,
+    Interface,
     Array,
     Alias,
 }
@@ -93,6 +107,9 @@ export class FundamentalType implements Type {
 export class Symbol {
     public name = "";           // The name of the scope or empty if anonymous.
     public context?: ParseTree; // Reference to the parse tree which contains this symbol.
+
+    public readonly modifiers = new Set<Modifier>();
+    public visibility = MemberVisibility.Unknown;
 
     // eslint-disable-next-line no-use-before-define
     private theParent?: Symbol;
@@ -859,40 +876,73 @@ export enum MethodFlags {
     Explicit = 16,      // Special flag used e.g. in C++ for explicit c-tors.
 }
 
-// A routine which belongs to a class or other outer container structure.
+
+// A function which belongs to a class or other outer container structure.
 export class MethodSymbol extends RoutineSymbol {
     public methodFlags = MethodFlags.None;
-    public visibility = MemberVisibility.Invalid;
 }
 
+// Ditto for a variable.
 export class FieldSymbol extends VariableSymbol {
-    public visibility = MemberVisibility.Invalid;
-
     public setter?: MethodSymbol;
     public getter?: MethodSymbol;
-
 }
 
 // Classes and structs.
 export class ClassSymbol extends ScopedSymbol implements Type {
-
     public isStruct = false;
+    public reference = ReferenceKind.Irrelevant;
 
-    // Usually only one member, unless the language supports multiple inheritance.
+    // Usually only one member, unless the language supports multiple inheritance (like C++).
     // eslint-disable-next-line no-use-before-define
-    public readonly superClasses: ClassSymbol[] = [];
+    public readonly extends: ClassSymbol[] = [];
 
-    private referenceKind: ReferenceKind;
+    // Typescript allows a class to implement a class, not only interfaces.
+    // eslint-disable-next-line no-use-before-define
+    public readonly implements: Array<ClassSymbol | InterfaceSymbol> = [];
 
-    public constructor(name: string, referenceKind: ReferenceKind, ...superClass: ClassSymbol[]) {
+    public constructor(name: string, ext: ClassSymbol[], impl: Array<ClassSymbol | InterfaceSymbol>) {
         super(name);
-        this.referenceKind = referenceKind;
-        this.superClasses.push(...superClass); // Standard case: a single super class.
+        this.extends.push(...ext);
+        this.implements.push(...impl);
     }
 
-    public get baseTypes(): Type[] { return this.superClasses; }
+    public get baseTypes(): Type[] { return this.extends; }
     public get kind(): TypeKind { return TypeKind.Class; }
-    public get reference(): ReferenceKind { return this.referenceKind; }
+
+    /**
+     * @param includeInherited Not used.
+     *
+     * @returns a list of all methods.
+     */
+    public getMethods(includeInherited = false): Promise<MethodSymbol[]> {
+        return this.getSymbolsOfType(MethodSymbol);
+    }
+
+    /**
+     * @param includeInherited Not used.
+     *
+     * @returns all fields.
+     */
+    public getFields(includeInherited = false): Promise<FieldSymbol[]> {
+        return this.getSymbolsOfType(FieldSymbol);
+    }
+}
+
+export class InterfaceSymbol extends ScopedSymbol implements Type {
+    public reference = ReferenceKind.Irrelevant;
+
+    // Typescript allows an interface to extend a class, not only interfaces.
+    // eslint-disable-next-line no-use-before-define
+    public readonly extends: Array<ClassSymbol | InterfaceSymbol> = [];
+
+    public constructor(name: string, ext: Array<ClassSymbol | InterfaceSymbol>) {
+        super(name);
+        this.extends.push(...ext);
+    }
+
+    public get baseTypes(): Type[] { return this.extends; }
+    public get kind(): TypeKind { return TypeKind.Interface; }
 
     /**
      * @param includeInherited Not used.

@@ -214,6 +214,10 @@ The last two options potentially create a lot of output which can significantly 
 
 ## Release Notes
 
+### 2.2.0
+- Added `InterfaceSymbol` to SymbolTable and enhanced `ClassSymbol` for interface implementations.
+- Added a modifier and a visibility field to Symbol, so that's available for all symbols now. Removed the obsolete visibility field from method and field symbols.
+
 ### 2.1.0
 - It turned out that synchronous symbol retrieval methods have their value, so I brought them back by adding `...Sync()` variants of all methods with an async behavior.
 - Brought back and extended project tests on Github.
