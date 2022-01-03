@@ -895,16 +895,16 @@ export class ClassSymbol extends ScopedSymbol implements Type {
 
     // Usually only one member, unless the language supports multiple inheritance (like C++).
     // eslint-disable-next-line no-use-before-define
-    public readonly extends: ClassSymbol[] = [];
+    public readonly extends: ClassSymbol[];
 
     // Typescript allows a class to implement a class, not only interfaces.
     // eslint-disable-next-line no-use-before-define
-    public readonly implements: Array<ClassSymbol | InterfaceSymbol> = [];
+    public readonly implements: Array<ClassSymbol | InterfaceSymbol>;
 
     public constructor(name: string, ext: ClassSymbol[], impl: Array<ClassSymbol | InterfaceSymbol>) {
         super(name);
-        this.extends.push(...ext);
-        this.implements.push(...impl);
+        this.extends = ext;
+        this.implements = impl;
     }
 
     public get baseTypes(): Type[] { return this.extends; }
@@ -934,11 +934,11 @@ export class InterfaceSymbol extends ScopedSymbol implements Type {
 
     // Typescript allows an interface to extend a class, not only interfaces.
     // eslint-disable-next-line no-use-before-define
-    public readonly extends: Array<ClassSymbol | InterfaceSymbol> = [];
+    public readonly extends: Array<ClassSymbol | InterfaceSymbol>;
 
     public constructor(name: string, ext: Array<ClassSymbol | InterfaceSymbol>) {
         super(name);
-        this.extends.push(...ext);
+        this.extends = ext;
     }
 
     public get baseTypes(): Type[] { return this.extends; }
@@ -1020,9 +1020,10 @@ export class SymbolTable extends ScopedSymbol {
         }
     }
 
-    public addNewSymbolOfType<T extends Symbol>(t: new (...args: unknown[]) => T,
-        parent: ScopedSymbol | undefined, ...args: unknown[]): T {
+    public addNewSymbolOfType<T extends Symbol>(t: new (...args: any[]) => T,
+        parent: ScopedSymbol | undefined, ...args: any[]): T {
 
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const result = new t(...args);
         if (!parent || parent === this) {
             this.addSymbol(result);

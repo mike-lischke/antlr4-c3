@@ -214,6 +214,9 @@ The last two options potentially create a lot of output which can significantly 
 
 ## Release Notes
 
+### 2.2.1
+Reverted changes from `any` to `unknown` for `SymbolTable.addNewSymbolOfType`. It works in the tests, but is not accepted by consumers of the node module.
+
 ### 2.2.0
 - Added `InterfaceSymbol` to SymbolTable and enhanced `ClassSymbol` for interface implementations.
 - Added a modifier and a visibility field to Symbol, so that's available for all symbols now. Removed the obsolete visibility field from method and field symbols.
