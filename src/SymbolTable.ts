@@ -1228,10 +1228,12 @@ export class SymbolTable extends ScopedSymbol {
             for (const symbol of symbols) {
                 const result = findRecursive(symbol);
                 if (result) {
-                    result;
+                    return result;
                 }
             }
         }
+
+        return undefined;
     }
 
     /**
@@ -1278,10 +1280,12 @@ export class SymbolTable extends ScopedSymbol {
             for (const symbol of symbols) {
                 const result = findRecursive(symbol);
                 if (result) {
-                    result;
+                    return result;
                 }
             }
         }
+
+        return undefined;
     }
 
     /**
