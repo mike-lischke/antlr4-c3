@@ -815,7 +815,7 @@ export class ScopedSymbol extends Symbol {
     public nextSiblingOf(child: Symbol): Symbol | undefined {
         const index = this.indexOfChild(child);
         if (index === -1 || index >= this.children.length - 1) {
-            return;
+            return undefined;
         }
 
         return this.children[index + 1];
@@ -829,7 +829,7 @@ export class ScopedSymbol extends Symbol {
     public previousSiblingOf(child: Symbol): Symbol | undefined {
         const index = this.indexOfChild(child);
         if (index < 1) {
-            return;
+            return undefined;
         }
 
         return this.children[index - 1];
@@ -842,7 +842,7 @@ export class ScopedSymbol extends Symbol {
      */
     public nextOf(child: Symbol): Symbol | undefined {
         if (!(child.parent instanceof ScopedSymbol)) {
-            return;
+            return undefined;
         }
 
         if (child.parent !== this) {
@@ -1212,6 +1212,8 @@ export class SymbolTable extends ScopedSymbol {
                     }
                 }
             }
+
+            return undefined;
         };
 
 
@@ -1264,6 +1266,8 @@ export class SymbolTable extends ScopedSymbol {
                     }
                 }
             }
+
+            return undefined;
         };
 
 
