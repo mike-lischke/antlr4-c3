@@ -12,13 +12,26 @@ import { ParseTree } from "antlr4ts/tree/ParseTree";
 export class DuplicateSymbolError extends Error { }
 
 export enum MemberVisibility {
-    Unknown,      // Not specified, default depends on the language and type.
-    Open,         // Used in Swift, member can be accessed outside of the defining module and extended.
-    Public,       // Like Open, but in Swift such a type cannot be extended.
-    Protected,    // Member is only accessible in the defining class and any derived class.
-    Private,      // Member can only be accessed from the defining class.
-    FilePrivate,  // Used in Swift, member can be accessed from everywhere in a defining module, not outside however.
-    Library,      // Custom enum for special usage.
+    /** Not specified, default depends on the language and type. */
+    Unknown,
+
+    /** Used in Swift, member can be accessed outside of the defining module and extended. */
+    Open,
+
+    /** Like Open, but in Swift such a type cannot be extended. */
+    Public,
+
+    /** Member is only accessible in the defining class and any derived class. */
+    Protected,
+
+    /** Member can only be accessed from the defining class. */
+    Private,
+
+    /** Used in Swift, member can be accessed from everywhere in a defining module, not outside however. */
+    FilePrivate,
+
+    /** Custom enum for special usage. */
+    Library,
 }
 
 export enum Modifier {
@@ -32,32 +45,49 @@ export enum Modifier {
     Overwritten,
 }
 
+/** Rough categorization of a type. */
 export enum TypeKind {
+    Unknown,
+
     Integer,
     Float,
+    Number,
+
     String,
+    Char,
+
     Boolean,
-    Date,
 
     Class,
     Interface,
     Array,
+    Map,
+    Enum,
+
     Alias,
 }
 
 export enum ReferenceKind {
     Irrelevant,
-    Pointer,   // Default for most languages for dynamically allocated memory ("Type*" in C++).
-    Reference, // "Type&" in C++
-    Instance,  // "Type" as such and default for all value types.
+
+    /** Default for most languages for dynamically allocated memory ("Type*" in C++). */
+    Pointer,
+
+    /** "Type&" in C++ */
+    Reference,
+
+    /** "Type" as such and default for all value types. */
+    Instance,
 }
 
-// The root type interface. Used for typed symbols and type aliases.
+/** The root type interface. Used for typed symbols and type aliases. */
 export interface Type {
     name: string;
 
-    // The super type of this type or empty if this is a fundamental type.
-    // Also used as the target type for type aliases.
+    /**
+     * The super type of this type or empty if this is a fundamental type.
+     * Also used as the target type for type aliases.
+     */
     baseTypes: Type[];
     kind: TypeKind;
     reference: ReferenceKind;
@@ -67,20 +97,19 @@ export interface SymbolTableOptions {
     allowDuplicateSymbols?: boolean;
 }
 
-// A single class for all fundamental types. They are distinguished via the kind field.
+/** A single class for all fundamental types. They are distinguished via the kind field. */
 export class FundamentalType implements Type {
     public static readonly integerType = new FundamentalType("int", TypeKind.Integer, ReferenceKind.Instance);
     public static readonly floatType = new FundamentalType("float", TypeKind.Float, ReferenceKind.Instance);
     public static readonly stringType = new FundamentalType("string", TypeKind.String, ReferenceKind.Instance);
     public static readonly boolType = new FundamentalType("bool", TypeKind.Boolean, ReferenceKind.Instance);
-    public static readonly dateType = new FundamentalType("date", TypeKind.Date, ReferenceKind.Instance);
 
     public name: string;
 
     private typeKind: TypeKind;
     private referenceKind: ReferenceKind;
 
-    public constructor(name: string, typeKind: TypeKind, referenceKind: ReferenceKind) {
+    public constructor(name: string, typeKind = TypeKind.Unknown, referenceKind = ReferenceKind.Irrelevant) {
         this.name = name;
         this.typeKind = typeKind;
         this.referenceKind = referenceKind;
@@ -100,13 +129,18 @@ export class FundamentalType implements Type {
 
 }
 
-// The root of the symbol table class hierarchy: a symbol can be any manageable entity (like a block), not only
-// things like variables or classes.
-// We are using a class hierarchy here, instead of an enum or similar, to allow for easy extension and certain
-// symbols can so provide additional APIs for simpler access to their sub elements, if needed.
+/**
+ * The root of the symbol table class hierarchy: a symbol can be any manageable entity (like a block), not only
+ * things like variables or classes.
+ * We are using a class hierarchy here, instead of an enum or similar, to allow for easy extension and certain
+ * symbols can so provide additional APIs for simpler access to their sub elements, if needed.
+ */
 export class Symbol {
-    public name = "";           // The name of the scope or empty if anonymous.
-    public context?: ParseTree; // Reference to the parse tree which contains this symbol.
+    /** The name of the scope or empty if anonymous. */
+    public name = "";
+
+    /** Reference to the parse tree which contains this symbol. */
+    public context?: ParseTree;
 
     public readonly modifiers = new Set<Modifier>();
     public visibility = MemberVisibility.Unknown;
@@ -196,7 +230,9 @@ export class Symbol {
 
         let run = this.theParent;
         while (run) {
-            if (run instanceof SymbolTable) { return run; }
+            if (run instanceof SymbolTable) {
+                return run;
+            }
             run = run.theParent;
         }
 
@@ -213,7 +249,9 @@ export class Symbol {
         let run: Symbol = this;
         while (run) {
             result.push(run);
-            if (!run.theParent) { break; }
+            if (!run.theParent) {
+                break;
+            }
             run = run.theParent;
         }
 
@@ -322,7 +360,7 @@ export class Symbol {
 
 }
 
-// A symbol with an attached type (variables, fields etc.).
+/** A symbol with an attached type (variables, fields etc.). */
 export class TypedSymbol extends Symbol {
     public type: Type | undefined;
 
@@ -332,7 +370,7 @@ export class TypedSymbol extends Symbol {
     }
 }
 
-// An alias for another type.
+/** An alias for another type. */
 export class TypeAlias extends Symbol implements Type {
     private targetType: Type;
 
@@ -341,15 +379,24 @@ export class TypeAlias extends Symbol implements Type {
         this.targetType = target;
     }
 
-    public get baseTypes(): Type[] { return [this.targetType]; }
-    public get kind(): TypeKind { return TypeKind.Alias; }
-    public get reference(): ReferenceKind { return ReferenceKind.Irrelevant; }
+    public get baseTypes(): Type[] {
+        return [this.targetType];
+    }
+
+    public get kind(): TypeKind {
+        return TypeKind.Alias;
+    }
+
+    public get reference(): ReferenceKind {
+        return ReferenceKind.Irrelevant;
+    }
 }
 
-// A symbol with a scope (so it can have child symbols).
+/** A symbol with a scope (so it can have child symbols). */
 export class ScopedSymbol extends Symbol {
 
-    private childSymbols: Symbol[] = []; // All child symbols in definition order.
+    /** All child symbols in definition order. */
+    private childSymbols: Symbol[] = [];
 
     public constructor(name = "") {
         super(name);
@@ -363,7 +410,6 @@ export class ScopedSymbol extends Symbol {
     }
 
     public get children(): Symbol[] {
-        // eslint-disable-next-line no-underscore-dangle
         return this.childSymbols;
     }
 
@@ -384,7 +430,6 @@ export class ScopedSymbol extends Symbol {
     }
 
     public clear(): void {
-        // eslint-disable-next-line no-underscore-dangle
         this.childSymbols = [];
     }
 
@@ -871,32 +916,36 @@ export enum MethodFlags {
     Virtual = 1,
     Const = 2,
     Overwritten = 4,
-    SetterOrGetter = 8, // Distinguished by the return type.
-    Explicit = 16,      // Special flag used e.g. in C++ for explicit c-tors.
+
+    /** Distinguished by the return type. */
+    SetterOrGetter = 8,
+
+    /** Special flag used e.g. in C++ for explicit c-tors. */
+    Explicit = 16,
 }
 
 
-// A function which belongs to a class or other outer container structure.
+/** A function which belongs to a class or other outer container structure. */
 export class MethodSymbol extends RoutineSymbol {
     public methodFlags = MethodFlags.None;
 }
 
-// Ditto for a variable.
+/** A field which belongs to a class or other outer container structure. */
 export class FieldSymbol extends VariableSymbol {
     public setter?: MethodSymbol;
     public getter?: MethodSymbol;
 }
 
-// Classes and structs.
+/** Classes and structs. */
 export class ClassSymbol extends ScopedSymbol implements Type {
     public isStruct = false;
     public reference = ReferenceKind.Irrelevant;
 
-    // Usually only one member, unless the language supports multiple inheritance (like C++).
+    /** Usually only one member, unless the language supports multiple inheritance (like C++). */
     // eslint-disable-next-line no-use-before-define
     public readonly extends: ClassSymbol[];
 
-    // Typescript allows a class to implement a class, not only interfaces.
+    /** Typescript allows a class to implement a class, not only interfaces. */
     // eslint-disable-next-line no-use-before-define
     public readonly implements: Array<ClassSymbol | InterfaceSymbol>;
 
@@ -931,7 +980,7 @@ export class ClassSymbol extends ScopedSymbol implements Type {
 export class InterfaceSymbol extends ScopedSymbol implements Type {
     public reference = ReferenceKind.Irrelevant;
 
-    // Typescript allows an interface to extend a class, not only interfaces.
+    /** Typescript allows an interface to extend a class, not only interfaces. */
     // eslint-disable-next-line no-use-before-define
     public readonly extends: Array<ClassSymbol | InterfaceSymbol>;
 
@@ -960,7 +1009,6 @@ export class InterfaceSymbol extends ScopedSymbol implements Type {
     public getFields(includeInherited = false): Promise<FieldSymbol[]> {
         return this.getSymbolsOfType(FieldSymbol);
     }
-
 }
 
 export class ArrayType extends Symbol implements Type {
@@ -982,9 +1030,9 @@ export class ArrayType extends Symbol implements Type {
     public get reference(): ReferenceKind { return this.referenceKind; }
 }
 
-// The main class managing all the symbols for a top level entity like a file, library or similar.
+/** The main class managing all the symbols for a top level entity like a file, library or similar. */
 export class SymbolTable extends ScopedSymbol {
-    // Other symbol information available to this instance.
+    /**  Other symbol information available to this instance. */
     // eslint-disable-next-line no-use-before-define
     protected dependencies: Set<SymbolTable> = new Set();
 
