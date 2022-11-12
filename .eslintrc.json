@@ -21,7 +21,7 @@
         "sourceType": "module",
         "implicitStrict": true,
         "ecmaFeatures": {},
-        "ecmaVersion": 8
+        "ecmaVersion": 2022
     },
     "plugins": [
         "@typescript-eslint",
@@ -30,8 +30,7 @@
         "prefer-arrow",
         "eslint-plugin-import"
     ],
-    "settings": {
-    },
+    "settings": {},
     "rules": {
         "no-explicit-any": "off",
         "array-callback-return": [
@@ -348,7 +347,6 @@
         ],
         "use-isnan": "error",
         "valid-typeof": "off",
-
         "getter-return": [
             "warn"
         ],
