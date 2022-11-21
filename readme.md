@@ -1,11 +1,14 @@
-![](https://img.shields.io/github/license/mike-lischke/antlr4-c3?style=for-the-badge)
-![](https://img.shields.io/npm/dw/antlr4-c3?style=for-the-badge)
+![License](https://img.shields.io/github/license/mike-lischke/antlr4-c3?style=for-the-badge)
+[![Downloads](https://img.shields.io/npm/dw/antlr4-c3?color=green&logo=npm&style=for-the-badge)](https://www.npmjs.com/package/antlr4-c3)
+[![Contributors](https://img.shields.io/github/contributors-anon/mike-lischke/antlr4-c3?color=green&logo=github&style=for-the-badge)](https://github.com/mike-lischke/antlr4-c3)
+
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/mike-lischke/antlr4-c3/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/mike-lischke/antlr4-c3/tree/master)
 
 # antlr4-c3 The ANTLR4 Code Completion Core
 
 This project contains a grammar agnostic code completion engine for ANTLR4 based parsers. The c3 engine is able to provide code completion candidates useful for editors with ANTLR generated parsers, independent of the actual language/grammar used for the generation.
 
-The original implementation is provided as a node module, and is written in TypeScript. A port to Java is available under `ports/java`. Implementations under the `ports` folder might not be up to date compared to the Typescript version.
+The original implementation is provided as a node module (works in both, Node.js and browsers), and is written in TypeScript. A port to Java is available under `ports/java`. Implementations under the `ports` folder might not be up to date compared to the Typescript version.
 
 # Abstract
 
