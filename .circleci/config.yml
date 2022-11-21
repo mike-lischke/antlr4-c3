@@ -7,10 +7,11 @@ orbs:
 jobs:
   build_and_test:
     docker:
-      - image: cimg/node:16.16.0
+      - image: cimg//openjdk:17.0.2-node
     resource_class: large
     steps:
       - checkout
+      - run: java --version
       - run: node --version
       - node/install-packages:
           pkg-manager: npm
