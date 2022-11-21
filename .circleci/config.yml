@@ -1,0 +1,25 @@
+# This config is equivalent to both the '.circleci/extended/orb-free.yml' and the base '.circleci/config.yml'
+version: 2.1
+
+orbs:
+  node: circleci/node@4.7.0
+
+jobs:
+  build_and_test:
+    docker:
+      - image: cimg/openjdk:17.0.2-node
+    resource_class: large
+    steps:
+      - checkout
+      - run: java --version
+      - run: node --version
+      - node/install-packages:
+          pkg-manager: npm
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm run test
+
+workflows:
+    validation:
+        jobs:
+            - build_and_test
