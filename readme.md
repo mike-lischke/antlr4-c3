@@ -1,8 +1,7 @@
-![License](https://img.shields.io/github/license/mike-lischke/antlr4-c3?style=for-the-badge)
-[![Downloads](https://img.shields.io/npm/dw/antlr4-c3?color=green&logo=npm&style=for-the-badge)](https://www.npmjs.com/package/antlr4-c3)
+[![Build & Test](https://github.com/mike-lischke/antlr4-c3/actions/workflows/nodejs.yml/badge.svg?branch=master)](https://github.com/mike-lischke/antlr4-c3/actions/workflows/nodejs.yml)
 
+[![Downloads](https://img.shields.io/npm/dw/antlr4-c3?color=blue)](https://www.npmjs.com/package/antlr4-c3)
 
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/mike-lischke/antlr4-c3/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/mike-lischke/antlr4-c3/tree/master)
 
 # antlr4-c3 The ANTLR4 Code Completion Core
 
