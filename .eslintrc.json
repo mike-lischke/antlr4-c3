@@ -25,7 +25,6 @@
     },
     "plugins": [
         "@typescript-eslint",
-        "@typescript-eslint/tslint",
         "jsdoc",
         "prefer-arrow",
         "eslint-plugin-import"
@@ -501,23 +500,6 @@
             "always"
         ],
         "@typescript-eslint/unified-signatures": "error",
-        "@typescript-eslint/tslint/config": [
-            "error",
-            {
-                "rules": {
-                    "import-spacing": true,
-                    "one-line": [
-                        true,
-                        "check-catch",
-                        "check-else",
-                        "check-finally",
-                        "check-open-brace",
-                        "check-whitespace"
-                    ],
-                    "whitespace": true
-                }
-            }
-        ],
         "@typescript-eslint/prefer-regexp-exec": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/no-shadow": [

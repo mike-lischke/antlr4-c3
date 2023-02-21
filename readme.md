@@ -1,6 +1,6 @@
 ![License](https://img.shields.io/github/license/mike-lischke/antlr4-c3?style=for-the-badge)
 [![Downloads](https://img.shields.io/npm/dw/antlr4-c3?color=green&logo=npm&style=for-the-badge)](https://www.npmjs.com/package/antlr4-c3)
-[![Contributors](https://img.shields.io/github/contributors-anon/mike-lischke/antlr4-c3?color=green&logo=github&style=for-the-badge)](https://github.com/mike-lischke/antlr4-c3)
+
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/mike-lischke/antlr4-c3/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/mike-lischke/antlr4-c3/tree/master)
 
