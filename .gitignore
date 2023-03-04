@@ -38,6 +38,9 @@ jspm_packages
 .node_repl_history
 out
 
+# Optional vscode-antlr4 directory if plugin enabled
+.antlr
+
 # Generated files
 /ports/java/target/
 test/generated

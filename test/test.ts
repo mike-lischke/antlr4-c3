@@ -15,6 +15,8 @@ import { ExprParser } from "./generated/ExprParser";
 import { ExprLexer } from "./generated/ExprLexer";
 import { CPP14Parser } from "./generated/CPP14Parser";
 import { CPP14Lexer } from "./generated/CPP14Lexer";
+import { WhiteboxParser } from "./generated/WhiteboxParser";
+import { WhiteboxLexer } from "./generated/WhiteboxLexer";
 
 import * as c3 from "../index";
 
@@ -575,6 +577,79 @@ describe("antlr4-c3:", function () {
             expect(candidates.rules.get(ExprParser.RULE_assignment)?.startTokenIndex, "Test 6").to.equal(0);
             // The start token of the variableRef rule begins at token 'a'
             expect(candidates.rules.get(ExprParser.RULE_variableRef)?.startTokenIndex, "Test 7").to.equal(6);
+        });
+    });
+
+    describe("Whitebox grammar tests:", () => {
+
+        // Whitespace tokens are skipped
+
+        it("Caret at transition to rule with non-exhaustive follow set (optional tokens)", () => {
+            const inputStream = CharStreams.fromString("LOREM ");
+            const lexer = new WhiteboxLexer(inputStream);
+            const tokenStream = new CommonTokenStream(lexer);
+
+            const parser = new WhiteboxParser(tokenStream);
+            const errorListener = new ErrorListener();
+            parser.removeErrorListeners();
+            parser.addErrorListener(errorListener);
+            const ctx = parser.test1();
+            expect(errorListener.errorCount, "Test 1").equals(1);
+
+            const core = new c3.CodeCompletionCore(parser);
+            const candidates = core.collectCandidates(1, ctx); // caret on EOF
+
+            expect(candidates.tokens.size, "Test 2").to.equal(5);
+            expect(candidates.tokens.has(WhiteboxLexer.IPSUM), "Test 3").to.equal(true);
+            expect(candidates.tokens.has(WhiteboxLexer.DOLOR), "Test 4").to.equal(true);
+            expect(candidates.tokens.has(WhiteboxLexer.SIT), "Test 5").to.equal(true);
+            expect(candidates.tokens.has(WhiteboxLexer.AMET), "Test 6").to.equal(true);
+            expect(candidates.tokens.has(WhiteboxLexer.CONSECTETUR), "Test 7").to.equal(true);
+        });
+
+        it("Caret at transition to rule with empty follow set (epsilon-only transition to rule end)", () => {
+            const inputStream = CharStreams.fromString("LOREM ");
+            const lexer = new WhiteboxLexer(inputStream);
+            const tokenStream = new CommonTokenStream(lexer);
+
+            const parser = new WhiteboxParser(tokenStream);
+            const errorListener = new ErrorListener();
+            parser.removeErrorListeners();
+            parser.addErrorListener(errorListener);
+            const ctx = parser.test2();
+            expect(errorListener.errorCount, "Test 1").equals(1);
+
+            const core = new c3.CodeCompletionCore(parser);
+            const candidates = core.collectCandidates(1, ctx); // caret on EOF
+
+            expect(candidates.tokens.size, "Test 2").to.equal(5);
+            expect(candidates.tokens.has(WhiteboxLexer.IPSUM), "Test 3").to.equal(true);
+            expect(candidates.tokens.has(WhiteboxLexer.DOLOR), "Test 4").to.equal(true);
+            expect(candidates.tokens.has(WhiteboxLexer.SIT), "Test 5").to.equal(true);
+            expect(candidates.tokens.has(WhiteboxLexer.AMET), "Test 6").to.equal(true);
+            expect(candidates.tokens.has(WhiteboxLexer.CONSECTETUR), "Test 7").to.equal(true);
+        });
+
+        it("Caret at optional token", () => {
+            const inputStream = CharStreams.fromString("LOREM ");
+            const lexer = new WhiteboxLexer(inputStream);
+            const tokenStream = new CommonTokenStream(lexer);
+
+            const parser = new WhiteboxParser(tokenStream);
+            const errorListener = new ErrorListener();
+            parser.removeErrorListeners();
+            parser.addErrorListener(errorListener);
+            const ctx = parser.test3();
+            expect(errorListener.errorCount, "Test 1").equals(1);
+
+            const core = new c3.CodeCompletionCore(parser);
+            const candidates = core.collectCandidates(1, ctx); // caret on EOF
+
+            expect(candidates.tokens.size, "Test 2").to.equal(4);
+            expect(candidates.tokens.has(WhiteboxLexer.IPSUM), "Test 3").to.equal(true);
+            expect(candidates.tokens.has(WhiteboxLexer.DOLOR), "Test 4").to.equal(true);
+            expect(candidates.tokens.has(WhiteboxLexer.SIT), "Test 5").to.equal(true);
+            expect(candidates.tokens.has(WhiteboxLexer.AMET), "Test 6").to.equal(true);
         });
     });
 

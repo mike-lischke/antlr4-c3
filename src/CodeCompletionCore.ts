@@ -50,12 +50,14 @@ class FollowSetWithPath {
     public following: TokenList = [];
 }
 
-// A list of follow sets (for a given state number) + all of them combined for quick hit tests.
+// A list of follow sets (for a given state number) + all of them combined for quick hit tests + whether they are
+// exhaustive (false if subsequent yet-unprocessed rules could add further tokens to the follow set, true otherwise).
 // This data is static in nature (because the used ATN states are part of a static struct: the ATN).
 // Hence it can be shared between all C3 instances, however it depends on the actual parser class (type).
 class FollowSetsHolder {
     public sets: FollowSetWithPath[];
     public combined: IntervalSet;
+    public isExhaustive: boolean;
 }
 
 type FollowSetsPerState = Map<number, FollowSetsHolder>;
@@ -341,15 +343,21 @@ export class CodeCompletionCore {
      *
      * @param start Start state.
      * @param stop Stop state.
-     * @returns A list of follow sets.
+     * @returns Follow sets.
      */
-    private determineFollowSets(start: ATNState, stop: ATNState): FollowSetWithPath[] {
-        const result: FollowSetWithPath[] = [];
+    private determineFollowSets(start: ATNState, stop: ATNState): FollowSetsHolder {
+        const sets: FollowSetWithPath[] = [];
         const stateStack: ATNState[] = [];
         const ruleStack: number[] = [];
-        this.collectFollowSets(start, stop, result, stateStack, ruleStack);
+        const isExhaustive = this.collectFollowSets(start, stop, sets, stateStack, ruleStack);
+        // Sets are split by path to allow translating them to preferred rules. But for quick hit tests
+        // it is also useful to have a set with all symbols combined.
+        const combined = new IntervalSet();
+        for (const set of sets) {
+            combined.addAll(set.intervals);
+        }
 
-        return result;
+        return {sets, isExhaustive, combined};
     }
 
     /**
@@ -361,25 +369,24 @@ export class CodeCompletionCore {
      * @param followSets A pass through parameter to add found sets to.
      * @param stateStack A stack to avoid endless recursions.
      * @param ruleStack The current rule stack.
+     * @returns true if the follow sets is exhaustive, i.e. we terminated before the rule end was reached, so no
+     * subsequent rules could add tokens
      */
     private collectFollowSets(s: ATNState, stopState: ATNState, followSets: FollowSetWithPath[], stateStack: ATNState[],
-        ruleStack: number[]) {
+        ruleStack: number[]): boolean {
 
         if (stateStack.find((x) => x === s)) {
-            return;
+            return true;
         }
         stateStack.push(s);
 
         if (s === stopState || s.stateType === ATNStateType.RULE_STOP) {
-            const set = new FollowSetWithPath();
-            set.intervals = IntervalSet.of(Token.EPSILON);
-            set.path = ruleStack.slice();
-            followSets.push(set);
             stateStack.pop();
 
-            return;
+            return false;
         }
 
+        let isExhaustive = true;
         for (const transition of s.getTransitions()) {
             if (transition.serializationType === TransitionType.RULE) {
                 const ruleTransition: RuleTransition = transition as RuleTransition;
@@ -388,15 +395,28 @@ export class CodeCompletionCore {
                 }
 
                 ruleStack.push(ruleTransition.target.ruleIndex);
-                this.collectFollowSets(transition.target, stopState, followSets, stateStack, ruleStack);
+                const ruleFollowSetsIsExhaustive = this.collectFollowSets(
+                    transition.target, stopState, followSets, stateStack, ruleStack);
                 ruleStack.pop();
+
+                // If the subrule had an epsilon transition to the rule end, the tokens added to
+                // the follow set are non-exhaustive and we should continue processing subsequent transitions post-rule
+                if (!ruleFollowSetsIsExhaustive) {
+                    const nextStateFollowSetsIsExhaustive = this.collectFollowSets(
+                        ruleTransition.followState, stopState, followSets, stateStack, ruleStack);
+                    isExhaustive &&= nextStateFollowSetsIsExhaustive;
+                }
 
             } else if (transition.serializationType === TransitionType.PREDICATE) {
                 if (this.checkPredicate(transition as PredicateTransition)) {
-                    this.collectFollowSets(transition.target, stopState, followSets, stateStack, ruleStack);
+                    const nextStateFollowSetsIsExhaustive = this.collectFollowSets(
+                        transition.target, stopState, followSets, stateStack, ruleStack);
+                    isExhaustive &&= nextStateFollowSetsIsExhaustive;
                 }
             } else if (transition.isEpsilon) {
-                this.collectFollowSets(transition.target, stopState, followSets, stateStack, ruleStack);
+                const nextStateFollowSetsIsExhaustive = this.collectFollowSets(
+                    transition.target, stopState, followSets, stateStack, ruleStack);
+                isExhaustive &&= nextStateFollowSetsIsExhaustive;
             } else if (transition.serializationType === TransitionType.WILDCARD) {
                 const set = new FollowSetWithPath();
                 set.intervals = IntervalSet.of(Token.MIN_USER_TOKEN_TYPE, this.atn.maxTokenType);
@@ -417,6 +437,8 @@ export class CodeCompletionCore {
             }
         }
         stateStack.pop();
+
+        return isExhaustive;
     }
 
     /**
@@ -469,18 +491,9 @@ export class CodeCompletionCore {
 
         let followSets = setsPerState.get(startState.stateNumber);
         if (!followSets) {
-            followSets = new FollowSetsHolder();
-            setsPerState.set(startState.stateNumber, followSets);
             const stop = this.atn.ruleToStopState[startState.ruleIndex];
-            followSets.sets = this.determineFollowSets(startState, stop);
-
-            // Sets are split by path to allow translating them to preferred rules. But for quick hit tests
-            // it is also useful to have a set with all symbols combined.
-            const combined = new IntervalSet();
-            for (const set of followSets.sets) {
-                combined.addAll(set.intervals);
-            }
-            followSets.combined = combined;
+            followSets = this.determineFollowSets(startState, stop);
+            setsPerState.set(startState.stateNumber, followSets);
         }
 
         // Get the token index where our rule starts from our (possibly filtered) token list
@@ -529,6 +542,12 @@ export class CodeCompletionCore {
                 }
             }
 
+            if (!followSets.isExhaustive) {
+                // If we're at the caret but the follow sets is non-exhaustive (empty or all tokens are optional),
+                // we should continue to collect tokens following this rule
+                result.add(tokenListIndex);
+            }
+
             callStack.pop();
 
             return result;
@@ -538,7 +557,7 @@ export class CodeCompletionCore {
             // or if the current input symbol will be matched somewhere after this entry point.
             // Otherwise stop here.
             const currentSymbol = this.tokens[tokenListIndex].type;
-            if (!followSets.combined.contains(Token.EPSILON) && !followSets.combined.contains(currentSymbol)) {
+            if (followSets.isExhaustive && !followSets.combined.contains(currentSymbol)) {
                 callStack.pop();
 
                 return result;
