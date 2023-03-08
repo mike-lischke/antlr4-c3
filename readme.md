@@ -1,6 +1,4 @@
-[![Build & Test](https://github.com/mike-lischke/antlr4-c3/actions/workflows/nodejs.yml/badge.svg?branch=master)](https://github.com/mike-lischke/antlr4-c3/actions/workflows/nodejs.yml)
-
-[![Downloads](https://img.shields.io/npm/dw/antlr4-c3?color=blue)](https://www.npmjs.com/package/antlr4-c3)
+[![Build & Test](https://github.com/mike-lischke/antlr4-c3/actions/workflows/nodejs.yml/badge.svg?branch=master)](https://github.com/mike-lischke/antlr4-c3/actions/workflows/nodejs.yml)[![Downloads](https://img.shields.io/npm/dw/antlr4-c3?color=blue)](https://www.npmjs.com/package/antlr4-c3)
 
 
 # antlr4-c3 The ANTLR4 Code Completion Core
@@ -215,6 +213,11 @@ Sometimes you are not getting what you actually expect and you need take a close
 The last two options potentially create a lot of output which can significantly slow down the collection process.
 
 ## Release Notes
+
+### 2.2.2
+- Some improvements in the symbol table implementation.
+- Updated dependencies.
+- PR #76 (fixes bug #23) Account for empty and fully-optional-body rules when collecting tokens, thanks to Aaron Braunstein.
 
 ### 2.2.1
 Reverted changes from `any` to `unknown` for `SymbolTable.addNewSymbolOfType`. It works in the tests, but is not accepted by consumers of the node module.

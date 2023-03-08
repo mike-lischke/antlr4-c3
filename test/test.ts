@@ -95,7 +95,7 @@ const createClassSymbolTable = async (name: string, counts: number[],
         }
 
         ++nsIndex;
-        if (nsIndex === nsCount) {nsIndex = 0;}
+        if (nsIndex === nsCount) { nsIndex = 0; }
     }
 
     for (let i = 0; i < counts[3]; ++i) {
@@ -141,7 +141,7 @@ describe("antlr4-c3:", function () {
             expect(scopes.length, "Test 6").equals(2); // 2 anonymous blocks.
             expect(scopes[0], "Test 7").is.instanceof(c3.ScopedSymbol);
 
-            const block1 = scopes[0] ;
+            const block1 = scopes[0];
             try {
                 const duplicateMethod = symbolTable.addNewSymbolOfType(c3.MethodSymbol, undefined, "method2");
                 (class1 as c3.ClassSymbol).addSymbol(duplicateMethod); // Must throw.
