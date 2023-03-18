@@ -23,7 +23,6 @@ import * as c3 from "../index";
 import {
     ANTLRErrorListener, CharStreams, CommonToken, CommonTokenStream, RecognitionException, Recognizer, Token,
 } from "antlr4ts";
-import { Override } from "antlr4ts/Decorators";
 import { TerminalNode } from "antlr4ts/tree/TerminalNode";
 
 // Some helper functions + types to create certain setups.
@@ -31,7 +30,6 @@ import { TerminalNode } from "antlr4ts/tree/TerminalNode";
 export class ErrorListener implements ANTLRErrorListener<CommonToken> {
     public errorCount = 0;
 
-    @Override
     public syntaxError<T extends Token>(recognizer: Recognizer<T, any>, offendingSymbol: T | undefined, line: number,
         charPositionInLine: number, msg: string, e: RecognitionException | undefined): void {
         ++this.errorCount;

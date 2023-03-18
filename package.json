@@ -1,6 +1,6 @@
 {
     "name": "antlr4-c3",
-    "version": "2.2.2",
+    "version": "2.2.3",
     "description": "A code completion core implementation for ANTLR4 based parsers",
     "author": "Mike Lischke",
     "license": "MIT",
@@ -15,6 +15,7 @@
         "grammar",
         "parser"
     ],
+    "main": "./out",
     "scripts": {
         "prepublishOnly": "npm run test",
         "test": "tsc --version && npm run generate && tsc && npm run eslint && mocha out/test",
@@ -28,19 +29,19 @@
         "@types/chai": "4.3.4",
         "@types/mocha": "10.0.1",
         "@types/node": "18.14.0",
-        "@typescript-eslint/eslint-plugin": "5.53.0",
-        "@typescript-eslint/parser": "5.53.0",
+        "@typescript-eslint/eslint-plugin": "5.55.0",
+        "@typescript-eslint/parser": "5.55.0",
         "antlr4ts-cli": "0.5.0-alpha.4",
         "chai": "4.3.7",
-        "eslint": "8.34.0",
+        "eslint": "8.36.0",
         "eslint-plugin-import": "2.27.5",
-        "eslint-plugin-jsdoc": "40.0.0",
+        "eslint-plugin-jsdoc": "40.0.3",
         "eslint-plugin-node": "11.1.0",
         "eslint-plugin-prefer-arrow": "1.2.3",
         "eslint-plugin-promise": "6.1.1",
         "mocha": "10.2.0",
         "tslint": "6.1.3",
         "ts-node": "10.9.1",
-        "typescript": "4.9.5"
+        "typescript": "5.0.2"
     }
 }

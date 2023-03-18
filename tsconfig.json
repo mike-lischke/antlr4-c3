@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "declaration": true,
-        "module": "commonjs",
+        "module": "Node16",
         "target": "es6",
         "outDir": "out",
         "removeComments": true,
@@ -10,7 +10,6 @@
         "inlineSources": true,
         "isolatedModules": false,
         "allowSyntheticDefaultImports": true,
-        "experimentalDecorators": true,
         "strictNullChecks": true
     },
     "compileOnSave": true,

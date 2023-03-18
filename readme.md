@@ -214,6 +214,10 @@ The last two options potentially create a lot of output which can significantly 
 
 ## Release Notes
 
+### 2.2.3
+
+Upgraded dependencies, which includes a new major version of Typescript (5.0). With this version the `main` field in `package.json` apparently became necessary, because of the package organization, and has been set in this release.
+
 ### 2.2.2
 - Some improvements in the symbol table implementation.
 - Updated dependencies.
