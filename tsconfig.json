@@ -15,7 +15,8 @@
     "compileOnSave": true,
     "include": [
         "src/**/*.ts",
-        "test/**/*.ts"
+        "tests/**/*.ts",
+        "jest.config.ts"
     ],
     "exclude": [
         "node_modules",

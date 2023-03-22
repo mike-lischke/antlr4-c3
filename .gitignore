@@ -43,4 +43,4 @@ out
 
 # Generated files
 /ports/java/target/
-test/generated
+tests/generated

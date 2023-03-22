@@ -1,9 +1,9 @@
 {
     "env": {
-        "browser": true,
+        "browser": false,
         "node": true,
         "es6": true,
-        "mocha": true
+        "jest": true
     },
     "extends": [
         "plugin:@typescript-eslint/recommended",
@@ -13,7 +13,7 @@
     ],
     "ignorePatterns": [
         "**/generated/*",
-        "out/*"
+        "out/**/*"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -21,7 +21,7 @@
         "sourceType": "module",
         "implicitStrict": true,
         "ecmaFeatures": {},
-        "ecmaVersion": 2022
+        "ecmaVersion": 8
     },
     "plugins": [
         "@typescript-eslint",
@@ -30,8 +30,16 @@
         "eslint-plugin-import"
     ],
     "settings": {},
+    "globals": {
+        "NodeJS": true
+    },
     "rules": {
+        // Some base rules must be disabled as they return wrong results.
+        // There are specialized rules instead in the tslint rule section.
         "no-explicit-any": "off",
+        "no-use-before-define": "off",
+        "no-shadow": "off",
+        "no-array-constructor": "off",
         "array-callback-return": [
             "warn"
         ],
@@ -50,17 +58,12 @@
             "smart"
         ],
         "new-parens": "error",
-        "no-array-constructor": [
-            "warn"
-        ],
         "no-caller": "error",
         "no-cond-assign": "error",
         "no-const-assign": [
             "warn"
         ],
-        "no-control-regex": [
-            "warn"
-        ],
+        "no-control-regex": "off",
         "no-delete-var": [
             "warn"
         ],
@@ -68,7 +71,7 @@
             "warn"
         ],
         "no-dupe-class-members": [
-            "warn"
+            "off"
         ],
         "no-dupe-keys": [
             "warn"
@@ -95,7 +98,12 @@
         "no-extra-label": [
             "warn"
         ],
-        "no-fallthrough": "off",
+        "no-fallthrough": [
+            "warn",
+            {
+                "commentPattern": "\\[falls?-through\\]"
+            }
+        ],
         "no-func-assign": [
             "warn"
         ],
@@ -187,12 +195,7 @@
         "no-octal-escape": [
             "warn"
         ],
-        "no-redeclare": [
-            "warn",
-            {
-                "builtinGlobals": false
-            }
-        ],
+        "no-redeclare": "off",
         "no-regex-spaces": [
             "warn"
         ],
@@ -226,7 +229,7 @@
         ],
         "no-throw-literal": "error",
         "no-undef": [
-            "error"
+            "off"
         ],
         "no-restricted-globals": [
             "error",
@@ -295,14 +298,6 @@
         "no-unused-expressions": "off",
         "no-unused-labels": "error",
         "no-unused-vars": "off",
-        "no-use-before-define": [
-            "warn",
-            {
-                "functions": false,
-                "classes": false,
-                "variables": false
-            }
-        ],
         "no-useless-computed-key": [
             "warn"
         ],
@@ -310,7 +305,7 @@
             "warn"
         ],
         "no-useless-constructor": [
-            "warn"
+            "off"
         ],
         "no-useless-escape": [
             "warn"
@@ -346,10 +341,26 @@
         ],
         "use-isnan": "error",
         "valid-typeof": "off",
+        "no-restricted-properties": [
+            "error",
+            {
+                "object": "require",
+                "property": "ensure",
+                "message": "Please use import() instead. More info: https://facebook.github.io/create-react-app/docs/code-splitting"
+            },
+            {
+                "object": "System",
+                "property": "import",
+                "message": "Please use import() instead. More info: https://facebook.github.io/create-react-app/docs/code-splitting"
+            }
+        ],
         "getter-return": [
             "warn"
         ],
-        "arrow-body-style": "error",
+        "arrow-body-style": [
+            "error",
+            "always"
+        ],
         "arrow-parens": [
             "error",
             "always"
@@ -376,7 +387,10 @@
         "import/order": "off",
         "max-classes-per-file": [
             "error",
-            1
+            {
+                "ignoreExpressions": true,
+                "max": 1
+            }
         ],
         "max-len": [
             "error",
@@ -389,14 +403,19 @@
         "newline-per-chained-call": "off",
         "no-bitwise": "off",
         "no-console": "off",
-        "no-debugger": "error",
+        "no-debugger": "off",
         "no-duplicate-imports": "error",
         "no-empty": "error",
         "no-invalid-this": "off",
         "no-magic-numbers": "off",
-        "no-multiple-empty-lines": "error",
+        "no-multiple-empty-lines": [
+            "error",
+            {
+                "max": 1,
+                "maxEOF": 1
+            }
+        ],
         "no-return-await": "error",
-        "no-shadow": "off",
         "no-trailing-spaces": "error",
         "no-undef-init": "error",
         "no-underscore-dangle": "error",
@@ -436,11 +455,14 @@
             "never"
         ],
         "indent": "off",
+        "@typescript-eslint/no-array-constructor": "error",
         "@typescript-eslint/no-unused-vars": [
             "warn",
             {
                 "args": "none",
-                "ignoreRestSiblings": true
+                "ignoreRestSiblings": true,
+                "varsIgnorePattern": "^_",
+                "argsIgnorePattern": "^_"
             }
         ],
         "@typescript-eslint/no-non-null-assertion": "off",
@@ -451,6 +473,7 @@
             }
         ],
         "@typescript-eslint/ban-types": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
         "@typescript-eslint/consistent-type-definitions": "error",
         "@typescript-eslint/explicit-member-accessibility": [
             "error",
@@ -468,23 +491,64 @@
             }
         ],
         "@typescript-eslint/interface-name-prefix": "off",
-        "@typescript-eslint/member-delimiter-style": [
+        "@typescript-eslint/member-delimiter-style": "off",
+        "@typescript-eslint/member-ordering": [
             "error",
             {
-                "multiline": {
-                    "delimiter": "semi",
-                    "requireLast": true
-                },
-                "singleline": {
-                    "delimiter": "semi",
-                    "requireLast": false
-                }
+                // No ordering for getters and setters here, as that conflicts currently with the rule adjacent-overload-signatures.
+                "default": [
+                    // Index signature
+                    "signature",
+                    // Fields
+                    "public-static-field",
+                    "protected-static-field",
+                    "private-static-field",
+                    "public-decorated-field",
+                    "protected-decorated-field",
+                    "private-decorated-field",
+                    "public-instance-field",
+                    "protected-instance-field",
+                    "private-instance-field",
+                    "public-abstract-field",
+                    "protected-abstract-field",
+                    "public-field",
+                    "protected-field",
+                    "private-field",
+                    "static-field",
+                    "instance-field",
+                    "abstract-field",
+                    "decorated-field",
+                    "field",
+                    // Constructors
+                    "public-constructor",
+                    "protected-constructor",
+                    "private-constructor",
+                    "constructor",
+                    // Methods
+                    "public-static-method",
+                    "protected-static-method",
+                    "private-static-method",
+                    "public-decorated-method",
+                    "protected-decorated-method",
+                    "private-decorated-method",
+                    "public-instance-method",
+                    "protected-instance-method",
+                    "private-instance-method",
+                    "public-abstract-method",
+                    "protected-abstract-method"
+                ]
             }
         ],
-        "@typescript-eslint/member-ordering": "error",
-        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-explicit-any": "error",
+        "@typescript-eslint/no-namespace": "off",
         "@typescript-eslint/no-parameter-properties": "off",
-        "@typescript-eslint/no-use-before-define": "off",
+        "@typescript-eslint/no-use-before-define": "error",
+        "@typescript-eslint/no-unsafe-assignment": "off", // TODO: enable
+        "@typescript-eslint/no-unsafe-member-access": "off", // TODO: enable
+        "@typescript-eslint/no-unsafe-call": "error", // TODO: enable
+        "@typescript-eslint/no-unsafe-return": "error", // TODO: enable
+        "@typescript-eslint/explicit-module-boundary-types": "error", // TODO: enable
+        "@typescript-eslint/no-loss-of-precision": "off", // TODO: enable
         "@typescript-eslint/prefer-for-of": "error",
         "@typescript-eslint/prefer-function-type": "error",
         "@typescript-eslint/quotes": [
@@ -499,15 +563,70 @@
             "error",
             "always"
         ],
-        "@typescript-eslint/unified-signatures": "error",
+        "@typescript-eslint/unified-signatures": "off",
         "@typescript-eslint/prefer-regexp-exec": "off",
-        "@typescript-eslint/explicit-module-boundary-types": "off",
-        "@typescript-eslint/no-shadow": [
+        "@typescript-eslint/naming-convention": [
             "error",
             {
-                "ignoreTypeValueShadow": true
+                "selector": "default",
+                "format": [
+                    "camelCase"
+                ],
+                "filter": {
+                    "regex": "^_",
+                    "match": false
+                }
+            },
+            {
+                "selector": "class",
+                "format": [
+                    "PascalCase"
+                ]
+            },
+            {
+                "selector": "typeParameter",
+                "format": [
+                    "PascalCase"
+                ]
+            },
+            {
+                "selector": "enum",
+                "format": [
+                    "PascalCase"
+                ]
+            },
+            {
+                "selector": "enumMember",
+                "format": [
+                    "PascalCase"
+                ]
+            },
+            {
+                "selector": "typeAlias",
+                "format": [
+                    "PascalCase"
+                ]
+            },
+            {
+                "selector": "interface",
+                "format": [
+                    "PascalCase"
+                ]
+            },
+            {
+                "selector": "variable",
+                "modifiers": [
+                    "const"
+                ],
+                "format": null
+            },
+            {
+                "selector": "classProperty",
+                "format": null
             }
         ],
+        "@typescript-eslint/restrict-template-expressions": "off",
+        "@typescript-eslint/restrict-plus-operands": "off",
         "jsdoc/check-alignment": "error",
         "jsdoc/check-indentation": "off",
         "jsdoc/newline-after-description": "error",
