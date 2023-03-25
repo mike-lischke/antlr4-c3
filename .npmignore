@@ -7,15 +7,17 @@ Thumbs.db
 .DS_Store
 
 # Ignored files
-*.ts
-!*.d.ts
-out/test/*
-tsconfig.json
-test/
+src/
+lib/test/*
+tests/
+ports/
 package
 *.tgz
-ports/
 .vscode/
 .eslintrc.json
 .github/
+.git/
 cspell.json
+tsconfig.json
+jest.config.ts
+index.ts

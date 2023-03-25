@@ -24,8 +24,8 @@ coverage
 # node-waf configuration
 .lock-wscript
 
-# Compiled binary addons (http://nodejs.org/api/addons.html)
-build/Release
+# Compiled output
+lib/
 
 # Dependency directories
 node_modules
@@ -36,7 +36,6 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
-out
 
 # Optional vscode-antlr4 directory if plugin enabled
 .antlr

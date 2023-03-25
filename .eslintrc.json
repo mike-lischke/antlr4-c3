@@ -1,6 +1,6 @@
 {
     "env": {
-        "browser": false,
+        "browser": true,
         "node": true,
         "es6": true,
         "jest": true
@@ -13,15 +13,19 @@
     ],
     "ignorePatterns": [
         "**/generated/*",
-        "out/**/*"
+        "lib/**/*",
+        "jest.config.ts"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "project": "tsconfig.json",
+        "project": [
+            "tsconfig.json",
+            "tests/tsconfig.json"
+        ],
         "sourceType": "module",
         "implicitStrict": true,
         "ecmaFeatures": {},
-        "ecmaVersion": 8
+        "ecmaVersion": 14
     },
     "plugins": [
         "@typescript-eslint",

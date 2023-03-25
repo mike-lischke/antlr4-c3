@@ -5,41 +5,25 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Program",
             "type": "node",
             "request": "launch",
-            "preLaunchTask": "tsc",
-            "program": "${workspaceRoot}/out/index.js",
-            "cwd": "${workspaceRoot}",
-            "outFiles": [
-                "${workspaceRoot}/out/**/*.js"
-            ],
-            "sourceMaps": true
-        },
-        {
-            "name": "Mocha",
-            "type": "node",
-            "request": "launch",
-            "cwd": "${workspaceRoot}",
-            "preLaunchTask": "tsc",
-            "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
-            "args": [
-                "--no-timeouts",
-                "--colors",
-                "${workspaceRoot}/out/test/**/*.js"
-            ],
-            "stopOnEntry": false,
+            "name": "Run current Jest test",
             "runtimeExecutable": null,
-            "env": {
-                "NODE_ENV": "testing"
-            },
-            "sourceMaps": true
+            "runtimeArgs": [
+                "${workspaceRoot}/node_modules/.bin/jest",
+                "${fileBasenameNoExtension}.ts",
+                "--no-coverage",
+                "--runInBand"
+            ],
+            "console": "integratedTerminal",
+            "stopOnEntry": false,
+            "sourceMaps": true,
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/**",
+                "!**/node_modules/**"
+            ],
+            "smartStep": true,
+            "trace": false
         },
-        {
-            "name": "Attach to Process",
-            "type": "node",
-            "request": "attach",
-            "port": 9229
-        }
     ]
 }

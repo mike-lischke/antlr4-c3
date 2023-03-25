@@ -3,8 +3,7 @@
         "declaration": true,
         "module": "Node16",
         "target": "es6",
-        "outDir": "lib",
-        "rootDir": ".",
+        "noEmit": true,
         "removeComments": true,
         "noImplicitAny": true,
         "noImplicitOverride": false,
@@ -14,14 +13,12 @@
         "allowSyntheticDefaultImports": false,
         "strictNullChecks": true
     },
-    "compileOnSave": true,
     "include": [
-        "src/**/*.ts",
-        "index.ts"
+        "**/*.ts",
     ],
     "exclude": [
         "node_modules",
         "lib/**/*",
-        "tests/**/*"
+        "src/**/*"
     ]
 }

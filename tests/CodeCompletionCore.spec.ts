@@ -14,11 +14,12 @@ import { CPP14Lexer } from "./generated/CPP14Lexer";
 import { WhiteboxParser } from "./generated/WhiteboxParser";
 import { WhiteboxLexer } from "./generated/WhiteboxLexer";
 
-import * as c3 from "../index";
-
 import {
     ANTLRErrorListener, CharStreams, CommonToken, CommonTokenStream, RecognitionException, Recognizer, Token,
 } from "antlr4ts";
+import { ExprLexer } from "./generated/ExprLexer";
+import { ExprParser } from "./generated/ExprParser";
+import { CodeCompletionCore } from "../src/CodeCompletionCore";
 
 // Some helper functions + types to create certain setups.
 
@@ -32,7 +33,7 @@ export class ErrorListener implements ANTLRErrorListener<CommonToken> {
     }
 }
 
-describe("antlr4-c3:", () => {
+describe("Code Completion Tests", () => {
     describe("Whitebox grammar tests:", () => {
 
         // Whitespace tokens are skipped
@@ -48,7 +49,7 @@ describe("antlr4-c3:", () => {
             const ctx = parser.test1();
             expect(errorListener.errorCount).toEqual(1);
 
-            const core = new c3.CodeCompletionCore(parser);
+            const core = new CodeCompletionCore(parser);
             const candidates = core.collectCandidates(1, ctx); // caret on EOF
 
             expect(candidates.tokens.size).toEqual(5);
@@ -71,7 +72,7 @@ describe("antlr4-c3:", () => {
             const ctx = parser.test2();
             expect(errorListener.errorCount).toEqual(1);
 
-            const core = new c3.CodeCompletionCore(parser);
+            const core = new CodeCompletionCore(parser);
             const candidates = core.collectCandidates(1, ctx); // caret on EOF
 
             expect(candidates.tokens.size).toEqual(5);
@@ -94,7 +95,7 @@ describe("antlr4-c3:", () => {
             const ctx = parser.test3();
             expect(errorListener.errorCount).toEqual(1);
 
-            const core = new c3.CodeCompletionCore(parser);
+            const core = new CodeCompletionCore(parser);
             const candidates = core.collectCandidates(1, ctx); // caret on EOF
 
             expect(candidates.tokens.size).toEqual(4);
@@ -131,7 +132,7 @@ describe("antlr4-c3:", () => {
             parser.translationunit();
             expect(errorListener.errorCount).toEqual(0);
 
-            const core = new c3.CodeCompletionCore(parser);
+            const core = new CodeCompletionCore(parser);
 
             // Ignore operators and the generic ID token.
             core.ignoredTokens = new Set([
@@ -335,7 +336,7 @@ describe("antlr4-c3:", () => {
             parser.translationunit();
             expect(errorListener.errorCount).toEqual(3);
 
-            const core = new c3.CodeCompletionCore(parser);
+            const core = new CodeCompletionCore(parser);
 
             // Ignore operators and the generic ID token.
             core.ignoredTokens = new Set([
@@ -401,7 +402,7 @@ describe("antlr4-c3:", () => {
             parser.translationunit();
             expect(errorListener.errorCount).toEqual(0);
 
-            const core = new c3.CodeCompletionCore(parser);
+            const core = new CodeCompletionCore(parser);
 
             // Ignore operators and the generic ID token.
             core.ignoredTokens = new Set([
@@ -481,4 +482,199 @@ describe("antlr4-c3:", () => {
         });
     });
 
+    describe("Simple expression parser:", () => {
+        it("Most simple setup", () => {
+            // No customization happens here, so the c3 engine only returns lexer tokens.
+            const inputStream = CharStreams.fromString("var c = a + b()");
+            const lexer = new ExprLexer(inputStream);
+            const tokenStream = new CommonTokenStream(lexer);
+
+            const parser = new ExprParser(tokenStream);
+            const errorListener = new ErrorListener();
+            parser.addErrorListener(errorListener);
+            parser.expression();
+            expect(errorListener.errorCount).toEqual(0);
+
+            const core = new CodeCompletionCore(parser);
+
+            // 1) At the input start.
+            let candidates = core.collectCandidates(0);
+
+            expect(candidates.tokens.size).toEqual(3);
+            expect(candidates.tokens.has(ExprLexer.VAR)).toEqual(true);
+            expect(candidates.tokens.has(ExprLexer.LET)).toEqual(true);
+            expect(candidates.tokens.has(ExprLexer.ID)).toEqual(true);
+
+            expect(candidates.tokens.get(ExprLexer.VAR)).toEqual([ExprLexer.ID, ExprLexer.EQUAL]);
+            expect(candidates.tokens.get(ExprLexer.LET)).toEqual([ExprLexer.ID, ExprLexer.EQUAL]);
+            expect(candidates.tokens.get(ExprLexer.ID)).toEqual([]);
+
+            // 2) On the first whitespace. In real implementations you would do some additional checks where in the
+            //    whitespace the caret is, as the outcome is different depending on that position.
+            candidates = core.collectCandidates(1);
+            expect(candidates.tokens.size).toEqual(1);
+            expect(candidates.tokens.has(ExprLexer.ID)).toEqual(true);
+
+            // 3) On the variable name ('c').
+            candidates = core.collectCandidates(2);
+            expect(candidates.tokens.size).toEqual(1);
+            expect(candidates.tokens.has(ExprLexer.ID)).toEqual(true);
+
+            // 4) On the equal sign (ignoring whitespace positions from now on).
+            candidates = core.collectCandidates(4);
+            expect(candidates.tokens.size).toEqual(1);
+            expect(candidates.tokens.has(ExprLexer.EQUAL)).toEqual(true);
+
+            // 5) On the variable reference 'a'. But since we have not configure the c3 engine to return us var refs
+            //    (or function refs for that matter) we only get an ID here.
+            candidates = core.collectCandidates(6);
+            expect(candidates.tokens.size).toEqual(1);
+            expect(candidates.tokens.has(ExprLexer.ID)).toEqual(true);
+
+            // 6) On the '+' operator. Usually you would not show operators as candidates, but we have not set up the
+            //    c3 engine yet to not return them.
+            candidates = core.collectCandidates(8);
+            expect(candidates.tokens.size).toEqual(5);
+            expect(candidates.tokens.has(ExprLexer.PLUS)).toEqual(true);
+            expect(candidates.tokens.has(ExprLexer.MINUS)).toEqual(true);
+            expect(candidates.tokens.has(ExprLexer.MULTIPLY)).toEqual(true);
+            expect(candidates.tokens.has(ExprLexer.DIVIDE)).toEqual(true);
+            expect(candidates.tokens.has(ExprLexer.OPEN_PAR)).toEqual(true);
+        });
+
+        it("Typical setup", () => {
+            const inputStream = CharStreams.fromString("var c = a + b");
+            const lexer = new ExprLexer(inputStream);
+            const tokenStream = new CommonTokenStream(lexer);
+
+            const parser = new ExprParser(tokenStream);
+            const errorListener = new ErrorListener();
+            parser.addErrorListener(errorListener);
+            parser.expression();
+            expect(errorListener.errorCount).toEqual(0);
+
+            const core = new CodeCompletionCore(parser);
+
+            // Ignore operators and the generic ID token.
+            core.ignoredTokens = new Set([
+                ExprLexer.ID, ExprLexer.PLUS, ExprLexer.MINUS, ExprLexer.MULTIPLY, ExprLexer.DIVIDE, ExprLexer.EQUAL,
+            ]);
+
+            // Tell the engine to return certain rules to us, which we could use to look up values in a symbol table.
+            core.preferredRules = new Set([ExprParser.RULE_functionRef, ExprParser.RULE_variableRef]);
+
+            // 1) At the input start.
+            let candidates = core.collectCandidates(0);
+
+            expect(candidates.tokens.size).toEqual(2);
+            expect(candidates.tokens.has(ExprLexer.VAR)).toEqual(true);
+            expect(candidates.tokens.has(ExprLexer.LET)).toEqual(true);
+
+            expect(candidates.tokens.get(ExprLexer.VAR)).toEqual([ExprLexer.ID, ExprLexer.EQUAL]);
+            expect(candidates.tokens.get(ExprLexer.LET)).toEqual([ExprLexer.ID, ExprLexer.EQUAL]);
+
+            // 2) On the variable name ('c').
+            candidates = core.collectCandidates(2);
+            expect(candidates.tokens.size).toEqual(0);
+
+            // 4) On the equal sign.
+            candidates = core.collectCandidates(4);
+            expect(candidates.tokens.size).toEqual(0);
+
+            // 5) On the variable reference 'a'.
+            candidates = core.collectCandidates(6);
+            expect(candidates.tokens.size).toEqual(0);
+            expect(candidates.rules.size).toEqual(2);
+
+            // Here we get 2 rule indexes, derived from 2 different IDs possible at this caret position.
+            // These are what we told the engine above to be preferred rules for us.
+            expect(candidates.rules.size).toEqual(2);
+            expect(candidates.rules.get(ExprParser.RULE_functionRef)?.startTokenIndex).toEqual(6);
+            expect(candidates.rules.get(ExprParser.RULE_variableRef)?.startTokenIndex).toEqual(6);
+
+            // 6) On the whitespace just after the variable reference 'a' (but it could still be a function reference!)
+            candidates = core.collectCandidates(7);
+            expect(candidates.tokens.size).toEqual(0);
+            expect(candidates.rules.size).toEqual(1);
+
+            // Our function rule should start at the ID reference of token 'a'
+            expect(candidates.rules.get(ExprParser.RULE_functionRef)?.startTokenIndex).toEqual(6);
+        });
+
+        it("Recursive preferred rule", () => {
+            const inputStream = CharStreams.fromString("var c = a + b");
+            const lexer = new ExprLexer(inputStream);
+            const tokenStream = new CommonTokenStream(lexer);
+
+            const parser = new ExprParser(tokenStream);
+            const errorListener = new ErrorListener();
+            parser.addErrorListener(errorListener);
+            parser.expression();
+            expect(errorListener.errorCount).toEqual(0);
+
+            const core = new CodeCompletionCore(parser);
+
+            // Tell the engine to return certain rules to us, which we could use to look up values in a symbol table.
+            core.preferredRules = new Set([ExprParser.RULE_simpleExpression]);
+
+            // 1) On the variable reference 'a'.
+            let candidates = core.collectCandidates(6);
+            expect(candidates.rules.size).toEqual(1);
+            // The start token of the simpleExpression rule begins at token 'a'
+            expect(candidates.rules.get(ExprParser.RULE_simpleExpression)?.startTokenIndex).toEqual(6);
+
+            // 2) On the variable reference 'b'.
+            core.translateRulesTopDown = false;
+            candidates = core.collectCandidates(10);
+            expect(candidates.rules.size).toEqual(1);
+
+            // When translateRulesTopDown is false, startTokenIndex should match the start token for the lower index
+            // (less specific) rule in the expression, which is 'a'.
+            expect(candidates.rules.get(ExprParser.RULE_simpleExpression)?.startTokenIndex).toEqual(6);
+
+            // 3) On the variable reference 'b' topDown preferred rules.
+            core.translateRulesTopDown = true;
+            candidates = core.collectCandidates(10);
+            expect(candidates.rules.size).toEqual(1);
+
+            // When translateRulesTopDown is true, startTokenIndex should match the start token for the higher index
+            // (more specific) rule in the expression, which is 'b'.
+            expect(candidates.rules.get(ExprParser.RULE_simpleExpression)?.startTokenIndex).toEqual(10);
+        });
+
+        it("Candidate rules with different start tokens", () => {
+            const inputStream = CharStreams.fromString("var c = a + b");
+            const lexer = new ExprLexer(inputStream);
+            const tokenStream = new CommonTokenStream(lexer);
+
+            const parser = new ExprParser(tokenStream);
+            const errorListener = new ErrorListener();
+            parser.addErrorListener(errorListener);
+            parser.expression();
+            expect(errorListener.errorCount).toEqual(0);
+
+            const core = new CodeCompletionCore(parser);
+
+            // Tell the engine to return certain rules to us, which we could use to look up values in a symbol table.
+            core.preferredRules = new Set([ExprParser.RULE_assignment, ExprParser.RULE_variableRef]);
+
+            // Return higher index rules first, meaning we could get both assignment and variableRef rules as candidates
+            core.translateRulesTopDown = true;
+
+            // 1) On the token 'var'.
+            let candidates = core.collectCandidates(0);
+            expect(candidates.rules.size).toEqual(2);
+            // // The start token of the assignment and variableRef rules begin at token 'var'
+            expect(candidates.rules.get(ExprParser.RULE_assignment)?.startTokenIndex).toEqual(0);
+            expect(candidates.rules.get(ExprParser.RULE_variableRef)?.startTokenIndex).toEqual(0);
+
+            // 2) On the variable reference 'a'.
+            candidates = core.collectCandidates(6);
+            expect(candidates.rules.size).toEqual(2);
+            // The start token of the assignment rule begins at token 'var'
+            expect(candidates.rules.get(ExprParser.RULE_assignment)?.startTokenIndex).toEqual(0);
+            // The start token of the variableRef rule begins at token 'a'
+            expect(candidates.rules.get(ExprParser.RULE_variableRef)?.startTokenIndex).toEqual(6);
+        });
+    });
 });

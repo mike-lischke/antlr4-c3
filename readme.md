@@ -9,9 +9,7 @@ The original implementation is provided as a node module (works in both, Node.js
 
 # Abstract
 
-There have been quite a number of requests over the past years for getting support from ANTLR to create a code completion implementation, but so far that turned out as an isolated task with only custom solutions. This library aims to provide a common infrastructure for code completion implementations in a more general way, so that people can share their solutions and provide others with ideas to solve specific problems related to that.
-
-The c3 engine implementation is based on an idea presented a while ago under [Universal Code Completion using ANTLR3](https://soft-gems.net/universal-code-completion-using-antlr3/). There a grammar was loaded into a memory structure so that it can be walked through with the current input to find a specific location (usually the caret position) and then collect all possible tokens and special rules, which then describe the possible set of code completion candidates for that position. With ANTLR4 we no longer need to load a grammar, because the grammar structure is now available as part of a parser (via the ATN - [Augmented Transition Network](https://en.wikipedia.org/wiki/Augmented_transition_network)). The ANTLR4 runtime even provides the [LL1Analyzer](https://github.com/antlr/antlr4/blob/master/runtime/Java/src/org/antlr/v4/runtime/atn/LL1Analyzer.java) class, which helps with retrieving follow sets for a given ATN state, but has a few shortcomings and is in general not easy to use.
+This library provides a common infrastructure for code completion implementations. The c3 engine implementation is based on an idea presented a while ago under [Universal Code Completion using ANTLR3](https://soft-gems.net/universal-code-completion-using-antlr3/). There a grammar was loaded into a memory structure so that it can be walked through with the current input to find a specific location (usually the caret position) and then collect all possible tokens and special rules, which then describe the possible set of code completion candidates for that position. With ANTLR4 we no longer need to load a grammar, because the grammar structure is now available as part of a parser (via the ATN - [Augmented Transition Network](https://en.wikipedia.org/wiki/Augmented_transition_network)). The ANTLR4 runtime even provides the [LL1Analyzer](https://github.com/antlr/antlr4/blob/master/runtime/Java/src/org/antlr/v4/runtime/atn/LL1Analyzer.java) class, which helps with retrieving follow sets for a given ATN state, but has a few shortcomings and is in general not easy to use.
 
 With the Code Completion Core implementation things become a lot easier. In the simplest setup you only give it a parser instance and a caret position and it will return the candidates for it. Still, a full code completion implementation requires some support code that we need to discuss first before we can come to the actual usage of the c3 engine.
 
@@ -82,6 +80,7 @@ dropTable: DROP TABLE ID;
 Then tell the c3 engine that you want to get back `tableRef` if it is a valid candidate at a given position.
 
 # Getting Started
+
 With this knowledge we can now look at a simple code example that shows how to use the engine. For further details check the unit tests for this node module (under the test/ folder).
 
 > Since this library is made for ANTLR4 based parser, it requires the same [typescript runtime](https://github.com/tunnelvisionlabs/antlr4ts) as your parser (namely antlr4s). You have to make sure you can actually parse input before continuing with antlr4-c3.
@@ -170,7 +169,9 @@ candidates.push(...variableNames);
 ```
 
 # Fine Tuning
+
 ## Ignored Tokens
+
 As mentioned above in the base setup the engine will only return lexer tokens. This will include your keywords, but also many other tokens like operators, which you usually don't want in your completion list. In order to ease usage you can tell the engine which lexer tokens you are not interested in and which therefor should not appear in the result. This can easily be done by assigning a list of token ids to the `ignoredTokens` field before you invoke `collectCandidates()`:
 
 ```typescript
@@ -184,9 +185,11 @@ core.ignoredTokens = new Set([
 ```
 
 ## Preferred Rules
+
 As mentioned already the `preferredRules` field is an essential part for getting more than just keywords. It lets you specify the parser rules that are interesting for you and should include the rule indexes for the entities we talked about in the code completion breakdown paragraph above. Whenever the c3 engine hits a lexer token when collecting candidates from a specific ATN state it will check the call stack for it and, if that contains any of the preferred rules, will select that instead of the lexer token. This transformation ensures that the engine returns contextual information which can actually be used to look up symbols.
 
 ## Constraining the Search Space
+
 Walking the ATN can at times be quite expensive, especially for complex grammars with many rules and perhaps (left) recursive expression rules. I have seen millions of visited ATN states for complex input, which will take very long to finish. In such cases it pays off to limit the engine to just a specific rule (and those called by it). For that there is an optional parser rule context parameter in the `collectCandidates()` method. If a context is given the engine will never look outside of this rule. It is necessary that the specified caret position lies within that rule (or any of those called by it) to properly finish the ATN walk.
 
 You can determine a parser rule context from your symbol table if it stores the context together with its symbols. Another way would be to use the parse tree and do a search to find the most deeply nested context which contains the caret position. While it will make the c3 engine ultra fast when you pick the context that most closely covers the caret position it might have also a negative side effect: candidates located outside of this context (or those called by it) will not appear in the returned candidates list. So, this is a tradeoff between speed and precision here. You can select any parse rule context you wish between the top rule (or null) and the most deeply nested one. with increasing execution time (but more complete results) the higher in the stack your given rule is.
@@ -194,6 +197,7 @@ You can determine a parser rule context from your symbol table if it stores the 
 In any case, when you want to limit the search space you have to parse your input first to get a parse tree.
 
 ## Selecting the Right Caret Position
+
 It might sound weird to talk about such a trivial thing like the caret position but there's one thing to consider, which makes this something you have to think about. The issue is the pure token index returned by the token stream and the visual appearance on screen. This image shows a typical scenario:
 
 ![token position](images/token-position.png)
@@ -203,6 +207,7 @@ Each vertical line corresponds to a possible caret position. The first 3 lines c
 Things get really tricky however, when your grammar never stores whitespaces (i.e. when using the `skip` lexer action). In that case you won't get token indexes for whitespaces, as demonstrated in the second index line in the image. In such a scenario you cannot even tell (e.g. for token position 1) whether you still have to complete the `var` keyword or want candidates for the `a`. Also the position between the two whitespaces is unclear, since you have no token index for that and have to use other indicators to decide if that position should go to index 3 (`b`) or 4 (`+`). Given these problems it is probably better not to use the `skip` action for your whitespace rule, but simply put whitespaces on a hidden channel instead.
 
 # Debugging
+
 Sometimes you are not getting what you actually expect and you need take a closer look at what the c3 engine is doing. For this situation a few fields have been added which control some debug output dumped to the console:
 
 * `showResult`: Set this field to true to print a summary of what has been processed and collected. It will print the number of visited ATN states as well as all collected tokens and rules (along with their additional info).
@@ -213,6 +218,16 @@ Sometimes you are not getting what you actually expect and you need take a close
 The last two options potentially create a lot of output which can significantly slow down the collection process.
 
 ## Release Notes
+
+### 3.0.0
+
+BREAKING CHANGES: With this major version release the API has been changed to make it more consistent and easier to use. The most important changes are:
+
+- All the classes in the SymbolTable.ts file have been split into separate files.
+- The main Symbol class has been renamed to `BaseSymbol` to avoid confusion and trouble with the Javascript `Symbol` class.
+- The package works now with Typescript 5.0 and above.
+- The tests have been organized into a separate sub project, which is no longer built with the main project. Instead tests files are transpiled on-the-fly (using `ts-jest`) when running the tests. These transpiled files are never written to disk.
+- Symbol creation functions (like `SymbolTable.addNewSymbolOfType`) now allow Typescript to check the given parameters for the class type. You will now have to provide the correct parameter list for the symbol type you want to create. This is a breaking change, because the old version allowed you to pass any parameter list to any symbol creation function.
 
 ### 2.2.3
 
