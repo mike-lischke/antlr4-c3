@@ -2,10 +2,11 @@
     "compilerOptions": {
         "declaration": true,
         "module": "Node16",
-        "target": "es6",
+        "target": "ES2022",
+        "moduleResolution": "node",
         "outDir": "lib",
         "rootDir": ".",
-        "removeComments": true,
+        "removeComments": false,
         "noImplicitAny": true,
         "noImplicitOverride": false,
         "sourceMap": true,

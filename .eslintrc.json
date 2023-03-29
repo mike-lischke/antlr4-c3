@@ -34,12 +34,9 @@
         "eslint-plugin-import"
     ],
     "settings": {},
-    "globals": {
-        "NodeJS": true
-    },
+    "globals": {},
     "rules": {
         // Some base rules must be disabled as they return wrong results.
-        // There are specialized rules instead in the tslint rule section.
         "no-explicit-any": "off",
         "no-use-before-define": "off",
         "no-shadow": "off",
@@ -463,7 +460,7 @@
         "@typescript-eslint/no-unused-vars": [
             "warn",
             {
-                "args": "none",
+                "args": "after-used",
                 "ignoreRestSiblings": true,
                 "varsIgnorePattern": "^_",
                 "argsIgnorePattern": "^_"
@@ -485,15 +482,7 @@
                 "accessibility": "explicit"
             }
         ],
-        "@typescript-eslint/indent": [
-            "error",
-            4,
-            {
-                "ignoreComments": true,
-                "SwitchCase": 1,
-                "MemberExpression": 1
-            }
-        ],
+        "@typescript-eslint/indent": "off",
         "@typescript-eslint/interface-name-prefix": "off",
         "@typescript-eslint/member-delimiter-style": "off",
         "@typescript-eslint/member-ordering": [
@@ -544,7 +533,6 @@
             }
         ],
         "@typescript-eslint/no-explicit-any": "error",
-        "@typescript-eslint/no-namespace": "off",
         "@typescript-eslint/no-parameter-properties": "off",
         "@typescript-eslint/no-use-before-define": "error",
         "@typescript-eslint/no-unsafe-assignment": "off", // TODO: enable
@@ -615,18 +603,10 @@
                 "selector": "interface",
                 "format": [
                     "PascalCase"
-                ]
-            },
-            {
-                "selector": "variable",
-                "modifiers": [
-                    "const"
                 ],
-                "format": null
-            },
-            {
-                "selector": "classProperty",
-                "format": null
+                "prefix": [
+                    "I"
+                ]
             }
         ],
         "@typescript-eslint/restrict-template-expressions": "off",

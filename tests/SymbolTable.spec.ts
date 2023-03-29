@@ -340,11 +340,11 @@ describe("Symbol Table Tests", () => {
         expect(var1.firstSibling!.lastSibling!.firstSibling!.firstSibling).toEqual(var1.firstSibling);
         expect(var1.lastSibling!.firstSibling!.firstSibling!.lastSibling).toEqual(var1.lastSibling);
 
-        const block1 = var1.parent as ScopedSymbol;
-        expect(block1.indexOfChild(field7)).toEqual(-1);
-        expect(block1.indexOfChild(var1)).toEqual(0);
-        expect(block1.firstChild).toEqual(var1.firstSibling);
-        expect(block1.lastChild).toEqual(var1.lastSibling);
+        const block1 = var1.parent;
+        expect(block1!.indexOfChild(field7)).toEqual(-1);
+        expect(block1!.indexOfChild(var1)).toEqual(0);
+        expect(block1!.firstChild).toEqual(var1.firstSibling);
+        expect(block1!.lastChild).toEqual(var1.lastSibling);
 
         // A global variable.
         const var15 = variables[19];
