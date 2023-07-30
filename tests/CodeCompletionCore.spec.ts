@@ -15,7 +15,8 @@ import { WhiteboxParser } from "./generated/WhiteboxParser";
 import { WhiteboxLexer } from "./generated/WhiteboxLexer";
 
 import {
-    ANTLRErrorListener, CharStreams, CommonToken, CommonTokenStream, RecognitionException, Recognizer, Token,
+    ANTLRErrorListener, CharStreams, CommonToken, CommonTokenStream, ParserRuleContext, RecognitionException,
+    Recognizer, Token,
 } from "antlr4ts";
 import { ExprLexer } from "./generated/ExprLexer";
 import { ExprParser } from "./generated/ExprParser";
@@ -103,6 +104,51 @@ describe("Code Completion Tests", () => {
             expect(candidates.tokens.has(WhiteboxLexer.DOLOR)).toEqual(true);
             expect(candidates.tokens.has(WhiteboxLexer.SIT)).toEqual(true);
             expect(candidates.tokens.has(WhiteboxLexer.AMET)).toEqual(true);
+        });
+
+        it.each([
+            "test4",
+            "test5",
+            "test6",
+            "test7",
+        ])("Caret at one of multiple possible states (%s)", (test) => {
+            const inputStream = CharStreams.fromString("LOREM IPSUM ");
+            const lexer = new WhiteboxLexer(inputStream);
+            const tokenStream = new CommonTokenStream(lexer);
+
+            const parser = new WhiteboxParser(tokenStream);
+            const errorListener = new ErrorListener();
+            parser.removeErrorListeners();
+            parser.addErrorListener(errorListener);
+
+            const ctx = (parser[test as keyof WhiteboxParser] as () => ParserRuleContext)();
+
+            const core = new CodeCompletionCore(parser);
+            const candidates = core.collectCandidates(2, ctx); // caret on EOF
+
+            expect(candidates.tokens.size).toEqual(1);
+            expect(candidates.tokens.has(WhiteboxLexer.DOLOR)).toEqual(true);
+            expect(candidates.tokens.get(WhiteboxLexer.DOLOR)).toEqual([]);
+        });
+
+        it("Caret at one of multiple possible states with common follow list", () => {
+            const inputStream = CharStreams.fromString("LOREM IPSUM ");
+            const lexer = new WhiteboxLexer(inputStream);
+            const tokenStream = new CommonTokenStream(lexer);
+
+            const parser = new WhiteboxParser(tokenStream);
+            const errorListener = new ErrorListener();
+            parser.removeErrorListeners();
+            parser.addErrorListener(errorListener);
+
+            const ctx = parser.test8();
+
+            const core = new CodeCompletionCore(parser);
+            const candidates = core.collectCandidates(2, ctx); // caret on EOF
+
+            expect(candidates.tokens.size).toEqual(1);
+            expect(candidates.tokens.has(WhiteboxLexer.DOLOR)).toEqual(true);
+            expect(candidates.tokens.get(WhiteboxLexer.DOLOR)).toEqual([WhiteboxLexer.SIT]);
         });
     });
 

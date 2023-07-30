@@ -42,3 +42,6 @@ jspm_packages
 
 # Generated files
 /ports/java/target/
+
+# OS stuff
+.DS_Store
