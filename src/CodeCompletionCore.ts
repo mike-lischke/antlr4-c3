@@ -14,6 +14,8 @@ import {
 } from "antlr4ts/atn";
 import { IntervalSet } from "antlr4ts/misc/IntervalSet";
 
+import { longestCommonPrefix } from "./utils";
+
 export type TokenList = number[];
 export type RuleList = number[];
 
@@ -675,7 +677,7 @@ export class CodeCompletionCore {
                             if (atCaret) {
                                 if (!this.translateStackToRuleIndex(callStack)) {
                                     const list = set.toArray();
-                                    const addFollowing = list.length === 1;
+                                    const hasTokenSequence = list.length === 1;
                                     for (const symbol of list) {
                                         if (!this.ignoredTokens.has(symbol)) {
                                             if (this.showDebugOutput) {
@@ -683,10 +685,16 @@ export class CodeCompletionCore {
                                                     this.vocabulary.getDisplayName(symbol));
                                             }
 
-                                            if (addFollowing) {
-                                                this.candidates.tokens.set(symbol, this.getFollowingTokens(transition));
+                                            const followingTokens = hasTokenSequence
+                                                ? this.getFollowingTokens(transition)
+                                                : [];
+                                            if (!this.candidates.tokens.has(symbol)) {
+                                                this.candidates.tokens.set(symbol, followingTokens);
                                             } else {
-                                                this.candidates.tokens.set(symbol, []);
+                                                this.candidates.tokens.set(
+                                                    symbol,
+                                                    longestCommonPrefix(followingTokens,
+                                                        this.candidates.tokens.get(symbol)));
                                             }
                                         }
                                     }
