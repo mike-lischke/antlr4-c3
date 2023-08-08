@@ -219,6 +219,12 @@ The last two options potentially create a lot of output which can significantly 
 
 ## Release Notes
 
+### 3.1.1
+
+- Renamed a few interfaces to follow the interface naming rules (a leading I).
+- Merged PR #81 from Aaron Braunstein.
+- Upgraded all dependencies to their latest version.
+-
 ### 3.0.0
 
 BREAKING CHANGES: With this major version release the API has been changed to make it more consistent and easier to use. The most important changes are:
