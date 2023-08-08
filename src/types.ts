@@ -1,8 +1,6 @@
 /*
- * This file is released under the MIT license.
- * Copyright (c) 2023, Mike Lischke
- *
- * See LICENSE file for more info.
+ * Copyright (c) Mike Lischke. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
 import { BaseSymbol } from "./BaseSymbol";
@@ -83,19 +81,19 @@ export enum ReferenceKind {
 }
 
 /** The root type interface. Used for typed symbols and type aliases. */
-export interface Type {
+export interface IType {
     name: string;
 
     /**
      * The super type of this type or empty if this is a fundamental type.
      * Also used as the target type for type aliases.
      */
-    baseTypes: Type[];
+    baseTypes: IType[];
     kind: TypeKind;
     reference: ReferenceKind;
 }
 
-export interface SymbolTableOptions {
+export interface ISymbolTableOptions {
     allowDuplicateSymbols?: boolean;
 }
 

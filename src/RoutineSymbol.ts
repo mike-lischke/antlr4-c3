@@ -1,29 +1,27 @@
 /*
- * This file is released under the MIT license.
- * Copyright (c) 2023, Mike Lischke
- *
- * See LICENSE file for more info.
+ * Copyright (c) Mike Lischke. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
 import { ParameterSymbol } from "./ParameterSymbol";
 import { ScopedSymbol } from "./ScopedSymbol";
 import { VariableSymbol } from "./VariableSymbol";
-import { Type } from "./types";
+import { IType } from "./types";
 
 /** A standalone function/procedure/rule. */
 export class RoutineSymbol extends ScopedSymbol {
-    public returnType?: Type; // Can be null if result is void.
+    public returnType?: IType; // Can be null if result is void.
 
-    public constructor(name: string, returnType?: Type) {
+    public constructor(name: string, returnType?: IType) {
         super(name);
         this.returnType = returnType;
     }
 
-    public getVariables(localOnly = true): Promise<VariableSymbol[]> {
+    public getVariables(_localOnly = true): Promise<VariableSymbol[]> {
         return this.getSymbolsOfType(VariableSymbol);
     }
 
-    public getParameters(localOnly = true): Promise<ParameterSymbol[]> {
+    public getParameters(_localOnly = true): Promise<ParameterSymbol[]> {
         return this.getSymbolsOfType(ParameterSymbol);
     }
 }

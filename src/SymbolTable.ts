@@ -1,11 +1,9 @@
 /*
- * This file is released under the MIT license.
- * Copyright (c) 2017, 2021, Mike Lischke
- *
- * See LICENSE file for more info.
+ * Copyright (c) Mike Lischke. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { SymbolTableOptions, SymbolConstructor } from "./types";
+import { ISymbolTableOptions, SymbolConstructor } from "./types";
 
 import { BaseSymbol } from "./BaseSymbol";
 import { ParseTree } from "antlr4ts/tree/ParseTree";
@@ -13,7 +11,7 @@ import { IScopedSymbol, ScopedSymbol } from "./ScopedSymbol";
 import { NamespaceSymbol } from "./NamespaceSymbol";
 
 export interface ISymbolTable extends IScopedSymbol {
-    options: SymbolTableOptions;
+    options: ISymbolTableOptions;
 
     /**
      * @returns instance information, mostly relevant for unit testing.
@@ -122,7 +120,7 @@ export class SymbolTable extends ScopedSymbol implements ISymbolTable {
     /**  Other symbol information available to this instance. */
     protected dependencies: Set<SymbolTable> = new Set();
 
-    public constructor(name: string, public readonly options: SymbolTableOptions) {
+    public constructor(name: string, public readonly options: ISymbolTableOptions) {
         super(name);
     }
 
@@ -139,7 +137,7 @@ export class SymbolTable extends ScopedSymbol implements ISymbolTable {
     }
 
     public addDependencies(...tables: SymbolTable[]): void {
-        tables.forEach((value, key) => {
+        tables.forEach((value) => {
             this.dependencies.add(value);
         });
     }

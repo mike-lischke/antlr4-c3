@@ -613,12 +613,14 @@
         "@typescript-eslint/restrict-plus-operands": "off",
         "jsdoc/check-alignment": "error",
         "jsdoc/check-indentation": "off",
-        "jsdoc/newline-after-description": "error",
         "jsdoc/require-param-type": "off",
         "jsdoc/require-returns-type": "off",
         "jsdoc/tag-lines": [
-            // Have to switch this off, as it is not good enough to be used.
-            "off"
+            "error",
+            "any",
+            {
+                "startLines": 1
+            }
         ]
     }
 }

@@ -1,11 +1,9 @@
 /*
- * This file is released under the MIT license.
- * Copyright (c) 2023, Mike Lischke
- *
- * See LICENSE file for more info.
+ * Copyright (c) Mike Lischke. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { Type, ReferenceKind, TypeKind } from "./types";
+import { IType, ReferenceKind, TypeKind } from "./types";
 
 import { FieldSymbol } from "./FieldSymbol";
 import { InterfaceSymbol } from "./InterfaceSymbol";
@@ -13,7 +11,7 @@ import { MethodSymbol } from "./MethodSymbol";
 import { ScopedSymbol } from "./ScopedSymbol";
 
 /** Classes and structs. */
-export class ClassSymbol extends ScopedSymbol implements Type {
+export class ClassSymbol extends ScopedSymbol implements IType {
     public isStruct = false;
     public reference = ReferenceKind.Irrelevant;
 
@@ -31,7 +29,7 @@ export class ClassSymbol extends ScopedSymbol implements Type {
         this.implements = impl;
     }
 
-    public get baseTypes(): Type[] { return this.extends; }
+    public get baseTypes(): IType[] { return this.extends; }
     public get kind(): TypeKind { return TypeKind.Class; }
 
     /**

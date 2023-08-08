@@ -1,16 +1,14 @@
 /*
- * This file is released under the MIT license.
- * Copyright (c) 2016, 2021, Mike Lischke
- *
- * See LICENSE file for more info.
+ * Copyright (c) Mike Lischke. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
 /* eslint-disable max-classes-per-file */
 
 import { Parser, Vocabulary, Token, TokenStream, ParserRuleContext } from "antlr4ts";
 import {
-    ATN, ATNState, ATNStateType, Transition, TransitionType, PredicateTransition, RuleTransition, RuleStartState,
-    PrecedencePredicateTransition,
+    ATN, ATNState, ATNStateType, Transition, PredicateTransition, RuleTransition, RuleStartState,
+    PrecedencePredicateTransition, TransitionType,
 } from "antlr4ts/atn";
 import { IntervalSet } from "antlr4ts/misc/IntervalSet";
 
@@ -19,43 +17,49 @@ import { longestCommonPrefix } from "./utils";
 export type TokenList = number[];
 export type RuleList = number[];
 
-export interface CandidateRule {
+export interface ICandidateRule {
     startTokenIndex: number;
     ruleList: RuleList;
 }
 
-export interface RuleWithStartToken {
+export interface IRuleWithStartToken {
     startTokenIndex: number;
     ruleIndex: number;
 }
 
-export type RuleWithStartTokenList = RuleWithStartToken[];
+export type RuleWithStartTokenList = IRuleWithStartToken[];
 
-// All the candidates which have been found. Tokens and rules are separated.
-// Token entries include a list of tokens that directly follow them (see also the "following" member in the
-// FollowSetWithPath class).
-// Rule entries include the index of the starting token within the evaluated rule, along with a call stack of rules
-// found during evaluation.
+/**
+ * All the candidates which have been found. Tokens and rules are separated.
+ * Token entries include a list of tokens that directly follow them (see also the "following" member in the
+ * FollowSetWithPath class).
+ * Rule entries include the index of the starting token within the evaluated rule, along with a call stack of rules
+ * found during evaluation.
+ */
 export class CandidatesCollection {
     public tokens: Map<number, TokenList> = new Map();
-    public rules: Map<number, CandidateRule> = new Map();
+    public rules: Map<number, ICandidateRule> = new Map();
 }
 
-// A record for a follow set along with the path at which this set was found.
-// If there is only a single symbol in the interval set then we also collect and store tokens which follow
-// this symbol directly in its rule (i.e. there is no intermediate rule transition). Only single label transitions
-// are considered. This is useful if you have a chain of tokens which can be suggested as a whole, because there is
-// a fixed sequence in the grammar.
+/**
+ * A record for a follow set along with the path at which this set was found.
+ * If there is only a single symbol in the interval set then we also collect and store tokens which follow
+ * this symbol directly in its rule (i.e. there is no intermediate rule transition). Only single label transitions
+ * are considered. This is useful if you have a chain of tokens which can be suggested as a whole, because there is
+ * a fixed sequence in the grammar.
+ */
 class FollowSetWithPath {
     public intervals: IntervalSet;
     public path: RuleList = [];
     public following: TokenList = [];
 }
 
-// A list of follow sets (for a given state number) + all of them combined for quick hit tests + whether they are
-// exhaustive (false if subsequent yet-unprocessed rules could add further tokens to the follow set, true otherwise).
-// This data is static in nature (because the used ATN states are part of a static struct: the ATN).
-// Hence it can be shared between all C3 instances, however it depends on the actual parser class (type).
+/**
+ * A list of follow sets (for a given state number) + all of them combined for quick hit tests + whether they are
+ * exhaustive (false if subsequent yet-unprocessed rules could add further tokens to the follow set, true otherwise).
+ * This data is static in nature (because the used ATN states are part of a static struct: the ATN).
+ * Hence it can be shared between all C3 instances, however it depends on the actual parser class (type).
+ */
 class FollowSetsHolder {
     public sets: FollowSetWithPath[];
     public combined: IntervalSet;
@@ -64,7 +68,7 @@ class FollowSetsHolder {
 
 type FollowSetsPerState = Map<number, FollowSetsHolder>;
 
-// Token stream position info after a rule was processed.
+/** Token stream position info after a rule was processed. */
 type RuleEndStatus = Set<number>;
 
 interface IPipelineEntry {
@@ -72,7 +76,7 @@ interface IPipelineEntry {
     tokenListIndex: number;
 }
 
-// The main class for doing the collection process.
+/** The main class for doing the collection process. */
 export class CodeCompletionCore {
     private static followSetsByATN = new Map<string, FollowSetsPerState>();
 
@@ -94,28 +98,34 @@ export class CodeCompletionCore {
 
     // Debugging options. Print human readable ATN state and other info.
 
-    // Not dependent on showDebugOutput. Prints the collected rules + tokens to terminal.
+    /** Not dependent on showDebugOutput. Prints the collected rules + tokens to terminal. */
     public showResult = false;
 
-    // Enables printing ATN state info to terminal.
+    /** Enables printing ATN state info to terminal. */
     public showDebugOutput = false;
 
-    // Only relevant when showDebugOutput is true. Enables transition printing for a state.
+    /** Only relevant when showDebugOutput is true. Enables transition printing for a state. */
     public debugOutputWithTransitions = false;
 
-    // Also depends on showDebugOutput. Enables call stack printing for each rule recursion.
+    /** Also depends on showDebugOutput. Enables call stack printing for each rule recursion. */
     public showRuleStack = false;
 
-    // Tailoring of the result:
-    // Tokens which should not appear in the candidates set.
+    /**
+     * Tailoring of the result:
+     * Tokens which should not appear in the candidates set.
+     */
     public ignoredTokens: Set<number>;
 
-    // Rules which replace any candidate token they contain.
-    // This allows to return descriptive rules (e.g. className, instead of ID/identifier).
+    /**
+     * Rules which replace any candidate token they contain.
+     * This allows to return descriptive rules (e.g. className, instead of ID/identifier).
+     */
     public preferredRules: Set<number>;
 
-    // Specify if preferred rules should translated top-down (higher index rule returns first) or
-    // bottom-up (lower index rule returns first).
+    /**
+     * Specify if preferred rules should translated top-down (higher index rule returns first) or
+     * bottom-up (lower index rule returns first).
+     */
     public translateRulesTopDown = false;
 
     private parser: Parser;
@@ -128,11 +138,13 @@ export class CodeCompletionCore {
     private tokenStartIndex = 0;
     private statesProcessed = 0;
 
-    // A mapping of rule index + token stream position to end token positions.
-    // A rule which has been visited before with the same input position will always produce the same output positions.
+    /**
+     * A mapping of rule index + token stream position to end token positions.
+     * A rule which has been visited before with the same input position will always produce the same output positions.
+     */
     private shortcutMap: Map<number, Map<number, RuleEndStatus>> = new Map();
 
-    // The collected candidates (rules and tokens).
+    /** The collected candidates (rules and tokens). */
     private candidates: CandidatesCollection = new CandidatesCollection();
 
     public constructor(parser: Parser) {
@@ -275,7 +287,7 @@ export class CodeCompletionCore {
         if (this.preferredRules.has(ruleIndex)) {
             // Add the rule to our candidates list along with the current rule path,
             // but only if there isn't already an entry like that.
-            const path = ruleWithStartTokenList.slice(0, i).map(({ ruleIndex: candidate }) => candidate);
+            const path = ruleWithStartTokenList.slice(0, i).map(({ ruleIndex: candidate }) => { return candidate; });
             let addNew = true;
             for (const rule of this.candidates.rules) {
                 if (rule[0] !== ruleIndex || rule[1].ruleList.length !== path.length) {
@@ -283,7 +295,7 @@ export class CodeCompletionCore {
                 }
 
                 // Found an entry for this rule. Same path? If so don't add a new (duplicate) entry.
-                if (path.every((v, j) => v === rule[1].ruleList[j])) {
+                if (path.every((v, j) => { return v === rule[1].ruleList[j]; })) {
                     addNew = false;
                     break;
                 }
@@ -359,7 +371,7 @@ export class CodeCompletionCore {
             combined.addAll(set.intervals);
         }
 
-        return {sets, isExhaustive, combined};
+        return { sets, isExhaustive, combined };
     }
 
     /**
@@ -377,7 +389,7 @@ export class CodeCompletionCore {
     private collectFollowSets(s: ATNState, stopState: ATNState, followSets: FollowSetWithPath[], stateStack: ATNState[],
         ruleStack: number[]): boolean {
 
-        if (stateStack.find((x) => x === s)) {
+        if (stateStack.find((x) => { return x === s; })) {
             return true;
         }
         stateStack.push(s);
@@ -516,11 +528,13 @@ export class CodeCompletionCore {
                 for (const set of followSets.sets) {
                     const fullPath = callStack.slice();
 
-                    // Rules derived from our followSet will always start at the same token as our current rule
-                    const followSetPath = set.path.map((path) => ({
-                        startTokenIndex,
-                        ruleIndex: path,
-                    }));
+                    // Rules derived from our followSet will always start at the same token as our current rule.
+                    const followSetPath = set.path.map((path) => {
+                        return {
+                            startTokenIndex,
+                            ruleIndex: path,
+                        };
+                    });
 
                     fullPath.push(...followSetPath);
                     if (!this.translateStackToRuleIndex(fullPath)) {

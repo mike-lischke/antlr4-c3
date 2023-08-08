@@ -1,24 +1,22 @@
 /*
- * This file is released under the MIT license.
- * Copyright (c) 2023, Mike Lischke
- *
- * See LICENSE file for more info.
+ * Copyright (c) Mike Lischke. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { ReferenceKind, Type, TypeKind } from "./types";
+import { ReferenceKind, IType, TypeKind } from "./types";
 
 import { BaseSymbol } from "./BaseSymbol";
 
 /** An alias for another type. */
-export class TypeAlias extends BaseSymbol implements Type {
-    private targetType: Type;
+export class TypeAlias extends BaseSymbol implements IType {
+    private targetType: IType;
 
-    public constructor(name: string, target: Type) {
+    public constructor(name: string, target: IType) {
         super(name);
         this.targetType = target;
     }
 
-    public get baseTypes(): Type[] {
+    public get baseTypes(): IType[] {
         return [this.targetType];
     }
 

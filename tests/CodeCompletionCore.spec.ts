@@ -28,8 +28,8 @@ export class ErrorListener implements ANTLRErrorListener<CommonToken> {
     public errorCount = 0;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public syntaxError<T extends Token>(recognizer: Recognizer<T, any>, offendingSymbol: T | undefined, line: number,
-        charPositionInLine: number, msg: string, e: RecognitionException | undefined): void {
+    public syntaxError<T extends Token>(_recognizer: Recognizer<T, any>, _offendingSymbol: T | undefined, _line: number,
+        _charPositionInLine: number, _msg: string, _e: RecognitionException | undefined): void {
         ++this.errorCount;
     }
 }
@@ -589,7 +589,7 @@ describe("Code Completion Tests", () => {
         });
 
         it("Typical setup", () => {
-            const inputStream = CharStreams.fromString("var c = a + b");
+            const inputStream = CharStreams.fromString("var c = a + b()");
             const lexer = new ExprLexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
 
@@ -638,17 +638,17 @@ describe("Code Completion Tests", () => {
             expect(candidates.rules.get(ExprParser.RULE_functionRef)?.startTokenIndex).toEqual(6);
             expect(candidates.rules.get(ExprParser.RULE_variableRef)?.startTokenIndex).toEqual(6);
 
-            // 6) On the whitespace just after the variable reference 'a' (but it could still be a function reference!)
+            // 6) On the whitespace just after the variable reference 'a' (but it could still be a function reference!).
             candidates = core.collectCandidates(7);
             expect(candidates.tokens.size).toEqual(0);
             expect(candidates.rules.size).toEqual(1);
 
-            // Our function rule should start at the ID reference of token 'a'
+            // Our function rule should start at the ID reference of token 'a'.
             expect(candidates.rules.get(ExprParser.RULE_functionRef)?.startTokenIndex).toEqual(6);
         });
 
         it("Recursive preferred rule", () => {
-            const inputStream = CharStreams.fromString("var c = a + b");
+            const inputStream = CharStreams.fromString("var c = a + b"); // b is not a function here, but a variable.
             const lexer = new ExprLexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
 
@@ -666,7 +666,8 @@ describe("Code Completion Tests", () => {
             // 1) On the variable reference 'a'.
             let candidates = core.collectCandidates(6);
             expect(candidates.rules.size).toEqual(1);
-            // The start token of the simpleExpression rule begins at token 'a'
+
+            // The start token of the simpleExpression rule begins at token 'a'.
             expect(candidates.rules.get(ExprParser.RULE_simpleExpression)?.startTokenIndex).toEqual(6);
 
             // 2) On the variable reference 'b'.
@@ -704,22 +705,26 @@ describe("Code Completion Tests", () => {
             // Tell the engine to return certain rules to us, which we could use to look up values in a symbol table.
             core.preferredRules = new Set([ExprParser.RULE_assignment, ExprParser.RULE_variableRef]);
 
-            // Return higher index rules first, meaning we could get both assignment and variableRef rules as candidates
+            // Return higher index rules first, meaning we could get both assignment and variableRef rules
+            // as candidates.
             core.translateRulesTopDown = true;
 
             // 1) On the token 'var'.
             let candidates = core.collectCandidates(0);
             expect(candidates.rules.size).toEqual(2);
-            // // The start token of the assignment and variableRef rules begin at token 'var'
+
+            // The start token of the assignment and variableRef rules begin at token 'var'.
             expect(candidates.rules.get(ExprParser.RULE_assignment)?.startTokenIndex).toEqual(0);
             expect(candidates.rules.get(ExprParser.RULE_variableRef)?.startTokenIndex).toEqual(0);
 
             // 2) On the variable reference 'a'.
             candidates = core.collectCandidates(6);
             expect(candidates.rules.size).toEqual(2);
-            // The start token of the assignment rule begins at token 'var'
+
+            // The start token of the assignment rule begins at token 'var'.
             expect(candidates.rules.get(ExprParser.RULE_assignment)?.startTokenIndex).toEqual(0);
-            // The start token of the variableRef rule begins at token 'a'
+
+            // The start token of the variableRef rule begins at token 'a'.
             expect(candidates.rules.get(ExprParser.RULE_variableRef)?.startTokenIndex).toEqual(6);
         });
     });

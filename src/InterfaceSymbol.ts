@@ -1,18 +1,16 @@
 /*
- * This file is released under the MIT license.
- * Copyright (c) 2023, Mike Lischke
- *
- * See LICENSE file for more info.
+ * Copyright (c) Mike Lischke. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { Type, ReferenceKind, TypeKind } from "./types";
+import { IType, ReferenceKind, TypeKind } from "./types";
 
 import { ClassSymbol } from "./ClassSymbol";
 import { FieldSymbol } from "./FieldSymbol";
 import { MethodSymbol } from "./MethodSymbol";
 import { ScopedSymbol } from "./ScopedSymbol";
 
-export class InterfaceSymbol extends ScopedSymbol implements Type {
+export class InterfaceSymbol extends ScopedSymbol implements IType {
     public reference = ReferenceKind.Irrelevant;
 
     /** Typescript allows an interface to extend a class, not only interfaces. */
@@ -24,24 +22,24 @@ export class InterfaceSymbol extends ScopedSymbol implements Type {
         this.extends = ext;
     }
 
-    public get baseTypes(): Type[] { return this.extends; }
+    public get baseTypes(): IType[] { return this.extends; }
     public get kind(): TypeKind { return TypeKind.Interface; }
 
     /**
-     * @param includeInherited Not used.
+     * @param _includeInherited not used
      *
      * @returns a list of all methods.
      */
-    public getMethods(includeInherited = false): Promise<MethodSymbol[]> {
+    public getMethods(_includeInherited = false): Promise<MethodSymbol[]> {
         return this.getSymbolsOfType(MethodSymbol);
     }
 
     /**
-     * @param includeInherited Not used.
+     * @param _includeInherited Not used.
      *
      * @returns all fields.
      */
-    public getFields(includeInherited = false): Promise<FieldSymbol[]> {
+    public getFields(_includeInherited = false): Promise<FieldSymbol[]> {
         return this.getSymbolsOfType(FieldSymbol);
     }
 }

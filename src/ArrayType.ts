@@ -1,29 +1,27 @@
 /*
- * This file is released under the MIT license.
- * Copyright (c) 2023, Mike Lischke
- *
- * See LICENSE file for more info.
+ * Copyright (c) Mike Lischke. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { Type, ReferenceKind, TypeKind } from "./types";
+import { IType, ReferenceKind, TypeKind } from "./types";
 
 import { BaseSymbol } from "./BaseSymbol";
 
-export class ArrayType extends BaseSymbol implements Type {
+export class ArrayType extends BaseSymbol implements IType {
 
-    public readonly elementType: Type;
+    public readonly elementType: IType;
     public readonly size: number; // > 0 if fixed length.
 
     private referenceKind: ReferenceKind;
 
-    public constructor(name: string, referenceKind: ReferenceKind, elemType: Type, size = 0) {
+    public constructor(name: string, referenceKind: ReferenceKind, elemType: IType, size = 0) {
         super(name);
         this.referenceKind = referenceKind;
         this.elementType = elemType;
         this.size = size;
     }
 
-    public get baseTypes(): Type[] { return []; }
+    public get baseTypes(): IType[] { return []; }
     public get kind(): TypeKind { return TypeKind.Array; }
     public get reference(): ReferenceKind { return this.referenceKind; }
 }

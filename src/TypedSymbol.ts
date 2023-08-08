@@ -1,18 +1,16 @@
 /*
- * This file is released under the MIT license.
- * Copyright (c) 2023, Mike Lischke
- *
- * See LICENSE file for more info.
+ * Copyright (c) Mike Lischke. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { Type } from "./types";
+import { IType } from "./types";
 import { BaseSymbol } from "./BaseSymbol";
 
 /** A symbol with an attached type (variables, fields etc.). */
 export class TypedSymbol extends BaseSymbol {
-    public type: Type | undefined;
+    public type: IType | undefined;
 
-    public constructor(name: string, type?: Type) {
+    public constructor(name: string, type?: IType) {
         super(name);
         this.type = type;
     }

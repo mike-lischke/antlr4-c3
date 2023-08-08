@@ -1,8 +1,6 @@
 /*
- * This file is released under the MIT license.
- * Copyright (c) 2023, Mike Lischke
- *
- * See LICENSE file for more info.
+ * Copyright (c) Mike Lischke. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
 import { SymbolConstructor } from "./types";
@@ -453,7 +451,7 @@ export class ScopedSymbol extends BaseSymbol implements IScopedSymbol {
      *          or any of the parent scopes (conditionally).
      */
     public override async resolve(name: string, localOnly = false): Promise<BaseSymbol | undefined> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             for (const child of this.#children) {
                 if (child.name === name) {
                     resolve(child);
@@ -540,7 +538,7 @@ export class ScopedSymbol extends BaseSymbol implements IScopedSymbol {
      * @returns the index of the given child symbol in the child list or -1 if it couldn't be found.
      */
     public indexOfChild(child: BaseSymbol): number {
-        return this.#children.findIndex((value: BaseSymbol, index: number) => { return value === child; });
+        return this.#children.findIndex((value: BaseSymbol) => { return value === child; });
     }
 
     /**
