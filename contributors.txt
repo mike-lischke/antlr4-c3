@@ -59,3 +59,4 @@ YYYY/MM/DD, github id, Full name, email
 2020/11/24, alessiostalla, Alessio Stalla, alessiostalla@gmail.com
 2022/11/08, XenoAmess, Jin Xu, xenoamess@gmail.com
 2023/03/04, br0nstein, Aaron Braunstein, aa(last name)@gmail.com
+2023/09/01, swillits, Seth Willits, seth at freaksw.com
