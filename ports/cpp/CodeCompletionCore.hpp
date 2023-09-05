@@ -14,6 +14,7 @@
 #include <string>
 #include <atomic>
 #include <typeindex>
+#include <chrono>
 #include "antlr4-runtime.h"
 
 
@@ -88,14 +89,16 @@ struct CandidateRule {
 
 /**
  * All the candidates which have been found. Tokens and rules are separated.
- * Token entries include a list of tokens that directly follow them (see also the "following" member in the
- * FollowSetWithPath class).
- * Rule entries include the index of the starting token within the evaluated rule, along with a call stack of rules
- * found during evaluation.
+ * – Token entries include a list of tokens that directly follow them (see also the "following" member in the
+ *   FollowSetWithPath class).
+ * – Rule entries include the index of the starting token within the evaluated rule, along with a call stack of rules
+ *   found during evaluation.
+ * – cancelled will be true if the collectCandidates() was cancelled or timed out.
  */
 struct CandidatesCollection {
 	std::map<size_t, TokenList> tokens;
 	std::map<size_t, CandidateRule> rules;
+	bool cancelled;
 };
 
 
@@ -172,9 +175,13 @@ public:
 	 *
 	 * @param caretTokenIndex The index of the token at the caret position.
 	 * @param context An option parser rule context to limit the search space.
-	 * @returns The collection of completion candidates.
+	 * @param timeoutMS If non-zero, the number of milliseconds until collecting times out.
+	 * @param cancel If set to a non-NULL atomic boolean, and that boolean value is set to true while the function is executing, then 
+	 *               collecting candidates will abort as soon as possible.
+	 * @returns The collection of completion candidates. If cancelled or timed out, the returned collection will have its 'cancelled'
+	 *          value set to true and the collected candidates may be incomplete.
 	 */
-	CandidatesCollection collectCandidates(size_t caretTokenIndex, antlr4::ParserRuleContext * context);
+	CandidatesCollection collectCandidates(size_t caretTokenIndex, antlr4::ParserRuleContext * context, size_t timeoutMS, std::atomic<bool> * cancel);
 	
 	
 	
@@ -205,7 +212,9 @@ private:
 	
 	/** The collected candidates (rules and tokens). */
 	c3::CandidatesCollection candidates;
-	
+	size_t timeoutMS;
+	std::atomic<bool> * cancel;
+	std::chrono::steady_clock::time_point timeoutStart;
 	
 	bool checkPredicate(const antlr4::atn::PredicateTransition * transition);
 	bool translateStackToRuleIndex(RuleWithStartTokenList const& ruleWithStartTokenList);
@@ -213,7 +222,7 @@ private:
 	std::vector<size_t> getFollowingTokens(const antlr4::atn::Transition * transition);
 	FollowSetsHolder determineFollowSets(antlr4::atn::ATNState * start, antlr4::atn::ATNState * stop);
 	bool collectFollowSets(antlr4::atn::ATNState * s, antlr4::atn::ATNState * stopState, std::vector<FollowSetWithPath>& followSets, std::vector<antlr4::atn::ATNState*>& stateStack, std::vector<size_t>& ruleStack);
-	RuleEndStatus processRule(antlr4::atn::RuleStartState * startState, size_t tokenListIndex, RuleWithStartTokenList& callStack, int precedence, size_t indentation);
+	RuleEndStatus processRule(antlr4::atn::RuleStartState * startState, size_t tokenListIndex, RuleWithStartTokenList& callStack, int precedence, size_t indentation, bool& timedOut);
 	
 	std::string generateBaseDescription(antlr4::atn::ATNState * state);
 	void printDescription(size_t indentation, antlr4::atn::ATNState * state, std::string const& baseDescription, size_t tokenIndex);

@@ -74,13 +74,17 @@ CodeCompletionCore::CodeCompletionCore(antlr4::Parser * parser)
 // MARK: - Collecting
 // ----------------------------------------------------------------------------
 
-CandidatesCollection CodeCompletionCore::collectCandidates(size_t caretTokenIndex, antlr4::ParserRuleContext *context)
+CandidatesCollection CodeCompletionCore::collectCandidates(size_t caretTokenIndex, antlr4::ParserRuleContext * context, size_t timeoutMS, std::atomic<bool> * cancel)
 {
 	shortcutMap.clear();
 	candidates.rules.clear();
 	candidates.tokens.clear();
+	candidates.cancelled = false;
 	statesProcessed = 0;
 	precedenceStack = {};
+	timeoutStart = std::chrono::steady_clock::now();
+	this->cancel = cancel;
+	this->timeoutMS = timeoutMS;
 	
 	tokenStartIndex = context ? context->start->getTokenIndex() : 0;
 	const auto tokenStream = parser->getTokenStream();
@@ -106,9 +110,16 @@ CandidatesCollection CodeCompletionCore::collectCandidates(size_t caretTokenInde
 	
 	RuleWithStartTokenList callStack = {};
 	size_t startRule = context ? context->getRuleIndex() : 0;
-	processRule(atn.ruleToStartState[startRule], 0, callStack, 0, 0);
+	bool cancelled = false;
+	
+	processRule(atn.ruleToStartState[startRule], 0, callStack, 0, 0, cancelled);
+	candidates.cancelled = cancelled;
 	
 	if (showResult) {
+		if (cancelled) {
+			std::cout << "*** TIMED OUT ***\n";
+		}
+		
 		std::cout << "States processed: " << std::to_string(statesProcessed) << "\n\n";
 		
 		std::cout << "Collected rules:\n";
@@ -425,8 +436,25 @@ bool CodeCompletionCore::collectFollowSets(antlr4::atn::ATNState * s, antlr4::at
  * @param indentation A value to determine the current indentation when doing debug prints.
  * @returns the set of token stream indexes (which depend on the ways that had to be taken).
  */
-RuleEndStatus CodeCompletionCore::processRule(antlr4::atn::RuleStartState * startState, size_t tokenListIndex, RuleWithStartTokenList& callStack, int precedence, size_t indentation)
+RuleEndStatus CodeCompletionCore::processRule(antlr4::atn::RuleStartState * startState, size_t tokenListIndex, RuleWithStartTokenList& callStack, int precedence, size_t indentation, bool& cancelled)
 {
+	// Cancelled by external caller?
+	if (cancel && cancel->load()) {
+		cancelled = true;
+		return {};
+	}
+	
+	// Check for timeout
+	cancelled = false;
+	if (timeoutMS > 0) {
+		std::chrono::duration<size_t, std::milli> timeout(timeoutMS);
+		if (std::chrono::steady_clock::now() - timeoutStart > timeout) {
+			cancelled = true;
+			return {}; 
+		}
+	}
+	
+	
 	// Start with rule specific handling before going into the ATN walk.
 	
 	// Check first if we've taken this path with the same input before.
@@ -556,6 +584,12 @@ RuleEndStatus CodeCompletionCore::processRule(antlr4::atn::RuleStartState * star
 	});
 	
 	while (statePipeline.size() > 0) {
+		if (cancel && cancel->load()) {
+			cancelled = true;
+			return {};
+		}
+		
+		
 		PipelineEntry currentEntry = statePipeline.back();
 		statePipeline.pop_back();
 		++statesProcessed;
@@ -585,7 +619,12 @@ RuleEndStatus CodeCompletionCore::processRule(antlr4::atn::RuleStartState * star
 				case antlr4::atn::TransitionType::RULE: {
 					const atn::RuleTransition * ruleTransition = static_cast<const atn::RuleTransition*>(transition.get());
 					atn::RuleStartState * ruleStartState = static_cast<atn::RuleStartState*>(ruleTransition->target);
-					RuleEndStatus endStatus = processRule(ruleStartState, currentEntry.tokenListIndex, callStack, ruleTransition->precedence, indentation + 1);
+					bool innerCancelled = false;
+					RuleEndStatus endStatus = processRule(ruleStartState, currentEntry.tokenListIndex, callStack, ruleTransition->precedence, indentation + 1, innerCancelled);
+					if (innerCancelled) {
+						cancelled = true;
+						return {};
+					}
 					
 					for (size_t position: endStatus) {
 						statePipeline.push_back({
