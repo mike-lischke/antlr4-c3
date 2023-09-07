@@ -3,7 +3,7 @@
         "declaration": true,
         "module": "Node16",
         "target": "ES2022",
-        "moduleResolution": "node",
+        "moduleResolution": "Node16",
         "outDir": "lib",
         "rootDir": ".",
         "removeComments": false,

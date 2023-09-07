@@ -222,6 +222,7 @@ The last two options potentially create a lot of output which can significantly 
 ### 3.2.0
 
 - A new [TypeScript runtime](https://github.com/mike-lischke/antlr4ng) powers this package now (antlr4ng).
+- The package is now published as ES module, which is supported by all modern browsers and Node.js.
 
 ### 3.1.1
 
