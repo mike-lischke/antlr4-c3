@@ -9,27 +9,25 @@
 
 import * as fs from "fs";
 
+import {
+    ErrorListener, CharStreams, CommonTokenStream, ParserRuleContext, RecognitionException,
+    Recognizer, Token, ATNSimulator,
+} from "antlr4ng";
+
 import { CPP14Parser } from "./generated/CPP14Parser";
 import { CPP14Lexer } from "./generated/CPP14Lexer";
 import { WhiteboxParser } from "./generated/WhiteboxParser";
 import { WhiteboxLexer } from "./generated/WhiteboxLexer";
 
-import {
-    ANTLRErrorListener, CharStreams, CommonToken, CommonTokenStream, ParserRuleContext, RecognitionException,
-    Recognizer, Token,
-} from "antlr4ts";
 import { ExprLexer } from "./generated/ExprLexer";
 import { ExprParser } from "./generated/ExprParser";
 import { CodeCompletionCore } from "../src/CodeCompletionCore";
 
-// Some helper functions + types to create certain setups.
-
-export class ErrorListener implements ANTLRErrorListener<CommonToken> {
+export class TestErrorListener extends ErrorListener<ATNSimulator> {
     public errorCount = 0;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public syntaxError<T extends Token>(_recognizer: Recognizer<T, any>, _offendingSymbol: T | undefined, _line: number,
-        _charPositionInLine: number, _msg: string, _e: RecognitionException | undefined): void {
+    public override syntaxError<T extends Token>(_recognizer: Recognizer<ATNSimulator>, _offendingSymbol: T,
+        _line: number, _charPositionInLine: number, _msg: string, _e: RecognitionException | null): void {
         ++this.errorCount;
     }
 }
@@ -44,7 +42,7 @@ describe("Code Completion Tests", () => {
             const tokenStream = new CommonTokenStream(lexer);
 
             const parser = new WhiteboxParser(tokenStream);
-            const errorListener = new ErrorListener();
+            const errorListener = new TestErrorListener();
             parser.removeErrorListeners();
             parser.addErrorListener(errorListener);
             const ctx = parser.test1();
@@ -67,7 +65,7 @@ describe("Code Completion Tests", () => {
             const tokenStream = new CommonTokenStream(lexer);
 
             const parser = new WhiteboxParser(tokenStream);
-            const errorListener = new ErrorListener();
+            const errorListener = new TestErrorListener();
             parser.removeErrorListeners();
             parser.addErrorListener(errorListener);
             const ctx = parser.test2();
@@ -90,7 +88,7 @@ describe("Code Completion Tests", () => {
             const tokenStream = new CommonTokenStream(lexer);
 
             const parser = new WhiteboxParser(tokenStream);
-            const errorListener = new ErrorListener();
+            const errorListener = new TestErrorListener();
             parser.removeErrorListeners();
             parser.addErrorListener(errorListener);
             const ctx = parser.test3();
@@ -117,7 +115,7 @@ describe("Code Completion Tests", () => {
             const tokenStream = new CommonTokenStream(lexer);
 
             const parser = new WhiteboxParser(tokenStream);
-            const errorListener = new ErrorListener();
+            const errorListener = new TestErrorListener();
             parser.removeErrorListeners();
             parser.addErrorListener(errorListener);
 
@@ -137,7 +135,7 @@ describe("Code Completion Tests", () => {
             const tokenStream = new CommonTokenStream(lexer);
 
             const parser = new WhiteboxParser(tokenStream);
-            const errorListener = new ErrorListener();
+            const errorListener = new TestErrorListener();
             parser.removeErrorListeners();
             parser.addErrorListener(errorListener);
 
@@ -166,14 +164,14 @@ describe("Code Completion Tests", () => {
             const lexer = new CPP14Lexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
 
-            /*
-            tokenStream.fill();
-            for (let token of tokenStream.getTokens())
-              console.log(token.toString());
-            */
+            /*tokenStream.fill();
+            for (const token of tokenStream.tokens) {
+                console.log(token.toString());
+            }*/
 
             const parser = new CPP14Parser(tokenStream);
-            const errorListener = new ErrorListener();
+            parser.removeErrorListeners();
+            const errorListener = new TestErrorListener();
             parser.addErrorListener(errorListener);
             parser.translationunit();
             expect(errorListener.errorCount).toEqual(0);
@@ -377,7 +375,7 @@ describe("Code Completion Tests", () => {
 
             const parser = new CPP14Parser(tokenStream);
             parser.removeErrorListeners();
-            const errorListener = new ErrorListener();
+            const errorListener = new TestErrorListener();
             parser.addErrorListener(errorListener);
             parser.translationunit();
             expect(errorListener.errorCount).toEqual(3);
@@ -443,7 +441,7 @@ describe("Code Completion Tests", () => {
             */
 
             const parser = new CPP14Parser(tokenStream);
-            const errorListener = new ErrorListener();
+            const errorListener = new TestErrorListener();
             parser.addErrorListener(errorListener);
             parser.translationunit();
             expect(errorListener.errorCount).toEqual(0);
@@ -536,7 +534,7 @@ describe("Code Completion Tests", () => {
             const tokenStream = new CommonTokenStream(lexer);
 
             const parser = new ExprParser(tokenStream);
-            const errorListener = new ErrorListener();
+            const errorListener = new TestErrorListener();
             parser.addErrorListener(errorListener);
             parser.expression();
             expect(errorListener.errorCount).toEqual(0);
@@ -594,7 +592,7 @@ describe("Code Completion Tests", () => {
             const tokenStream = new CommonTokenStream(lexer);
 
             const parser = new ExprParser(tokenStream);
-            const errorListener = new ErrorListener();
+            const errorListener = new TestErrorListener();
             parser.addErrorListener(errorListener);
             parser.expression();
             expect(errorListener.errorCount).toEqual(0);
@@ -653,7 +651,7 @@ describe("Code Completion Tests", () => {
             const tokenStream = new CommonTokenStream(lexer);
 
             const parser = new ExprParser(tokenStream);
-            const errorListener = new ErrorListener();
+            const errorListener = new TestErrorListener();
             parser.addErrorListener(errorListener);
             parser.expression();
             expect(errorListener.errorCount).toEqual(0);
@@ -695,7 +693,7 @@ describe("Code Completion Tests", () => {
             const tokenStream = new CommonTokenStream(lexer);
 
             const parser = new ExprParser(tokenStream);
-            const errorListener = new ErrorListener();
+            const errorListener = new TestErrorListener();
             parser.addErrorListener(errorListener);
             parser.expression();
             expect(errorListener.errorCount).toEqual(0);

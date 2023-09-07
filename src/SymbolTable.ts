@@ -6,7 +6,7 @@
 import { ISymbolTableOptions, SymbolConstructor } from "./types";
 
 import { BaseSymbol } from "./BaseSymbol";
-import { ParseTree } from "antlr4ts/tree/ParseTree";
+import { ParseTree } from "antlr4ng";
 import { IScopedSymbol, ScopedSymbol } from "./ScopedSymbol";
 import { NamespaceSymbol } from "./NamespaceSymbol";
 

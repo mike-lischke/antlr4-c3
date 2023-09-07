@@ -5,7 +5,7 @@
 
 This project contains a grammar agnostic code completion engine for ANTLR4 based parsers. The c3 engine is able to provide code completion candidates useful for editors with ANTLR generated parsers, independent of the actual language/grammar used for the generation.
 
-The original implementation is provided as a node module (works in both, Node.js and browsers), and is written in TypeScript. A port to Java is available under `ports/java`. Implementations under the `ports` folder might not be up to date compared to the Typescript version.
+The original implementation is provided as a node module (works in both, Node.js and browsers), and is written in TypeScript. Ports to Java, C#, C++ are available in the `ports` folder. These ports might not be up to date compared to the TypeScript version.
 
 # Abstract
 
@@ -83,7 +83,7 @@ Then tell the c3 engine that you want to get back `tableRef` if it is a valid ca
 
 With this knowledge we can now look at a simple code example that shows how to use the engine. For further details check the unit tests for this node module (under the test/ folder).
 
-> Since this library is made for ANTLR4 based parser, it requires the same [typescript runtime](https://github.com/tunnelvisionlabs/antlr4ts) as your parser (namely antlr4s). You have to make sure you can actually parse input before continuing with antlr4-c3.
+> Since this library is made for ANTLR4 based parser, it requires a [JavaScript/TypeScript runtime](https://github.com/mike-lischke/antlr4ng), just like your parser (namely antlr4ng).
 
 ```typescript
 let inputStream = new ANTLRInputStream("var c = a + b()");
@@ -218,6 +218,10 @@ Sometimes you are not getting what you actually expect and you need take a close
 The last two options potentially create a lot of output which can significantly slow down the collection process.
 
 ## Release Notes
+
+### 3.2.0
+
+- A new [TypeScript runtime](https://github.com/mike-lischke/antlr4ng) powers this package now (antlr4ng).
 
 ### 3.1.1
 

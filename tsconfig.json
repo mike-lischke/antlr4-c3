@@ -8,10 +8,11 @@
         "rootDir": ".",
         "removeComments": false,
         "noImplicitAny": true,
-        "noImplicitOverride": false, // because antlr4ts doesn't support it
+        "noImplicitOverride": true,
         "sourceMap": true,
         "inlineSources": true,
-        "isolatedModules": false, // because of imported const enums in antlr4ts
+        "isolatedModules": true,
+        "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "allowSyntheticDefaultImports": false,
         "strictNullChecks": true

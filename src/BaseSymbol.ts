@@ -3,7 +3,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { ParseTree } from "antlr4ts/tree/ParseTree";
+import { ParseTree } from "antlr4ng";
 
 import { MemberVisibility, Modifier, SymbolConstructor } from "./types";
 

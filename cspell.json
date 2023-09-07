@@ -7,12 +7,17 @@
         "whitespaces"
     ],
     "ignoreWords": [
+        "Braunstein",
+        "Whitebox",
         "Xexact",
+        "interp",
+        "localctx",
         "philipps",
         "unmocked"
     ],
     "ignorePaths": [
         ".eslintrc.json",
-        "package.json"
+        "package.json",
+        "generated"
     ]
 }
