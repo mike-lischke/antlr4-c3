@@ -23,7 +23,7 @@
         "test": "jest --testMatch [ \"**/tests/**/*.spec.ts\" ] --no-coverage --watchAll=false --max-worker=1",
         "test-ci": "jest --testMatch [ \"**/tests/**/*.spec.ts\" ] --no-coverage --watchAll=false --silent",
         "test-coverage": "jest  --testMatch [ \"**/tests/**/*.spec.ts\" ] --coverage --silent",
-        "generate": "java -jar antlr/antlr4-4.13.1-SNAPSHOT-complete.jar  -Dlanguage=TypeScript tests/CPP14.g4 tests/Expr.g4 tests/Whitebox.g4 -no-listener -no-visitor -o tests/generated -Xexact-output-dir",
+        "generate": "java -jar antlr/antlr4-4.13.2-SNAPSHOT-complete.jar  -Dlanguage=TypeScript tests/CPP14.g4 tests/Expr.g4 tests/Whitebox.g4 -no-listener -no-visitor -o tests/generated -Xexact-output-dir",
         "eslint": "eslint ."
     },
     "devDependencies": {

@@ -1,6 +1,7 @@
-// Generated from tests/CPP14.g4 by ANTLR 4.13.0
+// Generated from tests/CPP14.g4 by ANTLR 4.13.1
 
 import * as antlr from "antlr4ng";
+import { Token } from "antlr4ng";
 
 export class CPP14Lexer extends antlr.Lexer {
     public static readonly MultiLineMacro = 1;

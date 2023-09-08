@@ -1,6 +1,7 @@
-// Generated from tests/CPP14.g4 by ANTLR 4.13.0
+// Generated from tests/CPP14.g4 by ANTLR 4.13.1
 
 import * as antlr from "antlr4ng";
+import { Token } from "antlr4ng";
 
 // for running tests with parameters, TODO: discuss strategy for typed parameters in CI
 // eslint-disable-next-line no-unused-vars
@@ -17523,7 +17524,7 @@ export class VirtspecifierContext extends antlr.ParserRuleContext {
 
 
 export class PurespecifierContext extends antlr.ParserRuleContext {
-    public _val!: antlr.Token;
+    public _val!: Token;
     constructor(parser?: CPP14Parser, parent?: antlr.ParserRuleContext, invokingState?: number) {
         super(parent, invokingState);
         this.parser = parser;
