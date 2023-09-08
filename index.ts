@@ -1,29 +1,27 @@
 /*
- * This file is released under the MIT license.
- * Copyright (c) 2016, 2021 Mike Lischke
- *
- * See LICENSE file for more info.
+ * Copyright (c) Mike Lischke. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-export * from "./src/ArrayType";
-export * from "./src/BaseSymbol";
-export * from "./src/BlockSymbol";
-export * from "./src/ClassSymbol";
-export * from "./src/FieldSymbol";
-export * from "./src/FundamentalType";
-export * from "./src/InterfaceSymbol";
-export * from "./src/LiteralSymbol";
-export * from "./src/MethodSymbol";
-export * from "./src/NamespaceSymbol";
-export * from "./src/ParameterSymbol";
-export * from "./src/RoutineSymbol";
-export * from "./src/ScopedSymbol";
-export * from "./src/TypeAlias";
-export * from "./src/TypedSymbol";
-export * from "./src/VariableSymbol";
+export * from "./src/ArrayType.js";
+export * from "./src/BaseSymbol.js";
+export * from "./src/BlockSymbol.js";
+export * from "./src/ClassSymbol.js";
+export * from "./src/FieldSymbol.js";
+export * from "./src/FundamentalType.js";
+export * from "./src/InterfaceSymbol.js";
+export * from "./src/LiteralSymbol.js";
+export * from "./src/MethodSymbol.js";
+export * from "./src/NamespaceSymbol.js";
+export * from "./src/ParameterSymbol.js";
+export * from "./src/RoutineSymbol.js";
+export * from "./src/ScopedSymbol.js";
+export * from "./src/TypeAlias.js";
+export * from "./src/TypedSymbol.js";
+export * from "./src/VariableSymbol.js";
 
-export * from "./src/CodeCompletionCore";
-export * from "./src/SymbolTable";
-export * from "./src/DuplicateSymbolError";
+export * from "./src/CodeCompletionCore.js";
+export * from "./src/SymbolTable.js";
+export * from "./src/DuplicateSymbolError.js";
 
-export * from "./src/types";
+export * from "./src/types.js";

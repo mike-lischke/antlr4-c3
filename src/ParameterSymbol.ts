@@ -3,6 +3,6 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { VariableSymbol } from "./VariableSymbol";
+import { VariableSymbol } from "./VariableSymbol.js";
 
 export class ParameterSymbol extends VariableSymbol { }

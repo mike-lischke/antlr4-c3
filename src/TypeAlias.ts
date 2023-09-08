@@ -3,9 +3,9 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { ReferenceKind, IType, TypeKind } from "./types";
+import { ReferenceKind, IType, TypeKind } from "./types.js";
 
-import { BaseSymbol } from "./BaseSymbol";
+import { BaseSymbol } from "./BaseSymbol.js";
 
 /** An alias for another type. */
 export class TypeAlias extends BaseSymbol implements IType {

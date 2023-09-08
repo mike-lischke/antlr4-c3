@@ -5,12 +5,12 @@
  * See LICENSE file for more info.
  */
 
-// spell-checker: disable
+// cspell: disable
 
 import * as fs from "fs";
 
 import {
-    ErrorListener, CharStreams, CommonTokenStream, ParserRuleContext, RecognitionException,
+    BaseErrorListener, CharStreams, CommonTokenStream, ParserRuleContext, RecognitionException,
     Recognizer, Token, ATNSimulator,
 } from "antlr4ng";
 
@@ -23,7 +23,7 @@ import { ExprLexer } from "./generated/ExprLexer";
 import { ExprParser } from "./generated/ExprParser";
 import { CodeCompletionCore } from "../src/CodeCompletionCore";
 
-export class TestErrorListener extends ErrorListener<ATNSimulator> {
+export class TestErrorListener extends BaseErrorListener<ATNSimulator> {
     public errorCount = 0;
 
     public override syntaxError<T extends Token>(_recognizer: Recognizer<ATNSimulator>, _offendingSymbol: T,

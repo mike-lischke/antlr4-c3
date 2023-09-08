@@ -3,7 +3,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { IType, TypeKind, ReferenceKind } from "./types";
+import { IType, TypeKind, ReferenceKind } from "./types.js";
 
 /** A single class for all fundamental types. They are distinguished via the kind field. */
 export class FundamentalType implements IType {

@@ -3,7 +3,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { IScopedSymbol, ScopedSymbol } from "./ScopedSymbol";
+import { IScopedSymbol, ScopedSymbol } from "./ScopedSymbol.js";
 
 export interface INamespaceSymbol extends IScopedSymbol {
     readonly inline: boolean;

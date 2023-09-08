@@ -3,12 +3,12 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { IType, ReferenceKind, TypeKind } from "./types";
+import { IType, ReferenceKind, TypeKind } from "./types.js";
 
-import { FieldSymbol } from "./FieldSymbol";
-import { InterfaceSymbol } from "./InterfaceSymbol";
-import { MethodSymbol } from "./MethodSymbol";
-import { ScopedSymbol } from "./ScopedSymbol";
+import { FieldSymbol } from "./FieldSymbol.js";
+import { InterfaceSymbol } from "./InterfaceSymbol.js";
+import { MethodSymbol } from "./MethodSymbol.js";
+import { ScopedSymbol } from "./ScopedSymbol.js";
 
 /** Classes and structs. */
 export class ClassSymbol extends ScopedSymbol implements IType {

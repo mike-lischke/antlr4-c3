@@ -3,8 +3,6 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { BaseSymbol } from "./BaseSymbol";
-
 /** Visibility (aka. accessibility) of a symbol member. */
 export enum MemberVisibility {
     /** Not specified, default depends on the language and type. */
@@ -96,6 +94,3 @@ export interface IType {
 export interface ISymbolTableOptions {
     allowDuplicateSymbols?: boolean;
 }
-
-/** The type of constructors for symbols. Used mostly for factory and lookup functions. */
-export type SymbolConstructor<T extends BaseSymbol, Args extends unknown[]> = new (...args: Args) => T;

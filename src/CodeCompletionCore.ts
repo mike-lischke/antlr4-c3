@@ -9,7 +9,8 @@ import {
     ATN, ATNState, IntervalSet, Parser, ParserRuleContext, Token, TokenStream, Vocabulary, Transition,
     PredicateTransition, RuleTransition, RuleStartState, PrecedencePredicateTransition,
 } from "antlr4ng";
-import { longestCommonPrefix } from "./utils";
+
+import { longestCommonPrefix } from "./utils.js";
 
 export type TokenList = number[];
 export type RuleList = number[];

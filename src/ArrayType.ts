@@ -3,9 +3,9 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { IType, ReferenceKind, TypeKind } from "./types";
+import { IType, ReferenceKind, TypeKind } from "./types.js";
 
-import { BaseSymbol } from "./BaseSymbol";
+import { BaseSymbol } from "./BaseSymbol.js";
 
 export class ArrayType extends BaseSymbol implements IType {
 

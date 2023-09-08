@@ -3,7 +3,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { RoutineSymbol } from "./RoutineSymbol";
+import { RoutineSymbol } from "./RoutineSymbol.js";
 
 export enum MethodFlags {
     None = 0,

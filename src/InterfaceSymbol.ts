@@ -3,12 +3,12 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { IType, ReferenceKind, TypeKind } from "./types";
+import { IType, ReferenceKind, TypeKind } from "./types.js";
 
-import { ClassSymbol } from "./ClassSymbol";
-import { FieldSymbol } from "./FieldSymbol";
-import { MethodSymbol } from "./MethodSymbol";
-import { ScopedSymbol } from "./ScopedSymbol";
+import { ClassSymbol } from "./ClassSymbol.js";
+import { FieldSymbol } from "./FieldSymbol.js";
+import { MethodSymbol } from "./MethodSymbol.js";
+import { ScopedSymbol } from "./ScopedSymbol.js";
 
 export class InterfaceSymbol extends ScopedSymbol implements IType {
     public reference = ReferenceKind.Irrelevant;

@@ -42,6 +42,6 @@
         "typescript": "5.2.2"
     },
     "dependencies": {
-        "antlr4ng": "1.0.0"
+        "antlr4ng": "1.0.1"
     }
 }

@@ -223,6 +223,7 @@ The last two options potentially create a lot of output which can significantly 
 
 - A new [TypeScript runtime](https://github.com/mike-lischke/antlr4ng) powers this package now (antlr4ng).
 - The package is now published as ES module, which is supported by all modern browsers and Node.js.
+- The contributors list has been moved to a separate file, because now contributions are tracked via git's signed-off commits.
 
 ### 3.1.1
 

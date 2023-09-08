@@ -3,8 +3,8 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { MethodSymbol } from "./MethodSymbol";
-import { VariableSymbol } from "./VariableSymbol";
+import { MethodSymbol } from "./MethodSymbol.js";
+import { VariableSymbol } from "./VariableSymbol.js";
 
 /** A field which belongs to a class or other outer container structure. */
 export class FieldSymbol extends VariableSymbol {

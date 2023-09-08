@@ -5,10 +5,10 @@
 
 import { ParseTree } from "antlr4ng";
 
-import { MemberVisibility, Modifier, SymbolConstructor } from "./types";
+import { type IScopedSymbol } from "./ScopedSymbol.js";
+import { type ISymbolTable } from "./SymbolTable.js";
 
-import { type IScopedSymbol } from "./ScopedSymbol";
-import { type ISymbolTable } from "./SymbolTable";
+import { MemberVisibility, Modifier } from "./types.js";
 
 /**
  * The root of the symbol table class hierarchy: a symbol can be any manageable entity (like a block), not only
@@ -234,3 +234,6 @@ export class BaseSymbol {
         return (candidate as ISymbolTable).info !== undefined;
     }
 }
+
+/** The type of constructors for symbols. Used mostly for factory and lookup functions. */
+export type SymbolConstructor<T extends BaseSymbol, Args extends unknown[]> = new (...args: Args) => T;

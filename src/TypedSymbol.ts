@@ -3,8 +3,8 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { IType } from "./types";
-import { BaseSymbol } from "./BaseSymbol";
+import { IType } from "./types.js";
+import { BaseSymbol } from "./BaseSymbol.js";
 
 /** A symbol with an attached type (variables, fields etc.). */
 export class TypedSymbol extends BaseSymbol {

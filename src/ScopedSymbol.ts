@@ -3,11 +3,9 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { SymbolConstructor } from "./types";
-
-import { BaseSymbol } from "./BaseSymbol";
-import { DuplicateSymbolError } from "./DuplicateSymbolError";
-import { INamespaceSymbol } from "./NamespaceSymbol";
+import { SymbolConstructor, BaseSymbol } from "./BaseSymbol.js";
+import { DuplicateSymbolError } from "./DuplicateSymbolError.js";
+import { INamespaceSymbol } from "./NamespaceSymbol.js";
 
 /** Defines the  */
 export interface IScopedSymbol extends BaseSymbol {

@@ -3,12 +3,13 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { ISymbolTableOptions, SymbolConstructor } from "./types";
-
-import { BaseSymbol } from "./BaseSymbol";
 import { ParseTree } from "antlr4ng";
-import { IScopedSymbol, ScopedSymbol } from "./ScopedSymbol";
-import { NamespaceSymbol } from "./NamespaceSymbol";
+
+import { ISymbolTableOptions } from "./types.js";
+
+import { SymbolConstructor, BaseSymbol } from "./BaseSymbol.js";
+import { IScopedSymbol, ScopedSymbol } from "./ScopedSymbol.js";
+import { NamespaceSymbol } from "./NamespaceSymbol.js";
 
 export interface ISymbolTable extends IScopedSymbol {
     options: ISymbolTableOptions;

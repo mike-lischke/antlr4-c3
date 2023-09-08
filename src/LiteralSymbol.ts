@@ -3,8 +3,8 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { TypedSymbol } from "./TypedSymbol";
-import { IType } from "./types";
+import { TypedSymbol } from "./TypedSymbol.js";
+import { IType } from "./types.js";
 
 export class LiteralSymbol extends TypedSymbol {
     public readonly value: unknown;
