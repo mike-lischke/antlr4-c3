@@ -1,11 +1,6 @@
 // Generated from tests/Whitebox.g4 by ANTLR 4.13.1
 
 import * as antlr from "antlr4ng";
-import { Token } from "antlr4ng";
-
-// for running tests with parameters, TODO: discuss strategy for typed parameters in CI
-// eslint-disable-next-line no-unused-vars
-type int = number;
 
 export class WhiteboxParser extends antlr.Parser {
     public static readonly LOREM = 1;
@@ -73,7 +68,7 @@ export class WhiteboxParser extends antlr.Parser {
         this._interp = new antlr.ParserATNSimulator(this, WhiteboxParser._ATN, WhiteboxParser.decisionsToDFA, new antlr.PredictionContextCache());
     }
     public test1(): Test1Context {
-        let localctx: Test1Context = new Test1Context(this, this._ctx, this.state);
+        let localctx: Test1Context = new Test1Context(this._ctx, this.state);
         this.enterRule(localctx, 0, WhiteboxParser.RULE_test1);
         try {
             this.enterOuterAlt(localctx, 1);
@@ -99,7 +94,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public rule1(): Rule1Context {
-        let localctx: Rule1Context = new Rule1Context(this, this._ctx, this.state);
+        let localctx: Rule1Context = new Rule1Context(this._ctx, this.state);
         this.enterRule(localctx, 2, WhiteboxParser.RULE_rule1);
         try {
             this.enterOuterAlt(localctx, 1);
@@ -125,7 +120,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public rule2(): Rule2Context {
-        let localctx: Rule2Context = new Rule2Context(this, this._ctx, this.state);
+        let localctx: Rule2Context = new Rule2Context(this._ctx, this.state);
         this.enterRule(localctx, 4, WhiteboxParser.RULE_rule2);
         let _la: number;
         try {
@@ -178,7 +173,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public rule3(): Rule3Context {
-        let localctx: Rule3Context = new Rule3Context(this, this._ctx, this.state);
+        let localctx: Rule3Context = new Rule3Context(this._ctx, this.state);
         this.enterRule(localctx, 6, WhiteboxParser.RULE_rule3);
         let _la: number;
         try {
@@ -213,7 +208,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public rule4(): Rule4Context {
-        let localctx: Rule4Context = new Rule4Context(this, this._ctx, this.state);
+        let localctx: Rule4Context = new Rule4Context(this._ctx, this.state);
         this.enterRule(localctx, 8, WhiteboxParser.RULE_rule4);
         let _la: number;
         try {
@@ -246,7 +241,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public rule5(): Rule5Context {
-        let localctx: Rule5Context = new Rule5Context(this, this._ctx, this.state);
+        let localctx: Rule5Context = new Rule5Context(this._ctx, this.state);
         this.enterRule(localctx, 10, WhiteboxParser.RULE_rule5);
         try {
             this.enterOuterAlt(localctx, 1);
@@ -269,7 +264,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public test2(): Test2Context {
-        let localctx: Test2Context = new Test2Context(this, this._ctx, this.state);
+        let localctx: Test2Context = new Test2Context(this._ctx, this.state);
         this.enterRule(localctx, 12, WhiteboxParser.RULE_test2);
         try {
             this.enterOuterAlt(localctx, 1);
@@ -295,7 +290,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public rule7(): Rule7Context {
-        let localctx: Rule7Context = new Rule7Context(this, this._ctx, this.state);
+        let localctx: Rule7Context = new Rule7Context(this._ctx, this.state);
         this.enterRule(localctx, 14, WhiteboxParser.RULE_rule7);
         try {
             this.enterOuterAlt(localctx, 1);
@@ -321,7 +316,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public rule8(): Rule8Context {
-        let localctx: Rule8Context = new Rule8Context(this, this._ctx, this.state);
+        let localctx: Rule8Context = new Rule8Context(this._ctx, this.state);
         this.enterRule(localctx, 16, WhiteboxParser.RULE_rule8);
         let _la: number;
         try {
@@ -374,7 +369,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public rule9(): Rule9Context {
-        let localctx: Rule9Context = new Rule9Context(this, this._ctx, this.state);
+        let localctx: Rule9Context = new Rule9Context(this._ctx, this.state);
         this.enterRule(localctx, 18, WhiteboxParser.RULE_rule9);
         let _la: number;
         try {
@@ -409,7 +404,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public rule10(): Rule10Context {
-        let localctx: Rule10Context = new Rule10Context(this, this._ctx, this.state);
+        let localctx: Rule10Context = new Rule10Context(this._ctx, this.state);
         this.enterRule(localctx, 20, WhiteboxParser.RULE_rule10);
         let _la: number;
         try {
@@ -442,7 +437,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public rule11(): Rule11Context {
-        let localctx: Rule11Context = new Rule11Context(this, this._ctx, this.state);
+        let localctx: Rule11Context = new Rule11Context(this._ctx, this.state);
         this.enterRule(localctx, 22, WhiteboxParser.RULE_rule11);
         try {
             this.enterOuterAlt(localctx, 1);
@@ -465,7 +460,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public test3(): Test3Context {
-        let localctx: Test3Context = new Test3Context(this, this._ctx, this.state);
+        let localctx: Test3Context = new Test3Context(this._ctx, this.state);
         this.enterRule(localctx, 24, WhiteboxParser.RULE_test3);
         let _la: number;
         try {
@@ -518,7 +513,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public rule13(): Rule13Context {
-        let localctx: Rule13Context = new Rule13Context(this, this._ctx, this.state);
+        let localctx: Rule13Context = new Rule13Context(this._ctx, this.state);
         this.enterRule(localctx, 26, WhiteboxParser.RULE_rule13);
         let _la: number;
         try {
@@ -562,7 +557,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public test4(): Test4Context {
-        let localctx: Test4Context = new Test4Context(this, this._ctx, this.state);
+        let localctx: Test4Context = new Test4Context(this._ctx, this.state);
         this.enterRule(localctx, 28, WhiteboxParser.RULE_test4);
         try {
             this.enterOuterAlt(localctx, 1);
@@ -602,7 +597,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public rule15(): Rule15Context {
-        let localctx: Rule15Context = new Rule15Context(this, this._ctx, this.state);
+        let localctx: Rule15Context = new Rule15Context(this._ctx, this.state);
         this.enterRule(localctx, 30, WhiteboxParser.RULE_rule15);
         try {
             this.enterOuterAlt(localctx, 1);
@@ -630,7 +625,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public rule16(): Rule16Context {
-        let localctx: Rule16Context = new Rule16Context(this, this._ctx, this.state);
+        let localctx: Rule16Context = new Rule16Context(this._ctx, this.state);
         this.enterRule(localctx, 32, WhiteboxParser.RULE_rule16);
         try {
             this.enterOuterAlt(localctx, 1);
@@ -658,7 +653,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public test5(): Test5Context {
-        let localctx: Test5Context = new Test5Context(this, this._ctx, this.state);
+        let localctx: Test5Context = new Test5Context(this._ctx, this.state);
         this.enterRule(localctx, 34, WhiteboxParser.RULE_test5);
         try {
             this.enterOuterAlt(localctx, 1);
@@ -698,7 +693,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public rule18(): Rule18Context {
-        let localctx: Rule18Context = new Rule18Context(this, this._ctx, this.state);
+        let localctx: Rule18Context = new Rule18Context(this._ctx, this.state);
         this.enterRule(localctx, 36, WhiteboxParser.RULE_rule18);
         let _la: number;
         try {
@@ -734,7 +729,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public rule19(): Rule19Context {
-        let localctx: Rule19Context = new Rule19Context(this, this._ctx, this.state);
+        let localctx: Rule19Context = new Rule19Context(this._ctx, this.state);
         this.enterRule(localctx, 38, WhiteboxParser.RULE_rule19);
         try {
             this.enterOuterAlt(localctx, 1);
@@ -762,7 +757,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public test6(): Test6Context {
-        let localctx: Test6Context = new Test6Context(this, this._ctx, this.state);
+        let localctx: Test6Context = new Test6Context(this._ctx, this.state);
         this.enterRule(localctx, 40, WhiteboxParser.RULE_test6);
         try {
             this.enterOuterAlt(localctx, 1);
@@ -802,7 +797,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public rule21(): Rule21Context {
-        let localctx: Rule21Context = new Rule21Context(this, this._ctx, this.state);
+        let localctx: Rule21Context = new Rule21Context(this._ctx, this.state);
         this.enterRule(localctx, 42, WhiteboxParser.RULE_rule21);
         try {
             this.enterOuterAlt(localctx, 1);
@@ -830,7 +825,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public rule22(): Rule22Context {
-        let localctx: Rule22Context = new Rule22Context(this, this._ctx, this.state);
+        let localctx: Rule22Context = new Rule22Context(this._ctx, this.state);
         this.enterRule(localctx, 44, WhiteboxParser.RULE_rule22);
         let _la: number;
         try {
@@ -866,7 +861,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public test7(): Test7Context {
-        let localctx: Test7Context = new Test7Context(this, this._ctx, this.state);
+        let localctx: Test7Context = new Test7Context(this._ctx, this.state);
         this.enterRule(localctx, 46, WhiteboxParser.RULE_test7);
         try {
             this.enterOuterAlt(localctx, 1);
@@ -914,7 +909,7 @@ export class WhiteboxParser extends antlr.Parser {
         return localctx;
     }
     public test8(): Test8Context {
-        let localctx: Test8Context = new Test8Context(this, this._ctx, this.state);
+        let localctx: Test8Context = new Test8Context(this._ctx, this.state);
         this.enterRule(localctx, 48, WhiteboxParser.RULE_test8);
         try {
             this.enterOuterAlt(localctx, 1);
@@ -1047,9 +1042,8 @@ export class WhiteboxParser extends antlr.Parser {
 }
 
 export class Test1Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public rule1(): Rule1Context {
         return this.getTypedRuleContext(Rule1Context, 0);
@@ -1064,9 +1058,8 @@ export class Test1Context extends antlr.ParserRuleContext {
 
 
 export class Rule1Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public rule2(): Rule2Context {
         return this.getTypedRuleContext(Rule2Context, 0);
@@ -1081,9 +1074,8 @@ export class Rule1Context extends antlr.ParserRuleContext {
 
 
 export class Rule2Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public LOREM(): antlr.TerminalNode {
         return this.getToken(WhiteboxParser.LOREM, 0);
@@ -1110,9 +1102,8 @@ export class Rule2Context extends antlr.ParserRuleContext {
 
 
 export class Rule3Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public rule4(): Rule4Context {
         return this.getTypedRuleContext(Rule4Context, 0);
@@ -1127,9 +1118,8 @@ export class Rule3Context extends antlr.ParserRuleContext {
 
 
 export class Rule4Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public IPSUM(): antlr.TerminalNode {
         return this.getToken(WhiteboxParser.IPSUM, 0);
@@ -1141,9 +1131,8 @@ export class Rule4Context extends antlr.ParserRuleContext {
 
 
 export class Rule5Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public override get ruleIndex(): number {
         return WhiteboxParser.RULE_rule5;
@@ -1152,9 +1141,8 @@ export class Rule5Context extends antlr.ParserRuleContext {
 
 
 export class Test2Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public rule7(): Rule7Context {
         return this.getTypedRuleContext(Rule7Context, 0);
@@ -1169,9 +1157,8 @@ export class Test2Context extends antlr.ParserRuleContext {
 
 
 export class Rule7Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public rule8(): Rule8Context {
         return this.getTypedRuleContext(Rule8Context, 0);
@@ -1186,9 +1173,8 @@ export class Rule7Context extends antlr.ParserRuleContext {
 
 
 export class Rule8Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public LOREM(): antlr.TerminalNode {
         return this.getToken(WhiteboxParser.LOREM, 0);
@@ -1215,9 +1201,8 @@ export class Rule8Context extends antlr.ParserRuleContext {
 
 
 export class Rule9Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public rule10(): Rule10Context {
         return this.getTypedRuleContext(Rule10Context, 0);
@@ -1232,9 +1217,8 @@ export class Rule9Context extends antlr.ParserRuleContext {
 
 
 export class Rule10Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public IPSUM(): antlr.TerminalNode {
         return this.getToken(WhiteboxParser.IPSUM, 0);
@@ -1246,9 +1230,8 @@ export class Rule10Context extends antlr.ParserRuleContext {
 
 
 export class Rule11Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public override get ruleIndex(): number {
         return WhiteboxParser.RULE_rule11;
@@ -1257,9 +1240,8 @@ export class Rule11Context extends antlr.ParserRuleContext {
 
 
 export class Test3Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public LOREM(): antlr.TerminalNode {
         return this.getToken(WhiteboxParser.LOREM, 0);
@@ -1286,9 +1268,8 @@ export class Test3Context extends antlr.ParserRuleContext {
 
 
 export class Rule13Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public DOLOR__list(): antlr.TerminalNode[] {
         return this.getTokens(WhiteboxParser.DOLOR);
@@ -1309,9 +1290,8 @@ export class Rule13Context extends antlr.ParserRuleContext {
 
 
 export class Test4Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public LOREM(): antlr.TerminalNode {
         return this.getToken(WhiteboxParser.LOREM, 0);
@@ -1329,9 +1309,8 @@ export class Test4Context extends antlr.ParserRuleContext {
 
 
 export class Rule15Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public IPSUM(): antlr.TerminalNode {
         return this.getToken(WhiteboxParser.IPSUM, 0);
@@ -1349,9 +1328,8 @@ export class Rule15Context extends antlr.ParserRuleContext {
 
 
 export class Rule16Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public IPSUM(): antlr.TerminalNode {
         return this.getToken(WhiteboxParser.IPSUM, 0);
@@ -1369,9 +1347,8 @@ export class Rule16Context extends antlr.ParserRuleContext {
 
 
 export class Test5Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public LOREM(): antlr.TerminalNode {
         return this.getToken(WhiteboxParser.LOREM, 0);
@@ -1389,9 +1366,8 @@ export class Test5Context extends antlr.ParserRuleContext {
 
 
 export class Rule18Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public IPSUM(): antlr.TerminalNode {
         return this.getToken(WhiteboxParser.IPSUM, 0);
@@ -1412,9 +1388,8 @@ export class Rule18Context extends antlr.ParserRuleContext {
 
 
 export class Rule19Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public IPSUM(): antlr.TerminalNode {
         return this.getToken(WhiteboxParser.IPSUM, 0);
@@ -1432,9 +1407,8 @@ export class Rule19Context extends antlr.ParserRuleContext {
 
 
 export class Test6Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public LOREM(): antlr.TerminalNode {
         return this.getToken(WhiteboxParser.LOREM, 0);
@@ -1452,9 +1426,8 @@ export class Test6Context extends antlr.ParserRuleContext {
 
 
 export class Rule21Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public IPSUM(): antlr.TerminalNode {
         return this.getToken(WhiteboxParser.IPSUM, 0);
@@ -1472,9 +1445,8 @@ export class Rule21Context extends antlr.ParserRuleContext {
 
 
 export class Rule22Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public IPSUM(): antlr.TerminalNode {
         return this.getToken(WhiteboxParser.IPSUM, 0);
@@ -1495,9 +1467,8 @@ export class Rule22Context extends antlr.ParserRuleContext {
 
 
 export class Test7Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public LOREM(): antlr.TerminalNode {
         return this.getToken(WhiteboxParser.LOREM, 0);
@@ -1521,9 +1492,8 @@ export class Test7Context extends antlr.ParserRuleContext {
 
 
 export class Test8Context extends antlr.ParserRuleContext {
-    constructor(parser?: WhiteboxParser, parent?: antlr.ParserRuleContext, invokingState?: number) {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
-        this.parser = parser;
     }
     public LOREM(): antlr.TerminalNode {
         return this.getToken(WhiteboxParser.LOREM, 0);

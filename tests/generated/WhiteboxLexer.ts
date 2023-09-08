@@ -1,7 +1,6 @@
 // Generated from tests/Whitebox.g4 by ANTLR 4.13.1
 
 import * as antlr from "antlr4ng";
-import { Token } from "antlr4ng";
 
 export class WhiteboxLexer extends antlr.Lexer {
     public static readonly LOREM = 1;

@@ -1,7 +1,6 @@
 // Generated from tests/Expr.g4 by ANTLR 4.13.1
 
 import * as antlr from "antlr4ng";
-import { Token } from "antlr4ng";
 
 export class ExprLexer extends antlr.Lexer {
     public static readonly VAR = 1;

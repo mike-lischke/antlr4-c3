@@ -3,6 +3,7 @@
 import * as antlr from "antlr4ng";
 import { Token } from "antlr4ng";
 
+
 export class CPP14Lexer extends antlr.Lexer {
     public static readonly MultiLineMacro = 1;
     public static readonly Directive = 2;
