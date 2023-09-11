@@ -8,9 +8,10 @@ Thumbs.db
 
 # Ignored files
 src/
-lib/test/*
+lib/test/
 tests/
 ports/
+images/
 package
 *.tgz
 .vscode/
@@ -21,3 +22,4 @@ cspell.json
 tsconfig.json
 jest.config.ts
 index.ts
+historical-contributors.txt

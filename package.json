@@ -1,6 +1,6 @@
 {
     "name": "antlr4-c3",
-    "version": "3.2.1",
+    "version": "3.2.2",
     "description": "A code completion core implementation for ANTLR4 based parsers",
     "author": "Mike Lischke",
     "license": "MIT",
@@ -23,7 +23,7 @@
         "test": "jest --testMatch [ \"**/tests/**/*.spec.ts\" ] --no-coverage --watchAll=false --max-worker=1",
         "test-ci": "jest --testMatch [ \"**/tests/**/*.spec.ts\" ] --no-coverage --watchAll=false --silent",
         "test-coverage": "jest  --testMatch [ \"**/tests/**/*.spec.ts\" ] --coverage --silent",
-        "generate": "java -jar antlr/antlr4-4.13.2-SNAPSHOT-complete.jar  -Dlanguage=TypeScript tests/CPP14.g4 tests/Expr.g4 tests/Whitebox.g4 -no-listener -no-visitor -o tests/generated -Xexact-output-dir",
+        "generate": "java -jar antlr/antlr4-4.13.2-SNAPSHOT-complete.jar -Dlanguage=TypeScript tests/CPP14.g4 tests/Expr.g4 tests/Whitebox.g4 -no-listener -no-visitor -o tests/generated -Xexact-output-dir",
         "eslint": "eslint ."
     },
     "devDependencies": {
@@ -42,6 +42,6 @@
         "typescript": "5.2.2"
     },
     "dependencies": {
-        "antlr4ng": "1.0.4"
+        "antlr4ng": "1.0.6"
     }
 }
