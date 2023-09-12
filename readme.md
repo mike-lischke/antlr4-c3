@@ -1,4 +1,4 @@
-[![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/mike-lischke/antlr4-c3/nodejs.yml?style=for-the-badge&color=green&logo=github)](https://github.com/mike-lischke/antlr4ng/actions/workflows/nodejs.yml)
+[![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/mike-lischke/antlr4-c3/nodejs.yml?style=for-the-badge&color=green&logo=github)](https://github.com/mike-lischke/antlr4-c3/actions/workflows/nodejs.yml)
 ![License](https://img.shields.io/github/license/mike-lischke/antlr4-c3?style=for-the-badge&color=lightgreen)
 ![Weekly Downloads](https://img.shields.io/npm/dw/antlr4-c3?style=for-the-badge&color=blue)
 [![npm version](https://img.shields.io/npm/v/antlr4-c3?style=for-the-badge&color=yellow)](https://www.npmjs.com/package/antlr4-c3)
