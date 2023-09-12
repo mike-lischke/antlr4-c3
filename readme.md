@@ -223,6 +223,9 @@ The last two options potentially create a lot of output which can significantly 
 
 ## Release Notes
 
+### 3.2.3
+- Completed switch away from antlr4ts.
+
 ### 3.2.0
 
 - A new [TypeScript runtime](https://github.com/mike-lischke/antlr4ng) powers this package now (antlr4ng).
