@@ -1,6 +1,6 @@
 [![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/mike-lischke/antlr4-c3/nodejs.yml?style=for-the-badge&color=green&logo=github)](https://github.com/mike-lischke/antlr4-c3/actions/workflows/nodejs.yml)
 ![License](https://img.shields.io/github/license/mike-lischke/antlr4-c3?style=for-the-badge&color=lightgreen)
-![Weekly Downloads](https://img.shields.io/npm/dw/antlr4-c3?style=for-the-badge&color=blue)
+[![Weekly Downloads](https://img.shields.io/npm/dw/antlr4-c3?style=for-the-badge&color=blue)](https://www.npmjs.com/package/antlr4-c3)
 [![npm version](https://img.shields.io/npm/v/antlr4-c3?style=for-the-badge&color=yellow)](https://www.npmjs.com/package/antlr4-c3)
 
 
@@ -222,6 +222,10 @@ Sometimes you are not getting what you actually expect and you need take a close
 The last two options potentially create a lot of output which can significantly slow down the collection process.
 
 ## Release Notes
+
+### 3.2.4
+- Updated c3 code.
+- Updated Jest settings to run ESM + TS tests.
 
 ### 3.2.3
 - Completed switch away from antlr4ts.

@@ -12,6 +12,7 @@ lib/test/
 tests/
 ports/
 images/
+coverage/
 package
 *.tgz
 .vscode/
