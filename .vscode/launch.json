@@ -8,8 +8,9 @@
             "type": "node",
             "request": "launch",
             "name": "Run current Jest test",
-            "runtimeExecutable": null,
+            "runtimeExecutable": "node",
             "runtimeArgs": [
+                "--experimental-vm-modules",
                 "${workspaceRoot}/node_modules/.bin/jest",
                 "${fileBasenameNoExtension}.ts",
                 "--no-coverage",

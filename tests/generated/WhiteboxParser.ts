@@ -71,13 +71,13 @@ export class WhiteboxParser extends antlr.Parser {
 
     public constructor(input: antlr.TokenStream) {
         super(input);
-        this._interp = new antlr.ParserATNSimulator(this, WhiteboxParser._ATN, WhiteboxParser.decisionsToDFA, new antlr.PredictionContextCache());
+        this.interpreter = new antlr.ParserATNSimulator(this, WhiteboxParser._ATN, WhiteboxParser.decisionsToDFA, new antlr.PredictionContextCache());
     }
     public test1(): Test1Context {
-        let localctx: Test1Context = new Test1Context(this._ctx, this.state);
-        this.enterRule(localctx, 0, WhiteboxParser.RULE_test1);
+        let localContext = new Test1Context(this._ctx, this.state);
+        this.enterRule(localContext, 0, WhiteboxParser.RULE_test1);
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 50;
             this.rule1();
@@ -87,9 +87,9 @@ export class WhiteboxParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -97,13 +97,13 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public rule1(): Rule1Context {
-        let localctx: Rule1Context = new Rule1Context(this._ctx, this.state);
-        this.enterRule(localctx, 2, WhiteboxParser.RULE_rule1);
+        let localContext = new Rule1Context(this._ctx, this.state);
+        this.enterRule(localContext, 2, WhiteboxParser.RULE_rule1);
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 53;
             this.rule2();
@@ -113,9 +113,9 @@ export class WhiteboxParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -123,14 +123,14 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public rule2(): Rule2Context {
-        let localctx: Rule2Context = new Rule2Context(this._ctx, this.state);
-        this.enterRule(localctx, 4, WhiteboxParser.RULE_rule2);
+        let localContext = new Rule2Context(this._ctx, this.state);
+        this.enterRule(localContext, 4, WhiteboxParser.RULE_rule2);
         let _la: number;
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 56;
             this.match(WhiteboxParser.LOREM);
@@ -139,9 +139,9 @@ export class WhiteboxParser extends antlr.Parser {
             this.state = 58;
             this.rule5();
             this.state = 62;
-            this._errHandler.sync(this);
-            _la = this._input.LA(1);
-            while (_la===4) {
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            while (_la === 4) {
                 {
                 {
                 this.state = 59;
@@ -149,13 +149,13 @@ export class WhiteboxParser extends antlr.Parser {
                 }
                 }
                 this.state = 64;
-                this._errHandler.sync(this);
-                _la = this._input.LA(1);
+                this.errorHandler.sync(this);
+                _la = this.tokenStream.LA(1);
             }
             this.state = 66;
-            this._errHandler.sync(this);
-            _la = this._input.LA(1);
-            if (_la===5) {
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            if (_la === 5) {
                 {
                 this.state = 65;
                 this.match(WhiteboxParser.AMET);
@@ -166,9 +166,9 @@ export class WhiteboxParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -176,21 +176,21 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public rule3(): Rule3Context {
-        let localctx: Rule3Context = new Rule3Context(this._ctx, this.state);
-        this.enterRule(localctx, 6, WhiteboxParser.RULE_rule3);
+        let localContext = new Rule3Context(this._ctx, this.state);
+        this.enterRule(localContext, 6, WhiteboxParser.RULE_rule3);
         let _la: number;
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 68;
             this.rule4();
             this.state = 70;
-            this._errHandler.sync(this);
-            _la = this._input.LA(1);
-            if (_la===3) {
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            if (_la === 3) {
                 {
                 this.state = 69;
                 this.match(WhiteboxParser.DOLOR);
@@ -201,9 +201,9 @@ export class WhiteboxParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -211,19 +211,19 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public rule4(): Rule4Context {
-        let localctx: Rule4Context = new Rule4Context(this._ctx, this.state);
-        this.enterRule(localctx, 8, WhiteboxParser.RULE_rule4);
+        let localContext = new Rule4Context(this._ctx, this.state);
+        this.enterRule(localContext, 8, WhiteboxParser.RULE_rule4);
         let _la: number;
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 73;
-            this._errHandler.sync(this);
-            _la = this._input.LA(1);
-            if (_la===2) {
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            if (_la === 2) {
                 {
                 this.state = 72;
                 this.match(WhiteboxParser.IPSUM);
@@ -234,9 +234,9 @@ export class WhiteboxParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -244,22 +244,22 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public rule5(): Rule5Context {
-        let localctx: Rule5Context = new Rule5Context(this._ctx, this.state);
-        this.enterRule(localctx, 10, WhiteboxParser.RULE_rule5);
+        let localContext = new Rule5Context(this._ctx, this.state);
+        this.enterRule(localContext, 10, WhiteboxParser.RULE_rule5);
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             // tslint:disable-next-line:no-empty
             {
             }
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -267,13 +267,13 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public test2(): Test2Context {
-        let localctx: Test2Context = new Test2Context(this._ctx, this.state);
-        this.enterRule(localctx, 12, WhiteboxParser.RULE_test2);
+        let localContext = new Test2Context(this._ctx, this.state);
+        this.enterRule(localContext, 12, WhiteboxParser.RULE_test2);
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 77;
             this.rule7();
@@ -283,9 +283,9 @@ export class WhiteboxParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -293,13 +293,13 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public rule7(): Rule7Context {
-        let localctx: Rule7Context = new Rule7Context(this._ctx, this.state);
-        this.enterRule(localctx, 14, WhiteboxParser.RULE_rule7);
+        let localContext = new Rule7Context(this._ctx, this.state);
+        this.enterRule(localContext, 14, WhiteboxParser.RULE_rule7);
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 80;
             this.rule8();
@@ -309,9 +309,9 @@ export class WhiteboxParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -319,14 +319,14 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public rule8(): Rule8Context {
-        let localctx: Rule8Context = new Rule8Context(this._ctx, this.state);
-        this.enterRule(localctx, 16, WhiteboxParser.RULE_rule8);
+        let localContext = new Rule8Context(this._ctx, this.state);
+        this.enterRule(localContext, 16, WhiteboxParser.RULE_rule8);
         let _la: number;
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 83;
             this.match(WhiteboxParser.LOREM);
@@ -335,9 +335,9 @@ export class WhiteboxParser extends antlr.Parser {
             this.state = 85;
             this.rule9();
             this.state = 89;
-            this._errHandler.sync(this);
-            _la = this._input.LA(1);
-            while (_la===4) {
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            while (_la === 4) {
                 {
                 {
                 this.state = 86;
@@ -345,13 +345,13 @@ export class WhiteboxParser extends antlr.Parser {
                 }
                 }
                 this.state = 91;
-                this._errHandler.sync(this);
-                _la = this._input.LA(1);
+                this.errorHandler.sync(this);
+                _la = this.tokenStream.LA(1);
             }
             this.state = 93;
-            this._errHandler.sync(this);
-            _la = this._input.LA(1);
-            if (_la===5) {
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            if (_la === 5) {
                 {
                 this.state = 92;
                 this.match(WhiteboxParser.AMET);
@@ -362,9 +362,9 @@ export class WhiteboxParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -372,21 +372,21 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public rule9(): Rule9Context {
-        let localctx: Rule9Context = new Rule9Context(this._ctx, this.state);
-        this.enterRule(localctx, 18, WhiteboxParser.RULE_rule9);
+        let localContext = new Rule9Context(this._ctx, this.state);
+        this.enterRule(localContext, 18, WhiteboxParser.RULE_rule9);
         let _la: number;
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 95;
             this.rule10();
             this.state = 97;
-            this._errHandler.sync(this);
-            _la = this._input.LA(1);
-            if (_la===3) {
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            if (_la === 3) {
                 {
                 this.state = 96;
                 this.match(WhiteboxParser.DOLOR);
@@ -397,9 +397,9 @@ export class WhiteboxParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -407,19 +407,19 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public rule10(): Rule10Context {
-        let localctx: Rule10Context = new Rule10Context(this._ctx, this.state);
-        this.enterRule(localctx, 20, WhiteboxParser.RULE_rule10);
+        let localContext = new Rule10Context(this._ctx, this.state);
+        this.enterRule(localContext, 20, WhiteboxParser.RULE_rule10);
         let _la: number;
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 100;
-            this._errHandler.sync(this);
-            _la = this._input.LA(1);
-            if (_la===2) {
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            if (_la === 2) {
                 {
                 this.state = 99;
                 this.match(WhiteboxParser.IPSUM);
@@ -430,9 +430,9 @@ export class WhiteboxParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -440,22 +440,22 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public rule11(): Rule11Context {
-        let localctx: Rule11Context = new Rule11Context(this._ctx, this.state);
-        this.enterRule(localctx, 22, WhiteboxParser.RULE_rule11);
+        let localContext = new Rule11Context(this._ctx, this.state);
+        this.enterRule(localContext, 22, WhiteboxParser.RULE_rule11);
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             // tslint:disable-next-line:no-empty
             {
             }
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -463,21 +463,21 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public test3(): Test3Context {
-        let localctx: Test3Context = new Test3Context(this._ctx, this.state);
-        this.enterRule(localctx, 24, WhiteboxParser.RULE_test3);
+        let localContext = new Test3Context(this._ctx, this.state);
+        this.enterRule(localContext, 24, WhiteboxParser.RULE_test3);
         let _la: number;
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 104;
             this.match(WhiteboxParser.LOREM);
             this.state = 106;
-            this._errHandler.sync(this);
-            _la = this._input.LA(1);
-            if (_la===2) {
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            if (_la === 2) {
                 {
                 this.state = 105;
                 this.match(WhiteboxParser.IPSUM);
@@ -487,8 +487,8 @@ export class WhiteboxParser extends antlr.Parser {
             this.state = 108;
             this.rule13();
             this.state = 110;
-            this._errHandler.sync(this);
-            _la = this._input.LA(1);
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
             do {
                 {
                 {
@@ -497,18 +497,18 @@ export class WhiteboxParser extends antlr.Parser {
                 }
                 }
                 this.state = 112;
-                this._errHandler.sync(this);
-                _la = this._input.LA(1);
-            } while (_la===5);
+                this.errorHandler.sync(this);
+                _la = this.tokenStream.LA(1);
+            } while (_la === 5);
             this.state = 114;
             this.match(WhiteboxParser.CONSECTETUR);
             }
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -516,43 +516,43 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public rule13(): Rule13Context {
-        let localctx: Rule13Context = new Rule13Context(this._ctx, this.state);
-        this.enterRule(localctx, 26, WhiteboxParser.RULE_rule13);
+        let localContext = new Rule13Context(this._ctx, this.state);
+        this.enterRule(localContext, 26, WhiteboxParser.RULE_rule13);
         let _la: number;
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 119;
-            this._errHandler.sync(this);
-            _la = this._input.LA(1);
-            while (_la===3 || _la===4) {
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            while (_la === 3 || _la === 4) {
                 {
                 {
                 this.state = 116;
-                _la = this._input.LA(1);
-                if(!(_la===3 || _la===4)) {
-                this._errHandler.recoverInline(this);
+                _la = this.tokenStream.LA(1);
+                if(!(_la === 3 || _la === 4)) {
+                this.errorHandler.recoverInline(this);
                 }
                 else {
-                    this._errHandler.reportMatch(this);
+                    this.errorHandler.reportMatch(this);
                     this.consume();
                 }
                 }
                 }
                 this.state = 121;
-                this._errHandler.sync(this);
-                _la = this._input.LA(1);
+                this.errorHandler.sync(this);
+                _la = this.tokenStream.LA(1);
             }
             }
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -560,19 +560,19 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public test4(): Test4Context {
-        let localctx: Test4Context = new Test4Context(this._ctx, this.state);
-        this.enterRule(localctx, 28, WhiteboxParser.RULE_test4);
+        let localContext = new Test4Context(this._ctx, this.state);
+        this.enterRule(localContext, 28, WhiteboxParser.RULE_test4);
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 122;
             this.match(WhiteboxParser.LOREM);
             this.state = 125;
-            this._errHandler.sync(this);
-            switch ( this._interp.adaptivePredict(this._input, 11, this._ctx) ) {
+            this.errorHandler.sync(this);
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 11, this._ctx) ) {
             case 1:
                 {
                 this.state = 123;
@@ -590,9 +590,9 @@ export class WhiteboxParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -600,13 +600,13 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public rule15(): Rule15Context {
-        let localctx: Rule15Context = new Rule15Context(this._ctx, this.state);
-        this.enterRule(localctx, 30, WhiteboxParser.RULE_rule15);
+        let localContext = new Rule15Context(this._ctx, this.state);
+        this.enterRule(localContext, 30, WhiteboxParser.RULE_rule15);
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 127;
             this.match(WhiteboxParser.IPSUM);
@@ -618,9 +618,9 @@ export class WhiteboxParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -628,13 +628,13 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public rule16(): Rule16Context {
-        let localctx: Rule16Context = new Rule16Context(this._ctx, this.state);
-        this.enterRule(localctx, 32, WhiteboxParser.RULE_rule16);
+        let localContext = new Rule16Context(this._ctx, this.state);
+        this.enterRule(localContext, 32, WhiteboxParser.RULE_rule16);
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 131;
             this.match(WhiteboxParser.IPSUM);
@@ -646,9 +646,9 @@ export class WhiteboxParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -656,19 +656,19 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public test5(): Test5Context {
-        let localctx: Test5Context = new Test5Context(this._ctx, this.state);
-        this.enterRule(localctx, 34, WhiteboxParser.RULE_test5);
+        let localContext = new Test5Context(this._ctx, this.state);
+        this.enterRule(localContext, 34, WhiteboxParser.RULE_test5);
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 135;
             this.match(WhiteboxParser.LOREM);
             this.state = 138;
-            this._errHandler.sync(this);
-            switch ( this._interp.adaptivePredict(this._input, 12, this._ctx) ) {
+            this.errorHandler.sync(this);
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 12, this._ctx) ) {
             case 1:
                 {
                 this.state = 136;
@@ -686,9 +686,9 @@ export class WhiteboxParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -696,35 +696,35 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public rule18(): Rule18Context {
-        let localctx: Rule18Context = new Rule18Context(this._ctx, this.state);
-        this.enterRule(localctx, 36, WhiteboxParser.RULE_rule18);
+        let localContext = new Rule18Context(this._ctx, this.state);
+        this.enterRule(localContext, 36, WhiteboxParser.RULE_rule18);
         let _la: number;
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 140;
             this.match(WhiteboxParser.IPSUM);
             this.state = 141;
             this.match(WhiteboxParser.DOLOR);
             this.state = 142;
-            _la = this._input.LA(1);
-            if(!(_la===4 || _la===6)) {
-            this._errHandler.recoverInline(this);
+            _la = this.tokenStream.LA(1);
+            if(!(_la === 4 || _la === 6)) {
+            this.errorHandler.recoverInline(this);
             }
             else {
-                this._errHandler.reportMatch(this);
+                this.errorHandler.reportMatch(this);
                 this.consume();
             }
             }
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -732,13 +732,13 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public rule19(): Rule19Context {
-        let localctx: Rule19Context = new Rule19Context(this._ctx, this.state);
-        this.enterRule(localctx, 38, WhiteboxParser.RULE_rule19);
+        let localContext = new Rule19Context(this._ctx, this.state);
+        this.enterRule(localContext, 38, WhiteboxParser.RULE_rule19);
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 144;
             this.match(WhiteboxParser.IPSUM);
@@ -750,9 +750,9 @@ export class WhiteboxParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -760,19 +760,19 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public test6(): Test6Context {
-        let localctx: Test6Context = new Test6Context(this._ctx, this.state);
-        this.enterRule(localctx, 40, WhiteboxParser.RULE_test6);
+        let localContext = new Test6Context(this._ctx, this.state);
+        this.enterRule(localContext, 40, WhiteboxParser.RULE_test6);
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 148;
             this.match(WhiteboxParser.LOREM);
             this.state = 151;
-            this._errHandler.sync(this);
-            switch ( this._interp.adaptivePredict(this._input, 13, this._ctx) ) {
+            this.errorHandler.sync(this);
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 13, this._ctx) ) {
             case 1:
                 {
                 this.state = 149;
@@ -790,9 +790,9 @@ export class WhiteboxParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -800,13 +800,13 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public rule21(): Rule21Context {
-        let localctx: Rule21Context = new Rule21Context(this._ctx, this.state);
-        this.enterRule(localctx, 42, WhiteboxParser.RULE_rule21);
+        let localContext = new Rule21Context(this._ctx, this.state);
+        this.enterRule(localContext, 42, WhiteboxParser.RULE_rule21);
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 153;
             this.match(WhiteboxParser.IPSUM);
@@ -818,9 +818,9 @@ export class WhiteboxParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -828,35 +828,35 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public rule22(): Rule22Context {
-        let localctx: Rule22Context = new Rule22Context(this._ctx, this.state);
-        this.enterRule(localctx, 44, WhiteboxParser.RULE_rule22);
+        let localContext = new Rule22Context(this._ctx, this.state);
+        this.enterRule(localContext, 44, WhiteboxParser.RULE_rule22);
         let _la: number;
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 157;
             this.match(WhiteboxParser.IPSUM);
             this.state = 158;
             this.match(WhiteboxParser.DOLOR);
             this.state = 159;
-            _la = this._input.LA(1);
-            if(!(_la===5 || _la===6)) {
-            this._errHandler.recoverInline(this);
+            _la = this.tokenStream.LA(1);
+            if(!(_la === 5 || _la === 6)) {
+            this.errorHandler.recoverInline(this);
             }
             else {
-                this._errHandler.reportMatch(this);
+                this.errorHandler.reportMatch(this);
                 this.consume();
             }
             }
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -864,19 +864,19 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public test7(): Test7Context {
-        let localctx: Test7Context = new Test7Context(this._ctx, this.state);
-        this.enterRule(localctx, 46, WhiteboxParser.RULE_test7);
+        let localContext = new Test7Context(this._ctx, this.state);
+        this.enterRule(localContext, 46, WhiteboxParser.RULE_test7);
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 161;
             this.match(WhiteboxParser.LOREM);
             this.state = 168;
-            this._errHandler.sync(this);
-            switch ( this._interp.adaptivePredict(this._input, 14, this._ctx) ) {
+            this.errorHandler.sync(this);
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 14, this._ctx) ) {
             case 1:
                 {
                 this.state = 162;
@@ -902,9 +902,9 @@ export class WhiteboxParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -912,19 +912,19 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public test8(): Test8Context {
-        let localctx: Test8Context = new Test8Context(this._ctx, this.state);
-        this.enterRule(localctx, 48, WhiteboxParser.RULE_test8);
+        let localContext = new Test8Context(this._ctx, this.state);
+        this.enterRule(localContext, 48, WhiteboxParser.RULE_test8);
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 170;
             this.match(WhiteboxParser.LOREM);
             this.state = 179;
-            this._errHandler.sync(this);
-            switch ( this._interp.adaptivePredict(this._input, 15, this._ctx) ) {
+            this.errorHandler.sync(this);
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 15, this._ctx) ) {
             case 1:
                 {
                 this.state = 171;
@@ -954,9 +954,9 @@ export class WhiteboxParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -964,7 +964,7 @@ export class WhiteboxParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
 
     public static readonly _serializedATN: number[] = [
@@ -1052,9 +1052,9 @@ export class Test1Context extends antlr.ParserRuleContext {
         super(parent, invokingState);
     }
     public rule1(): Rule1Context {
-        return this.getTypedRuleContext(Rule1Context, 0);
+        return this.getRuleContext(0, Rule1Context)!;
     }
-    public ADIPISCING(): antlr.TerminalNode {
+    public ADIPISCING(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.ADIPISCING, 0);
     }
     public override get ruleIndex(): number {
@@ -1068,9 +1068,9 @@ export class Rule1Context extends antlr.ParserRuleContext {
         super(parent, invokingState);
     }
     public rule2(): Rule2Context {
-        return this.getTypedRuleContext(Rule2Context, 0);
+        return this.getRuleContext(0, Rule2Context)!;
     }
-    public CONSECTETUR(): antlr.TerminalNode {
+    public CONSECTETUR(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.CONSECTETUR, 0);
     }
     public override get ruleIndex(): number {
@@ -1083,22 +1083,25 @@ export class Rule2Context extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public LOREM(): antlr.TerminalNode {
+    public LOREM(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.LOREM, 0);
     }
     public rule3(): Rule3Context {
-        return this.getTypedRuleContext(Rule3Context, 0);
+        return this.getRuleContext(0, Rule3Context)!;
     }
     public rule5(): Rule5Context {
-        return this.getTypedRuleContext(Rule5Context, 0);
+        return this.getRuleContext(0, Rule5Context)!;
     }
-    public SIT__list(): antlr.TerminalNode[] {
-            return this.getTokens(WhiteboxParser.SIT);
+    public SIT(): antlr.TerminalNode[];
+    public SIT(i: number): antlr.TerminalNode | null;
+    public SIT(i?: number): antlr.TerminalNode | null | antlr.TerminalNode[] {
+    	if (i === undefined) {
+    		return this.getTokens(WhiteboxParser.SIT);
+    	} else {
+    		return this.getToken(WhiteboxParser.SIT, i);
+    	}
     }
-    public SIT(i: number): antlr.TerminalNode {
-        return this.getToken(WhiteboxParser.SIT, i);
-    }
-    public AMET(): antlr.TerminalNode {
+    public AMET(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.AMET, 0);
     }
     public override get ruleIndex(): number {
@@ -1112,9 +1115,9 @@ export class Rule3Context extends antlr.ParserRuleContext {
         super(parent, invokingState);
     }
     public rule4(): Rule4Context {
-        return this.getTypedRuleContext(Rule4Context, 0);
+        return this.getRuleContext(0, Rule4Context)!;
     }
-    public DOLOR(): antlr.TerminalNode {
+    public DOLOR(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.DOLOR, 0);
     }
     public override get ruleIndex(): number {
@@ -1127,7 +1130,7 @@ export class Rule4Context extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public IPSUM(): antlr.TerminalNode {
+    public IPSUM(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.IPSUM, 0);
     }
     public override get ruleIndex(): number {
@@ -1151,9 +1154,9 @@ export class Test2Context extends antlr.ParserRuleContext {
         super(parent, invokingState);
     }
     public rule7(): Rule7Context {
-        return this.getTypedRuleContext(Rule7Context, 0);
+        return this.getRuleContext(0, Rule7Context)!;
     }
-    public ADIPISCING(): antlr.TerminalNode {
+    public ADIPISCING(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.ADIPISCING, 0);
     }
     public override get ruleIndex(): number {
@@ -1167,9 +1170,9 @@ export class Rule7Context extends antlr.ParserRuleContext {
         super(parent, invokingState);
     }
     public rule8(): Rule8Context {
-        return this.getTypedRuleContext(Rule8Context, 0);
+        return this.getRuleContext(0, Rule8Context)!;
     }
-    public CONSECTETUR(): antlr.TerminalNode {
+    public CONSECTETUR(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.CONSECTETUR, 0);
     }
     public override get ruleIndex(): number {
@@ -1182,22 +1185,25 @@ export class Rule8Context extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public LOREM(): antlr.TerminalNode {
+    public LOREM(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.LOREM, 0);
     }
     public rule11(): Rule11Context {
-        return this.getTypedRuleContext(Rule11Context, 0);
+        return this.getRuleContext(0, Rule11Context)!;
     }
     public rule9(): Rule9Context {
-        return this.getTypedRuleContext(Rule9Context, 0);
+        return this.getRuleContext(0, Rule9Context)!;
     }
-    public SIT__list(): antlr.TerminalNode[] {
-            return this.getTokens(WhiteboxParser.SIT);
+    public SIT(): antlr.TerminalNode[];
+    public SIT(i: number): antlr.TerminalNode | null;
+    public SIT(i?: number): antlr.TerminalNode | null | antlr.TerminalNode[] {
+    	if (i === undefined) {
+    		return this.getTokens(WhiteboxParser.SIT);
+    	} else {
+    		return this.getToken(WhiteboxParser.SIT, i);
+    	}
     }
-    public SIT(i: number): antlr.TerminalNode {
-        return this.getToken(WhiteboxParser.SIT, i);
-    }
-    public AMET(): antlr.TerminalNode {
+    public AMET(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.AMET, 0);
     }
     public override get ruleIndex(): number {
@@ -1211,9 +1217,9 @@ export class Rule9Context extends antlr.ParserRuleContext {
         super(parent, invokingState);
     }
     public rule10(): Rule10Context {
-        return this.getTypedRuleContext(Rule10Context, 0);
+        return this.getRuleContext(0, Rule10Context)!;
     }
-    public DOLOR(): antlr.TerminalNode {
+    public DOLOR(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.DOLOR, 0);
     }
     public override get ruleIndex(): number {
@@ -1226,7 +1232,7 @@ export class Rule10Context extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public IPSUM(): antlr.TerminalNode {
+    public IPSUM(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.IPSUM, 0);
     }
     public override get ruleIndex(): number {
@@ -1249,23 +1255,26 @@ export class Test3Context extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public LOREM(): antlr.TerminalNode {
+    public LOREM(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.LOREM, 0);
     }
     public rule13(): Rule13Context {
-        return this.getTypedRuleContext(Rule13Context, 0);
+        return this.getRuleContext(0, Rule13Context)!;
     }
-    public CONSECTETUR(): antlr.TerminalNode {
+    public CONSECTETUR(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.CONSECTETUR, 0);
     }
-    public IPSUM(): antlr.TerminalNode {
+    public IPSUM(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.IPSUM, 0);
     }
-    public AMET__list(): antlr.TerminalNode[] {
-            return this.getTokens(WhiteboxParser.AMET);
-    }
-    public AMET(i: number): antlr.TerminalNode {
-        return this.getToken(WhiteboxParser.AMET, i);
+    public AMET(): antlr.TerminalNode[];
+    public AMET(i: number): antlr.TerminalNode | null;
+    public AMET(i?: number): antlr.TerminalNode | null | antlr.TerminalNode[] {
+    	if (i === undefined) {
+    		return this.getTokens(WhiteboxParser.AMET);
+    	} else {
+    		return this.getToken(WhiteboxParser.AMET, i);
+    	}
     }
     public override get ruleIndex(): number {
         return WhiteboxParser.RULE_test3;
@@ -1277,17 +1286,23 @@ export class Rule13Context extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public DOLOR__list(): antlr.TerminalNode[] {
-            return this.getTokens(WhiteboxParser.DOLOR);
+    public DOLOR(): antlr.TerminalNode[];
+    public DOLOR(i: number): antlr.TerminalNode | null;
+    public DOLOR(i?: number): antlr.TerminalNode | null | antlr.TerminalNode[] {
+    	if (i === undefined) {
+    		return this.getTokens(WhiteboxParser.DOLOR);
+    	} else {
+    		return this.getToken(WhiteboxParser.DOLOR, i);
+    	}
     }
-    public DOLOR(i: number): antlr.TerminalNode {
-        return this.getToken(WhiteboxParser.DOLOR, i);
-    }
-    public SIT__list(): antlr.TerminalNode[] {
-            return this.getTokens(WhiteboxParser.SIT);
-    }
-    public SIT(i: number): antlr.TerminalNode {
-        return this.getToken(WhiteboxParser.SIT, i);
+    public SIT(): antlr.TerminalNode[];
+    public SIT(i: number): antlr.TerminalNode | null;
+    public SIT(i?: number): antlr.TerminalNode | null | antlr.TerminalNode[] {
+    	if (i === undefined) {
+    		return this.getTokens(WhiteboxParser.SIT);
+    	} else {
+    		return this.getToken(WhiteboxParser.SIT, i);
+    	}
     }
     public override get ruleIndex(): number {
         return WhiteboxParser.RULE_rule13;
@@ -1299,14 +1314,14 @@ export class Test4Context extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public LOREM(): antlr.TerminalNode {
+    public LOREM(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.LOREM, 0);
     }
-    public rule15(): Rule15Context {
-        return this.getTypedRuleContext(Rule15Context, 0);
+    public rule15(): Rule15Context | null {
+        return this.getRuleContext(0, Rule15Context);
     }
-    public rule16(): Rule16Context {
-        return this.getTypedRuleContext(Rule16Context, 0);
+    public rule16(): Rule16Context | null {
+        return this.getRuleContext(0, Rule16Context);
     }
     public override get ruleIndex(): number {
         return WhiteboxParser.RULE_test4;
@@ -1318,13 +1333,13 @@ export class Rule15Context extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public IPSUM(): antlr.TerminalNode {
+    public IPSUM(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.IPSUM, 0);
     }
-    public DOLOR(): antlr.TerminalNode {
+    public DOLOR(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.DOLOR, 0);
     }
-    public SIT(): antlr.TerminalNode {
+    public SIT(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.SIT, 0);
     }
     public override get ruleIndex(): number {
@@ -1337,13 +1352,13 @@ export class Rule16Context extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public IPSUM(): antlr.TerminalNode {
+    public IPSUM(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.IPSUM, 0);
     }
-    public DOLOR(): antlr.TerminalNode {
+    public DOLOR(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.DOLOR, 0);
     }
-    public AMET(): antlr.TerminalNode {
+    public AMET(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.AMET, 0);
     }
     public override get ruleIndex(): number {
@@ -1356,14 +1371,14 @@ export class Test5Context extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public LOREM(): antlr.TerminalNode {
+    public LOREM(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.LOREM, 0);
     }
-    public rule15(): Rule15Context {
-        return this.getTypedRuleContext(Rule15Context, 0);
+    public rule15(): Rule15Context | null {
+        return this.getRuleContext(0, Rule15Context);
     }
-    public rule16(): Rule16Context {
-        return this.getTypedRuleContext(Rule16Context, 0);
+    public rule16(): Rule16Context | null {
+        return this.getRuleContext(0, Rule16Context);
     }
     public override get ruleIndex(): number {
         return WhiteboxParser.RULE_test5;
@@ -1375,16 +1390,16 @@ export class Rule18Context extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public IPSUM(): antlr.TerminalNode {
+    public IPSUM(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.IPSUM, 0);
     }
-    public DOLOR(): antlr.TerminalNode {
+    public DOLOR(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.DOLOR, 0);
     }
-    public SIT(): antlr.TerminalNode {
+    public SIT(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.SIT, 0);
     }
-    public CONSECTETUR(): antlr.TerminalNode {
+    public CONSECTETUR(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.CONSECTETUR, 0);
     }
     public override get ruleIndex(): number {
@@ -1397,13 +1412,13 @@ export class Rule19Context extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public IPSUM(): antlr.TerminalNode {
+    public IPSUM(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.IPSUM, 0);
     }
-    public DOLOR(): antlr.TerminalNode {
+    public DOLOR(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.DOLOR, 0);
     }
-    public AMET(): antlr.TerminalNode {
+    public AMET(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.AMET, 0);
     }
     public override get ruleIndex(): number {
@@ -1416,14 +1431,14 @@ export class Test6Context extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public LOREM(): antlr.TerminalNode {
+    public LOREM(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.LOREM, 0);
     }
-    public rule15(): Rule15Context {
-        return this.getTypedRuleContext(Rule15Context, 0);
+    public rule15(): Rule15Context | null {
+        return this.getRuleContext(0, Rule15Context);
     }
-    public rule16(): Rule16Context {
-        return this.getTypedRuleContext(Rule16Context, 0);
+    public rule16(): Rule16Context | null {
+        return this.getRuleContext(0, Rule16Context);
     }
     public override get ruleIndex(): number {
         return WhiteboxParser.RULE_test6;
@@ -1435,13 +1450,13 @@ export class Rule21Context extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public IPSUM(): antlr.TerminalNode {
+    public IPSUM(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.IPSUM, 0);
     }
-    public DOLOR(): antlr.TerminalNode {
+    public DOLOR(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.DOLOR, 0);
     }
-    public SIT(): antlr.TerminalNode {
+    public SIT(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.SIT, 0);
     }
     public override get ruleIndex(): number {
@@ -1454,16 +1469,16 @@ export class Rule22Context extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public IPSUM(): antlr.TerminalNode {
+    public IPSUM(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.IPSUM, 0);
     }
-    public DOLOR(): antlr.TerminalNode {
+    public DOLOR(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.DOLOR, 0);
     }
-    public AMET(): antlr.TerminalNode {
+    public AMET(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.AMET, 0);
     }
-    public CONSECTETUR(): antlr.TerminalNode {
+    public CONSECTETUR(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.CONSECTETUR, 0);
     }
     public override get ruleIndex(): number {
@@ -1476,19 +1491,19 @@ export class Test7Context extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public LOREM(): antlr.TerminalNode {
+    public LOREM(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.LOREM, 0);
     }
-    public IPSUM(): antlr.TerminalNode {
+    public IPSUM(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.IPSUM, 0);
     }
-    public DOLOR(): antlr.TerminalNode {
+    public DOLOR(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.DOLOR, 0);
     }
-    public SIT(): antlr.TerminalNode {
+    public SIT(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.SIT, 0);
     }
-    public AMET(): antlr.TerminalNode {
+    public AMET(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.AMET, 0);
     }
     public override get ruleIndex(): number {
@@ -1501,22 +1516,22 @@ export class Test8Context extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public LOREM(): antlr.TerminalNode {
+    public LOREM(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.LOREM, 0);
     }
-    public IPSUM(): antlr.TerminalNode {
+    public IPSUM(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.IPSUM, 0);
     }
-    public DOLOR(): antlr.TerminalNode {
+    public DOLOR(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.DOLOR, 0);
     }
-    public SIT(): antlr.TerminalNode {
+    public SIT(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.SIT, 0);
     }
-    public AMET(): antlr.TerminalNode {
+    public AMET(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.AMET, 0);
     }
-    public CONSECTETUR(): antlr.TerminalNode {
+    public CONSECTETUR(): antlr.TerminalNode | null {
         return this.getToken(WhiteboxParser.CONSECTETUR, 0);
     }
     public override get ruleIndex(): number {

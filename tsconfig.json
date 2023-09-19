@@ -15,7 +15,8 @@
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "allowSyntheticDefaultImports": false,
-        "strictNullChecks": true
+        "strictNullChecks": true,
+        "allowJs": true
     },
     "compileOnSave": true,
     "include": [

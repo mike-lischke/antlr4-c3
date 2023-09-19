@@ -42,7 +42,7 @@ export class ExprLexer extends antlr.Lexer {
 
     public constructor(input: antlr.CharStream) {
         super(input);
-        this._interp = new antlr.LexerATNSimulator(this, ExprLexer._ATN, ExprLexer.decisionsToDFA, new antlr.PredictionContextCache());
+        this.interpreter = new antlr.LexerATNSimulator(this, ExprLexer._ATN, ExprLexer.decisionsToDFA, new antlr.PredictionContextCache());
     }
 
     public get grammarFileName(): string { return "Expr.g4"; }

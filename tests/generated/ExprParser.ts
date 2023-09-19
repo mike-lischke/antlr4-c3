@@ -52,25 +52,25 @@ export class ExprParser extends antlr.Parser {
 
     public constructor(input: antlr.TokenStream) {
         super(input);
-        this._interp = new antlr.ParserATNSimulator(this, ExprParser._ATN, ExprParser.decisionsToDFA, new antlr.PredictionContextCache());
+        this.interpreter = new antlr.ParserATNSimulator(this, ExprParser._ATN, ExprParser.decisionsToDFA, new antlr.PredictionContextCache());
     }
     public expression(): ExpressionContext {
-        let localctx: ExpressionContext = new ExpressionContext(this._ctx, this.state);
-        this.enterRule(localctx, 0, ExprParser.RULE_expression);
+        let localContext = new ExpressionContext(this._ctx, this.state);
+        this.enterRule(localContext, 0, ExprParser.RULE_expression);
         try {
             this.state = 14;
-            this._errHandler.sync(this);
-            switch (this._input.LA(1)) {
+            this.errorHandler.sync(this);
+            switch (this.tokenStream.LA(1)) {
             case ExprParser.VAR:
             case ExprParser.LET:
-                this.enterOuterAlt(localctx, 1);
+                this.enterOuterAlt(localContext, 1);
                 {
                 this.state = 12;
                 this.assignment();
                 }
                 break;
             case ExprParser.ID:
-                this.enterOuterAlt(localctx, 2);
+                this.enterOuterAlt(localContext, 2);
                 {
                 this.state = 13;
                 this.simpleExpression(0);
@@ -82,9 +82,9 @@ export class ExprParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -92,22 +92,22 @@ export class ExprParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public assignment(): AssignmentContext {
-        let localctx: AssignmentContext = new AssignmentContext(this._ctx, this.state);
-        this.enterRule(localctx, 2, ExprParser.RULE_assignment);
+        let localContext = new AssignmentContext(this._ctx, this.state);
+        this.enterRule(localContext, 2, ExprParser.RULE_assignment);
         let _la: number;
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 16;
-            _la = this._input.LA(1);
-            if(!(_la===1 || _la===2)) {
-            this._errHandler.recoverInline(this);
+            _la = this.tokenStream.LA(1);
+            if(!(_la === 1 || _la === 2)) {
+            this.errorHandler.recoverInline(this);
             }
             else {
-                this._errHandler.reportMatch(this);
+                this.errorHandler.reportMatch(this);
                 this.consume();
             }
             this.state = 17;
@@ -120,9 +120,9 @@ export class ExprParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -130,7 +130,7 @@ export class ExprParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
 
     public simpleExpression(): SimpleExpressionContext;
@@ -140,20 +140,20 @@ export class ExprParser extends antlr.Parser {
             _p = 0;
         }
 
-        let _parentctx = this._ctx;
-        let _parentState = this.state;
-        let localctx = new SimpleExpressionContext(this._ctx, _parentState);
-        let _prevctx = localctx;
+        let parentContext = this._ctx;
+        let parentState = this.state;
+        let localContext = new SimpleExpressionContext(this._ctx, parentState);
+        let previousContext = localContext;
         let _startState = 4;
-        this.enterRecursionRule(localctx, 4, ExprParser.RULE_simpleExpression, _p);
+        this.enterRecursionRule(localContext, 4, ExprParser.RULE_simpleExpression, _p);
         let _la: number;
         try {
-            let _alt: number;
-            this.enterOuterAlt(localctx, 1);
+            let alternative: number;
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 24;
-            this._errHandler.sync(this);
-            switch ( this._interp.adaptivePredict(this._input, 1, this._ctx) ) {
+            this.errorHandler.sync(this);
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 1, this._ctx) ) {
             case 1:
                 {
                 this.state = 22;
@@ -167,35 +167,35 @@ export class ExprParser extends antlr.Parser {
                 }
                 break;
             }
-            this._ctx.stop = this._input.LT(-1);
+            this._ctx.stop = this.tokenStream.LT(-1);
             this.state = 34;
-            this._errHandler.sync(this);
-            _alt = this._interp.adaptivePredict(this._input, 3, this._ctx);
-            while (_alt !== 2 && _alt !== antlr.ATN.INVALID_ALT_NUMBER) {
-                if (_alt === 1) {
+            this.errorHandler.sync(this);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 3, this._ctx);
+            while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
+                if (alternative === 1) {
                     if (this._parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
-                    _prevctx = localctx;
+                    previousContext = localContext;
                     {
                     this.state = 32;
-                    this._errHandler.sync(this);
-                    switch ( this._interp.adaptivePredict(this._input, 2, this._ctx) ) {
+                    this.errorHandler.sync(this);
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 2, this._ctx) ) {
                     case 1:
                         {
-                        localctx = new SimpleExpressionContext(_parentctx, _parentState);
-                        this.pushNewRecursionContext(localctx, _startState, ExprParser.RULE_simpleExpression);
+                        localContext = new SimpleExpressionContext(parentContext, parentState);
+                        this.pushNewRecursionContext(localContext, _startState, ExprParser.RULE_simpleExpression);
                         this.state = 26;
                         if (!(this.precpred(this._ctx, 4))) {
                             throw this.createFailedPredicateException("this.precpred(this._ctx, 4)");
                         }
                         this.state = 27;
-                        _la = this._input.LA(1);
-                        if(!(_la===3 || _la===4)) {
-                        this._errHandler.recoverInline(this);
+                        _la = this.tokenStream.LA(1);
+                        if(!(_la === 3 || _la === 4)) {
+                        this.errorHandler.recoverInline(this);
                         }
                         else {
-                            this._errHandler.reportMatch(this);
+                            this.errorHandler.reportMatch(this);
                             this.consume();
                         }
                         this.state = 28;
@@ -204,19 +204,19 @@ export class ExprParser extends antlr.Parser {
                         break;
                     case 2:
                         {
-                        localctx = new SimpleExpressionContext(_parentctx, _parentState);
-                        this.pushNewRecursionContext(localctx, _startState, ExprParser.RULE_simpleExpression);
+                        localContext = new SimpleExpressionContext(parentContext, parentState);
+                        this.pushNewRecursionContext(localContext, _startState, ExprParser.RULE_simpleExpression);
                         this.state = 29;
                         if (!(this.precpred(this._ctx, 3))) {
                             throw this.createFailedPredicateException("this.precpred(this._ctx, 3)");
                         }
                         this.state = 30;
-                        _la = this._input.LA(1);
-                        if(!(_la===5 || _la===6)) {
-                        this._errHandler.recoverInline(this);
+                        _la = this.tokenStream.LA(1);
+                        if(!(_la === 5 || _la === 6)) {
+                        this.errorHandler.recoverInline(this);
                         }
                         else {
-                            this._errHandler.reportMatch(this);
+                            this.errorHandler.reportMatch(this);
                             this.consume();
                         }
                         this.state = 31;
@@ -227,30 +227,30 @@ export class ExprParser extends antlr.Parser {
                     }
                 }
                 this.state = 36;
-                this._errHandler.sync(this);
-                _alt = this._interp.adaptivePredict(this._input, 3, this._ctx);
+                this.errorHandler.sync(this);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 3, this._ctx);
             }
             }
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
         }
         finally {
-            this.unrollRecursionContexts(_parentctx);
+            this.unrollRecursionContexts(parentContext);
         }
-        return localctx;
+        return localContext;
     }
     public variableRef(): VariableRefContext {
-        let localctx: VariableRefContext = new VariableRefContext(this._ctx, this.state);
-        this.enterRule(localctx, 6, ExprParser.RULE_variableRef);
+        let localContext = new VariableRefContext(this._ctx, this.state);
+        this.enterRule(localContext, 6, ExprParser.RULE_variableRef);
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 37;
             this.identifier();
@@ -258,9 +258,9 @@ export class ExprParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -268,13 +268,13 @@ export class ExprParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public functionRef(): FunctionRefContext {
-        let localctx: FunctionRefContext = new FunctionRefContext(this._ctx, this.state);
-        this.enterRule(localctx, 8, ExprParser.RULE_functionRef);
+        let localContext = new FunctionRefContext(this._ctx, this.state);
+        this.enterRule(localContext, 8, ExprParser.RULE_functionRef);
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 39;
             this.identifier();
@@ -286,9 +286,9 @@ export class ExprParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -296,13 +296,13 @@ export class ExprParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
     public identifier(): IdentifierContext {
-        let localctx: IdentifierContext = new IdentifierContext(this._ctx, this.state);
-        this.enterRule(localctx, 10, ExprParser.RULE_identifier);
+        let localContext = new IdentifierContext(this._ctx, this.state);
+        this.enterRule(localContext, 10, ExprParser.RULE_identifier);
         try {
-            this.enterOuterAlt(localctx, 1);
+            this.enterOuterAlt(localContext, 1);
             {
             this.state = 43;
             this.match(ExprParser.ID);
@@ -310,9 +310,9 @@ export class ExprParser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localctx.exception = re;
-                this._errHandler.reportError(this, re);
-                this._errHandler.recover(this, re);
+                localContext.exception = re;
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
             } else {
                 throw re;
             }
@@ -320,17 +320,17 @@ export class ExprParser extends antlr.Parser {
         finally {
             this.exitRule();
         }
-        return localctx;
+        return localContext;
     }
 
-    public override sempred(localctx: antlr.RuleContext, ruleIndex: number, predIndex: number): boolean {
+    public override sempred(localContext: antlr.RuleContext, ruleIndex: number, predIndex: number): boolean {
         switch (ruleIndex) {
         case 2:
-            return this.simpleExpression_sempred(localctx as SimpleExpressionContext, predIndex);
+            return this.simpleExpression_sempred(localContext as SimpleExpressionContext, predIndex);
         }
         return true;
     }
-    private simpleExpression_sempred(localctx: SimpleExpressionContext, predIndex: number): boolean {
+    private simpleExpression_sempred(localContext: SimpleExpressionContext, predIndex: number): boolean {
         switch (predIndex) {
         case 0:
             return this.precpred(this._ctx, 4);
@@ -380,11 +380,11 @@ export class ExpressionContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public assignment(): AssignmentContext {
-        return this.getTypedRuleContext(AssignmentContext, 0);
+    public assignment(): AssignmentContext | null {
+        return this.getRuleContext(0, AssignmentContext);
     }
-    public simpleExpression(): SimpleExpressionContext {
-        return this.getTypedRuleContext(SimpleExpressionContext, 0);
+    public simpleExpression(): SimpleExpressionContext | null {
+        return this.getRuleContext(0, SimpleExpressionContext);
     }
     public override get ruleIndex(): number {
         return ExprParser.RULE_expression;
@@ -396,19 +396,19 @@ export class AssignmentContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public ID(): antlr.TerminalNode {
+    public ID(): antlr.TerminalNode | null {
         return this.getToken(ExprParser.ID, 0);
     }
-    public EQUAL(): antlr.TerminalNode {
+    public EQUAL(): antlr.TerminalNode | null {
         return this.getToken(ExprParser.EQUAL, 0);
     }
     public simpleExpression(): SimpleExpressionContext {
-        return this.getTypedRuleContext(SimpleExpressionContext, 0);
+        return this.getRuleContext(0, SimpleExpressionContext)!;
     }
-    public VAR(): antlr.TerminalNode {
+    public VAR(): antlr.TerminalNode | null {
         return this.getToken(ExprParser.VAR, 0);
     }
-    public LET(): antlr.TerminalNode {
+    public LET(): antlr.TerminalNode | null {
         return this.getToken(ExprParser.LET, 0);
     }
     public override get ruleIndex(): number {
@@ -421,28 +421,31 @@ export class SimpleExpressionContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public variableRef(): VariableRefContext {
-        return this.getTypedRuleContext(VariableRefContext, 0);
+    public variableRef(): VariableRefContext | null {
+        return this.getRuleContext(0, VariableRefContext);
     }
-    public functionRef(): FunctionRefContext {
-        return this.getTypedRuleContext(FunctionRefContext, 0);
+    public functionRef(): FunctionRefContext | null {
+        return this.getRuleContext(0, FunctionRefContext);
     }
-    public simpleExpression__list(): SimpleExpressionContext[] {
-        return this.getTypedRuleContexts(SimpleExpressionContext);
+    public simpleExpression(): SimpleExpressionContext[];
+    public simpleExpression(i: number): SimpleExpressionContext | null;
+    public simpleExpression(i?: number): SimpleExpressionContext[] | SimpleExpressionContext | null {
+        if (i === undefined) {
+            return this.getRuleContexts(SimpleExpressionContext);
+        }
+
+        return this.getRuleContext(i, SimpleExpressionContext);
     }
-    public simpleExpression(i: number): SimpleExpressionContext {
-        return this.getTypedRuleContext(SimpleExpressionContext, i);
-    }
-    public PLUS(): antlr.TerminalNode {
+    public PLUS(): antlr.TerminalNode | null {
         return this.getToken(ExprParser.PLUS, 0);
     }
-    public MINUS(): antlr.TerminalNode {
+    public MINUS(): antlr.TerminalNode | null {
         return this.getToken(ExprParser.MINUS, 0);
     }
-    public MULTIPLY(): antlr.TerminalNode {
+    public MULTIPLY(): antlr.TerminalNode | null {
         return this.getToken(ExprParser.MULTIPLY, 0);
     }
-    public DIVIDE(): antlr.TerminalNode {
+    public DIVIDE(): antlr.TerminalNode | null {
         return this.getToken(ExprParser.DIVIDE, 0);
     }
     public override get ruleIndex(): number {
@@ -456,7 +459,7 @@ export class VariableRefContext extends antlr.ParserRuleContext {
         super(parent, invokingState);
     }
     public identifier(): IdentifierContext {
-        return this.getTypedRuleContext(IdentifierContext, 0);
+        return this.getRuleContext(0, IdentifierContext)!;
     }
     public override get ruleIndex(): number {
         return ExprParser.RULE_variableRef;
@@ -469,12 +472,12 @@ export class FunctionRefContext extends antlr.ParserRuleContext {
         super(parent, invokingState);
     }
     public identifier(): IdentifierContext {
-        return this.getTypedRuleContext(IdentifierContext, 0);
+        return this.getRuleContext(0, IdentifierContext)!;
     }
-    public OPEN_PAR(): antlr.TerminalNode {
+    public OPEN_PAR(): antlr.TerminalNode | null {
         return this.getToken(ExprParser.OPEN_PAR, 0);
     }
-    public CLOSE_PAR(): antlr.TerminalNode {
+    public CLOSE_PAR(): antlr.TerminalNode | null {
         return this.getToken(ExprParser.CLOSE_PAR, 0);
     }
     public override get ruleIndex(): number {
@@ -487,7 +490,7 @@ export class IdentifierContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public ID(): antlr.TerminalNode {
+    public ID(): antlr.TerminalNode | null {
         return this.getToken(ExprParser.ID, 0);
     }
     public override get ruleIndex(): number {

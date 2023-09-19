@@ -242,7 +242,7 @@ export class CPP14Lexer extends antlr.Lexer {
 
     public constructor(input: antlr.CharStream) {
         super(input);
-        this._interp = new antlr.LexerATNSimulator(this, CPP14Lexer._ATN, CPP14Lexer.decisionsToDFA, new antlr.PredictionContextCache());
+        this.interpreter = new antlr.LexerATNSimulator(this, CPP14Lexer._ATN, CPP14Lexer.decisionsToDFA, new antlr.PredictionContextCache());
     }
 
     public get grammarFileName(): string { return "CPP14.g4"; }

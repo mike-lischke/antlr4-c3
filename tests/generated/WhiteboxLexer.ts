@@ -40,7 +40,7 @@ export class WhiteboxLexer extends antlr.Lexer {
 
     public constructor(input: antlr.CharStream) {
         super(input);
-        this._interp = new antlr.LexerATNSimulator(this, WhiteboxLexer._ATN, WhiteboxLexer.decisionsToDFA, new antlr.PredictionContextCache());
+        this.interpreter = new antlr.LexerATNSimulator(this, WhiteboxLexer._ATN, WhiteboxLexer.decisionsToDFA, new antlr.PredictionContextCache());
     }
 
     public get grammarFileName(): string { return "Whitebox.g4"; }
