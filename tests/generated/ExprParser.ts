@@ -369,7 +369,7 @@ export class ExprParser extends antlr.Parser {
 
     private static readonly vocabulary = new antlr.Vocabulary(ExprParser.literalNames, ExprParser.symbolicNames, []);
 
-    public override getVocabulary(): antlr.Vocabulary {
+    public override get vocabulary(): antlr.Vocabulary {
         return ExprParser.vocabulary;
     }
 

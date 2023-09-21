@@ -92,7 +92,7 @@ export class WhiteboxLexer extends antlr.Lexer {
 
     private static readonly vocabulary = new antlr.Vocabulary(WhiteboxLexer.literalNames, WhiteboxLexer.symbolicNames, []);
 
-    public override getVocabulary(): antlr.Vocabulary {
+    public override get vocabulary(): antlr.Vocabulary {
         return WhiteboxLexer.vocabulary;
     }
 

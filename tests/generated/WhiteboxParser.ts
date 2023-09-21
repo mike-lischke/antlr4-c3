@@ -1040,7 +1040,7 @@ export class WhiteboxParser extends antlr.Parser {
 
     private static readonly vocabulary = new antlr.Vocabulary(WhiteboxParser.literalNames, WhiteboxParser.symbolicNames, []);
 
-    public override getVocabulary(): antlr.Vocabulary {
+    public override get vocabulary(): antlr.Vocabulary {
         return WhiteboxParser.vocabulary;
     }
 

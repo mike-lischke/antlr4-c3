@@ -828,7 +828,7 @@ export class CPP14Lexer extends antlr.Lexer {
 
     private static readonly vocabulary = new antlr.Vocabulary(CPP14Lexer.literalNames, CPP14Lexer.symbolicNames, []);
 
-    public override getVocabulary(): antlr.Vocabulary {
+    public override get vocabulary(): antlr.Vocabulary {
         return CPP14Lexer.vocabulary;
     }
 

@@ -13780,7 +13780,7 @@ export class CPP14Parser extends antlr.Parser {
 
     private static readonly vocabulary = new antlr.Vocabulary(CPP14Parser.literalNames, CPP14Parser.symbolicNames, []);
 
-    public override getVocabulary(): antlr.Vocabulary {
+    public override get vocabulary(): antlr.Vocabulary {
         return CPP14Parser.vocabulary;
     }
 

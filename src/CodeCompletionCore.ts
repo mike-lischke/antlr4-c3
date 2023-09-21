@@ -148,7 +148,7 @@ export class CodeCompletionCore {
     public constructor(parser: Parser) {
         this.parser = parser;
         this.atn = parser.atn;
-        this.vocabulary = parser.getVocabulary();
+        this.vocabulary = parser.vocabulary;
         this.ruleNames = parser.ruleNames;
         this.ignoredTokens = new Set();
         this.preferredRules = new Set();

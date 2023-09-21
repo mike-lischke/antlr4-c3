@@ -92,7 +92,7 @@ export class ExprLexer extends antlr.Lexer {
 
     private static readonly vocabulary = new antlr.Vocabulary(ExprLexer.literalNames, ExprLexer.symbolicNames, []);
 
-    public override getVocabulary(): antlr.Vocabulary {
+    public override get vocabulary(): antlr.Vocabulary {
         return ExprLexer.vocabulary;
     }
 
