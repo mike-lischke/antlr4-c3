@@ -4,6 +4,8 @@
         "module": "NodeNext",
         "target": "ES2022",
         "moduleResolution": "Node16",
+        "noEmit": false,
+        "emitDeclarationOnly": true,
         "outDir": "lib",
         "rootDir": ".",
         "removeComments": false,
@@ -16,7 +18,6 @@
         "forceConsistentCasingInFileNames": true,
         "allowSyntheticDefaultImports": false,
         "strictNullChecks": true,
-        "allowJs": true
     },
     "compileOnSave": true,
     "include": [

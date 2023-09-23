@@ -3,8 +3,6 @@
 [![Weekly Downloads](https://img.shields.io/npm/dw/antlr4-c3?style=for-the-badge&color=blue)](https://www.npmjs.com/package/antlr4-c3)
 [![npm version](https://img.shields.io/npm/v/antlr4-c3?style=for-the-badge&color=yellow)](https://www.npmjs.com/package/antlr4-c3)
 
-
-
 # antlr4-c3 The ANTLR4 Code Completion Core
 
 This project contains a grammar agnostic code completion engine for ANTLR4 based parsers. The c3 engine is able to provide code completion candidates useful for editors with ANTLR generated parsers, independent of the actual language/grammar used for the generation.
@@ -223,7 +221,11 @@ The last two options potentially create a lot of output which can significantly 
 
 ## Release Notes
 
-### 3.2.4
+### 3.3.0
+
+Now using esbuild for building the package.
+
+### 3.2.4 - 3.2.5
 - Updated c3 code.
 - Updated Jest settings to run ESM + TS tests.
 

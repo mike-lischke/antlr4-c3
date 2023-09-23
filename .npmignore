@@ -8,7 +8,7 @@ Thumbs.db
 
 # Ignored files
 src/
-lib/test/
+lib/*.map
 tests/
 ports/
 images/

@@ -33,20 +33,20 @@ export class ClassSymbol extends ScopedSymbol implements IType {
     public get kind(): TypeKind { return TypeKind.Class; }
 
     /**
-     * @param includeInherited Not used.
+     * @param _includeInherited Not used.
      *
      * @returns a list of all methods.
      */
-    public getMethods(includeInherited = false): Promise<MethodSymbol[]> {
+    public getMethods(_includeInherited = false): Promise<MethodSymbol[]> {
         return this.getSymbolsOfType(MethodSymbol);
     }
 
     /**
-     * @param includeInherited Not used.
+     * @param _includeInherited Not used.
      *
      * @returns all fields.
      */
-    public getFields(includeInherited = false): Promise<FieldSymbol[]> {
+    public getFields(_includeInherited = false): Promise<FieldSymbol[]> {
         return this.getSymbolsOfType(FieldSymbol);
     }
 }
