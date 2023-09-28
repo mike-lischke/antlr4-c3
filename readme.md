@@ -230,7 +230,7 @@ Updated dependencies.
 Now using esbuild for building the package.
 
 ### 3.2.4 - 3.2.5
-- Updated c3 code.
+- Last changes for the dependency switch (antlr-ts -> antlr4ng).
 - Updated Jest settings to run ESM + TS tests.
 
 ### 3.2.3
