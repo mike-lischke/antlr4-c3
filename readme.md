@@ -221,6 +221,10 @@ The last two options potentially create a lot of output which can significantly 
 
 ## Release Notes
 
+### 3.3.1
+
+Updated dependencies.
+
 ### 3.3.0
 
 Now using esbuild for building the package.
