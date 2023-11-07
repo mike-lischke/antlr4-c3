@@ -23,11 +23,12 @@ import { ExprLexer } from "./generated/ExprLexer";
 import { ExprParser } from "./generated/ExprParser";
 import { CodeCompletionCore } from "../src/CodeCompletionCore";
 
-export class TestErrorListener extends BaseErrorListener<ATNSimulator> {
+export class TestErrorListener extends BaseErrorListener {
     public errorCount = 0;
 
-    public override syntaxError<T extends Token>(_recognizer: Recognizer<ATNSimulator>, _offendingSymbol: T,
-        _line: number, _charPositionInLine: number, _msg: string, _e: RecognitionException | null): void {
+    public override syntaxError<S extends Token, T extends ATNSimulator>(_recognizer: Recognizer<T>,
+        _offendingSymbol: S | null, _line: number, _column: number, _msg: string,
+        _e: RecognitionException | null): void {
         ++this.errorCount;
     }
 }

@@ -3,7 +3,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { ParseTree } from "antlr4ng";
+import { type ParseTree } from "antlr4ng";
 
 import { type IScopedSymbol } from "./ScopedSymbol.js";
 import { type ISymbolTable } from "./SymbolTable.js";

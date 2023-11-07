@@ -197,7 +197,7 @@ export class CodeCompletionCore {
 
         const callStack: RuleWithStartTokenList = [];
         const startRule = context ? context.ruleIndex : 0;
-        this.processRule(this.atn.ruleToStartState[startRule], 0, callStack, 0, 0);
+        this.processRule(this.atn.ruleToStartState[startRule]!, 0, callStack, 0, 0);
 
         if (this.showResult) {
             console.log(`States processed: ${this.statesProcessed}`);
@@ -504,7 +504,7 @@ export class CodeCompletionCore {
 
         let followSets = setsPerState.get(startState.stateNumber);
         if (!followSets) {
-            const stop = this.atn.ruleToStopState[startState.ruleIndex];
+            const stop = this.atn.ruleToStopState[startState.ruleIndex]!;
             followSets = this.determineFollowSets(startState, stop);
             setsPerState.set(startState.stateNumber, followSets);
         }

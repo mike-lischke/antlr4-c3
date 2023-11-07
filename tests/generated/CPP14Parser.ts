@@ -472,7 +472,7 @@ export class CPP14Parser extends antlr.Parser {
         this.interpreter = new antlr.ParserATNSimulator(this, CPP14Parser._ATN, CPP14Parser.decisionsToDFA, new antlr.PredictionContextCache());
     }
     public translationunit(): TranslationunitContext {
-        let localContext = new TranslationunitContext(this._ctx, this.state);
+        let localContext = new TranslationunitContext(this.context, this.state);
         this.enterRule(localContext, 0, CPP14Parser.RULE_translationunit);
         let _la: number;
         try {
@@ -507,7 +507,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public primaryexpression(): PrimaryexpressionContext {
-        let localContext = new PrimaryexpressionContext(this._ctx, this.state);
+        let localContext = new PrimaryexpressionContext(this.context, this.state);
         this.enterRule(localContext, 2, CPP14Parser.RULE_primaryexpression);
         try {
             this.state = 411;
@@ -585,12 +585,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public idexpression(): IdexpressionContext {
-        let localContext = new IdexpressionContext(this._ctx, this.state);
+        let localContext = new IdexpressionContext(this.context, this.state);
         this.enterRule(localContext, 4, CPP14Parser.RULE_idexpression);
         try {
             this.state = 415;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 2, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 2, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -622,12 +622,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public unqualifiedid(): UnqualifiedidContext {
-        let localContext = new UnqualifiedidContext(this._ctx, this.state);
+        let localContext = new UnqualifiedidContext(this.context, this.state);
         this.enterRule(localContext, 6, CPP14Parser.RULE_unqualifiedid);
         try {
             this.state = 426;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 3, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 3, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -698,7 +698,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public qualifiedid(): QualifiedidContext {
-        let localContext = new QualifiedidContext(this._ctx, this.state);
+        let localContext = new QualifiedidContext(this.context, this.state);
         this.enterRule(localContext, 8, CPP14Parser.RULE_qualifiedid);
         let _la: number;
         try {
@@ -742,9 +742,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new NestednamespecifierContext(this._ctx, parentState);
+        let localContext = new NestednamespecifierContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 10;
         this.enterRecursionRule(localContext, 10, CPP14Parser.RULE_nestednamespecifier, _p);
@@ -755,7 +755,7 @@ export class CPP14Parser extends antlr.Parser {
             {
             this.state = 445;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 5, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 5, this.context) ) {
             case 1:
                 {
                 this.state = 435;
@@ -787,10 +787,10 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 break;
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 459;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 8, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 8, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -800,14 +800,14 @@ export class CPP14Parser extends antlr.Parser {
                     {
                     this.state = 457;
                     this.errorHandler.sync(this);
-                    switch (this.interpreter.adaptivePredict(this.tokenStream, 7, this._ctx) ) {
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 7, this.context) ) {
                     case 1:
                         {
                         localContext = new NestednamespecifierContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_nestednamespecifier);
                         this.state = 447;
-                        if (!(this.precpred(this._ctx, 2))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
+                        if (!(this.precpred(this.context, 2))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 2)");
                         }
                         this.state = 448;
                         this.match(CPP14Parser.Identifier);
@@ -820,8 +820,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new NestednamespecifierContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_nestednamespecifier);
                         this.state = 450;
-                        if (!(this.precpred(this._ctx, 1))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                        if (!(this.precpred(this.context, 1))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                         }
                         this.state = 452;
                         this.errorHandler.sync(this);
@@ -844,7 +844,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 461;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 8, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 8, this.context);
             }
             }
         }
@@ -863,7 +863,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public lambdaexpression(): LambdaexpressionContext {
-        let localContext = new LambdaexpressionContext(this._ctx, this.state);
+        let localContext = new LambdaexpressionContext(this.context, this.state);
         this.enterRule(localContext, 12, CPP14Parser.RULE_lambdaexpression);
         let _la: number;
         try {
@@ -900,7 +900,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public lambdaintroducer(): LambdaintroducerContext {
-        let localContext = new LambdaintroducerContext(this._ctx, this.state);
+        let localContext = new LambdaintroducerContext(this.context, this.state);
         this.enterRule(localContext, 14, CPP14Parser.RULE_lambdaintroducer);
         let _la: number;
         try {
@@ -937,12 +937,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public lambdacapture(): LambdacaptureContext {
-        let localContext = new LambdacaptureContext(this._ctx, this.state);
+        let localContext = new LambdacaptureContext(this.context, this.state);
         this.enterRule(localContext, 16, CPP14Parser.RULE_lambdacapture);
         try {
             this.state = 480;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 11, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 11, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -985,7 +985,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public capturedefault(): CapturedefaultContext {
-        let localContext = new CapturedefaultContext(this._ctx, this.state);
+        let localContext = new CapturedefaultContext(this.context, this.state);
         this.enterRule(localContext, 18, CPP14Parser.RULE_capturedefault);
         let _la: number;
         try {
@@ -1024,9 +1024,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new CapturelistContext(this._ctx, parentState);
+        let localContext = new CapturelistContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 20;
         this.enterRecursionRule(localContext, 20, CPP14Parser.RULE_capturelist, _p);
@@ -1039,7 +1039,7 @@ export class CPP14Parser extends antlr.Parser {
             this.capture();
             this.state = 487;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 12, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 12, this.context) ) {
             case 1:
                 {
                 this.state = 486;
@@ -1048,10 +1048,10 @@ export class CPP14Parser extends antlr.Parser {
                 break;
             }
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 497;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 14, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 14, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -1063,8 +1063,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new CapturelistContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_capturelist);
                     this.state = 489;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 490;
                     this.match(CPP14Parser.Comma);
@@ -1072,7 +1072,7 @@ export class CPP14Parser extends antlr.Parser {
                     this.capture();
                     this.state = 493;
                     this.errorHandler.sync(this);
-                    switch (this.interpreter.adaptivePredict(this.tokenStream, 13, this._ctx) ) {
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 13, this.context) ) {
                     case 1:
                         {
                         this.state = 492;
@@ -1085,7 +1085,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 499;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 14, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 14, this.context);
             }
             }
         }
@@ -1104,12 +1104,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public capture(): CaptureContext {
-        let localContext = new CaptureContext(this._ctx, this.state);
+        let localContext = new CaptureContext(this.context, this.state);
         this.enterRule(localContext, 22, CPP14Parser.RULE_capture);
         try {
             this.state = 502;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 15, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 15, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -1141,7 +1141,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public simplecapture(): SimplecaptureContext {
-        let localContext = new SimplecaptureContext(this._ctx, this.state);
+        let localContext = new SimplecaptureContext(this.context, this.state);
         this.enterRule(localContext, 24, CPP14Parser.RULE_simplecapture);
         try {
             this.state = 508;
@@ -1189,7 +1189,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public initcapture(): InitcaptureContext {
-        let localContext = new InitcaptureContext(this._ctx, this.state);
+        let localContext = new InitcaptureContext(this.context, this.state);
         this.enterRule(localContext, 26, CPP14Parser.RULE_initcapture);
         try {
             this.state = 515;
@@ -1234,7 +1234,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public lambdadeclarator(): LambdadeclaratorContext {
-        let localContext = new LambdadeclaratorContext(this._ctx, this.state);
+        let localContext = new LambdadeclaratorContext(this.context, this.state);
         this.enterRule(localContext, 28, CPP14Parser.RULE_lambdadeclarator);
         let _la: number;
         try {
@@ -1310,9 +1310,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new PostfixexpressionContext(this._ctx, parentState);
+        let localContext = new PostfixexpressionContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 30;
         this.enterRecursionRule(localContext, 30, CPP14Parser.RULE_postfixexpression, _p);
@@ -1323,7 +1323,7 @@ export class CPP14Parser extends antlr.Parser {
             {
             this.state = 596;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 24, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 24, this.context) ) {
             case 1:
                 {
                 this.state = 533;
@@ -1483,10 +1483,10 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 break;
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 638;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 29, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 29, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -1496,14 +1496,14 @@ export class CPP14Parser extends antlr.Parser {
                     {
                     this.state = 636;
                     this.errorHandler.sync(this);
-                    switch (this.interpreter.adaptivePredict(this.tokenStream, 28, this._ctx) ) {
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 28, this.context) ) {
                     case 1:
                         {
                         localContext = new PostfixexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_postfixexpression);
                         this.state = 598;
-                        if (!(this.precpred(this._ctx, 19))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 19)");
+                        if (!(this.precpred(this.context, 19))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 19)");
                         }
                         this.state = 599;
                         this.match(CPP14Parser.LeftBracket);
@@ -1518,8 +1518,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new PostfixexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_postfixexpression);
                         this.state = 603;
-                        if (!(this.precpred(this._ctx, 18))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 18)");
+                        if (!(this.precpred(this.context, 18))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 18)");
                         }
                         this.state = 604;
                         this.match(CPP14Parser.LeftBracket);
@@ -1534,8 +1534,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new PostfixexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_postfixexpression);
                         this.state = 608;
-                        if (!(this.precpred(this._ctx, 17))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 17)");
+                        if (!(this.precpred(this.context, 17))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 17)");
                         }
                         this.state = 609;
                         this.match(CPP14Parser.LeftParen);
@@ -1558,8 +1558,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new PostfixexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_postfixexpression);
                         this.state = 614;
-                        if (!(this.precpred(this._ctx, 12))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 12)");
+                        if (!(this.precpred(this.context, 12))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 12)");
                         }
                         this.state = 615;
                         this.match(CPP14Parser.Dot);
@@ -1582,8 +1582,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new PostfixexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_postfixexpression);
                         this.state = 620;
-                        if (!(this.precpred(this._ctx, 11))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 11)");
+                        if (!(this.precpred(this.context, 11))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 11)");
                         }
                         this.state = 621;
                         this.match(CPP14Parser.Arrow);
@@ -1606,8 +1606,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new PostfixexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_postfixexpression);
                         this.state = 626;
-                        if (!(this.precpred(this._ctx, 10))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 10)");
+                        if (!(this.precpred(this.context, 10))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 10)");
                         }
                         this.state = 627;
                         this.match(CPP14Parser.Dot);
@@ -1620,8 +1620,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new PostfixexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_postfixexpression);
                         this.state = 629;
-                        if (!(this.precpred(this._ctx, 9))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 9)");
+                        if (!(this.precpred(this.context, 9))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 9)");
                         }
                         this.state = 630;
                         this.match(CPP14Parser.Arrow);
@@ -1634,8 +1634,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new PostfixexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_postfixexpression);
                         this.state = 632;
-                        if (!(this.precpred(this._ctx, 8))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 8)");
+                        if (!(this.precpred(this.context, 8))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 8)");
                         }
                         this.state = 633;
                         this.match(CPP14Parser.PlusPlus);
@@ -1646,8 +1646,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new PostfixexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_postfixexpression);
                         this.state = 634;
-                        if (!(this.precpred(this._ctx, 7))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 7)");
+                        if (!(this.precpred(this.context, 7))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 7)");
                         }
                         this.state = 635;
                         this.match(CPP14Parser.MinusMinus);
@@ -1658,7 +1658,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 640;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 29, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 29, this.context);
             }
             }
         }
@@ -1677,7 +1677,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public expressionlist(): ExpressionlistContext {
-        let localContext = new ExpressionlistContext(this._ctx, this.state);
+        let localContext = new ExpressionlistContext(this.context, this.state);
         this.enterRule(localContext, 32, CPP14Parser.RULE_expressionlist);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -1701,19 +1701,19 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public pseudodestructorname(): PseudodestructornameContext {
-        let localContext = new PseudodestructornameContext(this._ctx, this.state);
+        let localContext = new PseudodestructornameContext(this.context, this.state);
         this.enterRule(localContext, 34, CPP14Parser.RULE_pseudodestructorname);
         let _la: number;
         try {
             this.state = 665;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 32, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 32, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
                 this.state = 644;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 30, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 30, this.context) ) {
                 case 1:
                     {
                     this.state = 643;
@@ -1793,12 +1793,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public unaryexpression(): UnaryexpressionContext {
-        let localContext = new UnaryexpressionContext(this._ctx, this.state);
+        let localContext = new UnaryexpressionContext(this.context, this.state);
         this.enterRule(localContext, 36, CPP14Parser.RULE_unaryexpression);
         try {
             this.state = 695;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 33, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 33, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -1921,7 +1921,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public unaryoperator(): UnaryoperatorContext {
-        let localContext = new UnaryoperatorContext(this._ctx, this.state);
+        let localContext = new UnaryoperatorContext(this.context, this.state);
         this.enterRule(localContext, 38, CPP14Parser.RULE_unaryoperator);
         let _la: number;
         try {
@@ -1953,13 +1953,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public newexpression(): NewexpressionContext {
-        let localContext = new NewexpressionContext(this._ctx, this.state);
+        let localContext = new NewexpressionContext(this.context, this.state);
         this.enterRule(localContext, 40, CPP14Parser.RULE_newexpression);
         let _la: number;
         try {
             this.state = 723;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 40, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 40, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -1989,7 +1989,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.newtypeid();
                 this.state = 708;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 36, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 36, this.context) ) {
                 case 1:
                     {
                     this.state = 707;
@@ -2016,7 +2016,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.match(CPP14Parser.New);
                 this.state = 715;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 38, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 38, this.context) ) {
                 case 1:
                     {
                     this.state = 714;
@@ -2032,7 +2032,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.match(CPP14Parser.RightParen);
                 this.state = 721;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 39, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 39, this.context) ) {
                 case 1:
                     {
                     this.state = 720;
@@ -2059,7 +2059,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public newplacement(): NewplacementContext {
-        let localContext = new NewplacementContext(this._ctx, this.state);
+        let localContext = new NewplacementContext(this.context, this.state);
         this.enterRule(localContext, 42, CPP14Parser.RULE_newplacement);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -2087,7 +2087,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public newtypeid(): NewtypeidContext {
-        let localContext = new NewtypeidContext(this._ctx, this.state);
+        let localContext = new NewtypeidContext(this.context, this.state);
         this.enterRule(localContext, 44, CPP14Parser.RULE_newtypeid);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -2096,7 +2096,7 @@ export class CPP14Parser extends antlr.Parser {
             this.typespecifierseq();
             this.state = 731;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 41, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 41, this.context) ) {
             case 1:
                 {
                 this.state = 730;
@@ -2121,7 +2121,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public newdeclarator(): NewdeclaratorContext {
-        let localContext = new NewdeclaratorContext(this._ctx, this.state);
+        let localContext = new NewdeclaratorContext(this.context, this.state);
         this.enterRule(localContext, 46, CPP14Parser.RULE_newdeclarator);
         try {
             this.state = 738;
@@ -2139,7 +2139,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.ptroperator();
                 this.state = 735;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 42, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 42, this.context) ) {
                 case 1:
                     {
                     this.state = 734;
@@ -2182,9 +2182,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new NoptrnewdeclaratorContext(this._ctx, parentState);
+        let localContext = new NoptrnewdeclaratorContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 48;
         this.enterRecursionRule(localContext, 48, CPP14Parser.RULE_noptrnewdeclarator, _p);
@@ -2201,7 +2201,7 @@ export class CPP14Parser extends antlr.Parser {
             this.match(CPP14Parser.RightBracket);
             this.state = 745;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 44, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 44, this.context) ) {
             case 1:
                 {
                 this.state = 744;
@@ -2210,10 +2210,10 @@ export class CPP14Parser extends antlr.Parser {
                 break;
             }
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 756;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 46, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 46, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -2225,8 +2225,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new NoptrnewdeclaratorContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_noptrnewdeclarator);
                     this.state = 747;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 748;
                     this.match(CPP14Parser.LeftBracket);
@@ -2236,7 +2236,7 @@ export class CPP14Parser extends antlr.Parser {
                     this.match(CPP14Parser.RightBracket);
                     this.state = 752;
                     this.errorHandler.sync(this);
-                    switch (this.interpreter.adaptivePredict(this.tokenStream, 45, this._ctx) ) {
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 45, this.context) ) {
                     case 1:
                         {
                         this.state = 751;
@@ -2249,7 +2249,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 758;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 46, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 46, this.context);
             }
             }
         }
@@ -2268,7 +2268,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public newinitializer(): NewinitializerContext {
-        let localContext = new NewinitializerContext(this._ctx, this.state);
+        let localContext = new NewinitializerContext(this.context, this.state);
         this.enterRule(localContext, 50, CPP14Parser.RULE_newinitializer);
         let _la: number;
         try {
@@ -2320,13 +2320,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public deleteexpression(): DeleteexpressionContext {
-        let localContext = new DeleteexpressionContext(this._ctx, this.state);
+        let localContext = new DeleteexpressionContext(this.context, this.state);
         this.enterRule(localContext, 52, CPP14Parser.RULE_deleteexpression);
         let _la: number;
         try {
             this.state = 779;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 51, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 51, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -2386,7 +2386,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public noexceptexpression(): NoexceptexpressionContext {
-        let localContext = new NoexceptexpressionContext(this._ctx, this.state);
+        let localContext = new NoexceptexpressionContext(this.context, this.state);
         this.enterRule(localContext, 54, CPP14Parser.RULE_noexceptexpression);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -2416,12 +2416,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public castexpression(): CastexpressionContext {
-        let localContext = new CastexpressionContext(this._ctx, this.state);
+        let localContext = new CastexpressionContext(this.context, this.state);
         this.enterRule(localContext, 56, CPP14Parser.RULE_castexpression);
         try {
             this.state = 792;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 52, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 52, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -2466,9 +2466,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new PmexpressionContext(this._ctx, parentState);
+        let localContext = new PmexpressionContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 58;
         this.enterRecursionRule(localContext, 58, CPP14Parser.RULE_pmexpression, _p);
@@ -2480,10 +2480,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 795;
             this.castexpression();
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 805;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 54, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 54, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -2493,14 +2493,14 @@ export class CPP14Parser extends antlr.Parser {
                     {
                     this.state = 803;
                     this.errorHandler.sync(this);
-                    switch (this.interpreter.adaptivePredict(this.tokenStream, 53, this._ctx) ) {
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 53, this.context) ) {
                     case 1:
                         {
                         localContext = new PmexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_pmexpression);
                         this.state = 797;
-                        if (!(this.precpred(this._ctx, 2))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
+                        if (!(this.precpred(this.context, 2))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 2)");
                         }
                         this.state = 798;
                         this.match(CPP14Parser.DotStar);
@@ -2513,8 +2513,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new PmexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_pmexpression);
                         this.state = 800;
-                        if (!(this.precpred(this._ctx, 1))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                        if (!(this.precpred(this.context, 1))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                         }
                         this.state = 801;
                         this.match(CPP14Parser.ArrowStar);
@@ -2527,7 +2527,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 807;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 54, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 54, this.context);
             }
             }
         }
@@ -2553,9 +2553,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new MultiplicativeexpressionContext(this._ctx, parentState);
+        let localContext = new MultiplicativeexpressionContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 60;
         this.enterRecursionRule(localContext, 60, CPP14Parser.RULE_multiplicativeexpression, _p);
@@ -2567,10 +2567,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 809;
             this.pmexpression(0);
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 822;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 56, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 56, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -2580,14 +2580,14 @@ export class CPP14Parser extends antlr.Parser {
                     {
                     this.state = 820;
                     this.errorHandler.sync(this);
-                    switch (this.interpreter.adaptivePredict(this.tokenStream, 55, this._ctx) ) {
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 55, this.context) ) {
                     case 1:
                         {
                         localContext = new MultiplicativeexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_multiplicativeexpression);
                         this.state = 811;
-                        if (!(this.precpred(this._ctx, 3))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 3)");
+                        if (!(this.precpred(this.context, 3))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 3)");
                         }
                         this.state = 812;
                         this.match(CPP14Parser.Star);
@@ -2600,8 +2600,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new MultiplicativeexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_multiplicativeexpression);
                         this.state = 814;
-                        if (!(this.precpred(this._ctx, 2))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
+                        if (!(this.precpred(this.context, 2))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 2)");
                         }
                         this.state = 815;
                         this.match(CPP14Parser.Div);
@@ -2614,8 +2614,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new MultiplicativeexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_multiplicativeexpression);
                         this.state = 817;
-                        if (!(this.precpred(this._ctx, 1))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                        if (!(this.precpred(this.context, 1))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                         }
                         this.state = 818;
                         this.match(CPP14Parser.Mod);
@@ -2628,7 +2628,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 824;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 56, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 56, this.context);
             }
             }
         }
@@ -2654,9 +2654,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new AdditiveexpressionContext(this._ctx, parentState);
+        let localContext = new AdditiveexpressionContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 62;
         this.enterRecursionRule(localContext, 62, CPP14Parser.RULE_additiveexpression, _p);
@@ -2668,10 +2668,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 826;
             this.multiplicativeexpression(0);
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 836;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 58, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 58, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -2681,14 +2681,14 @@ export class CPP14Parser extends antlr.Parser {
                     {
                     this.state = 834;
                     this.errorHandler.sync(this);
-                    switch (this.interpreter.adaptivePredict(this.tokenStream, 57, this._ctx) ) {
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 57, this.context) ) {
                     case 1:
                         {
                         localContext = new AdditiveexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_additiveexpression);
                         this.state = 828;
-                        if (!(this.precpred(this._ctx, 2))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
+                        if (!(this.precpred(this.context, 2))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 2)");
                         }
                         this.state = 829;
                         this.match(CPP14Parser.Plus);
@@ -2701,8 +2701,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new AdditiveexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_additiveexpression);
                         this.state = 831;
-                        if (!(this.precpred(this._ctx, 1))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                        if (!(this.precpred(this.context, 1))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                         }
                         this.state = 832;
                         this.match(CPP14Parser.Minus);
@@ -2715,7 +2715,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 838;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 58, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 58, this.context);
             }
             }
         }
@@ -2741,9 +2741,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new ShiftexpressionContext(this._ctx, parentState);
+        let localContext = new ShiftexpressionContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 64;
         this.enterRecursionRule(localContext, 64, CPP14Parser.RULE_shiftexpression, _p);
@@ -2755,10 +2755,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 840;
             this.additiveexpression(0);
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 851;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 60, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 60, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -2768,14 +2768,14 @@ export class CPP14Parser extends antlr.Parser {
                     {
                     this.state = 849;
                     this.errorHandler.sync(this);
-                    switch (this.interpreter.adaptivePredict(this.tokenStream, 59, this._ctx) ) {
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 59, this.context) ) {
                     case 1:
                         {
                         localContext = new ShiftexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_shiftexpression);
                         this.state = 842;
-                        if (!(this.precpred(this._ctx, 2))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
+                        if (!(this.precpred(this.context, 2))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 2)");
                         }
                         this.state = 843;
                         this.match(CPP14Parser.LeftShift);
@@ -2788,8 +2788,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new ShiftexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_shiftexpression);
                         this.state = 845;
-                        if (!(this.precpred(this._ctx, 1))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                        if (!(this.precpred(this.context, 1))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                         }
                         this.state = 846;
                         this.rightShift();
@@ -2802,7 +2802,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 853;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 60, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 60, this.context);
             }
             }
         }
@@ -2828,9 +2828,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new RelationalexpressionContext(this._ctx, parentState);
+        let localContext = new RelationalexpressionContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 66;
         this.enterRecursionRule(localContext, 66, CPP14Parser.RULE_relationalexpression, _p);
@@ -2842,10 +2842,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 855;
             this.shiftexpression(0);
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 871;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 62, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 62, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -2855,14 +2855,14 @@ export class CPP14Parser extends antlr.Parser {
                     {
                     this.state = 869;
                     this.errorHandler.sync(this);
-                    switch (this.interpreter.adaptivePredict(this.tokenStream, 61, this._ctx) ) {
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 61, this.context) ) {
                     case 1:
                         {
                         localContext = new RelationalexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_relationalexpression);
                         this.state = 857;
-                        if (!(this.precpred(this._ctx, 4))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 4)");
+                        if (!(this.precpred(this.context, 4))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 4)");
                         }
                         this.state = 858;
                         this.match(CPP14Parser.Less);
@@ -2875,8 +2875,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new RelationalexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_relationalexpression);
                         this.state = 860;
-                        if (!(this.precpred(this._ctx, 3))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 3)");
+                        if (!(this.precpred(this.context, 3))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 3)");
                         }
                         this.state = 861;
                         this.match(CPP14Parser.Greater);
@@ -2889,8 +2889,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new RelationalexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_relationalexpression);
                         this.state = 863;
-                        if (!(this.precpred(this._ctx, 2))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
+                        if (!(this.precpred(this.context, 2))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 2)");
                         }
                         this.state = 864;
                         this.match(CPP14Parser.LessEqual);
@@ -2903,8 +2903,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new RelationalexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_relationalexpression);
                         this.state = 866;
-                        if (!(this.precpred(this._ctx, 1))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                        if (!(this.precpred(this.context, 1))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                         }
                         this.state = 867;
                         this.match(CPP14Parser.GreaterEqual);
@@ -2917,7 +2917,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 873;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 62, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 62, this.context);
             }
             }
         }
@@ -2943,9 +2943,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new EqualityexpressionContext(this._ctx, parentState);
+        let localContext = new EqualityexpressionContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 68;
         this.enterRecursionRule(localContext, 68, CPP14Parser.RULE_equalityexpression, _p);
@@ -2957,10 +2957,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 875;
             this.relationalexpression(0);
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 885;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 64, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 64, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -2970,14 +2970,14 @@ export class CPP14Parser extends antlr.Parser {
                     {
                     this.state = 883;
                     this.errorHandler.sync(this);
-                    switch (this.interpreter.adaptivePredict(this.tokenStream, 63, this._ctx) ) {
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 63, this.context) ) {
                     case 1:
                         {
                         localContext = new EqualityexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_equalityexpression);
                         this.state = 877;
-                        if (!(this.precpred(this._ctx, 2))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
+                        if (!(this.precpred(this.context, 2))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 2)");
                         }
                         this.state = 878;
                         this.match(CPP14Parser.Equal);
@@ -2990,8 +2990,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new EqualityexpressionContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_equalityexpression);
                         this.state = 880;
-                        if (!(this.precpred(this._ctx, 1))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                        if (!(this.precpred(this.context, 1))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                         }
                         this.state = 881;
                         this.match(CPP14Parser.NotEqual);
@@ -3004,7 +3004,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 887;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 64, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 64, this.context);
             }
             }
         }
@@ -3030,9 +3030,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new AndexpressionContext(this._ctx, parentState);
+        let localContext = new AndexpressionContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 70;
         this.enterRecursionRule(localContext, 70, CPP14Parser.RULE_andexpression, _p);
@@ -3044,10 +3044,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 889;
             this.equalityexpression(0);
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 896;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 65, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 65, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -3059,8 +3059,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new AndexpressionContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_andexpression);
                     this.state = 891;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 892;
                     this.match(CPP14Parser.And);
@@ -3071,7 +3071,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 898;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 65, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 65, this.context);
             }
             }
         }
@@ -3097,9 +3097,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new ExclusiveorexpressionContext(this._ctx, parentState);
+        let localContext = new ExclusiveorexpressionContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 72;
         this.enterRecursionRule(localContext, 72, CPP14Parser.RULE_exclusiveorexpression, _p);
@@ -3111,10 +3111,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 900;
             this.andexpression(0);
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 907;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 66, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 66, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -3126,8 +3126,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new ExclusiveorexpressionContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_exclusiveorexpression);
                     this.state = 902;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 903;
                     this.match(CPP14Parser.Caret);
@@ -3138,7 +3138,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 909;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 66, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 66, this.context);
             }
             }
         }
@@ -3164,9 +3164,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new InclusiveorexpressionContext(this._ctx, parentState);
+        let localContext = new InclusiveorexpressionContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 74;
         this.enterRecursionRule(localContext, 74, CPP14Parser.RULE_inclusiveorexpression, _p);
@@ -3178,10 +3178,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 911;
             this.exclusiveorexpression(0);
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 918;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 67, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 67, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -3193,8 +3193,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new InclusiveorexpressionContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_inclusiveorexpression);
                     this.state = 913;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 914;
                     this.match(CPP14Parser.Or);
@@ -3205,7 +3205,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 920;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 67, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 67, this.context);
             }
             }
         }
@@ -3231,9 +3231,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new LogicalandexpressionContext(this._ctx, parentState);
+        let localContext = new LogicalandexpressionContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 76;
         this.enterRecursionRule(localContext, 76, CPP14Parser.RULE_logicalandexpression, _p);
@@ -3245,10 +3245,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 922;
             this.inclusiveorexpression(0);
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 929;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 68, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 68, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -3260,8 +3260,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new LogicalandexpressionContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_logicalandexpression);
                     this.state = 924;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 925;
                     this.match(CPP14Parser.AndAnd);
@@ -3272,7 +3272,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 931;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 68, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 68, this.context);
             }
             }
         }
@@ -3298,9 +3298,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new LogicalorexpressionContext(this._ctx, parentState);
+        let localContext = new LogicalorexpressionContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 78;
         this.enterRecursionRule(localContext, 78, CPP14Parser.RULE_logicalorexpression, _p);
@@ -3312,10 +3312,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 933;
             this.logicalandexpression(0);
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 940;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 69, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 69, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -3327,8 +3327,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new LogicalorexpressionContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_logicalorexpression);
                     this.state = 935;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 936;
                     this.match(CPP14Parser.OrOr);
@@ -3339,7 +3339,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 942;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 69, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 69, this.context);
             }
             }
         }
@@ -3358,12 +3358,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public conditionalexpression(): ConditionalexpressionContext {
-        let localContext = new ConditionalexpressionContext(this._ctx, this.state);
+        let localContext = new ConditionalexpressionContext(this.context, this.state);
         this.enterRule(localContext, 80, CPP14Parser.RULE_conditionalexpression);
         try {
             this.state = 950;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 70, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 70, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -3403,12 +3403,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public assignmentexpression(): AssignmentexpressionContext {
-        let localContext = new AssignmentexpressionContext(this._ctx, this.state);
+        let localContext = new AssignmentexpressionContext(this.context, this.state);
         this.enterRule(localContext, 82, CPP14Parser.RULE_assignmentexpression);
         try {
             this.state = 958;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 71, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 71, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -3451,7 +3451,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public assignmentoperator(): AssignmentoperatorContext {
-        let localContext = new AssignmentoperatorContext(this._ctx, this.state);
+        let localContext = new AssignmentoperatorContext(this.context, this.state);
         this.enterRule(localContext, 84, CPP14Parser.RULE_assignmentoperator);
         try {
             this.state = 971;
@@ -3560,9 +3560,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new ExpressionContext(this._ctx, parentState);
+        let localContext = new ExpressionContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 86;
         this.enterRecursionRule(localContext, 86, CPP14Parser.RULE_expression, _p);
@@ -3574,10 +3574,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 974;
             this.assignmentexpression();
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 981;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 73, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 73, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -3589,8 +3589,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new ExpressionContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_expression);
                     this.state = 976;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 977;
                     this.match(CPP14Parser.Comma);
@@ -3601,7 +3601,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 983;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 73, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 73, this.context);
             }
             }
         }
@@ -3620,7 +3620,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public constantexpression(): ConstantexpressionContext {
-        let localContext = new ConstantexpressionContext(this._ctx, this.state);
+        let localContext = new ConstantexpressionContext(this.context, this.state);
         this.enterRule(localContext, 88, CPP14Parser.RULE_constantexpression);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -3644,13 +3644,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public statement(): StatementContext {
-        let localContext = new StatementContext(this._ctx, this.state);
+        let localContext = new StatementContext(this.context, this.state);
         this.enterRule(localContext, 90, CPP14Parser.RULE_statement);
         let _la: number;
         try {
             this.state = 1012;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 80, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 80, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -3663,7 +3663,7 @@ export class CPP14Parser extends antlr.Parser {
                 {
                 this.state = 988;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 74, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 74, this.context) ) {
                 case 1:
                     {
                     this.state = 987;
@@ -3784,13 +3784,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public labeledstatement(): LabeledstatementContext {
-        let localContext = new LabeledstatementContext(this._ctx, this.state);
+        let localContext = new LabeledstatementContext(this.context, this.state);
         this.enterRule(localContext, 92, CPP14Parser.RULE_labeledstatement);
         let _la: number;
         try {
             this.state = 1034;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 84, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 84, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -3873,7 +3873,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public expressionstatement(): ExpressionstatementContext {
-        let localContext = new ExpressionstatementContext(this._ctx, this.state);
+        let localContext = new ExpressionstatementContext(this.context, this.state);
         this.enterRule(localContext, 94, CPP14Parser.RULE_expressionstatement);
         let _la: number;
         try {
@@ -3908,7 +3908,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public compoundstatement(): CompoundstatementContext {
-        let localContext = new CompoundstatementContext(this._ctx, this.state);
+        let localContext = new CompoundstatementContext(this.context, this.state);
         this.enterRule(localContext, 96, CPP14Parser.RULE_compoundstatement);
         let _la: number;
         try {
@@ -3952,9 +3952,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new StatementseqContext(this._ctx, parentState);
+        let localContext = new StatementseqContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 98;
         this.enterRecursionRule(localContext, 98, CPP14Parser.RULE_statementseq, _p);
@@ -3966,10 +3966,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 1048;
             this.statement();
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 1054;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 87, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 87, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -3981,8 +3981,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new StatementseqContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_statementseq);
                     this.state = 1050;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 1051;
                     this.statement();
@@ -3991,7 +3991,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 1056;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 87, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 87, this.context);
             }
             }
         }
@@ -4010,12 +4010,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public selectionstatement(): SelectionstatementContext {
-        let localContext = new SelectionstatementContext(this._ctx, this.state);
+        let localContext = new SelectionstatementContext(this.context, this.state);
         this.enterRule(localContext, 100, CPP14Parser.RULE_selectionstatement);
         try {
             this.state = 1077;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 88, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 88, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -4082,13 +4082,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public condition(): ConditionContext {
-        let localContext = new ConditionContext(this._ctx, this.state);
+        let localContext = new ConditionContext(this.context, this.state);
         this.enterRule(localContext, 102, CPP14Parser.RULE_condition);
         let _la: number;
         try {
             this.state = 1095;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 91, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 91, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -4157,13 +4157,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public iterationstatement(): IterationstatementContext {
-        let localContext = new IterationstatementContext(this._ctx, this.state);
+        let localContext = new IterationstatementContext(this.context, this.state);
         this.enterRule(localContext, 104, CPP14Parser.RULE_iterationstatement);
         let _la: number;
         try {
             this.state = 1132;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 94, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 94, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -4271,12 +4271,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public forinitstatement(): ForinitstatementContext {
-        let localContext = new ForinitstatementContext(this._ctx, this.state);
+        let localContext = new ForinitstatementContext(this.context, this.state);
         this.enterRule(localContext, 106, CPP14Parser.RULE_forinitstatement);
         try {
             this.state = 1136;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 95, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 95, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -4308,7 +4308,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public forrangedeclaration(): ForrangedeclarationContext {
-        let localContext = new ForrangedeclarationContext(this._ctx, this.state);
+        let localContext = new ForrangedeclarationContext(this.context, this.state);
         this.enterRule(localContext, 108, CPP14Parser.RULE_forrangedeclaration);
         let _la: number;
         try {
@@ -4345,7 +4345,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public forrangeinitializer(): ForrangeinitializerContext {
-        let localContext = new ForrangeinitializerContext(this._ctx, this.state);
+        let localContext = new ForrangeinitializerContext(this.context, this.state);
         this.enterRule(localContext, 110, CPP14Parser.RULE_forrangeinitializer);
         try {
             this.state = 1146;
@@ -4436,13 +4436,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public jumpstatement(): JumpstatementContext {
-        let localContext = new JumpstatementContext(this._ctx, this.state);
+        let localContext = new JumpstatementContext(this.context, this.state);
         this.enterRule(localContext, 112, CPP14Parser.RULE_jumpstatement);
         let _la: number;
         try {
             this.state = 1164;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 99, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 99, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -4519,7 +4519,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public declarationstatement(): DeclarationstatementContext {
-        let localContext = new DeclarationstatementContext(this._ctx, this.state);
+        let localContext = new DeclarationstatementContext(this.context, this.state);
         this.enterRule(localContext, 114, CPP14Parser.RULE_declarationstatement);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -4550,9 +4550,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new DeclarationseqContext(this._ctx, parentState);
+        let localContext = new DeclarationseqContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 116;
         this.enterRecursionRule(localContext, 116, CPP14Parser.RULE_declarationseq, _p);
@@ -4564,10 +4564,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 1169;
             this.declaration();
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 1175;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 100, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 100, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -4579,8 +4579,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new DeclarationseqContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_declarationseq);
                     this.state = 1171;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 1172;
                     this.declaration();
@@ -4589,7 +4589,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 1177;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 100, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 100, this.context);
             }
             }
         }
@@ -4608,12 +4608,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public declaration(): DeclarationContext {
-        let localContext = new DeclarationContext(this._ctx, this.state);
+        let localContext = new DeclarationContext(this.context, this.state);
         this.enterRule(localContext, 118, CPP14Parser.RULE_declaration);
         try {
             this.state = 1187;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 101, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 101, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -4694,12 +4694,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public blockdeclaration(): BlockdeclarationContext {
-        let localContext = new BlockdeclarationContext(this._ctx, this.state);
+        let localContext = new BlockdeclarationContext(this.context, this.state);
         this.enterRule(localContext, 120, CPP14Parser.RULE_blockdeclaration);
         try {
             this.state = 1197;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 102, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 102, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -4773,7 +4773,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public aliasdeclaration(): AliasdeclarationContext {
-        let localContext = new AliasdeclarationContext(this._ctx, this.state);
+        let localContext = new AliasdeclarationContext(this.context, this.state);
         this.enterRule(localContext, 122, CPP14Parser.RULE_aliasdeclaration);
         let _la: number;
         try {
@@ -4816,7 +4816,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public simpledeclaration(): SimpledeclarationContext {
-        let localContext = new SimpledeclarationContext(this._ctx, this.state);
+        let localContext = new SimpledeclarationContext(this.context, this.state);
         this.enterRule(localContext, 124, CPP14Parser.RULE_simpledeclaration);
         let _la: number;
         try {
@@ -4870,7 +4870,7 @@ export class CPP14Parser extends antlr.Parser {
                 {
                 this.state = 1209;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 104, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 104, this.context) ) {
                 case 1:
                     {
                     this.state = 1208;
@@ -4900,7 +4900,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.attributespecifierseq(0);
                 this.state = 1217;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 106, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 106, this.context) ) {
                 case 1:
                     {
                     this.state = 1216;
@@ -4933,7 +4933,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public static_assertdeclaration(): Static_assertdeclarationContext {
-        let localContext = new Static_assertdeclarationContext(this._ctx, this.state);
+        let localContext = new Static_assertdeclarationContext(this.context, this.state);
         this.enterRule(localContext, 126, CPP14Parser.RULE_static_assertdeclaration);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -4969,7 +4969,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public emptydeclaration(): EmptydeclarationContext {
-        let localContext = new EmptydeclarationContext(this._ctx, this.state);
+        let localContext = new EmptydeclarationContext(this.context, this.state);
         this.enterRule(localContext, 128, CPP14Parser.RULE_emptydeclaration);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -4993,7 +4993,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public attributedeclaration(): AttributedeclarationContext {
-        let localContext = new AttributedeclarationContext(this._ctx, this.state);
+        let localContext = new AttributedeclarationContext(this.context, this.state);
         this.enterRule(localContext, 130, CPP14Parser.RULE_attributedeclaration);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -5019,7 +5019,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public declspecifier(): DeclspecifierContext {
-        let localContext = new DeclspecifierContext(this._ctx, this.state);
+        let localContext = new DeclspecifierContext(this.context, this.state);
         this.enterRule(localContext, 132, CPP14Parser.RULE_declspecifier);
         try {
             this.state = 1243;
@@ -5115,12 +5115,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public declspecifierseq(): DeclspecifierseqContext {
-        let localContext = new DeclspecifierseqContext(this._ctx, this.state);
+        let localContext = new DeclspecifierseqContext(this.context, this.state);
         this.enterRule(localContext, 134, CPP14Parser.RULE_declspecifierseq);
         try {
             this.state = 1252;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 110, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 110, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -5128,7 +5128,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.declspecifier();
                 this.state = 1247;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 109, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 109, this.context) ) {
                 case 1:
                     {
                     this.state = 1246;
@@ -5164,7 +5164,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public storageclassspecifier(): StorageclassspecifierContext {
-        let localContext = new StorageclassspecifierContext(this._ctx, this.state);
+        let localContext = new StorageclassspecifierContext(this.context, this.state);
         this.enterRule(localContext, 136, CPP14Parser.RULE_storageclassspecifier);
         let _la: number;
         try {
@@ -5196,7 +5196,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public functionspecifier(): FunctionspecifierContext {
-        let localContext = new FunctionspecifierContext(this._ctx, this.state);
+        let localContext = new FunctionspecifierContext(this.context, this.state);
         this.enterRule(localContext, 138, CPP14Parser.RULE_functionspecifier);
         let _la: number;
         try {
@@ -5228,7 +5228,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public typedefname(): TypedefnameContext {
-        let localContext = new TypedefnameContext(this._ctx, this.state);
+        let localContext = new TypedefnameContext(this.context, this.state);
         this.enterRule(localContext, 140, CPP14Parser.RULE_typedefname);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -5252,12 +5252,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public typespecifier(): TypespecifierContext {
-        let localContext = new TypespecifierContext(this._ctx, this.state);
+        let localContext = new TypespecifierContext(this.context, this.state);
         this.enterRule(localContext, 142, CPP14Parser.RULE_typespecifier);
         try {
             this.state = 1263;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 111, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 111, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -5296,7 +5296,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public trailingtypespecifier(): TrailingtypespecifierContext {
-        let localContext = new TrailingtypespecifierContext(this._ctx, this.state);
+        let localContext = new TrailingtypespecifierContext(this.context, this.state);
         this.enterRule(localContext, 144, CPP14Parser.RULE_trailingtypespecifier);
         try {
             this.state = 1269;
@@ -5369,12 +5369,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public typespecifierseq(): TypespecifierseqContext {
-        let localContext = new TypespecifierseqContext(this._ctx, this.state);
+        let localContext = new TypespecifierseqContext(this.context, this.state);
         this.enterRule(localContext, 146, CPP14Parser.RULE_typespecifierseq);
         try {
             this.state = 1278;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 114, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 114, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -5382,7 +5382,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.typespecifier();
                 this.state = 1273;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 113, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 113, this.context) ) {
                 case 1:
                     {
                     this.state = 1272;
@@ -5418,12 +5418,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public trailingtypespecifierseq(): TrailingtypespecifierseqContext {
-        let localContext = new TrailingtypespecifierseqContext(this._ctx, this.state);
+        let localContext = new TrailingtypespecifierseqContext(this.context, this.state);
         this.enterRule(localContext, 148, CPP14Parser.RULE_trailingtypespecifierseq);
         try {
             this.state = 1287;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 116, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 116, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -5431,7 +5431,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.trailingtypespecifier();
                 this.state = 1282;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 115, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 115, this.context) ) {
                 case 1:
                     {
                     this.state = 1281;
@@ -5467,18 +5467,18 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public simpletypespecifier(): SimpletypespecifierContext {
-        let localContext = new SimpletypespecifierContext(this._ctx, this.state);
+        let localContext = new SimpletypespecifierContext(this.context, this.state);
         this.enterRule(localContext, 150, CPP14Parser.RULE_simpletypespecifier);
         try {
             this.state = 1312;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 118, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 118, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
                 this.state = 1290;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 117, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 117, this.context) ) {
                 case 1:
                     {
                     this.state = 1289;
@@ -5623,12 +5623,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public typename(): TypenameContext {
-        let localContext = new TypenameContext(this._ctx, this.state);
+        let localContext = new TypenameContext(this.context, this.state);
         this.enterRule(localContext, 152, CPP14Parser.RULE_typename);
         try {
             this.state = 1318;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 119, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 119, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -5674,12 +5674,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public decltypespecifier(): DecltypespecifierContext {
-        let localContext = new DecltypespecifierContext(this._ctx, this.state);
+        let localContext = new DecltypespecifierContext(this.context, this.state);
         this.enterRule(localContext, 154, CPP14Parser.RULE_decltypespecifier);
         try {
             this.state = 1329;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 120, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 120, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -5723,13 +5723,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public elaboratedtypespecifier(): ElaboratedtypespecifierContext {
-        let localContext = new ElaboratedtypespecifierContext(this._ctx, this.state);
+        let localContext = new ElaboratedtypespecifierContext(this.context, this.state);
         this.enterRule(localContext, 156, CPP14Parser.RULE_elaboratedtypespecifier);
         let _la: number;
         try {
             this.state = 1355;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 125, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 125, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -5747,7 +5747,7 @@ export class CPP14Parser extends antlr.Parser {
 
                 this.state = 1336;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 122, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 122, this.context) ) {
                 case 1:
                     {
                     this.state = 1335;
@@ -5796,7 +5796,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.match(CPP14Parser.Enum);
                 this.state = 1352;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 124, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 124, this.context) ) {
                 case 1:
                     {
                     this.state = 1351;
@@ -5825,7 +5825,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public enumname(): EnumnameContext {
-        let localContext = new EnumnameContext(this._ctx, this.state);
+        let localContext = new EnumnameContext(this.context, this.state);
         this.enterRule(localContext, 158, CPP14Parser.RULE_enumname);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -5849,13 +5849,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public enumspecifier(): EnumspecifierContext {
-        let localContext = new EnumspecifierContext(this._ctx, this.state);
+        let localContext = new EnumspecifierContext(this.context, this.state);
         this.enterRule(localContext, 160, CPP14Parser.RULE_enumspecifier);
         let _la: number;
         try {
             this.state = 1372;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 127, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 127, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -5909,13 +5909,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public enumhead(): EnumheadContext {
-        let localContext = new EnumheadContext(this._ctx, this.state);
+        let localContext = new EnumheadContext(this.context, this.state);
         this.enterRule(localContext, 162, CPP14Parser.RULE_enumhead);
         let _la: number;
         try {
             this.state = 1393;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 133, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 133, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -6001,7 +6001,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public opaqueenumdeclaration(): OpaqueenumdeclarationContext {
-        let localContext = new OpaqueenumdeclarationContext(this._ctx, this.state);
+        let localContext = new OpaqueenumdeclarationContext(this.context, this.state);
         this.enterRule(localContext, 164, CPP14Parser.RULE_opaqueenumdeclaration);
         let _la: number;
         try {
@@ -6050,12 +6050,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public enumkey(): EnumkeyContext {
-        let localContext = new EnumkeyContext(this._ctx, this.state);
+        let localContext = new EnumkeyContext(this.context, this.state);
         this.enterRule(localContext, 166, CPP14Parser.RULE_enumkey);
         try {
             this.state = 1410;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 136, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 136, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -6098,7 +6098,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public enumbase(): EnumbaseContext {
-        let localContext = new EnumbaseContext(this._ctx, this.state);
+        let localContext = new EnumbaseContext(this.context, this.state);
         this.enterRule(localContext, 168, CPP14Parser.RULE_enumbase);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -6131,9 +6131,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new EnumeratorlistContext(this._ctx, parentState);
+        let localContext = new EnumeratorlistContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 170;
         this.enterRecursionRule(localContext, 170, CPP14Parser.RULE_enumeratorlist, _p);
@@ -6145,10 +6145,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 1416;
             this.enumeratordefinition();
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 1423;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 137, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 137, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -6160,8 +6160,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new EnumeratorlistContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_enumeratorlist);
                     this.state = 1418;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 1419;
                     this.match(CPP14Parser.Comma);
@@ -6172,7 +6172,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 1425;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 137, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 137, this.context);
             }
             }
         }
@@ -6191,12 +6191,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public enumeratordefinition(): EnumeratordefinitionContext {
-        let localContext = new EnumeratordefinitionContext(this._ctx, this.state);
+        let localContext = new EnumeratordefinitionContext(this.context, this.state);
         this.enterRule(localContext, 172, CPP14Parser.RULE_enumeratordefinition);
         try {
             this.state = 1431;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 138, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 138, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -6232,7 +6232,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public enumerator(): EnumeratorContext {
-        let localContext = new EnumeratorContext(this._ctx, this.state);
+        let localContext = new EnumeratorContext(this.context, this.state);
         this.enterRule(localContext, 174, CPP14Parser.RULE_enumerator);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -6256,12 +6256,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public namespacename(): NamespacenameContext {
-        let localContext = new NamespacenameContext(this._ctx, this.state);
+        let localContext = new NamespacenameContext(this.context, this.state);
         this.enterRule(localContext, 176, CPP14Parser.RULE_namespacename);
         try {
             this.state = 1437;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 139, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 139, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -6293,7 +6293,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public originalnamespacename(): OriginalnamespacenameContext {
-        let localContext = new OriginalnamespacenameContext(this._ctx, this.state);
+        let localContext = new OriginalnamespacenameContext(this.context, this.state);
         this.enterRule(localContext, 178, CPP14Parser.RULE_originalnamespacename);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -6317,12 +6317,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public namespacedefinition(): NamespacedefinitionContext {
-        let localContext = new NamespacedefinitionContext(this._ctx, this.state);
+        let localContext = new NamespacedefinitionContext(this.context, this.state);
         this.enterRule(localContext, 180, CPP14Parser.RULE_namespacedefinition);
         try {
             this.state = 1443;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 140, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 140, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -6354,12 +6354,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public namednamespacedefinition(): NamednamespacedefinitionContext {
-        let localContext = new NamednamespacedefinitionContext(this._ctx, this.state);
+        let localContext = new NamednamespacedefinitionContext(this.context, this.state);
         this.enterRule(localContext, 182, CPP14Parser.RULE_namednamespacedefinition);
         try {
             this.state = 1447;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 141, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 141, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -6391,7 +6391,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public originalnamespacedefinition(): OriginalnamespacedefinitionContext {
-        let localContext = new OriginalnamespacedefinitionContext(this._ctx, this.state);
+        let localContext = new OriginalnamespacedefinitionContext(this.context, this.state);
         this.enterRule(localContext, 184, CPP14Parser.RULE_originalnamespacedefinition);
         let _la: number;
         try {
@@ -6434,7 +6434,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public extensionnamespacedefinition(): ExtensionnamespacedefinitionContext {
-        let localContext = new ExtensionnamespacedefinitionContext(this._ctx, this.state);
+        let localContext = new ExtensionnamespacedefinitionContext(this.context, this.state);
         this.enterRule(localContext, 186, CPP14Parser.RULE_extensionnamespacedefinition);
         let _la: number;
         try {
@@ -6477,7 +6477,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public unnamednamespacedefinition(): UnnamednamespacedefinitionContext {
-        let localContext = new UnnamednamespacedefinitionContext(this._ctx, this.state);
+        let localContext = new UnnamednamespacedefinitionContext(this.context, this.state);
         this.enterRule(localContext, 188, CPP14Parser.RULE_unnamednamespacedefinition);
         let _la: number;
         try {
@@ -6518,7 +6518,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public namespacebody(): NamespacebodyContext {
-        let localContext = new NamespacebodyContext(this._ctx, this.state);
+        let localContext = new NamespacebodyContext(this.context, this.state);
         this.enterRule(localContext, 190, CPP14Parser.RULE_namespacebody);
         let _la: number;
         try {
@@ -6551,7 +6551,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public namespacealias(): NamespacealiasContext {
-        let localContext = new NamespacealiasContext(this._ctx, this.state);
+        let localContext = new NamespacealiasContext(this.context, this.state);
         this.enterRule(localContext, 192, CPP14Parser.RULE_namespacealias);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -6575,7 +6575,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public namespacealiasdefinition(): NamespacealiasdefinitionContext {
-        let localContext = new NamespacealiasdefinitionContext(this._ctx, this.state);
+        let localContext = new NamespacealiasdefinitionContext(this.context, this.state);
         this.enterRule(localContext, 194, CPP14Parser.RULE_namespacealiasdefinition);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -6607,14 +6607,14 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public qualifiednamespacespecifier(): QualifiednamespacespecifierContext {
-        let localContext = new QualifiednamespacespecifierContext(this._ctx, this.state);
+        let localContext = new QualifiednamespacespecifierContext(this.context, this.state);
         this.enterRule(localContext, 196, CPP14Parser.RULE_qualifiednamespacespecifier);
         try {
             this.enterOuterAlt(localContext, 1);
             {
             this.state = 1487;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 146, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 146, this.context) ) {
             case 1:
                 {
                 this.state = 1486;
@@ -6641,13 +6641,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public usingdeclaration(): UsingdeclarationContext {
-        let localContext = new UsingdeclarationContext(this._ctx, this.state);
+        let localContext = new UsingdeclarationContext(this.context, this.state);
         this.enterRule(localContext, 198, CPP14Parser.RULE_usingdeclaration);
         let _la: number;
         try {
             this.state = 1504;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 148, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 148, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -6701,7 +6701,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public usingdirective(): UsingdirectiveContext {
-        let localContext = new UsingdirectiveContext(this._ctx, this.state);
+        let localContext = new UsingdirectiveContext(this.context, this.state);
         this.enterRule(localContext, 200, CPP14Parser.RULE_usingdirective);
         let _la: number;
         try {
@@ -6723,7 +6723,7 @@ export class CPP14Parser extends antlr.Parser {
             this.match(CPP14Parser.Namespace);
             this.state = 1512;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 150, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 150, this.context) ) {
             case 1:
                 {
                 this.state = 1511;
@@ -6752,7 +6752,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public asmdefinition(): AsmdefinitionContext {
-        let localContext = new AsmdefinitionContext(this._ctx, this.state);
+        let localContext = new AsmdefinitionContext(this.context, this.state);
         this.enterRule(localContext, 202, CPP14Parser.RULE_asmdefinition);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -6784,13 +6784,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public linkagespecification(): LinkagespecificationContext {
-        let localContext = new LinkagespecificationContext(this._ctx, this.state);
+        let localContext = new LinkagespecificationContext(this.context, this.state);
         this.enterRule(localContext, 204, CPP14Parser.RULE_linkagespecification);
         let _la: number;
         try {
             this.state = 1533;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 152, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 152, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -6849,9 +6849,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new AttributespecifierseqContext(this._ctx, parentState);
+        let localContext = new AttributespecifierseqContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 206;
         this.enterRecursionRule(localContext, 206, CPP14Parser.RULE_attributespecifierseq, _p);
@@ -6863,10 +6863,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 1536;
             this.attributespecifier();
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 1542;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 153, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 153, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -6878,8 +6878,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new AttributespecifierseqContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_attributespecifierseq);
                     this.state = 1538;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 1539;
                     this.attributespecifier();
@@ -6888,7 +6888,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 1544;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 153, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 153, this.context);
             }
             }
         }
@@ -6907,7 +6907,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public attributespecifier(): AttributespecifierContext {
-        let localContext = new AttributespecifierContext(this._ctx, this.state);
+        let localContext = new AttributespecifierContext(this.context, this.state);
         this.enterRule(localContext, 208, CPP14Parser.RULE_attributespecifier);
         try {
             this.state = 1552;
@@ -6954,13 +6954,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public alignmentspecifier(): AlignmentspecifierContext {
-        let localContext = new AlignmentspecifierContext(this._ctx, this.state);
+        let localContext = new AlignmentspecifierContext(this.context, this.state);
         this.enterRule(localContext, 210, CPP14Parser.RULE_alignmentspecifier);
         let _la: number;
         try {
             this.state = 1570;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 157, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 157, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -7031,9 +7031,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new AttributelistContext(this._ctx, parentState);
+        let localContext = new AttributelistContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 212;
         this.enterRecursionRule(localContext, 212, CPP14Parser.RULE_attributelist, _p);
@@ -7043,12 +7043,12 @@ export class CPP14Parser extends antlr.Parser {
             {
             this.state = 1579;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 159, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 159, this.context) ) {
             case 1:
                 {
                 this.state = 1574;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 158, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 158, this.context) ) {
                 case 1:
                     {
                     this.state = 1573;
@@ -7067,10 +7067,10 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 break;
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 1593;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 162, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 162, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -7080,20 +7080,20 @@ export class CPP14Parser extends antlr.Parser {
                     {
                     this.state = 1591;
                     this.errorHandler.sync(this);
-                    switch (this.interpreter.adaptivePredict(this.tokenStream, 161, this._ctx) ) {
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 161, this.context) ) {
                     case 1:
                         {
                         localContext = new AttributelistContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_attributelist);
                         this.state = 1581;
-                        if (!(this.precpred(this._ctx, 3))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 3)");
+                        if (!(this.precpred(this.context, 3))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 3)");
                         }
                         this.state = 1582;
                         this.match(CPP14Parser.Comma);
                         this.state = 1584;
                         this.errorHandler.sync(this);
-                        switch (this.interpreter.adaptivePredict(this.tokenStream, 160, this._ctx) ) {
+                        switch (this.interpreter.adaptivePredict(this.tokenStream, 160, this.context) ) {
                         case 1:
                             {
                             this.state = 1583;
@@ -7108,8 +7108,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new AttributelistContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_attributelist);
                         this.state = 1586;
-                        if (!(this.precpred(this._ctx, 1))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                        if (!(this.precpred(this.context, 1))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                         }
                         this.state = 1587;
                         this.match(CPP14Parser.Comma);
@@ -7124,7 +7124,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 1595;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 162, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 162, this.context);
             }
             }
         }
@@ -7143,7 +7143,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public attribute(): AttributeContext {
-        let localContext = new AttributeContext(this._ctx, this.state);
+        let localContext = new AttributeContext(this.context, this.state);
         this.enterRule(localContext, 214, CPP14Parser.RULE_attribute);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -7152,7 +7152,7 @@ export class CPP14Parser extends antlr.Parser {
             this.attributetoken();
             this.state = 1598;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 163, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 163, this.context) ) {
             case 1:
                 {
                 this.state = 1597;
@@ -7177,12 +7177,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public attributetoken(): AttributetokenContext {
-        let localContext = new AttributetokenContext(this._ctx, this.state);
+        let localContext = new AttributetokenContext(this.context, this.state);
         this.enterRule(localContext, 216, CPP14Parser.RULE_attributetoken);
         try {
             this.state = 1602;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 164, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 164, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -7214,7 +7214,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public attributescopedtoken(): AttributescopedtokenContext {
-        let localContext = new AttributescopedtokenContext(this._ctx, this.state);
+        let localContext = new AttributescopedtokenContext(this.context, this.state);
         this.enterRule(localContext, 218, CPP14Parser.RULE_attributescopedtoken);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -7242,7 +7242,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public attributenamespace(): AttributenamespaceContext {
-        let localContext = new AttributenamespaceContext(this._ctx, this.state);
+        let localContext = new AttributenamespaceContext(this.context, this.state);
         this.enterRule(localContext, 220, CPP14Parser.RULE_attributenamespace);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -7266,7 +7266,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public attributeargumentclause(): AttributeargumentclauseContext {
-        let localContext = new AttributeargumentclauseContext(this._ctx, this.state);
+        let localContext = new AttributeargumentclauseContext(this.context, this.state);
         this.enterRule(localContext, 222, CPP14Parser.RULE_attributeargumentclause);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -7301,9 +7301,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new BalancedtokenseqContext(this._ctx, parentState);
+        let localContext = new BalancedtokenseqContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 224;
         this.enterRecursionRule(localContext, 224, CPP14Parser.RULE_balancedtokenseq, _p);
@@ -7314,7 +7314,7 @@ export class CPP14Parser extends antlr.Parser {
             {
             this.state = 1616;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 165, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 165, this.context) ) {
             case 1:
                 {
                 this.state = 1615;
@@ -7323,10 +7323,10 @@ export class CPP14Parser extends antlr.Parser {
                 break;
             }
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 1622;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 166, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 166, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -7338,8 +7338,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new BalancedtokenseqContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_balancedtokenseq);
                     this.state = 1618;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 1619;
                     this.balancedtoken();
@@ -7348,7 +7348,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 1624;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 166, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 166, this.context);
             }
             }
         }
@@ -7367,7 +7367,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public balancedtoken(): BalancedtokenContext {
-        let localContext = new BalancedtokenContext(this._ctx, this.state);
+        let localContext = new BalancedtokenContext(this.context, this.state);
         this.enterRule(localContext, 226, CPP14Parser.RULE_balancedtoken);
         try {
             this.state = 1637;
@@ -7432,9 +7432,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new InitdeclaratorlistContext(this._ctx, parentState);
+        let localContext = new InitdeclaratorlistContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 228;
         this.enterRecursionRule(localContext, 228, CPP14Parser.RULE_initdeclaratorlist, _p);
@@ -7446,10 +7446,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 1640;
             this.initdeclarator();
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 1647;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 168, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 168, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -7461,8 +7461,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new InitdeclaratorlistContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_initdeclaratorlist);
                     this.state = 1642;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 1643;
                     this.match(CPP14Parser.Comma);
@@ -7473,7 +7473,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 1649;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 168, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 168, this.context);
             }
             }
         }
@@ -7492,7 +7492,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public initdeclarator(): InitdeclaratorContext {
-        let localContext = new InitdeclaratorContext(this._ctx, this.state);
+        let localContext = new InitdeclaratorContext(this.context, this.state);
         this.enterRule(localContext, 230, CPP14Parser.RULE_initdeclarator);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -7501,7 +7501,7 @@ export class CPP14Parser extends antlr.Parser {
             this.declarator();
             this.state = 1652;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 169, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 169, this.context) ) {
             case 1:
                 {
                 this.state = 1651;
@@ -7526,12 +7526,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public declarator(): DeclaratorContext {
-        let localContext = new DeclaratorContext(this._ctx, this.state);
+        let localContext = new DeclaratorContext(this.context, this.state);
         this.enterRule(localContext, 232, CPP14Parser.RULE_declarator);
         try {
             this.state = 1659;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 170, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 170, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -7567,12 +7567,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public ptrdeclarator(): PtrdeclaratorContext {
-        let localContext = new PtrdeclaratorContext(this._ctx, this.state);
+        let localContext = new PtrdeclaratorContext(this.context, this.state);
         this.enterRule(localContext, 234, CPP14Parser.RULE_ptrdeclarator);
         try {
             this.state = 1665;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 171, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 171, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -7613,9 +7613,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new NoptrdeclaratorContext(this._ctx, parentState);
+        let localContext = new NoptrdeclaratorContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 236;
         this.enterRecursionRule(localContext, 236, CPP14Parser.RULE_noptrdeclarator, _p);
@@ -7638,7 +7638,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.declaratorid();
                 this.state = 1670;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 172, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 172, this.context) ) {
                 case 1:
                     {
                     this.state = 1669;
@@ -7661,10 +7661,10 @@ export class CPP14Parser extends antlr.Parser {
             default:
                 throw new antlr.NoViableAltException(this);
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 1691;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 177, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 177, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -7674,14 +7674,14 @@ export class CPP14Parser extends antlr.Parser {
                     {
                     this.state = 1689;
                     this.errorHandler.sync(this);
-                    switch (this.interpreter.adaptivePredict(this.tokenStream, 176, this._ctx) ) {
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 176, this.context) ) {
                     case 1:
                         {
                         localContext = new NoptrdeclaratorContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_noptrdeclarator);
                         this.state = 1678;
-                        if (!(this.precpred(this._ctx, 3))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 3)");
+                        if (!(this.precpred(this.context, 3))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 3)");
                         }
                         this.state = 1679;
                         this.parametersandqualifiers();
@@ -7692,8 +7692,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new NoptrdeclaratorContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_noptrdeclarator);
                         this.state = 1680;
-                        if (!(this.precpred(this._ctx, 2))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
+                        if (!(this.precpred(this.context, 2))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 2)");
                         }
                         this.state = 1681;
                         this.match(CPP14Parser.LeftBracket);
@@ -7711,7 +7711,7 @@ export class CPP14Parser extends antlr.Parser {
                         this.match(CPP14Parser.RightBracket);
                         this.state = 1687;
                         this.errorHandler.sync(this);
-                        switch (this.interpreter.adaptivePredict(this.tokenStream, 175, this._ctx) ) {
+                        switch (this.interpreter.adaptivePredict(this.tokenStream, 175, this.context) ) {
                         case 1:
                             {
                             this.state = 1686;
@@ -7726,7 +7726,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 1693;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 177, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 177, this.context);
             }
             }
         }
@@ -7745,7 +7745,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public parametersandqualifiers(): ParametersandqualifiersContext {
-        let localContext = new ParametersandqualifiersContext(this._ctx, this.state);
+        let localContext = new ParametersandqualifiersContext(this.context, this.state);
         this.enterRule(localContext, 238, CPP14Parser.RULE_parametersandqualifiers);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -7758,7 +7758,7 @@ export class CPP14Parser extends antlr.Parser {
             this.match(CPP14Parser.RightParen);
             this.state = 1698;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 178, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 178, this.context) ) {
             case 1:
                 {
                 this.state = 1697;
@@ -7768,7 +7768,7 @@ export class CPP14Parser extends antlr.Parser {
             }
             this.state = 1701;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 179, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 179, this.context) ) {
             case 1:
                 {
                 this.state = 1700;
@@ -7778,7 +7778,7 @@ export class CPP14Parser extends antlr.Parser {
             }
             this.state = 1704;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 180, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 180, this.context) ) {
             case 1:
                 {
                 this.state = 1703;
@@ -7788,7 +7788,7 @@ export class CPP14Parser extends antlr.Parser {
             }
             this.state = 1707;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 181, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 181, this.context) ) {
             case 1:
                 {
                 this.state = 1706;
@@ -7813,7 +7813,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public trailingreturntype(): TrailingreturntypeContext {
-        let localContext = new TrailingreturntypeContext(this._ctx, this.state);
+        let localContext = new TrailingreturntypeContext(this.context, this.state);
         this.enterRule(localContext, 240, CPP14Parser.RULE_trailingreturntype);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -7824,7 +7824,7 @@ export class CPP14Parser extends antlr.Parser {
             this.trailingtypespecifierseq();
             this.state = 1712;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 182, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 182, this.context) ) {
             case 1:
                 {
                 this.state = 1711;
@@ -7849,7 +7849,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public ptroperator(): PtroperatorContext {
-        let localContext = new PtroperatorContext(this._ctx, this.state);
+        let localContext = new PtroperatorContext(this.context, this.state);
         this.enterRule(localContext, 242, CPP14Parser.RULE_ptroperator);
         try {
             this.state = 1737;
@@ -7862,7 +7862,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.match(CPP14Parser.Star);
                 this.state = 1716;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 183, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 183, this.context) ) {
                 case 1:
                     {
                     this.state = 1715;
@@ -7872,7 +7872,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 1719;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 184, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 184, this.context) ) {
                 case 1:
                     {
                     this.state = 1718;
@@ -7889,7 +7889,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.match(CPP14Parser.And);
                 this.state = 1723;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 185, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 185, this.context) ) {
                 case 1:
                     {
                     this.state = 1722;
@@ -7906,7 +7906,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.match(CPP14Parser.AndAnd);
                 this.state = 1727;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 186, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 186, this.context) ) {
                 case 1:
                     {
                     this.state = 1726;
@@ -7927,7 +7927,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.match(CPP14Parser.Star);
                 this.state = 1732;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 187, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 187, this.context) ) {
                 case 1:
                     {
                     this.state = 1731;
@@ -7937,7 +7937,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 1735;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 188, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 188, this.context) ) {
                 case 1:
                     {
                     this.state = 1734;
@@ -7966,7 +7966,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public cvqualifierseq(): CvqualifierseqContext {
-        let localContext = new CvqualifierseqContext(this._ctx, this.state);
+        let localContext = new CvqualifierseqContext(this.context, this.state);
         this.enterRule(localContext, 244, CPP14Parser.RULE_cvqualifierseq);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -7975,7 +7975,7 @@ export class CPP14Parser extends antlr.Parser {
             this.cvqualifier();
             this.state = 1741;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 190, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 190, this.context) ) {
             case 1:
                 {
                 this.state = 1740;
@@ -8000,7 +8000,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public cvqualifier(): CvqualifierContext {
-        let localContext = new CvqualifierContext(this._ctx, this.state);
+        let localContext = new CvqualifierContext(this.context, this.state);
         this.enterRule(localContext, 246, CPP14Parser.RULE_cvqualifier);
         let _la: number;
         try {
@@ -8032,7 +8032,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public refqualifier(): RefqualifierContext {
-        let localContext = new RefqualifierContext(this._ctx, this.state);
+        let localContext = new RefqualifierContext(this.context, this.state);
         this.enterRule(localContext, 248, CPP14Parser.RULE_refqualifier);
         let _la: number;
         try {
@@ -8064,7 +8064,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public declaratorid(): DeclaratoridContext {
-        let localContext = new DeclaratoridContext(this._ctx, this.state);
+        let localContext = new DeclaratoridContext(this.context, this.state);
         this.enterRule(localContext, 250, CPP14Parser.RULE_declaratorid);
         let _la: number;
         try {
@@ -8099,7 +8099,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public typeid(): TypeidContext {
-        let localContext = new TypeidContext(this._ctx, this.state);
+        let localContext = new TypeidContext(this.context, this.state);
         this.enterRule(localContext, 252, CPP14Parser.RULE_typeid);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -8108,7 +8108,7 @@ export class CPP14Parser extends antlr.Parser {
             this.typespecifierseq();
             this.state = 1754;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 192, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 192, this.context) ) {
             case 1:
                 {
                 this.state = 1753;
@@ -8133,12 +8133,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public abstractdeclarator(): AbstractdeclaratorContext {
-        let localContext = new AbstractdeclaratorContext(this._ctx, this.state);
+        let localContext = new AbstractdeclaratorContext(this.context, this.state);
         this.enterRule(localContext, 254, CPP14Parser.RULE_abstractdeclarator);
         try {
             this.state = 1764;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 194, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 194, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -8151,7 +8151,7 @@ export class CPP14Parser extends antlr.Parser {
                 {
                 this.state = 1758;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 193, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 193, this.context) ) {
                 case 1:
                     {
                     this.state = 1757;
@@ -8189,7 +8189,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public ptrabstractdeclarator(): PtrabstractdeclaratorContext {
-        let localContext = new PtrabstractdeclaratorContext(this._ctx, this.state);
+        let localContext = new PtrabstractdeclaratorContext(this.context, this.state);
         this.enterRule(localContext, 256, CPP14Parser.RULE_ptrabstractdeclarator);
         try {
             this.state = 1771;
@@ -8215,7 +8215,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.ptroperator();
                 this.state = 1769;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 195, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 195, this.context) ) {
                 case 1:
                     {
                     this.state = 1768;
@@ -8251,9 +8251,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new NoptrabstractdeclaratorContext(this._ctx, parentState);
+        let localContext = new NoptrabstractdeclaratorContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 258;
         this.enterRecursionRule(localContext, 258, CPP14Parser.RULE_noptrabstractdeclarator, _p);
@@ -8264,7 +8264,7 @@ export class CPP14Parser extends antlr.Parser {
             {
             this.state = 1787;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 199, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 199, this.context) ) {
             case 1:
                 {
                 this.state = 1774;
@@ -8289,7 +8289,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.match(CPP14Parser.RightBracket);
                 this.state = 1781;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 198, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 198, this.context) ) {
                 case 1:
                     {
                     this.state = 1780;
@@ -8310,10 +8310,10 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 break;
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 1802;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 203, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 203, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -8323,14 +8323,14 @@ export class CPP14Parser extends antlr.Parser {
                     {
                     this.state = 1800;
                     this.errorHandler.sync(this);
-                    switch (this.interpreter.adaptivePredict(this.tokenStream, 202, this._ctx) ) {
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 202, this.context) ) {
                     case 1:
                         {
                         localContext = new NoptrabstractdeclaratorContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_noptrabstractdeclarator);
                         this.state = 1789;
-                        if (!(this.precpred(this._ctx, 5))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 5)");
+                        if (!(this.precpred(this.context, 5))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 5)");
                         }
                         this.state = 1790;
                         this.parametersandqualifiers();
@@ -8341,8 +8341,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new NoptrabstractdeclaratorContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_noptrabstractdeclarator);
                         this.state = 1791;
-                        if (!(this.precpred(this._ctx, 3))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 3)");
+                        if (!(this.precpred(this.context, 3))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 3)");
                         }
                         this.state = 1792;
                         this.match(CPP14Parser.LeftBracket);
@@ -8360,7 +8360,7 @@ export class CPP14Parser extends antlr.Parser {
                         this.match(CPP14Parser.RightBracket);
                         this.state = 1798;
                         this.errorHandler.sync(this);
-                        switch (this.interpreter.adaptivePredict(this.tokenStream, 201, this._ctx) ) {
+                        switch (this.interpreter.adaptivePredict(this.tokenStream, 201, this.context) ) {
                         case 1:
                             {
                             this.state = 1797;
@@ -8375,7 +8375,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 1804;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 203, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 203, this.context);
             }
             }
         }
@@ -8394,7 +8394,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public abstractpackdeclarator(): AbstractpackdeclaratorContext {
-        let localContext = new AbstractpackdeclaratorContext(this._ctx, this.state);
+        let localContext = new AbstractpackdeclaratorContext(this.context, this.state);
         this.enterRule(localContext, 260, CPP14Parser.RULE_abstractpackdeclarator);
         try {
             this.state = 1809;
@@ -8447,9 +8447,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new NoptrabstractpackdeclaratorContext(this._ctx, parentState);
+        let localContext = new NoptrabstractpackdeclaratorContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 262;
         this.enterRecursionRule(localContext, 262, CPP14Parser.RULE_noptrabstractpackdeclarator, _p);
@@ -8462,10 +8462,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 1812;
             this.match(CPP14Parser.Ellipsis);
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 1827;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 208, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 208, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -8475,14 +8475,14 @@ export class CPP14Parser extends antlr.Parser {
                     {
                     this.state = 1825;
                     this.errorHandler.sync(this);
-                    switch (this.interpreter.adaptivePredict(this.tokenStream, 207, this._ctx) ) {
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 207, this.context) ) {
                     case 1:
                         {
                         localContext = new NoptrabstractpackdeclaratorContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_noptrabstractpackdeclarator);
                         this.state = 1814;
-                        if (!(this.precpred(this._ctx, 3))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 3)");
+                        if (!(this.precpred(this.context, 3))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 3)");
                         }
                         this.state = 1815;
                         this.parametersandqualifiers();
@@ -8493,8 +8493,8 @@ export class CPP14Parser extends antlr.Parser {
                         localContext = new NoptrabstractpackdeclaratorContext(parentContext, parentState);
                         this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_noptrabstractpackdeclarator);
                         this.state = 1816;
-                        if (!(this.precpred(this._ctx, 2))) {
-                            throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
+                        if (!(this.precpred(this.context, 2))) {
+                            throw this.createFailedPredicateException("this.precpred(this.context, 2)");
                         }
                         this.state = 1817;
                         this.match(CPP14Parser.LeftBracket);
@@ -8512,7 +8512,7 @@ export class CPP14Parser extends antlr.Parser {
                         this.match(CPP14Parser.RightBracket);
                         this.state = 1823;
                         this.errorHandler.sync(this);
-                        switch (this.interpreter.adaptivePredict(this.tokenStream, 206, this._ctx) ) {
+                        switch (this.interpreter.adaptivePredict(this.tokenStream, 206, this.context) ) {
                         case 1:
                             {
                             this.state = 1822;
@@ -8527,7 +8527,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 1829;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 208, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 208, this.context);
             }
             }
         }
@@ -8546,13 +8546,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public parameterdeclarationclause(): ParameterdeclarationclauseContext {
-        let localContext = new ParameterdeclarationclauseContext(this._ctx, this.state);
+        let localContext = new ParameterdeclarationclauseContext(this.context, this.state);
         this.enterRule(localContext, 264, CPP14Parser.RULE_parameterdeclarationclause);
         let _la: number;
         try {
             this.state = 1840;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 211, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 211, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -8613,9 +8613,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new ParameterdeclarationlistContext(this._ctx, parentState);
+        let localContext = new ParameterdeclarationlistContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 266;
         this.enterRecursionRule(localContext, 266, CPP14Parser.RULE_parameterdeclarationlist, _p);
@@ -8627,10 +8627,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 1843;
             this.parameterdeclaration();
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 1850;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 212, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 212, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -8642,8 +8642,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new ParameterdeclarationlistContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_parameterdeclarationlist);
                     this.state = 1845;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 1846;
                     this.match(CPP14Parser.Comma);
@@ -8654,7 +8654,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 1852;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 212, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 212, this.context);
             }
             }
         }
@@ -8673,13 +8673,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public parameterdeclaration(): ParameterdeclarationContext {
-        let localContext = new ParameterdeclarationContext(this._ctx, this.state);
+        let localContext = new ParameterdeclarationContext(this.context, this.state);
         this.enterRule(localContext, 268, CPP14Parser.RULE_parameterdeclaration);
         let _la: number;
         try {
             this.state = 1884;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 219, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 219, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -8739,7 +8739,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.declspecifierseq();
                 this.state = 1872;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 216, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 216, this.context) ) {
                 case 1:
                     {
                     this.state = 1871;
@@ -8797,7 +8797,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public functiondefinition(): FunctiondefinitionContext {
-        let localContext = new FunctiondefinitionContext(this._ctx, this.state);
+        let localContext = new FunctiondefinitionContext(this.context, this.state);
         this.enterRule(localContext, 270, CPP14Parser.RULE_functiondefinition);
         let _la: number;
         try {
@@ -8815,7 +8815,7 @@ export class CPP14Parser extends antlr.Parser {
 
             this.state = 1890;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 221, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 221, this.context) ) {
             case 1:
                 {
                 this.state = 1889;
@@ -8854,13 +8854,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public functionbody(): FunctionbodyContext {
-        let localContext = new FunctionbodyContext(this._ctx, this.state);
+        let localContext = new FunctionbodyContext(this.context, this.state);
         this.enterRule(localContext, 272, CPP14Parser.RULE_functionbody);
         let _la: number;
         try {
             this.state = 1909;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 224, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 224, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -8924,7 +8924,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public initializer(): InitializerContext {
-        let localContext = new InitializerContext(this._ctx, this.state);
+        let localContext = new InitializerContext(this.context, this.state);
         this.enterRule(localContext, 274, CPP14Parser.RULE_initializer);
         try {
             this.state = 1916;
@@ -8968,7 +8968,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public braceorequalinitializer(): BraceorequalinitializerContext {
-        let localContext = new BraceorequalinitializerContext(this._ctx, this.state);
+        let localContext = new BraceorequalinitializerContext(this.context, this.state);
         this.enterRule(localContext, 276, CPP14Parser.RULE_braceorequalinitializer);
         try {
             this.state = 1921;
@@ -9009,7 +9009,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public initializerclause(): InitializerclauseContext {
-        let localContext = new InitializerclauseContext(this._ctx, this.state);
+        let localContext = new InitializerclauseContext(this.context, this.state);
         this.enterRule(localContext, 278, CPP14Parser.RULE_initializerclause);
         try {
             this.state = 1925;
@@ -9107,9 +9107,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new InitializerlistContext(this._ctx, parentState);
+        let localContext = new InitializerlistContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 280;
         this.enterRecursionRule(localContext, 280, CPP14Parser.RULE_initializerlist, _p);
@@ -9122,7 +9122,7 @@ export class CPP14Parser extends antlr.Parser {
             this.initializerclause();
             this.state = 1930;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 228, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 228, this.context) ) {
             case 1:
                 {
                 this.state = 1929;
@@ -9131,10 +9131,10 @@ export class CPP14Parser extends antlr.Parser {
                 break;
             }
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 1940;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 230, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 230, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -9146,8 +9146,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new InitializerlistContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_initializerlist);
                     this.state = 1932;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 1933;
                     this.match(CPP14Parser.Comma);
@@ -9155,7 +9155,7 @@ export class CPP14Parser extends antlr.Parser {
                     this.initializerclause();
                     this.state = 1936;
                     this.errorHandler.sync(this);
-                    switch (this.interpreter.adaptivePredict(this.tokenStream, 229, this._ctx) ) {
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 229, this.context) ) {
                     case 1:
                         {
                         this.state = 1935;
@@ -9168,7 +9168,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 1942;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 230, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 230, this.context);
             }
             }
         }
@@ -9187,13 +9187,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public bracedinitlist(): BracedinitlistContext {
-        let localContext = new BracedinitlistContext(this._ctx, this.state);
+        let localContext = new BracedinitlistContext(this.context, this.state);
         this.enterRule(localContext, 282, CPP14Parser.RULE_bracedinitlist);
         let _la: number;
         try {
             this.state = 1952;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 232, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 232, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -9241,12 +9241,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public classname(): ClassnameContext {
-        let localContext = new ClassnameContext(this._ctx, this.state);
+        let localContext = new ClassnameContext(this.context, this.state);
         this.enterRule(localContext, 284, CPP14Parser.RULE_classname);
         try {
             this.state = 1956;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 233, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 233, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -9278,7 +9278,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public classspecifier(): ClassspecifierContext {
-        let localContext = new ClassspecifierContext(this._ctx, this.state);
+        let localContext = new ClassspecifierContext(this.context, this.state);
         this.enterRule(localContext, 286, CPP14Parser.RULE_classspecifier);
         let _la: number;
         try {
@@ -9317,13 +9317,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public classhead(): ClassheadContext {
-        let localContext = new ClassheadContext(this._ctx, this.state);
+        let localContext = new ClassheadContext(this.context, this.state);
         this.enterRule(localContext, 288, CPP14Parser.RULE_classhead);
         let _la: number;
         try {
             this.state = 1983;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 240, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 240, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -9407,14 +9407,14 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public classheadname(): ClassheadnameContext {
-        let localContext = new ClassheadnameContext(this._ctx, this.state);
+        let localContext = new ClassheadnameContext(this.context, this.state);
         this.enterRule(localContext, 290, CPP14Parser.RULE_classheadname);
         try {
             this.enterOuterAlt(localContext, 1);
             {
             this.state = 1986;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 241, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 241, this.context) ) {
             case 1:
                 {
                 this.state = 1985;
@@ -9441,7 +9441,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public classvirtspecifier(): ClassvirtspecifierContext {
-        let localContext = new ClassvirtspecifierContext(this._ctx, this.state);
+        let localContext = new ClassvirtspecifierContext(this.context, this.state);
         this.enterRule(localContext, 292, CPP14Parser.RULE_classvirtspecifier);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -9465,7 +9465,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public classkey(): ClasskeyContext {
-        let localContext = new ClasskeyContext(this._ctx, this.state);
+        let localContext = new ClasskeyContext(this.context, this.state);
         this.enterRule(localContext, 294, CPP14Parser.RULE_classkey);
         let _la: number;
         try {
@@ -9497,7 +9497,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public memberspecification(): MemberspecificationContext {
-        let localContext = new MemberspecificationContext(this._ctx, this.state);
+        let localContext = new MemberspecificationContext(this.context, this.state);
         this.enterRule(localContext, 296, CPP14Parser.RULE_memberspecification);
         let _la: number;
         try {
@@ -9609,19 +9609,19 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public memberdeclaration(): MemberdeclarationContext {
-        let localContext = new MemberdeclarationContext(this._ctx, this.state);
+        let localContext = new MemberdeclarationContext(this.context, this.state);
         this.enterRule(localContext, 298, CPP14Parser.RULE_memberdeclaration);
         let _la: number;
         try {
             this.state = 2021;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 248, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 248, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
                 this.state = 2006;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 245, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 245, this.context) ) {
                 case 1:
                     {
                     this.state = 2005;
@@ -9631,7 +9631,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 2009;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 246, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 246, this.context) ) {
                 case 1:
                     {
                     this.state = 2008;
@@ -9719,9 +9719,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new MemberdeclaratorlistContext(this._ctx, parentState);
+        let localContext = new MemberdeclaratorlistContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 300;
         this.enterRecursionRule(localContext, 300, CPP14Parser.RULE_memberdeclaratorlist, _p);
@@ -9733,10 +9733,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 2024;
             this.memberdeclarator();
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 2031;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 249, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 249, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -9748,8 +9748,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new MemberdeclaratorlistContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_memberdeclaratorlist);
                     this.state = 2026;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 2027;
                     this.match(CPP14Parser.Comma);
@@ -9760,7 +9760,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 2033;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 249, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 249, this.context);
             }
             }
         }
@@ -9779,13 +9779,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public memberdeclarator(): MemberdeclaratorContext {
-        let localContext = new MemberdeclaratorContext(this._ctx, this.state);
+        let localContext = new MemberdeclaratorContext(this.context, this.state);
         this.enterRule(localContext, 302, CPP14Parser.RULE_memberdeclarator);
         let _la: number;
         try {
             this.state = 2053;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 255, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 255, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -9793,7 +9793,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.declarator();
                 this.state = 2036;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 250, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 250, this.context) ) {
                 case 1:
                     {
                     this.state = 2035;
@@ -9803,7 +9803,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 2039;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 251, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 251, this.context) ) {
                 case 1:
                     {
                     this.state = 2038;
@@ -9820,7 +9820,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.declarator();
                 this.state = 2043;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 252, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 252, this.context) ) {
                 case 1:
                     {
                     this.state = 2042;
@@ -9883,9 +9883,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new VirtspecifierseqContext(this._ctx, parentState);
+        let localContext = new VirtspecifierseqContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 304;
         this.enterRecursionRule(localContext, 304, CPP14Parser.RULE_virtspecifierseq, _p);
@@ -9897,10 +9897,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 2056;
             this.virtspecifier();
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 2062;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 256, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 256, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -9912,8 +9912,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new VirtspecifierseqContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_virtspecifierseq);
                     this.state = 2058;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 2059;
                     this.virtspecifier();
@@ -9922,7 +9922,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 2064;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 256, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 256, this.context);
             }
             }
         }
@@ -9941,7 +9941,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public virtspecifier(): VirtspecifierContext {
-        let localContext = new VirtspecifierContext(this._ctx, this.state);
+        let localContext = new VirtspecifierContext(this.context, this.state);
         this.enterRule(localContext, 306, CPP14Parser.RULE_virtspecifier);
         let _la: number;
         try {
@@ -9973,7 +9973,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public purespecifier(): PurespecifierContext {
-        let localContext = new PurespecifierContext(this._ctx, this.state);
+        let localContext = new PurespecifierContext(this.context, this.state);
         this.enterRule(localContext, 308, CPP14Parser.RULE_purespecifier);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -10000,7 +10000,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public baseclause(): BaseclauseContext {
-        let localContext = new BaseclauseContext(this._ctx, this.state);
+        let localContext = new BaseclauseContext(this.context, this.state);
         this.enterRule(localContext, 310, CPP14Parser.RULE_baseclause);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -10033,9 +10033,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new BasespecifierlistContext(this._ctx, parentState);
+        let localContext = new BasespecifierlistContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 312;
         this.enterRecursionRule(localContext, 312, CPP14Parser.RULE_basespecifierlist, _p);
@@ -10048,7 +10048,7 @@ export class CPP14Parser extends antlr.Parser {
             this.basespecifier();
             this.state = 2077;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 257, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 257, this.context) ) {
             case 1:
                 {
                 this.state = 2076;
@@ -10057,10 +10057,10 @@ export class CPP14Parser extends antlr.Parser {
                 break;
             }
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 2087;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 259, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 259, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -10072,8 +10072,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new BasespecifierlistContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_basespecifierlist);
                     this.state = 2079;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 2080;
                     this.match(CPP14Parser.Comma);
@@ -10081,7 +10081,7 @@ export class CPP14Parser extends antlr.Parser {
                     this.basespecifier();
                     this.state = 2083;
                     this.errorHandler.sync(this);
-                    switch (this.interpreter.adaptivePredict(this.tokenStream, 258, this._ctx) ) {
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 258, this.context) ) {
                     case 1:
                         {
                         this.state = 2082;
@@ -10094,7 +10094,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 2089;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 259, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 259, this.context);
             }
             }
         }
@@ -10113,13 +10113,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public basespecifier(): BasespecifierContext {
-        let localContext = new BasespecifierContext(this._ctx, this.state);
+        let localContext = new BasespecifierContext(this.context, this.state);
         this.enterRule(localContext, 314, CPP14Parser.RULE_basespecifier);
         let _la: number;
         try {
             this.state = 2111;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 265, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 265, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -10212,18 +10212,18 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public classordecltype(): ClassordecltypeContext {
-        let localContext = new ClassordecltypeContext(this._ctx, this.state);
+        let localContext = new ClassordecltypeContext(this.context, this.state);
         this.enterRule(localContext, 316, CPP14Parser.RULE_classordecltype);
         try {
             this.state = 2118;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 267, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 267, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
                 this.state = 2114;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 266, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 266, this.context) ) {
                 case 1:
                     {
                     this.state = 2113;
@@ -10259,7 +10259,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public basetypespecifier(): BasetypespecifierContext {
-        let localContext = new BasetypespecifierContext(this._ctx, this.state);
+        let localContext = new BasetypespecifierContext(this.context, this.state);
         this.enterRule(localContext, 318, CPP14Parser.RULE_basetypespecifier);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -10283,7 +10283,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public accessspecifier(): AccessspecifierContext {
-        let localContext = new AccessspecifierContext(this._ctx, this.state);
+        let localContext = new AccessspecifierContext(this.context, this.state);
         this.enterRule(localContext, 320, CPP14Parser.RULE_accessspecifier);
         let _la: number;
         try {
@@ -10315,7 +10315,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public conversionfunctionid(): ConversionfunctionidContext {
-        let localContext = new ConversionfunctionidContext(this._ctx, this.state);
+        let localContext = new ConversionfunctionidContext(this.context, this.state);
         this.enterRule(localContext, 322, CPP14Parser.RULE_conversionfunctionid);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -10341,7 +10341,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public conversiontypeid(): ConversiontypeidContext {
-        let localContext = new ConversiontypeidContext(this._ctx, this.state);
+        let localContext = new ConversiontypeidContext(this.context, this.state);
         this.enterRule(localContext, 324, CPP14Parser.RULE_conversiontypeid);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -10350,7 +10350,7 @@ export class CPP14Parser extends antlr.Parser {
             this.typespecifierseq();
             this.state = 2129;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 268, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 268, this.context) ) {
             case 1:
                 {
                 this.state = 2128;
@@ -10375,7 +10375,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public conversiondeclarator(): ConversiondeclaratorContext {
-        let localContext = new ConversiondeclaratorContext(this._ctx, this.state);
+        let localContext = new ConversiondeclaratorContext(this.context, this.state);
         this.enterRule(localContext, 326, CPP14Parser.RULE_conversiondeclarator);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -10384,7 +10384,7 @@ export class CPP14Parser extends antlr.Parser {
             this.ptroperator();
             this.state = 2133;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 269, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 269, this.context) ) {
             case 1:
                 {
                 this.state = 2132;
@@ -10409,7 +10409,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public ctorinitializer(): CtorinitializerContext {
-        let localContext = new CtorinitializerContext(this._ctx, this.state);
+        let localContext = new CtorinitializerContext(this.context, this.state);
         this.enterRule(localContext, 328, CPP14Parser.RULE_ctorinitializer);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -10435,13 +10435,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public meminitializerlist(): MeminitializerlistContext {
-        let localContext = new MeminitializerlistContext(this._ctx, this.state);
+        let localContext = new MeminitializerlistContext(this.context, this.state);
         this.enterRule(localContext, 330, CPP14Parser.RULE_meminitializerlist);
         let _la: number;
         try {
             this.state = 2149;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 272, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 272, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -10497,13 +10497,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public meminitializer(): MeminitializerContext {
-        let localContext = new MeminitializerContext(this._ctx, this.state);
+        let localContext = new MeminitializerContext(this.context, this.state);
         this.enterRule(localContext, 332, CPP14Parser.RULE_meminitializer);
         let _la: number;
         try {
             this.state = 2161;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 274, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 274, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -10551,12 +10551,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public meminitializerid(): MeminitializeridContext {
-        let localContext = new MeminitializeridContext(this._ctx, this.state);
+        let localContext = new MeminitializeridContext(this.context, this.state);
         this.enterRule(localContext, 334, CPP14Parser.RULE_meminitializerid);
         try {
             this.state = 2165;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 275, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 275, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -10588,7 +10588,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public operatorfunctionid(): OperatorfunctionidContext {
-        let localContext = new OperatorfunctionidContext(this._ctx, this.state);
+        let localContext = new OperatorfunctionidContext(this.context, this.state);
         this.enterRule(localContext, 336, CPP14Parser.RULE_operatorfunctionid);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -10614,12 +10614,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public literaloperatorid(): LiteraloperatoridContext {
-        let localContext = new LiteraloperatoridContext(this._ctx, this.state);
+        let localContext = new LiteraloperatoridContext(this.context, this.state);
         this.enterRule(localContext, 338, CPP14Parser.RULE_literaloperatorid);
         try {
             this.state = 2175;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 276, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 276, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -10657,7 +10657,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public templatedeclaration(): TemplatedeclarationContext {
-        let localContext = new TemplatedeclarationContext(this._ctx, this.state);
+        let localContext = new TemplatedeclarationContext(this.context, this.state);
         this.enterRule(localContext, 340, CPP14Parser.RULE_templatedeclaration);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -10696,9 +10696,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new TemplateparameterlistContext(this._ctx, parentState);
+        let localContext = new TemplateparameterlistContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 342;
         this.enterRecursionRule(localContext, 342, CPP14Parser.RULE_templateparameterlist, _p);
@@ -10710,10 +10710,10 @@ export class CPP14Parser extends antlr.Parser {
             this.state = 2184;
             this.templateparameter();
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 2191;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 277, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 277, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -10725,8 +10725,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new TemplateparameterlistContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_templateparameterlist);
                     this.state = 2186;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 2187;
                     this.match(CPP14Parser.Comma);
@@ -10737,7 +10737,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 2193;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 277, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 277, this.context);
             }
             }
         }
@@ -10756,12 +10756,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public templateparameter(): TemplateparameterContext {
-        let localContext = new TemplateparameterContext(this._ctx, this.state);
+        let localContext = new TemplateparameterContext(this.context, this.state);
         this.enterRule(localContext, 344, CPP14Parser.RULE_templateparameter);
         try {
             this.state = 2196;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 278, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 278, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -10793,13 +10793,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public typeparameter(): TypeparameterContext {
-        let localContext = new TypeparameterContext(this._ctx, this.state);
+        let localContext = new TypeparameterContext(this.context, this.state);
         this.enterRule(localContext, 346, CPP14Parser.RULE_typeparameter);
         let _la: number;
         try {
             this.state = 2246;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 288, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 288, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -10807,7 +10807,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.match(CPP14Parser.Class);
                 this.state = 2200;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 279, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 279, this.context) ) {
                 case 1:
                     {
                     this.state = 2199;
@@ -10817,7 +10817,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 2203;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 280, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 280, this.context) ) {
                 case 1:
                     {
                     this.state = 2202;
@@ -10855,7 +10855,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.match(CPP14Parser.Typename);
                 this.state = 2213;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 282, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 282, this.context) ) {
                 case 1:
                     {
                     this.state = 2212;
@@ -10865,7 +10865,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 2216;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 283, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 283, this.context) ) {
                 case 1:
                     {
                     this.state = 2215;
@@ -10911,7 +10911,7 @@ export class CPP14Parser extends antlr.Parser {
                 this.match(CPP14Parser.Class);
                 this.state = 2230;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 285, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 285, this.context) ) {
                 case 1:
                     {
                     this.state = 2229;
@@ -10921,7 +10921,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 2233;
                 this.errorHandler.sync(this);
-                switch (this.interpreter.adaptivePredict(this.tokenStream, 286, this._ctx) ) {
+                switch (this.interpreter.adaptivePredict(this.tokenStream, 286, this.context) ) {
                 case 1:
                     {
                     this.state = 2232;
@@ -10977,7 +10977,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public simpletemplateid(): SimpletemplateidContext {
-        let localContext = new SimpletemplateidContext(this._ctx, this.state);
+        let localContext = new SimpletemplateidContext(this.context, this.state);
         this.enterRule(localContext, 348, CPP14Parser.RULE_simpletemplateid);
         let _la: number;
         try {
@@ -11016,13 +11016,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public templateid(): TemplateidContext {
-        let localContext = new TemplateidContext(this._ctx, this.state);
+        let localContext = new TemplateidContext(this.context, this.state);
         this.enterRule(localContext, 350, CPP14Parser.RULE_templateid);
         let _la: number;
         try {
             this.state = 2270;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 292, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 292, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -11089,7 +11089,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public templatename(): TemplatenameContext {
-        let localContext = new TemplatenameContext(this._ctx, this.state);
+        let localContext = new TemplatenameContext(this.context, this.state);
         this.enterRule(localContext, 352, CPP14Parser.RULE_templatename);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -11120,9 +11120,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new TemplateargumentlistContext(this._ctx, parentState);
+        let localContext = new TemplateargumentlistContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 354;
         this.enterRecursionRule(localContext, 354, CPP14Parser.RULE_templateargumentlist, _p);
@@ -11135,7 +11135,7 @@ export class CPP14Parser extends antlr.Parser {
             this.templateargument();
             this.state = 2277;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 293, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 293, this.context) ) {
             case 1:
                 {
                 this.state = 2276;
@@ -11144,10 +11144,10 @@ export class CPP14Parser extends antlr.Parser {
                 break;
             }
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 2287;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 295, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 295, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -11159,8 +11159,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new TemplateargumentlistContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_templateargumentlist);
                     this.state = 2279;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 2280;
                     this.match(CPP14Parser.Comma);
@@ -11168,7 +11168,7 @@ export class CPP14Parser extends antlr.Parser {
                     this.templateargument();
                     this.state = 2283;
                     this.errorHandler.sync(this);
-                    switch (this.interpreter.adaptivePredict(this.tokenStream, 294, this._ctx) ) {
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 294, this.context) ) {
                     case 1:
                         {
                         this.state = 2282;
@@ -11181,7 +11181,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 2289;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 295, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 295, this.context);
             }
             }
         }
@@ -11200,12 +11200,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public templateargument(): TemplateargumentContext {
-        let localContext = new TemplateargumentContext(this._ctx, this.state);
+        let localContext = new TemplateargumentContext(this.context, this.state);
         this.enterRule(localContext, 356, CPP14Parser.RULE_templateargument);
         try {
             this.state = 2293;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 296, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 296, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -11244,13 +11244,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public typenamespecifier(): TypenamespecifierContext {
-        let localContext = new TypenamespecifierContext(this._ctx, this.state);
+        let localContext = new TypenamespecifierContext(this.context, this.state);
         this.enterRule(localContext, 358, CPP14Parser.RULE_typenamespecifier);
         let _la: number;
         try {
             this.state = 2306;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 298, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 298, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -11300,7 +11300,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public explicitinstantiation(): ExplicitinstantiationContext {
-        let localContext = new ExplicitinstantiationContext(this._ctx, this.state);
+        let localContext = new ExplicitinstantiationContext(this.context, this.state);
         this.enterRule(localContext, 360, CPP14Parser.RULE_explicitinstantiation);
         let _la: number;
         try {
@@ -11337,7 +11337,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public explicitspecialization(): ExplicitspecializationContext {
-        let localContext = new ExplicitspecializationContext(this._ctx, this.state);
+        let localContext = new ExplicitspecializationContext(this.context, this.state);
         this.enterRule(localContext, 362, CPP14Parser.RULE_explicitspecialization);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -11367,7 +11367,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public tryblock(): TryblockContext {
-        let localContext = new TryblockContext(this._ctx, this.state);
+        let localContext = new TryblockContext(this.context, this.state);
         this.enterRule(localContext, 364, CPP14Parser.RULE_tryblock);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -11395,7 +11395,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public functiontryblock(): FunctiontryblockContext {
-        let localContext = new FunctiontryblockContext(this._ctx, this.state);
+        let localContext = new FunctiontryblockContext(this.context, this.state);
         this.enterRule(localContext, 366, CPP14Parser.RULE_functiontryblock);
         let _la: number;
         try {
@@ -11434,7 +11434,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public handlerseq(): HandlerseqContext {
-        let localContext = new HandlerseqContext(this._ctx, this.state);
+        let localContext = new HandlerseqContext(this.context, this.state);
         this.enterRule(localContext, 368, CPP14Parser.RULE_handlerseq);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -11443,7 +11443,7 @@ export class CPP14Parser extends antlr.Parser {
             this.handler();
             this.state = 2332;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 301, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 301, this.context) ) {
             case 1:
                 {
                 this.state = 2331;
@@ -11468,7 +11468,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public handler(): HandlerContext {
-        let localContext = new HandlerContext(this._ctx, this.state);
+        let localContext = new HandlerContext(this.context, this.state);
         this.enterRule(localContext, 370, CPP14Parser.RULE_handler);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -11500,13 +11500,13 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public exceptiondeclaration(): ExceptiondeclarationContext {
-        let localContext = new ExceptiondeclarationContext(this._ctx, this.state);
+        let localContext = new ExceptiondeclarationContext(this.context, this.state);
         this.enterRule(localContext, 372, CPP14Parser.RULE_exceptiondeclaration);
         let _la: number;
         try {
             this.state = 2354;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 305, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 305, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -11577,7 +11577,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public throwexpression(): ThrowexpressionContext {
-        let localContext = new ThrowexpressionContext(this._ctx, this.state);
+        let localContext = new ThrowexpressionContext(this.context, this.state);
         this.enterRule(localContext, 374, CPP14Parser.RULE_throwexpression);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -11586,7 +11586,7 @@ export class CPP14Parser extends antlr.Parser {
             this.match(CPP14Parser.Throw);
             this.state = 2358;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 306, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 306, this.context) ) {
             case 1:
                 {
                 this.state = 2357;
@@ -11611,7 +11611,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public exceptionspecification(): ExceptionspecificationContext {
-        let localContext = new ExceptionspecificationContext(this._ctx, this.state);
+        let localContext = new ExceptionspecificationContext(this.context, this.state);
         this.enterRule(localContext, 376, CPP14Parser.RULE_exceptionspecification);
         try {
             this.state = 2362;
@@ -11650,7 +11650,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public dynamicexceptionspecification(): DynamicexceptionspecificationContext {
-        let localContext = new DynamicexceptionspecificationContext(this._ctx, this.state);
+        let localContext = new DynamicexceptionspecificationContext(this.context, this.state);
         this.enterRule(localContext, 378, CPP14Parser.RULE_dynamicexceptionspecification);
         let _la: number;
         try {
@@ -11696,9 +11696,9 @@ export class CPP14Parser extends antlr.Parser {
             _p = 0;
         }
 
-        let parentContext = this._ctx;
+        let parentContext = this.context;
         let parentState = this.state;
-        let localContext = new TypeidlistContext(this._ctx, parentState);
+        let localContext = new TypeidlistContext(this.context, parentState);
         let previousContext = localContext;
         let _startState = 380;
         this.enterRecursionRule(localContext, 380, CPP14Parser.RULE_typeidlist, _p);
@@ -11711,7 +11711,7 @@ export class CPP14Parser extends antlr.Parser {
             this.typeid();
             this.state = 2374;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 309, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 309, this.context) ) {
             case 1:
                 {
                 this.state = 2373;
@@ -11720,10 +11720,10 @@ export class CPP14Parser extends antlr.Parser {
                 break;
             }
             }
-            this._ctx.stop = this.tokenStream.LT(-1);
+            this.context!.stop = this.tokenStream.LT(-1);
             this.state = 2384;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 311, this._ctx);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 311, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     if (this._parseListeners != null) {
@@ -11735,8 +11735,8 @@ export class CPP14Parser extends antlr.Parser {
                     localContext = new TypeidlistContext(parentContext, parentState);
                     this.pushNewRecursionContext(localContext, _startState, CPP14Parser.RULE_typeidlist);
                     this.state = 2376;
-                    if (!(this.precpred(this._ctx, 1))) {
-                        throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
+                    if (!(this.precpred(this.context, 1))) {
+                        throw this.createFailedPredicateException("this.precpred(this.context, 1)");
                     }
                     this.state = 2377;
                     this.match(CPP14Parser.Comma);
@@ -11744,7 +11744,7 @@ export class CPP14Parser extends antlr.Parser {
                     this.typeid();
                     this.state = 2380;
                     this.errorHandler.sync(this);
-                    switch (this.interpreter.adaptivePredict(this.tokenStream, 310, this._ctx) ) {
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 310, this.context) ) {
                     case 1:
                         {
                         this.state = 2379;
@@ -11757,7 +11757,7 @@ export class CPP14Parser extends antlr.Parser {
                 }
                 this.state = 2386;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 311, this._ctx);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 311, this.context);
             }
             }
         }
@@ -11776,12 +11776,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public noexceptspecification(): NoexceptspecificationContext {
-        let localContext = new NoexceptspecificationContext(this._ctx, this.state);
+        let localContext = new NoexceptspecificationContext(this.context, this.state);
         this.enterRule(localContext, 382, CPP14Parser.RULE_noexceptspecification);
         try {
             this.state = 2393;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 312, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 312, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -11819,7 +11819,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public rightShift(): RightShiftContext {
-        let localContext = new RightShiftContext(this._ctx, this.state);
+        let localContext = new RightShiftContext(this.context, this.state);
         this.enterRule(localContext, 384, CPP14Parser.RULE_rightShift);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -11845,7 +11845,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public rightShiftAssign(): RightShiftAssignContext {
-        let localContext = new RightShiftAssignContext(this._ctx, this.state);
+        let localContext = new RightShiftAssignContext(this.context, this.state);
         this.enterRule(localContext, 386, CPP14Parser.RULE_rightShiftAssign);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -11873,12 +11873,12 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public operator(): OperatorContext {
-        let localContext = new OperatorContext(this._ctx, this.state);
+        let localContext = new OperatorContext(this.context, this.state);
         this.enterRule(localContext, 388, CPP14Parser.RULE_operator);
         try {
             this.state = 2450;
             this.errorHandler.sync(this);
-            switch (this.interpreter.adaptivePredict(this.tokenStream, 313, this._ctx) ) {
+            switch (this.interpreter.adaptivePredict(this.tokenStream, 313, this.context) ) {
             case 1:
                 this.enterOuterAlt(localContext, 1);
                 {
@@ -12202,7 +12202,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public literal(): LiteralContext {
-        let localContext = new LiteralContext(this._ctx, this.state);
+        let localContext = new LiteralContext(this.context, this.state);
         this.enterRule(localContext, 390, CPP14Parser.RULE_literal);
         try {
             this.state = 2459;
@@ -12280,7 +12280,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public booleanliteral(): BooleanliteralContext {
-        let localContext = new BooleanliteralContext(this._ctx, this.state);
+        let localContext = new BooleanliteralContext(this.context, this.state);
         this.enterRule(localContext, 392, CPP14Parser.RULE_booleanliteral);
         let _la: number;
         try {
@@ -12312,7 +12312,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public pointerliteral(): PointerliteralContext {
-        let localContext = new PointerliteralContext(this._ctx, this.state);
+        let localContext = new PointerliteralContext(this.context, this.state);
         this.enterRule(localContext, 394, CPP14Parser.RULE_pointerliteral);
         try {
             this.enterOuterAlt(localContext, 1);
@@ -12336,7 +12336,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
     public userdefinedliteral(): UserdefinedliteralContext {
-        let localContext = new UserdefinedliteralContext(this._ctx, this.state);
+        let localContext = new UserdefinedliteralContext(this.context, this.state);
         this.enterRule(localContext, 396, CPP14Parser.RULE_userdefinedliteral);
         let _la: number;
         try {
@@ -12444,282 +12444,282 @@ export class CPP14Parser extends antlr.Parser {
     private nestednamespecifier_sempred(localContext: NestednamespecifierContext, predIndex: number): boolean {
         switch (predIndex) {
         case 0:
-            return this.precpred(this._ctx, 2);
+            return this.precpred(this.context, 2);
         case 1:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private capturelist_sempred(localContext: CapturelistContext, predIndex: number): boolean {
         switch (predIndex) {
         case 2:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private postfixexpression_sempred(localContext: PostfixexpressionContext, predIndex: number): boolean {
         switch (predIndex) {
         case 3:
-            return this.precpred(this._ctx, 19);
+            return this.precpred(this.context, 19);
         case 4:
-            return this.precpred(this._ctx, 18);
+            return this.precpred(this.context, 18);
         case 5:
-            return this.precpred(this._ctx, 17);
+            return this.precpred(this.context, 17);
         case 6:
-            return this.precpred(this._ctx, 12);
+            return this.precpred(this.context, 12);
         case 7:
-            return this.precpred(this._ctx, 11);
+            return this.precpred(this.context, 11);
         case 8:
-            return this.precpred(this._ctx, 10);
+            return this.precpred(this.context, 10);
         case 9:
-            return this.precpred(this._ctx, 9);
+            return this.precpred(this.context, 9);
         case 10:
-            return this.precpred(this._ctx, 8);
+            return this.precpred(this.context, 8);
         case 11:
-            return this.precpred(this._ctx, 7);
+            return this.precpred(this.context, 7);
         }
         return true;
     }
     private noptrnewdeclarator_sempred(localContext: NoptrnewdeclaratorContext, predIndex: number): boolean {
         switch (predIndex) {
         case 12:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private pmexpression_sempred(localContext: PmexpressionContext, predIndex: number): boolean {
         switch (predIndex) {
         case 13:
-            return this.precpred(this._ctx, 2);
+            return this.precpred(this.context, 2);
         case 14:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private multiplicativeexpression_sempred(localContext: MultiplicativeexpressionContext, predIndex: number): boolean {
         switch (predIndex) {
         case 15:
-            return this.precpred(this._ctx, 3);
+            return this.precpred(this.context, 3);
         case 16:
-            return this.precpred(this._ctx, 2);
+            return this.precpred(this.context, 2);
         case 17:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private additiveexpression_sempred(localContext: AdditiveexpressionContext, predIndex: number): boolean {
         switch (predIndex) {
         case 18:
-            return this.precpred(this._ctx, 2);
+            return this.precpred(this.context, 2);
         case 19:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private shiftexpression_sempred(localContext: ShiftexpressionContext, predIndex: number): boolean {
         switch (predIndex) {
         case 20:
-            return this.precpred(this._ctx, 2);
+            return this.precpred(this.context, 2);
         case 21:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private relationalexpression_sempred(localContext: RelationalexpressionContext, predIndex: number): boolean {
         switch (predIndex) {
         case 22:
-            return this.precpred(this._ctx, 4);
+            return this.precpred(this.context, 4);
         case 23:
-            return this.precpred(this._ctx, 3);
+            return this.precpred(this.context, 3);
         case 24:
-            return this.precpred(this._ctx, 2);
+            return this.precpred(this.context, 2);
         case 25:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private equalityexpression_sempred(localContext: EqualityexpressionContext, predIndex: number): boolean {
         switch (predIndex) {
         case 26:
-            return this.precpred(this._ctx, 2);
+            return this.precpred(this.context, 2);
         case 27:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private andexpression_sempred(localContext: AndexpressionContext, predIndex: number): boolean {
         switch (predIndex) {
         case 28:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private exclusiveorexpression_sempred(localContext: ExclusiveorexpressionContext, predIndex: number): boolean {
         switch (predIndex) {
         case 29:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private inclusiveorexpression_sempred(localContext: InclusiveorexpressionContext, predIndex: number): boolean {
         switch (predIndex) {
         case 30:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private logicalandexpression_sempred(localContext: LogicalandexpressionContext, predIndex: number): boolean {
         switch (predIndex) {
         case 31:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private logicalorexpression_sempred(localContext: LogicalorexpressionContext, predIndex: number): boolean {
         switch (predIndex) {
         case 32:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private expression_sempred(localContext: ExpressionContext, predIndex: number): boolean {
         switch (predIndex) {
         case 33:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private statementseq_sempred(localContext: StatementseqContext, predIndex: number): boolean {
         switch (predIndex) {
         case 34:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private declarationseq_sempred(localContext: DeclarationseqContext, predIndex: number): boolean {
         switch (predIndex) {
         case 35:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private enumeratorlist_sempred(localContext: EnumeratorlistContext, predIndex: number): boolean {
         switch (predIndex) {
         case 36:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private attributespecifierseq_sempred(localContext: AttributespecifierseqContext, predIndex: number): boolean {
         switch (predIndex) {
         case 37:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private attributelist_sempred(localContext: AttributelistContext, predIndex: number): boolean {
         switch (predIndex) {
         case 38:
-            return this.precpred(this._ctx, 3);
+            return this.precpred(this.context, 3);
         case 39:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private balancedtokenseq_sempred(localContext: BalancedtokenseqContext, predIndex: number): boolean {
         switch (predIndex) {
         case 40:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private initdeclaratorlist_sempred(localContext: InitdeclaratorlistContext, predIndex: number): boolean {
         switch (predIndex) {
         case 41:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private noptrdeclarator_sempred(localContext: NoptrdeclaratorContext, predIndex: number): boolean {
         switch (predIndex) {
         case 42:
-            return this.precpred(this._ctx, 3);
+            return this.precpred(this.context, 3);
         case 43:
-            return this.precpred(this._ctx, 2);
+            return this.precpred(this.context, 2);
         }
         return true;
     }
     private noptrabstractdeclarator_sempred(localContext: NoptrabstractdeclaratorContext, predIndex: number): boolean {
         switch (predIndex) {
         case 44:
-            return this.precpred(this._ctx, 5);
+            return this.precpred(this.context, 5);
         case 45:
-            return this.precpred(this._ctx, 3);
+            return this.precpred(this.context, 3);
         }
         return true;
     }
     private noptrabstractpackdeclarator_sempred(localContext: NoptrabstractpackdeclaratorContext, predIndex: number): boolean {
         switch (predIndex) {
         case 46:
-            return this.precpred(this._ctx, 3);
+            return this.precpred(this.context, 3);
         case 47:
-            return this.precpred(this._ctx, 2);
+            return this.precpred(this.context, 2);
         }
         return true;
     }
     private parameterdeclarationlist_sempred(localContext: ParameterdeclarationlistContext, predIndex: number): boolean {
         switch (predIndex) {
         case 48:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private initializerlist_sempred(localContext: InitializerlistContext, predIndex: number): boolean {
         switch (predIndex) {
         case 49:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private memberdeclaratorlist_sempred(localContext: MemberdeclaratorlistContext, predIndex: number): boolean {
         switch (predIndex) {
         case 50:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private virtspecifierseq_sempred(localContext: VirtspecifierseqContext, predIndex: number): boolean {
         switch (predIndex) {
         case 51:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private basespecifierlist_sempred(localContext: BasespecifierlistContext, predIndex: number): boolean {
         switch (predIndex) {
         case 52:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private templateparameterlist_sempred(localContext: TemplateparameterlistContext, predIndex: number): boolean {
         switch (predIndex) {
         case 53:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private templateargumentlist_sempred(localContext: TemplateargumentlistContext, predIndex: number): boolean {
         switch (predIndex) {
         case 54:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
     private typeidlist_sempred(localContext: TypeidlistContext, predIndex: number): boolean {
         switch (predIndex) {
         case 55:
-            return this.precpred(this._ctx, 1);
+            return this.precpred(this.context, 1);
         }
         return true;
     }
@@ -13791,8 +13791,8 @@ export class TranslationunitContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public EOF(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.EOF, 0);
+    public EOF(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.EOF, 0)!;
     }
     public declarationseq(): DeclarationseqContext | null {
         return this.getRuleContext(0, DeclarationseqContext);
@@ -13907,8 +13907,8 @@ export class NestednamespecifierContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Doublecolon(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Doublecolon, 0);
+    public Doublecolon(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Doublecolon, 0)!;
     }
     public typename(): TypenameContext | null {
         return this.getRuleContext(0, TypenameContext);
@@ -13960,11 +13960,11 @@ export class LambdaintroducerContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public LeftBracket(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftBracket, 0);
+    public LeftBracket(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftBracket, 0)!;
     }
-    public RightBracket(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightBracket, 0);
+    public RightBracket(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightBracket, 0)!;
     }
     public lambdacapture(): LambdacaptureContext | null {
         return this.getRuleContext(0, LambdacaptureContext);
@@ -14071,8 +14071,8 @@ export class InitcaptureContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Identifier(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Identifier, 0);
+    public Identifier(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Identifier, 0)!;
     }
     public initializer(): InitializerContext {
         return this.getRuleContext(0, InitializerContext)!;
@@ -14090,14 +14090,14 @@ export class LambdadeclaratorContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public LeftParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftParen, 0);
+    public LeftParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftParen, 0)!;
     }
     public parameterdeclarationclause(): ParameterdeclarationclauseContext {
         return this.getRuleContext(0, ParameterdeclarationclauseContext)!;
     }
-    public RightParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightParen, 0);
+    public RightParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightParen, 0)!;
     }
     public Mutable(): antlr.TerminalNode | null {
         return this.getToken(CPP14Parser.Mutable, 0);
@@ -14234,8 +14234,8 @@ export class PseudodestructornameContext extends antlr.ParserRuleContext {
     public Doublecolon(): antlr.TerminalNode | null {
         return this.getToken(CPP14Parser.Doublecolon, 0);
     }
-    public Tilde(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Tilde, 0);
+    public Tilde(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Tilde, 0)!;
     }
     public nestednamespecifier(): NestednamespecifierContext | null {
         return this.getRuleContext(0, NestednamespecifierContext);
@@ -14348,8 +14348,8 @@ export class NewexpressionContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public New(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.New, 0);
+    public New(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.New, 0)!;
     }
     public newtypeid(): NewtypeidContext | null {
         return this.getRuleContext(0, NewtypeidContext);
@@ -14382,14 +14382,14 @@ export class NewplacementContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public LeftParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftParen, 0);
+    public LeftParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftParen, 0)!;
     }
     public expressionlist(): ExpressionlistContext {
         return this.getRuleContext(0, ExpressionlistContext)!;
     }
-    public RightParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightParen, 0);
+    public RightParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightParen, 0)!;
     }
     public override get ruleIndex(): number {
         return CPP14Parser.RULE_newplacement;
@@ -14436,14 +14436,14 @@ export class NoptrnewdeclaratorContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public LeftBracket(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftBracket, 0);
+    public LeftBracket(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftBracket, 0)!;
     }
     public expression(): ExpressionContext | null {
         return this.getRuleContext(0, ExpressionContext);
     }
-    public RightBracket(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightBracket, 0);
+    public RightBracket(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightBracket, 0)!;
     }
     public attributespecifierseq(): AttributespecifierseqContext | null {
         return this.getRuleContext(0, AttributespecifierseqContext);
@@ -14486,8 +14486,8 @@ export class DeleteexpressionContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Delete(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Delete, 0);
+    public Delete(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Delete, 0)!;
     }
     public castexpression(): CastexpressionContext {
         return this.getRuleContext(0, CastexpressionContext)!;
@@ -14511,17 +14511,17 @@ export class NoexceptexpressionContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Noexcept(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Noexcept, 0);
+    public Noexcept(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Noexcept, 0)!;
     }
-    public LeftParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftParen, 0);
+    public LeftParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftParen, 0)!;
     }
     public expression(): ExpressionContext {
         return this.getRuleContext(0, ExpressionContext)!;
     }
-    public RightParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightParen, 0);
+    public RightParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightParen, 0)!;
     }
     public override get ruleIndex(): number {
         return CPP14Parser.RULE_noexceptexpression;
@@ -14959,8 +14959,8 @@ export class LabeledstatementContext extends antlr.ParserRuleContext {
     public Identifier(): antlr.TerminalNode | null {
         return this.getToken(CPP14Parser.Identifier, 0);
     }
-    public Colon(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Colon, 0);
+    public Colon(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Colon, 0)!;
     }
     public statement(): StatementContext {
         return this.getRuleContext(0, StatementContext)!;
@@ -14987,8 +14987,8 @@ export class ExpressionstatementContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Semi(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Semi, 0);
+    public Semi(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Semi, 0)!;
     }
     public expression(): ExpressionContext | null {
         return this.getRuleContext(0, ExpressionContext);
@@ -15003,11 +15003,11 @@ export class CompoundstatementContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public LeftBrace(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftBrace, 0);
+    public LeftBrace(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftBrace, 0)!;
     }
-    public RightBrace(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightBrace, 0);
+    public RightBrace(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightBrace, 0)!;
     }
     public statementseq(): StatementseqContext | null {
         return this.getRuleContext(0, StatementseqContext);
@@ -15041,14 +15041,14 @@ export class SelectionstatementContext extends antlr.ParserRuleContext {
     public If(): antlr.TerminalNode | null {
         return this.getToken(CPP14Parser.If, 0);
     }
-    public LeftParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftParen, 0);
+    public LeftParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftParen, 0)!;
     }
     public condition(): ConditionContext {
         return this.getRuleContext(0, ConditionContext)!;
     }
-    public RightParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightParen, 0);
+    public RightParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightParen, 0)!;
     }
     public statement(): StatementContext[];
     public statement(i: number): StatementContext | null;
@@ -15109,14 +15109,14 @@ export class IterationstatementContext extends antlr.ParserRuleContext {
     public While(): antlr.TerminalNode | null {
         return this.getToken(CPP14Parser.While, 0);
     }
-    public LeftParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftParen, 0);
+    public LeftParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftParen, 0)!;
     }
     public condition(): ConditionContext | null {
         return this.getRuleContext(0, ConditionContext);
     }
-    public RightParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightParen, 0);
+    public RightParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightParen, 0)!;
     }
     public statement(): StatementContext {
         return this.getRuleContext(0, StatementContext)!;
@@ -15209,8 +15209,8 @@ export class JumpstatementContext extends antlr.ParserRuleContext {
     public Break(): antlr.TerminalNode | null {
         return this.getToken(CPP14Parser.Break, 0);
     }
-    public Semi(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Semi, 0);
+    public Semi(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Semi, 0)!;
     }
     public Continue(): antlr.TerminalNode | null {
         return this.getToken(CPP14Parser.Continue, 0);
@@ -15340,20 +15340,20 @@ export class AliasdeclarationContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Using(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Using, 0);
+    public Using(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Using, 0)!;
     }
-    public Identifier(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Identifier, 0);
+    public Identifier(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Identifier, 0)!;
     }
-    public Assign(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Assign, 0);
+    public Assign(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Assign, 0)!;
     }
     public typeid(): TypeidContext {
         return this.getRuleContext(0, TypeidContext)!;
     }
-    public Semi(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Semi, 0);
+    public Semi(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Semi, 0)!;
     }
     public attributespecifierseq(): AttributespecifierseqContext | null {
         return this.getRuleContext(0, AttributespecifierseqContext);
@@ -15368,8 +15368,8 @@ export class SimpledeclarationContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Semi(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Semi, 0);
+    public Semi(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Semi, 0)!;
     }
     public declspecifierseq(): DeclspecifierseqContext | null {
         return this.getRuleContext(0, DeclspecifierseqContext);
@@ -15390,26 +15390,26 @@ export class Static_assertdeclarationContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Static_assert(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Static_assert, 0);
+    public Static_assert(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Static_assert, 0)!;
     }
-    public LeftParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftParen, 0);
+    public LeftParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftParen, 0)!;
     }
     public constantexpression(): ConstantexpressionContext {
         return this.getRuleContext(0, ConstantexpressionContext)!;
     }
-    public Comma(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Comma, 0);
+    public Comma(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Comma, 0)!;
     }
-    public Stringliteral(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Stringliteral, 0);
+    public Stringliteral(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Stringliteral, 0)!;
     }
-    public RightParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightParen, 0);
+    public RightParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightParen, 0)!;
     }
-    public Semi(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Semi, 0);
+    public Semi(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Semi, 0)!;
     }
     public override get ruleIndex(): number {
         return CPP14Parser.RULE_static_assertdeclaration;
@@ -15421,8 +15421,8 @@ export class EmptydeclarationContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Semi(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Semi, 0);
+    public Semi(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Semi, 0)!;
     }
     public override get ruleIndex(): number {
         return CPP14Parser.RULE_emptydeclaration;
@@ -15437,8 +15437,8 @@ export class AttributedeclarationContext extends antlr.ParserRuleContext {
     public attributespecifierseq(): AttributespecifierseqContext {
         return this.getRuleContext(0, AttributespecifierseqContext)!;
     }
-    public Semi(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Semi, 0);
+    public Semi(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Semi, 0)!;
     }
     public override get ruleIndex(): number {
         return CPP14Parser.RULE_attributedeclaration;
@@ -15541,8 +15541,8 @@ export class TypedefnameContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Identifier(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Identifier, 0);
+    public Identifier(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Identifier, 0)!;
     }
     public override get ruleIndex(): number {
         return CPP14Parser.RULE_typedefname;
@@ -15722,17 +15722,17 @@ export class DecltypespecifierContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Decltype(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Decltype, 0);
+    public Decltype(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Decltype, 0)!;
     }
-    public LeftParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftParen, 0);
+    public LeftParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftParen, 0)!;
     }
     public expression(): ExpressionContext | null {
         return this.getRuleContext(0, ExpressionContext);
     }
-    public RightParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightParen, 0);
+    public RightParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightParen, 0)!;
     }
     public Auto(): antlr.TerminalNode | null {
         return this.getToken(CPP14Parser.Auto, 0);
@@ -15778,8 +15778,8 @@ export class EnumnameContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Identifier(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Identifier, 0);
+    public Identifier(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Identifier, 0)!;
     }
     public override get ruleIndex(): number {
         return CPP14Parser.RULE_enumname;
@@ -15794,11 +15794,11 @@ export class EnumspecifierContext extends antlr.ParserRuleContext {
     public enumhead(): EnumheadContext {
         return this.getRuleContext(0, EnumheadContext)!;
     }
-    public LeftBrace(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftBrace, 0);
+    public LeftBrace(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftBrace, 0)!;
     }
-    public RightBrace(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightBrace, 0);
+    public RightBrace(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightBrace, 0)!;
     }
     public enumeratorlist(): EnumeratorlistContext | null {
         return this.getRuleContext(0, EnumeratorlistContext);
@@ -15844,11 +15844,11 @@ export class OpaqueenumdeclarationContext extends antlr.ParserRuleContext {
     public enumkey(): EnumkeyContext {
         return this.getRuleContext(0, EnumkeyContext)!;
     }
-    public Identifier(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Identifier, 0);
+    public Identifier(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Identifier, 0)!;
     }
-    public Semi(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Semi, 0);
+    public Semi(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Semi, 0)!;
     }
     public attributespecifierseq(): AttributespecifierseqContext | null {
         return this.getRuleContext(0, AttributespecifierseqContext);
@@ -15866,8 +15866,8 @@ export class EnumkeyContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Enum(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Enum, 0);
+    public Enum(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Enum, 0)!;
     }
     public Class(): antlr.TerminalNode | null {
         return this.getToken(CPP14Parser.Class, 0);
@@ -15885,8 +15885,8 @@ export class EnumbaseContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Colon(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Colon, 0);
+    public Colon(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Colon, 0)!;
     }
     public typespecifierseq(): TypespecifierseqContext {
         return this.getRuleContext(0, TypespecifierseqContext)!;
@@ -15939,8 +15939,8 @@ export class EnumeratorContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Identifier(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Identifier, 0);
+    public Identifier(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Identifier, 0)!;
     }
     public override get ruleIndex(): number {
         return CPP14Parser.RULE_enumerator;
@@ -15968,8 +15968,8 @@ export class OriginalnamespacenameContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Identifier(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Identifier, 0);
+    public Identifier(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Identifier, 0)!;
     }
     public override get ruleIndex(): number {
         return CPP14Parser.RULE_originalnamespacename;
@@ -16013,20 +16013,20 @@ export class OriginalnamespacedefinitionContext extends antlr.ParserRuleContext 
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Namespace(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Namespace, 0);
+    public Namespace(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Namespace, 0)!;
     }
-    public Identifier(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Identifier, 0);
+    public Identifier(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Identifier, 0)!;
     }
-    public LeftBrace(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftBrace, 0);
+    public LeftBrace(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftBrace, 0)!;
     }
     public namespacebody(): NamespacebodyContext {
         return this.getRuleContext(0, NamespacebodyContext)!;
     }
-    public RightBrace(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightBrace, 0);
+    public RightBrace(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightBrace, 0)!;
     }
     public Inline(): antlr.TerminalNode | null {
         return this.getToken(CPP14Parser.Inline, 0);
@@ -16041,20 +16041,20 @@ export class ExtensionnamespacedefinitionContext extends antlr.ParserRuleContext
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Namespace(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Namespace, 0);
+    public Namespace(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Namespace, 0)!;
     }
     public originalnamespacename(): OriginalnamespacenameContext {
         return this.getRuleContext(0, OriginalnamespacenameContext)!;
     }
-    public LeftBrace(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftBrace, 0);
+    public LeftBrace(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftBrace, 0)!;
     }
     public namespacebody(): NamespacebodyContext {
         return this.getRuleContext(0, NamespacebodyContext)!;
     }
-    public RightBrace(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightBrace, 0);
+    public RightBrace(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightBrace, 0)!;
     }
     public Inline(): antlr.TerminalNode | null {
         return this.getToken(CPP14Parser.Inline, 0);
@@ -16069,17 +16069,17 @@ export class UnnamednamespacedefinitionContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Namespace(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Namespace, 0);
+    public Namespace(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Namespace, 0)!;
     }
-    public LeftBrace(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftBrace, 0);
+    public LeftBrace(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftBrace, 0)!;
     }
     public namespacebody(): NamespacebodyContext {
         return this.getRuleContext(0, NamespacebodyContext)!;
     }
-    public RightBrace(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightBrace, 0);
+    public RightBrace(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightBrace, 0)!;
     }
     public Inline(): antlr.TerminalNode | null {
         return this.getToken(CPP14Parser.Inline, 0);
@@ -16107,8 +16107,8 @@ export class NamespacealiasContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Identifier(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Identifier, 0);
+    public Identifier(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Identifier, 0)!;
     }
     public override get ruleIndex(): number {
         return CPP14Parser.RULE_namespacealias;
@@ -16120,20 +16120,20 @@ export class NamespacealiasdefinitionContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Namespace(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Namespace, 0);
+    public Namespace(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Namespace, 0)!;
     }
-    public Identifier(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Identifier, 0);
+    public Identifier(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Identifier, 0)!;
     }
-    public Assign(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Assign, 0);
+    public Assign(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Assign, 0)!;
     }
     public qualifiednamespacespecifier(): QualifiednamespacespecifierContext {
         return this.getRuleContext(0, QualifiednamespacespecifierContext)!;
     }
-    public Semi(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Semi, 0);
+    public Semi(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Semi, 0)!;
     }
     public override get ruleIndex(): number {
         return CPP14Parser.RULE_namespacealiasdefinition;
@@ -16161,8 +16161,8 @@ export class UsingdeclarationContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Using(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Using, 0);
+    public Using(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Using, 0)!;
     }
     public nestednamespecifier(): NestednamespecifierContext | null {
         return this.getRuleContext(0, NestednamespecifierContext);
@@ -16170,8 +16170,8 @@ export class UsingdeclarationContext extends antlr.ParserRuleContext {
     public unqualifiedid(): UnqualifiedidContext {
         return this.getRuleContext(0, UnqualifiedidContext)!;
     }
-    public Semi(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Semi, 0);
+    public Semi(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Semi, 0)!;
     }
     public Typename(): antlr.TerminalNode | null {
         return this.getToken(CPP14Parser.Typename, 0);
@@ -16189,17 +16189,17 @@ export class UsingdirectiveContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Using(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Using, 0);
+    public Using(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Using, 0)!;
     }
-    public Namespace(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Namespace, 0);
+    public Namespace(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Namespace, 0)!;
     }
     public namespacename(): NamespacenameContext {
         return this.getRuleContext(0, NamespacenameContext)!;
     }
-    public Semi(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Semi, 0);
+    public Semi(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Semi, 0)!;
     }
     public attributespecifierseq(): AttributespecifierseqContext | null {
         return this.getRuleContext(0, AttributespecifierseqContext);
@@ -16217,20 +16217,20 @@ export class AsmdefinitionContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Asm(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Asm, 0);
+    public Asm(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Asm, 0)!;
     }
-    public LeftParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftParen, 0);
+    public LeftParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftParen, 0)!;
     }
-    public Stringliteral(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Stringliteral, 0);
+    public Stringliteral(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Stringliteral, 0)!;
     }
-    public RightParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightParen, 0);
+    public RightParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightParen, 0)!;
     }
-    public Semi(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Semi, 0);
+    public Semi(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Semi, 0)!;
     }
     public override get ruleIndex(): number {
         return CPP14Parser.RULE_asmdefinition;
@@ -16242,11 +16242,11 @@ export class LinkagespecificationContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Extern(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Extern, 0);
+    public Extern(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Extern, 0)!;
     }
-    public Stringliteral(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Stringliteral, 0);
+    public Stringliteral(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Stringliteral, 0)!;
     }
     public LeftBrace(): antlr.TerminalNode | null {
         return this.getToken(CPP14Parser.LeftBrace, 0);
@@ -16320,17 +16320,17 @@ export class AlignmentspecifierContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Alignas(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Alignas, 0);
+    public Alignas(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Alignas, 0)!;
     }
-    public LeftParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftParen, 0);
+    public LeftParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftParen, 0)!;
     }
     public typeid(): TypeidContext | null {
         return this.getRuleContext(0, TypeidContext);
     }
-    public RightParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightParen, 0);
+    public RightParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightParen, 0)!;
     }
     public Ellipsis(): antlr.TerminalNode | null {
         return this.getToken(CPP14Parser.Ellipsis, 0);
@@ -16405,11 +16405,11 @@ export class AttributescopedtokenContext extends antlr.ParserRuleContext {
     public attributenamespace(): AttributenamespaceContext {
         return this.getRuleContext(0, AttributenamespaceContext)!;
     }
-    public Doublecolon(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Doublecolon, 0);
+    public Doublecolon(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Doublecolon, 0)!;
     }
-    public Identifier(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Identifier, 0);
+    public Identifier(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Identifier, 0)!;
     }
     public override get ruleIndex(): number {
         return CPP14Parser.RULE_attributescopedtoken;
@@ -16421,8 +16421,8 @@ export class AttributenamespaceContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Identifier(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Identifier, 0);
+    public Identifier(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Identifier, 0)!;
     }
     public override get ruleIndex(): number {
         return CPP14Parser.RULE_attributenamespace;
@@ -16434,14 +16434,14 @@ export class AttributeargumentclauseContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public LeftParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftParen, 0);
+    public LeftParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftParen, 0)!;
     }
     public balancedtokenseq(): BalancedtokenseqContext {
         return this.getRuleContext(0, BalancedtokenseqContext)!;
     }
-    public RightParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightParen, 0);
+    public RightParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightParen, 0)!;
     }
     public override get ruleIndex(): number {
         return CPP14Parser.RULE_attributeargumentclause;
@@ -16616,14 +16616,14 @@ export class ParametersandqualifiersContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public LeftParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftParen, 0);
+    public LeftParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftParen, 0)!;
     }
     public parameterdeclarationclause(): ParameterdeclarationclauseContext {
         return this.getRuleContext(0, ParameterdeclarationclauseContext)!;
     }
-    public RightParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightParen, 0);
+    public RightParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightParen, 0)!;
     }
     public cvqualifierseq(): CvqualifierseqContext | null {
         return this.getRuleContext(0, CvqualifierseqContext);
@@ -16647,8 +16647,8 @@ export class TrailingreturntypeContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Arrow(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Arrow, 0);
+    public Arrow(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Arrow, 0)!;
     }
     public trailingtypespecifierseq(): TrailingtypespecifierseqContext {
         return this.getRuleContext(0, TrailingtypespecifierseqContext)!;
@@ -17106,14 +17106,14 @@ export class BracedinitlistContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public LeftBrace(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftBrace, 0);
+    public LeftBrace(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftBrace, 0)!;
     }
     public initializerlist(): InitializerlistContext | null {
         return this.getRuleContext(0, InitializerlistContext);
     }
-    public RightBrace(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightBrace, 0);
+    public RightBrace(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightBrace, 0)!;
     }
     public Comma(): antlr.TerminalNode | null {
         return this.getToken(CPP14Parser.Comma, 0);
@@ -17147,11 +17147,11 @@ export class ClassspecifierContext extends antlr.ParserRuleContext {
     public classhead(): ClassheadContext {
         return this.getRuleContext(0, ClassheadContext)!;
     }
-    public LeftBrace(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftBrace, 0);
+    public LeftBrace(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftBrace, 0)!;
     }
-    public RightBrace(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightBrace, 0);
+    public RightBrace(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightBrace, 0)!;
     }
     public memberspecification(): MemberspecificationContext | null {
         return this.getRuleContext(0, MemberspecificationContext);
@@ -17207,8 +17207,8 @@ export class ClassvirtspecifierContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Final(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Final, 0);
+    public Final(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Final, 0)!;
     }
     public override get ruleIndex(): number {
         return CPP14Parser.RULE_classvirtspecifier;
@@ -17383,15 +17383,15 @@ export class VirtspecifierContext extends antlr.ParserRuleContext {
 
 
 export class PurespecifierContext extends antlr.ParserRuleContext {
-    public _val!: Token;
+    public _val: Token | null;
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Assign(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Assign, 0);
+    public Assign(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Assign, 0)!;
     }
-    public Octalliteral(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Octalliteral, 0);
+    public Octalliteral(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Octalliteral, 0)!;
     }
     public override get ruleIndex(): number {
         return CPP14Parser.RULE_purespecifier;
@@ -17403,8 +17403,8 @@ export class BaseclauseContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Colon(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Colon, 0);
+    public Colon(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Colon, 0)!;
     }
     public basespecifierlist(): BasespecifierlistContext {
         return this.getRuleContext(0, BasespecifierlistContext)!;
@@ -17514,8 +17514,8 @@ export class ConversionfunctionidContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Operator(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Operator, 0);
+    public Operator(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Operator, 0)!;
     }
     public conversiontypeid(): ConversiontypeidContext {
         return this.getRuleContext(0, ConversiontypeidContext)!;
@@ -17562,8 +17562,8 @@ export class CtorinitializerContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Colon(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Colon, 0);
+    public Colon(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Colon, 0)!;
     }
     public meminitializerlist(): MeminitializerlistContext {
         return this.getRuleContext(0, MeminitializerlistContext)!;
@@ -17641,8 +17641,8 @@ export class OperatorfunctionidContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Operator(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Operator, 0);
+    public Operator(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Operator, 0)!;
     }
     public operator(): OperatorContext {
         return this.getRuleContext(0, OperatorContext)!;
@@ -17657,8 +17657,8 @@ export class LiteraloperatoridContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Operator(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Operator, 0);
+    public Operator(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Operator, 0)!;
     }
     public Stringliteral(): antlr.TerminalNode | null {
         return this.getToken(CPP14Parser.Stringliteral, 0);
@@ -17679,17 +17679,17 @@ export class TemplatedeclarationContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Template(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Template, 0);
+    public Template(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Template, 0)!;
     }
-    public Less(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Less, 0);
+    public Less(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Less, 0)!;
     }
     public templateparameterlist(): TemplateparameterlistContext {
         return this.getRuleContext(0, TemplateparameterlistContext)!;
     }
-    public Greater(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Greater, 0);
+    public Greater(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Greater, 0)!;
     }
     public declaration(): DeclarationContext {
         return this.getRuleContext(0, DeclarationContext)!;
@@ -17785,11 +17785,11 @@ export class SimpletemplateidContext extends antlr.ParserRuleContext {
     public templatename(): TemplatenameContext {
         return this.getRuleContext(0, TemplatenameContext)!;
     }
-    public Less(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Less, 0);
+    public Less(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Less, 0)!;
     }
-    public Greater(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Greater, 0);
+    public Greater(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Greater, 0)!;
     }
     public templateargumentlist(): TemplateargumentlistContext | null {
         return this.getRuleContext(0, TemplateargumentlistContext);
@@ -17832,8 +17832,8 @@ export class TemplatenameContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Identifier(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Identifier, 0);
+    public Identifier(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Identifier, 0)!;
     }
     public override get ruleIndex(): number {
         return CPP14Parser.RULE_templatename;
@@ -17886,8 +17886,8 @@ export class TypenamespecifierContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Typename(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Typename, 0);
+    public Typename(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Typename, 0)!;
     }
     public nestednamespecifier(): NestednamespecifierContext {
         return this.getRuleContext(0, NestednamespecifierContext)!;
@@ -17911,8 +17911,8 @@ export class ExplicitinstantiationContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Template(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Template, 0);
+    public Template(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Template, 0)!;
     }
     public declaration(): DeclarationContext {
         return this.getRuleContext(0, DeclarationContext)!;
@@ -17930,14 +17930,14 @@ export class ExplicitspecializationContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Template(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Template, 0);
+    public Template(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Template, 0)!;
     }
-    public Less(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Less, 0);
+    public Less(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Less, 0)!;
     }
-    public Greater(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Greater, 0);
+    public Greater(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Greater, 0)!;
     }
     public declaration(): DeclarationContext {
         return this.getRuleContext(0, DeclarationContext)!;
@@ -17952,8 +17952,8 @@ export class TryblockContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Try(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Try, 0);
+    public Try(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Try, 0)!;
     }
     public compoundstatement(): CompoundstatementContext {
         return this.getRuleContext(0, CompoundstatementContext)!;
@@ -17971,8 +17971,8 @@ export class FunctiontryblockContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Try(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Try, 0);
+    public Try(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Try, 0)!;
     }
     public compoundstatement(): CompoundstatementContext {
         return this.getRuleContext(0, CompoundstatementContext)!;
@@ -18009,17 +18009,17 @@ export class HandlerContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Catch(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Catch, 0);
+    public Catch(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Catch, 0)!;
     }
-    public LeftParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftParen, 0);
+    public LeftParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftParen, 0)!;
     }
     public exceptiondeclaration(): ExceptiondeclarationContext {
         return this.getRuleContext(0, ExceptiondeclarationContext)!;
     }
-    public RightParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightParen, 0);
+    public RightParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightParen, 0)!;
     }
     public compoundstatement(): CompoundstatementContext {
         return this.getRuleContext(0, CompoundstatementContext)!;
@@ -18059,8 +18059,8 @@ export class ThrowexpressionContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Throw(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Throw, 0);
+    public Throw(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Throw, 0)!;
     }
     public assignmentexpression(): AssignmentexpressionContext | null {
         return this.getRuleContext(0, AssignmentexpressionContext);
@@ -18091,14 +18091,14 @@ export class DynamicexceptionspecificationContext extends antlr.ParserRuleContex
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Throw(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Throw, 0);
+    public Throw(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Throw, 0)!;
     }
-    public LeftParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.LeftParen, 0);
+    public LeftParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.LeftParen, 0)!;
     }
-    public RightParen(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.RightParen, 0);
+    public RightParen(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.RightParen, 0)!;
     }
     public typeidlist(): TypeidlistContext | null {
         return this.getRuleContext(0, TypeidlistContext);
@@ -18135,8 +18135,8 @@ export class NoexceptspecificationContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Noexcept(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Noexcept, 0);
+    public Noexcept(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Noexcept, 0)!;
     }
     public LeftParen(): antlr.TerminalNode | null {
         return this.getToken(CPP14Parser.LeftParen, 0);
@@ -18185,8 +18185,8 @@ export class RightShiftAssignContext extends antlr.ParserRuleContext {
     		return this.getToken(CPP14Parser.Greater, i);
     	}
     }
-    public Assign(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Assign, 0);
+    public Assign(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Assign, 0)!;
     }
     public override get ruleIndex(): number {
         return CPP14Parser.RULE_rightShiftAssign;
@@ -18381,8 +18381,8 @@ export class PointerliteralContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public Nullptr(): antlr.TerminalNode | null {
-        return this.getToken(CPP14Parser.Nullptr, 0);
+    public Nullptr(): antlr.TerminalNode {
+        return this.getToken(CPP14Parser.Nullptr, 0)!;
     }
     public override get ruleIndex(): number {
         return CPP14Parser.RULE_pointerliteral;
