@@ -221,7 +221,7 @@ The last two options potentially create a lot of output which can significantly 
 
 ## Release Notes
 
-### 3.3.1 - 3.3.3
+### 3.3.1 - 3.3.4
 
 Updated dependencies.
 
