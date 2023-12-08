@@ -1,6 +1,6 @@
 {
     "name": "antlr4-c3",
-    "version": "3.3.4",
+    "version": "3.3.5",
     "description": "A code completion core implementation for ANTLR4 based parsers",
     "author": "Mike Lischke",
     "license": "MIT",
@@ -45,6 +45,6 @@
         "typescript": "5.2.2"
     },
     "dependencies": {
-        "antlr4ng": "2.0.2"
+        "antlr4ng": "^2.0.0"
     }
 }
