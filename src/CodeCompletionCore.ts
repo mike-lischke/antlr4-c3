@@ -180,6 +180,9 @@ export class CodeCompletionCore {
         let offset = this.tokenStartIndex;
         while (true) {
             const token = tokenStream.get(offset++);
+            if (!token) {
+                break;
+            }
             if (token.channel === Token.DEFAULT_CHANNEL) {
                 this.tokens.push(token);
 
