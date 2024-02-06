@@ -9982,7 +9982,7 @@ export class CPP14Parser extends antlr.Parser {
             this.match(CPP14Parser.Assign);
             this.state = 2068;
             localContext._val = this.match(CPP14Parser.Octalliteral);
-            if((localContext._val != null ? localContext._val.text : undefined) != "0") throw new antlr.InputMismatchException(this);
+            if((localContext._val?.text ?? '') != "0") throw new antlr.InputMismatchException(this);
             }
         }
         catch (re) {
@@ -12368,7 +12368,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
 
-    public override sempred(localContext: antlr.RuleContext, ruleIndex: number, predIndex: number): boolean {
+    public override sempred(localContext: antlr.RuleContext | null, ruleIndex: number, predIndex: number): boolean {
         switch (ruleIndex) {
         case 5:
             return this.nestednamespecifier_sempred(localContext as NestednamespecifierContext, predIndex);
@@ -12441,7 +12441,7 @@ export class CPP14Parser extends antlr.Parser {
         }
         return true;
     }
-    private nestednamespecifier_sempred(localContext: NestednamespecifierContext, predIndex: number): boolean {
+    private nestednamespecifier_sempred(localContext: NestednamespecifierContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 0:
             return this.precpred(this.context, 2);
@@ -12450,14 +12450,14 @@ export class CPP14Parser extends antlr.Parser {
         }
         return true;
     }
-    private capturelist_sempred(localContext: CapturelistContext, predIndex: number): boolean {
+    private capturelist_sempred(localContext: CapturelistContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 2:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private postfixexpression_sempred(localContext: PostfixexpressionContext, predIndex: number): boolean {
+    private postfixexpression_sempred(localContext: PostfixexpressionContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 3:
             return this.precpred(this.context, 19);
@@ -12480,14 +12480,14 @@ export class CPP14Parser extends antlr.Parser {
         }
         return true;
     }
-    private noptrnewdeclarator_sempred(localContext: NoptrnewdeclaratorContext, predIndex: number): boolean {
+    private noptrnewdeclarator_sempred(localContext: NoptrnewdeclaratorContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 12:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private pmexpression_sempred(localContext: PmexpressionContext, predIndex: number): boolean {
+    private pmexpression_sempred(localContext: PmexpressionContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 13:
             return this.precpred(this.context, 2);
@@ -12496,7 +12496,7 @@ export class CPP14Parser extends antlr.Parser {
         }
         return true;
     }
-    private multiplicativeexpression_sempred(localContext: MultiplicativeexpressionContext, predIndex: number): boolean {
+    private multiplicativeexpression_sempred(localContext: MultiplicativeexpressionContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 15:
             return this.precpred(this.context, 3);
@@ -12507,7 +12507,7 @@ export class CPP14Parser extends antlr.Parser {
         }
         return true;
     }
-    private additiveexpression_sempred(localContext: AdditiveexpressionContext, predIndex: number): boolean {
+    private additiveexpression_sempred(localContext: AdditiveexpressionContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 18:
             return this.precpred(this.context, 2);
@@ -12516,7 +12516,7 @@ export class CPP14Parser extends antlr.Parser {
         }
         return true;
     }
-    private shiftexpression_sempred(localContext: ShiftexpressionContext, predIndex: number): boolean {
+    private shiftexpression_sempred(localContext: ShiftexpressionContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 20:
             return this.precpred(this.context, 2);
@@ -12525,7 +12525,7 @@ export class CPP14Parser extends antlr.Parser {
         }
         return true;
     }
-    private relationalexpression_sempred(localContext: RelationalexpressionContext, predIndex: number): boolean {
+    private relationalexpression_sempred(localContext: RelationalexpressionContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 22:
             return this.precpred(this.context, 4);
@@ -12538,7 +12538,7 @@ export class CPP14Parser extends antlr.Parser {
         }
         return true;
     }
-    private equalityexpression_sempred(localContext: EqualityexpressionContext, predIndex: number): boolean {
+    private equalityexpression_sempred(localContext: EqualityexpressionContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 26:
             return this.precpred(this.context, 2);
@@ -12547,77 +12547,77 @@ export class CPP14Parser extends antlr.Parser {
         }
         return true;
     }
-    private andexpression_sempred(localContext: AndexpressionContext, predIndex: number): boolean {
+    private andexpression_sempred(localContext: AndexpressionContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 28:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private exclusiveorexpression_sempred(localContext: ExclusiveorexpressionContext, predIndex: number): boolean {
+    private exclusiveorexpression_sempred(localContext: ExclusiveorexpressionContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 29:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private inclusiveorexpression_sempred(localContext: InclusiveorexpressionContext, predIndex: number): boolean {
+    private inclusiveorexpression_sempred(localContext: InclusiveorexpressionContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 30:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private logicalandexpression_sempred(localContext: LogicalandexpressionContext, predIndex: number): boolean {
+    private logicalandexpression_sempred(localContext: LogicalandexpressionContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 31:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private logicalorexpression_sempred(localContext: LogicalorexpressionContext, predIndex: number): boolean {
+    private logicalorexpression_sempred(localContext: LogicalorexpressionContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 32:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private expression_sempred(localContext: ExpressionContext, predIndex: number): boolean {
+    private expression_sempred(localContext: ExpressionContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 33:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private statementseq_sempred(localContext: StatementseqContext, predIndex: number): boolean {
+    private statementseq_sempred(localContext: StatementseqContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 34:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private declarationseq_sempred(localContext: DeclarationseqContext, predIndex: number): boolean {
+    private declarationseq_sempred(localContext: DeclarationseqContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 35:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private enumeratorlist_sempred(localContext: EnumeratorlistContext, predIndex: number): boolean {
+    private enumeratorlist_sempred(localContext: EnumeratorlistContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 36:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private attributespecifierseq_sempred(localContext: AttributespecifierseqContext, predIndex: number): boolean {
+    private attributespecifierseq_sempred(localContext: AttributespecifierseqContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 37:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private attributelist_sempred(localContext: AttributelistContext, predIndex: number): boolean {
+    private attributelist_sempred(localContext: AttributelistContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 38:
             return this.precpred(this.context, 3);
@@ -12626,21 +12626,21 @@ export class CPP14Parser extends antlr.Parser {
         }
         return true;
     }
-    private balancedtokenseq_sempred(localContext: BalancedtokenseqContext, predIndex: number): boolean {
+    private balancedtokenseq_sempred(localContext: BalancedtokenseqContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 40:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private initdeclaratorlist_sempred(localContext: InitdeclaratorlistContext, predIndex: number): boolean {
+    private initdeclaratorlist_sempred(localContext: InitdeclaratorlistContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 41:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private noptrdeclarator_sempred(localContext: NoptrdeclaratorContext, predIndex: number): boolean {
+    private noptrdeclarator_sempred(localContext: NoptrdeclaratorContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 42:
             return this.precpred(this.context, 3);
@@ -12649,7 +12649,7 @@ export class CPP14Parser extends antlr.Parser {
         }
         return true;
     }
-    private noptrabstractdeclarator_sempred(localContext: NoptrabstractdeclaratorContext, predIndex: number): boolean {
+    private noptrabstractdeclarator_sempred(localContext: NoptrabstractdeclaratorContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 44:
             return this.precpred(this.context, 5);
@@ -12658,7 +12658,7 @@ export class CPP14Parser extends antlr.Parser {
         }
         return true;
     }
-    private noptrabstractpackdeclarator_sempred(localContext: NoptrabstractpackdeclaratorContext, predIndex: number): boolean {
+    private noptrabstractpackdeclarator_sempred(localContext: NoptrabstractpackdeclaratorContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 46:
             return this.precpred(this.context, 3);
@@ -12667,56 +12667,56 @@ export class CPP14Parser extends antlr.Parser {
         }
         return true;
     }
-    private parameterdeclarationlist_sempred(localContext: ParameterdeclarationlistContext, predIndex: number): boolean {
+    private parameterdeclarationlist_sempred(localContext: ParameterdeclarationlistContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 48:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private initializerlist_sempred(localContext: InitializerlistContext, predIndex: number): boolean {
+    private initializerlist_sempred(localContext: InitializerlistContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 49:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private memberdeclaratorlist_sempred(localContext: MemberdeclaratorlistContext, predIndex: number): boolean {
+    private memberdeclaratorlist_sempred(localContext: MemberdeclaratorlistContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 50:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private virtspecifierseq_sempred(localContext: VirtspecifierseqContext, predIndex: number): boolean {
+    private virtspecifierseq_sempred(localContext: VirtspecifierseqContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 51:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private basespecifierlist_sempred(localContext: BasespecifierlistContext, predIndex: number): boolean {
+    private basespecifierlist_sempred(localContext: BasespecifierlistContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 52:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private templateparameterlist_sempred(localContext: TemplateparameterlistContext, predIndex: number): boolean {
+    private templateparameterlist_sempred(localContext: TemplateparameterlistContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 53:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private templateargumentlist_sempred(localContext: TemplateargumentlistContext, predIndex: number): boolean {
+    private templateargumentlist_sempred(localContext: TemplateargumentlistContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 54:
             return this.precpred(this.context, 1);
         }
         return true;
     }
-    private typeidlist_sempred(localContext: TypeidlistContext, predIndex: number): boolean {
+    private typeidlist_sempred(localContext: TypeidlistContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 55:
             return this.precpred(this.context, 1);
@@ -17383,7 +17383,7 @@ export class VirtspecifierContext extends antlr.ParserRuleContext {
 
 
 export class PurespecifierContext extends antlr.ParserRuleContext {
-    public _val: Token | null;
+    public _val?: Token | null;
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }

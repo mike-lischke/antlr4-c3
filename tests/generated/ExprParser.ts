@@ -323,14 +323,14 @@ export class ExprParser extends antlr.Parser {
         return localContext;
     }
 
-    public override sempred(localContext: antlr.RuleContext, ruleIndex: number, predIndex: number): boolean {
+    public override sempred(localContext: antlr.RuleContext | null, ruleIndex: number, predIndex: number): boolean {
         switch (ruleIndex) {
         case 2:
             return this.simpleExpression_sempred(localContext as SimpleExpressionContext, predIndex);
         }
         return true;
     }
-    private simpleExpression_sempred(localContext: SimpleExpressionContext, predIndex: number): boolean {
+    private simpleExpression_sempred(localContext: SimpleExpressionContext | null, predIndex: number): boolean {
         switch (predIndex) {
         case 0:
             return this.precpred(this.context, 4);

@@ -221,6 +221,11 @@ The last two options potentially create a lot of output which can significantly 
 
 ## Release Notes
 
+### 3.3.6
+
+- Fixed bug #93 Add command to esbuild (stop including 3rd party libs in bundle).
+- Updated dependencies.
+
 ### 3.3.5
 
 Updated dependencies.
