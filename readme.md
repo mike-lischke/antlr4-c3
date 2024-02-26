@@ -221,6 +221,10 @@ The last two options potentially create a lot of output which can significantly 
 
 ## Release Notes
 
+### 3.3.7
+
+- Stop bundling 3rd party libraries in the own lib bundle. This is not only unnecessary (these deps are installed with all the other dependencies in a target project), but can cause trouble if a depenent project uses 2 different versions of such a bundled 3rd party lib.
+
 ### 3.3.6
 
 - Fixed bug #93 Add command to esbuild (stop including 3rd party libs in bundle).
