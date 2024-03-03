@@ -1,6 +1,6 @@
 {
     "name": "antlr4-c3",
-    "version": "3.4.0",
+    "version": "3.4.1",
     "description": "A code completion core implementation for ANTLR4 based parsers",
     "author": "Mike Lischke",
     "license": "MIT",
@@ -26,7 +26,6 @@
         "test": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js --no-coverage",
         "generate": "antlr4ng -Dlanguage=TypeScript tests/CPP14.g4 tests/Expr.g4 tests/Whitebox.g4 -no-listener -no-visitor -o tests/generated -Xexact-output-dir",
         "eslint": "eslint .",
-        "esbuild": "esbuild ./index.ts --bundle --outfile=lib/index.mjs --format=esm --packages=external --keep-names",
         "build-mjs": "npm run build-bundle -- --outfile=lib/index.mjs --format=esm",
         "build-cjs": "npm run build-bundle -- --outfile=lib/index.cjs --format=cjs",
         "build-bundle": "esbuild ./index.ts --bundle --main-fields=module,main --target=esnext --packages=external --keep-names"
@@ -49,7 +48,7 @@
         "typescript": "5.3.3"
     },
     "dependencies": {
-        "antlr4ng": "3.0.0"
+        "antlr4ng": "^3.0.1"
     },
     "exports": {
         "types": "./lib/index.d.ts",
