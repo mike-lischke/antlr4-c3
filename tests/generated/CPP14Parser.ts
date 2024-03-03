@@ -494,7 +494,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -572,7 +571,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -609,7 +607,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -685,7 +682,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -722,7 +718,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -793,7 +788,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 8, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -850,7 +845,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -887,7 +881,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -924,7 +917,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -972,7 +964,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -1004,7 +995,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -1054,7 +1044,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 14, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -1091,7 +1081,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -1128,7 +1117,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -1176,7 +1164,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -1221,7 +1208,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -1290,7 +1276,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -1489,7 +1474,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 29, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -1664,7 +1649,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -1688,7 +1672,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -1780,7 +1763,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -1908,7 +1890,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -1940,7 +1921,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -2046,7 +2026,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -2074,7 +2053,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -2108,7 +2086,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -2162,7 +2139,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -2216,7 +2192,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 46, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -2255,7 +2231,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -2307,7 +2282,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -2373,7 +2347,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -2403,7 +2376,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -2446,7 +2418,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -2486,7 +2457,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 54, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -2533,7 +2504,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -2573,7 +2543,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 56, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -2634,7 +2604,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -2674,7 +2643,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 58, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -2721,7 +2690,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -2761,7 +2729,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 60, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -2808,7 +2776,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -2848,7 +2815,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 62, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -2923,7 +2890,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -2963,7 +2929,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 64, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -3010,7 +2976,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -3050,7 +3015,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 65, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -3077,7 +3042,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -3117,7 +3081,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 66, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -3144,7 +3108,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -3184,7 +3147,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 67, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -3211,7 +3174,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -3251,7 +3213,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 68, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -3278,7 +3240,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -3318,7 +3279,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 69, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -3345,7 +3306,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -3390,7 +3350,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -3438,7 +3397,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -3540,7 +3498,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -3580,7 +3537,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 73, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -3607,7 +3564,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -3631,7 +3587,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -3771,7 +3726,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -3860,7 +3814,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -3895,7 +3848,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -3932,7 +3884,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -3972,7 +3923,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 87, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -3997,7 +3948,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -4069,7 +4019,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -4144,7 +4093,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -4258,7 +4206,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -4295,7 +4242,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -4332,7 +4278,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -4423,7 +4368,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -4506,7 +4450,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -4530,7 +4473,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -4570,7 +4512,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 100, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -4595,7 +4537,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -4681,7 +4622,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -4760,7 +4700,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -4803,7 +4742,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -4920,7 +4858,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -4956,7 +4893,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -4980,7 +4916,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -5006,7 +4941,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -5102,7 +5036,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -5151,7 +5084,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -5183,7 +5115,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -5215,7 +5146,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -5239,7 +5169,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -5283,7 +5212,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -5356,7 +5284,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -5405,7 +5332,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -5454,7 +5380,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -5610,7 +5535,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -5661,7 +5585,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -5710,7 +5633,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -5812,7 +5734,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -5836,7 +5757,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -5896,7 +5816,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -5988,7 +5907,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6037,7 +5955,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6085,7 +6002,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6111,7 +6027,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6151,7 +6066,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 137, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -6178,7 +6093,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6219,7 +6133,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6243,7 +6156,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6280,7 +6192,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6304,7 +6215,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6341,7 +6251,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6378,7 +6287,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6421,7 +6329,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6464,7 +6371,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6505,7 +6411,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6538,7 +6443,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6562,7 +6466,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6594,7 +6497,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6628,7 +6530,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6688,7 +6589,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6739,7 +6639,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6771,7 +6670,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6829,7 +6727,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6869,7 +6766,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 153, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -6894,7 +6791,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -6941,7 +6837,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -7011,7 +6906,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -7073,7 +6967,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 162, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -7130,7 +7024,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -7164,7 +7057,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -7201,7 +7093,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -7229,7 +7120,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -7253,7 +7143,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -7281,7 +7170,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -7329,7 +7217,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 166, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -7354,7 +7242,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -7412,7 +7299,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -7452,7 +7338,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 168, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -7479,7 +7365,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -7513,7 +7398,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -7554,7 +7438,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -7593,7 +7476,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -7667,7 +7549,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 177, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -7732,7 +7614,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -7800,7 +7681,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -7836,7 +7716,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -7953,7 +7832,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -7987,7 +7865,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -8019,7 +7896,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -8051,7 +7927,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -8086,7 +7961,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -8120,7 +7994,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -8176,7 +8049,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -8231,7 +8103,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -8316,7 +8187,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 203, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -8381,7 +8252,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -8427,7 +8297,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -8468,7 +8337,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 208, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -8533,7 +8402,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -8593,7 +8461,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -8633,7 +8500,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 212, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -8660,7 +8527,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -8784,7 +8650,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -8841,7 +8706,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -8911,7 +8775,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -8955,7 +8818,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -8996,7 +8858,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -9087,7 +8948,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -9137,7 +8997,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 230, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -9174,7 +9034,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -9228,7 +9087,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -9265,7 +9123,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -9304,7 +9161,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -9394,7 +9250,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -9428,7 +9283,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -9452,7 +9306,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -9484,7 +9337,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -9596,7 +9448,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -9699,7 +9550,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -9739,7 +9589,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 249, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -9766,7 +9616,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -9863,7 +9712,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -9903,7 +9751,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 256, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -9928,7 +9776,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -9960,7 +9807,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -9987,7 +9833,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -10013,7 +9858,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -10063,7 +9907,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 259, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -10100,7 +9944,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -10199,7 +10042,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -10246,7 +10088,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -10270,7 +10111,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -10302,7 +10142,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -10328,7 +10167,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -10362,7 +10200,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -10396,7 +10233,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -10422,7 +10258,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -10484,7 +10319,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -10538,7 +10372,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -10575,7 +10408,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -10601,7 +10433,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -10644,7 +10475,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -10676,7 +10506,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -10716,7 +10545,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 277, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -10743,7 +10572,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -10780,7 +10608,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -10964,7 +10791,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -11003,7 +10829,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -11076,7 +10901,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -11100,7 +10924,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -11150,7 +10973,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 295, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -11187,7 +11010,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -11231,7 +11053,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -11287,7 +11108,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -11324,7 +11144,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -11354,7 +11173,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -11382,7 +11200,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -11421,7 +11238,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -11455,7 +11271,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -11487,7 +11302,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -11564,7 +11378,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -11598,7 +11411,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -11637,7 +11449,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -11676,7 +11487,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -11726,7 +11536,7 @@ export class CPP14Parser extends antlr.Parser {
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 311, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
-                    if (this._parseListeners != null) {
+                    if (this.parseListeners != null) {
                         this.triggerExitRuleEvent();
                     }
                     previousContext = localContext;
@@ -11763,7 +11573,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -11806,7 +11615,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -11832,7 +11640,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -11860,7 +11667,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -12189,7 +11995,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -12267,7 +12072,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -12299,7 +12103,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -12323,7 +12126,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -12355,7 +12157,6 @@ export class CPP14Parser extends antlr.Parser {
         }
         catch (re) {
             if (re instanceof antlr.RecognitionException) {
-                localContext.exception = re;
                 this.errorHandler.reportError(this, re);
                 this.errorHandler.recover(this, re);
             } else {
@@ -12368,7 +12169,7 @@ export class CPP14Parser extends antlr.Parser {
         return localContext;
     }
 
-    public override sempred(localContext: antlr.RuleContext | null, ruleIndex: number, predIndex: number): boolean {
+    public override sempred(localContext: antlr.ParserRuleContext | null, ruleIndex: number, predIndex: number): boolean {
         switch (ruleIndex) {
         case 5:
             return this.nestednamespecifier_sempred(localContext as NestednamespecifierContext, predIndex);

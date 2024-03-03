@@ -7,7 +7,7 @@
 
 import {
     ATN, ATNState, IntervalSet, Parser, ParserRuleContext, Token, TokenStream, Vocabulary, Transition,
-    PredicateTransition, RuleTransition, RuleStartState, PrecedencePredicateTransition, TransitionType, ATNStateType,
+    PredicateTransition, RuleTransition, RuleStartState, PrecedencePredicateTransition,
 } from "antlr4ng";
 
 import { longestCommonPrefix } from "./utils.js";
@@ -239,7 +239,7 @@ export class CodeCompletionCore {
      * @returns the evaluation result of the predicate.
      */
     private checkPredicate(transition: PredicateTransition): boolean {
-        return transition.getPredicate().evaluate(this.parser, ParserRuleContext.EMPTY);
+        return transition.getPredicate().evaluate(this.parser, ParserRuleContext.empty);
     }
 
     /**
@@ -336,7 +336,7 @@ export class CodeCompletionCore {
 
             if (state) {
                 state.transitions.forEach((outgoing) => {
-                    if (outgoing.serializationType === TransitionType.ATOM) {
+                    if (outgoing.transitionType === Transition.ATOM) {
                         if (!outgoing.isEpsilon) {
                             const list = outgoing.label!.toArray();
                             if (list.length === 1 && !this.ignoredTokens.has(list[0])) {
@@ -396,7 +396,7 @@ export class CodeCompletionCore {
         }
         stateStack.push(s);
 
-        if (s === stopState || s.stateType === ATNStateType.RULE_STOP) {
+        if (s === stopState || (s.constructor as typeof ATNState).stateType === ATNState.RULE_STOP) {
             stateStack.pop();
 
             return false;
@@ -404,7 +404,7 @@ export class CodeCompletionCore {
 
         let isExhaustive = true;
         for (const transition of s.transitions) {
-            if (transition.serializationType === TransitionType.RULE) {
+            if (transition.transitionType === Transition.RULE) {
                 const ruleTransition = transition as RuleTransition;
                 if (ruleStack.indexOf(ruleTransition.target.ruleIndex) !== -1) {
                     continue;
@@ -423,7 +423,7 @@ export class CodeCompletionCore {
                     isExhaustive &&= nextStateFollowSetsIsExhaustive;
                 }
 
-            } else if (transition.serializationType === TransitionType.PREDICATE) {
+            } else if (transition.transitionType === Transition.PREDICATE) {
                 if (this.checkPredicate(transition as PredicateTransition)) {
                     const nextStateFollowSetsIsExhaustive = this.collectFollowSets(
                         transition.target, stopState, followSets, stateStack, ruleStack);
@@ -433,7 +433,7 @@ export class CodeCompletionCore {
                 const nextStateFollowSetsIsExhaustive = this.collectFollowSets(
                     transition.target, stopState, followSets, stateStack, ruleStack);
                 isExhaustive &&= nextStateFollowSetsIsExhaustive;
-            } else if (transition.serializationType === TransitionType.WILDCARD) {
+            } else if (transition.transitionType === Transition.WILDCARD) {
                 const set = new FollowSetWithPath();
                 set.intervals = IntervalSet.of(Token.MIN_USER_TOKEN_TYPE, this.atn.maxTokenType);
                 set.path = ruleStack.slice();
@@ -441,7 +441,7 @@ export class CodeCompletionCore {
             } else {
                 let label = transition.label;
                 if (label && label.length > 0) {
-                    if (transition.serializationType === TransitionType.NOT_SET) {
+                    if (transition.transitionType === Transition.NOT_SET) {
                         label = label.complement(Token.MIN_USER_TOKEN_TYPE, this.atn.maxTokenType);
                     }
                     const set = new FollowSetWithPath();
@@ -609,7 +609,7 @@ export class CodeCompletionCore {
                 }
             }
 
-            if (currentEntry.state.stateType === ATNStateType.RULE_STOP) {
+            if ((currentEntry.state.constructor as typeof ATNState).stateType === ATNState.RULE_STOP) {
                 // Record the token index we are at, to report it to the caller.
                 result.add(currentEntry.tokenListIndex);
                 continue;
@@ -620,8 +620,8 @@ export class CodeCompletionCore {
             // We simulate here the same precedence handling as the parser does, which uses hard coded values.
             // For rules that are not left recursive this value is ignored (since there is no precedence transition).
             for (const transition of transitions) {
-                switch (transition.serializationType) {
-                    case TransitionType.RULE: {
+                switch (transition.transitionType) {
+                    case Transition.RULE: {
                         const ruleTransition = transition as RuleTransition;
                         const endStatus = this.processRule(transition.target as RuleStartState,
                             currentEntry.tokenListIndex, callStack, ruleTransition.precedence, indentation + 1);
@@ -634,7 +634,7 @@ export class CodeCompletionCore {
                         break;
                     }
 
-                    case TransitionType.PREDICATE: {
+                    case Transition.PREDICATE: {
                         if (this.checkPredicate(transition as PredicateTransition)) {
                             statePipeline.push({
                                 state: transition.target,
@@ -644,7 +644,7 @@ export class CodeCompletionCore {
                         break;
                     }
 
-                    case TransitionType.PRECEDENCE: {
+                    case Transition.PRECEDENCE: {
                         const predTransition = transition as PrecedencePredicateTransition;
                         if (predTransition.precedence >= this.precedenceStack[this.precedenceStack.length - 1]) {
                             statePipeline.push({
@@ -656,7 +656,7 @@ export class CodeCompletionCore {
                         break;
                     }
 
-                    case TransitionType.WILDCARD: {
+                    case Transition.WILDCARD: {
                         if (atCaret) {
                             if (!this.translateStackToRuleIndex(callStack)) {
                                 for (const token of IntervalSet.of(Token.MIN_USER_TOKEN_TYPE, this.atn.maxTokenType)
@@ -687,7 +687,7 @@ export class CodeCompletionCore {
 
                         let set = transition.label;
                         if (set && set.length > 0) {
-                            if (transition.serializationType === TransitionType.NOT_SET) {
+                            if (transition.transitionType === Transition.NOT_SET) {
                                 set = set.complement(Token.MIN_USER_TOKEN_TYPE, this.atn.maxTokenType);
                             }
                             if (atCaret) {
@@ -745,9 +745,9 @@ export class CodeCompletionCore {
 
     private generateBaseDescription(state: ATNState): string {
         const stateValue = state.stateNumber === ATNState.INVALID_STATE_NUMBER ? "Invalid" : state.stateNumber;
+        const typeName = CodeCompletionCore.atnStateTypeMap[(state.constructor as typeof ATNState).stateType];
 
-        return `[${stateValue} ${CodeCompletionCore.atnStateTypeMap[state.stateType]}] in ` +
-            `${this.ruleNames[state.ruleIndex]}`;
+        return `[${stateValue} ${typeName}] in ${this.ruleNames[state.ruleIndex]}`;
     }
 
     private printDescription(indentation: number, state: ATNState, baseDescription: string, tokenIndex: number) {
@@ -772,12 +772,15 @@ export class CodeCompletionCore {
                         labels += this.vocabulary.getDisplayName(symbol);
                     }
                 }
+
                 if (labels.length === 0) {
                     labels = "ε";
                 }
+
+                const typeName =
+                    CodeCompletionCore.atnStateTypeMap[(transition.target.constructor as typeof ATNState).stateType];
                 transitionDescription += `\n${indent}\t(${labels}) [${transition.target.stateNumber} ` +
-                    `${CodeCompletionCore.atnStateTypeMap[transition.target.stateType]}] in ` +
-                    `${this.ruleNames[transition.target.ruleIndex]}`;
+                    `${typeName}] in ${this.ruleNames[transition.target.ruleIndex]}`;
             }
         }
 

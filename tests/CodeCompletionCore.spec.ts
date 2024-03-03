@@ -10,7 +10,7 @@
 import * as fs from "fs";
 
 import {
-    BaseErrorListener, CharStreams, CommonTokenStream, ParserRuleContext, RecognitionException,
+    BaseErrorListener, CharStream, CommonTokenStream, ParserRuleContext, RecognitionException,
     Recognizer, Token, ATNSimulator,
 } from "antlr4ng";
 
@@ -38,7 +38,7 @@ describe("Code Completion Tests", () => {
 
         // Whitespace tokens are skipped
         it("Caret at transition to rule with non-exhaustive follow set (optional tokens)", () => {
-            const inputStream = CharStreams.fromString("LOREM ");
+            const inputStream = CharStream.fromString("LOREM ");
             const lexer = new WhiteboxLexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
 
@@ -61,7 +61,7 @@ describe("Code Completion Tests", () => {
         });
 
         it("Caret at transition to rule with empty follow set (epsilon-only transition to rule end)", () => {
-            const inputStream = CharStreams.fromString("LOREM ");
+            const inputStream = CharStream.fromString("LOREM ");
             const lexer = new WhiteboxLexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
 
@@ -84,7 +84,7 @@ describe("Code Completion Tests", () => {
         });
 
         it("Caret at optional token", () => {
-            const inputStream = CharStreams.fromString("LOREM ");
+            const inputStream = CharStream.fromString("LOREM ");
             const lexer = new WhiteboxLexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
 
@@ -111,7 +111,7 @@ describe("Code Completion Tests", () => {
             "test6",
             "test7",
         ])("Caret at one of multiple possible states (%s)", (test) => {
-            const inputStream = CharStreams.fromString("LOREM IPSUM ");
+            const inputStream = CharStream.fromString("LOREM IPSUM ");
             const lexer = new WhiteboxLexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
 
@@ -131,7 +131,7 @@ describe("Code Completion Tests", () => {
         });
 
         it("Caret at one of multiple possible states with common follow list", () => {
-            const inputStream = CharStreams.fromString("LOREM IPSUM ");
+            const inputStream = CharStream.fromString("LOREM IPSUM ");
             const lexer = new WhiteboxLexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
 
@@ -156,7 +156,7 @@ describe("Code Completion Tests", () => {
             // We are trying here to get useful code completion candidates without adjusting the grammar in any way.
             // We use the grammar as downloaded from the ANTLR grammar directory and set up the c3 engine
             // instead in a way that still returns useful info. This limits us somewhat.
-            const inputStream = CharStreams.fromString("class A {\n" +
+            const inputStream = CharStream.fromString("class A {\n" +
                 "public:\n" +
                 "  void test() {\n" +
                 "  }\n" +
@@ -364,7 +364,7 @@ describe("Code Completion Tests", () => {
         });
 
         it("Simple C++ example with errors in input", () => {
-            const inputStream = CharStreams.fromString("class A {\n" +
+            const inputStream = CharStream.fromString("class A {\n" +
                 "public:\n" +
                 "  void test() {\n" +
                 "    if ()" +
@@ -431,7 +431,7 @@ describe("Code Completion Tests", () => {
 
         it("Real C++ file", () => {
             const source = fs.readFileSync("tests/Parser.cpp").toString();
-            const inputStream = CharStreams.fromString(source);
+            const inputStream = CharStream.fromString(source);
             const lexer = new CPP14Lexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
 
@@ -530,7 +530,7 @@ describe("Code Completion Tests", () => {
     describe("Simple expression parser:", () => {
         it("Most simple setup", () => {
             // No customization happens here, so the c3 engine only returns lexer tokens.
-            const inputStream = CharStreams.fromString("var c = a + b()");
+            const inputStream = CharStream.fromString("var c = a + b()");
             const lexer = new ExprLexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
 
@@ -588,7 +588,7 @@ describe("Code Completion Tests", () => {
         });
 
         it("Typical setup", () => {
-            const inputStream = CharStreams.fromString("var c = a + b()");
+            const inputStream = CharStream.fromString("var c = a + b()");
             const lexer = new ExprLexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
 
@@ -647,7 +647,7 @@ describe("Code Completion Tests", () => {
         });
 
         it("Recursive preferred rule", () => {
-            const inputStream = CharStreams.fromString("var c = a + b"); // b is not a function here, but a variable.
+            const inputStream = CharStream.fromString("var c = a + b"); // b is not a function here, but a variable.
             const lexer = new ExprLexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
 
@@ -689,7 +689,7 @@ describe("Code Completion Tests", () => {
         });
 
         it("Candidate rules with different start tokens", () => {
-            const inputStream = CharStreams.fromString("var c = a + b");
+            const inputStream = CharStream.fromString("var c = a + b");
             const lexer = new ExprLexer(inputStream);
             const tokenStream = new CommonTokenStream(lexer);
 

@@ -221,9 +221,14 @@ The last two options potentially create a lot of output which can significantly 
 
 ## Release Notes
 
+### 3.4.0
+
+- Switched to a new major version of the antlr4ng runtime (3.0.0).
+- Fixed issue #96 Add .cjs output to package
+
 ### 3.3.7
 
-- Stop bundling 3rd party libraries in the own lib bundle. This is not only unnecessary (these deps are installed with all the other dependencies in a target project), but can cause trouble if a depenent project uses 2 different versions of such a bundled 3rd party lib.
+- Stop bundling 3rd party libraries in the own lib bundle. This is not only unnecessary (these deps are installed with all the other dependencies in a target project), but can cause trouble if a dependent project uses 2 different versions of such a bundled 3rd party lib.
 
 ### 3.3.6
 

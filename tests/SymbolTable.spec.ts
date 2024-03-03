@@ -23,7 +23,7 @@ import { SymbolTable } from "../src/SymbolTable";
 import { TypeAlias } from "../src/TypeAlias";
 import { VariableSymbol } from "../src/VariableSymbol";
 
-const dummyNode = new TerminalNode(new CommonToken([null, null], 0, 0, 10, 20));
+const dummyNode = new TerminalNode(CommonToken.fromSource([null, null], 0, 0, 10, 20));
 
 /**
  * Creates a single symbol table setup with a simple base structure:
