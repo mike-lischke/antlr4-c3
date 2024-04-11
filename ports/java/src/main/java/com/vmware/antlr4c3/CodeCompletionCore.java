@@ -338,6 +338,7 @@ public class CodeCompletionCore {
             FollowSetWithPath set = new FollowSetWithPath();
             set.intervals = IntervalSet.of(Token.EPSILON);
             set.path = new LinkedList<Integer>(ruleStack);
+            set.following = new LinkedList<Integer>();
             followSets.addLast(set);
             return;
         }
@@ -362,6 +363,7 @@ public class CodeCompletionCore {
                 FollowSetWithPath set = new FollowSetWithPath();
                 set.intervals = IntervalSet.of(Token.MIN_USER_TOKEN_TYPE, this.atn.maxTokenType);
                 set.path = new LinkedList<Integer>(ruleStack);
+                set.following = new LinkedList<Integer>();
                 followSets.addLast(set);
             } else {
                 IntervalSet label = transition.label();
