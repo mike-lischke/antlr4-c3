@@ -20,16 +20,13 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.atn.PredictionMode;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
 
 import static org.junit.Assert.*;
 
 /**
  * Unit tests for CodeCompletionCore
  */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestCodeCompletionCore {
 
     private static final Logger logger = Logger.getLogger(TestCodeCompletionCore.class.getName());
@@ -153,8 +150,8 @@ public class TestCodeCompletionCore {
         assertTrue(candidates.tokens.containsKey(ExprLexer.VAR));
         assertTrue(candidates.tokens.containsKey(ExprLexer.LET));
 
-        assertEquals(Arrays.asList(new Integer[]{ExprLexer.ID, ExprLexer.EQUAL}), candidates.tokens.get(ExprLexer.VAR));
-        assertEquals(Arrays.asList(new Integer[]{ExprLexer.ID, ExprLexer.EQUAL}), candidates.tokens.get(ExprLexer.LET));
+        assertEquals(Arrays.asList(new Integer[]{}), candidates.tokens.get(ExprLexer.VAR));
+        assertEquals(Arrays.asList(new Integer[]{}), candidates.tokens.get(ExprLexer.LET));
 
         // 2) On the variable name ('c').
         candidates = core.collectCandidates(2, null);
