@@ -66,7 +66,6 @@ TEST(SimpleExpressionParser, MostSimpleSetup) {
     EXPECT_THAT(
         Keys(candidates.tokens),
         UnorderedElementsAre(ExprLexer::VAR, ExprLexer::LET, ExprLexer::ID));
-
     EXPECT_THAT(candidates.tokens[ExprLexer::VAR],
                 ElementsAre(ExprLexer::ID, ExprLexer::EQUAL));
     EXPECT_THAT(candidates.tokens[ExprLexer::LET],

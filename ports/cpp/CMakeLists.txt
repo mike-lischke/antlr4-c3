@@ -10,7 +10,15 @@ include(cmake/Sanitize.cmake)
 
 set(ANTLR4_TAG 4.13.1)
 
+find_package(Antlr4Cpp)
+
 add_subdirectory(source)
+
 if (ANTLR4C3_DEVELOPER)
+    include(cmake/Testing.cmake)
+
+    find_package(Antlr4Tool)
+    find_package(GTest)
+
     add_subdirectory(test)
 endif()
