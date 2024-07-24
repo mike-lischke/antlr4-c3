@@ -30,6 +30,6 @@ jobs:
         run: make
       - name: Unit Test
         working-directory: ${{github.workspace}}/ports/cpp/build/test
-        run: \
+        run: |
           ctest 
           cat test/Testing/Temporary/LastTest.log
