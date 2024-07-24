@@ -180,7 +180,7 @@ TEST(SimpleExpressionParser, TypicalSetup) {
 }
 
 TEST(SimpleExpressionParser, RecursivePreferredRule) {
-  AntlrPipeline pipeline("var c = a + b()");
+  AntlrPipeline pipeline("var c = a + b");
 
   CountingErrorListener listener;
   pipeline.parser.addErrorListener(&listener);
@@ -228,5 +228,50 @@ TEST(SimpleExpressionParser, RecursivePreferredRule) {
     // which is 'b'.
     EXPECT_EQ(
         candidates.rules[ExprParser::RuleSimpleExpression].startTokenIndex, 10);
+  }
+}
+
+TEST(SimpleExpressionParser, CandidateRulesWithDifferentStartTokens) {
+  AntlrPipeline pipeline("var c = a + b");
+
+  CountingErrorListener listener;
+  pipeline.parser.addErrorListener(&listener);
+  pipeline.parser.expression();
+  EXPECT_EQ(listener.GetErrorCount(), 0);
+
+  c3::CodeCompletionCore completion(&pipeline.parser);
+  completion.preferredRules = {
+      ExprParser::RuleAssignment,
+      ExprParser::RuleVariableRef,
+  };
+  completion.translateRulesTopDown = true;
+
+  const auto collectCandidatesAt = [&](std::size_t tokenIndex) {
+    return completion.collectCandidates(tokenIndex,
+                                        /*context=*/nullptr, /*size_t=*/0,
+                                        /*cancel=*/nullptr);
+  };
+
+  {
+    // 1) On the token 'var'.
+    auto candidates = collectCandidatesAt(0);
+    EXPECT_THAT(Keys(candidates.rules),
+                UnorderedElementsAre(ExprParser::RuleAssignment,
+                                     ExprParser::RuleVariableRef));
+    // The start token of the assignment and variableRef rules begin at token
+    // 'var'.
+    EXPECT_EQ(candidates.rules[ExprParser::RuleAssignment].startTokenIndex, 0);
+    EXPECT_EQ(candidates.rules[ExprParser::RuleVariableRef].startTokenIndex, 0);
+  }
+  {
+    // 2) On the variable reference 'a'.
+    auto candidates = collectCandidatesAt(6);
+    EXPECT_THAT(Keys(candidates.rules),
+                UnorderedElementsAre(ExprParser::RuleAssignment,
+                                     ExprParser::RuleVariableRef));
+    // The start token of the assignment rule begins at token 'var'.
+    EXPECT_EQ(candidates.rules[ExprParser::RuleAssignment].startTokenIndex, 0);
+    // The start token of the variableRef rule begins at token 'a'.
+    EXPECT_EQ(candidates.rules[ExprParser::RuleVariableRef].startTokenIndex, 6);
   }
 }
