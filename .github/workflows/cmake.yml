@@ -1,0 +1,33 @@
+name: CMake
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        cmake_build_type: [Asan, Release]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure
+        working-directory: ${{github.workspace}}/ports/cpp
+        run: |
+          mkdir build
+          cd build
+          cmake \
+            -DANTLR4C3_DEVELOPER=ON \
+            -DCMAKE_BUILD_TYPE=${{ matrix.cmake_build_type }} \
+            ..
+      - name: Build
+        working-directory: ${{github.workspace}}/ports/cpp/build
+        run: make
+      - name: Unit Test
+        working-directory: ${{github.workspace}}/ports/cpp/build/test
+        run: \
+          ctest 
+          cat test/Testing/Temporary/LastTest.log
