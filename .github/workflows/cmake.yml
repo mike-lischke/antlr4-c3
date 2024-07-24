@@ -37,4 +37,4 @@ jobs:
         working-directory: ${{github.workspace}}/ports/cpp/build/test
         run: |
           ctest 
-          cat test/Testing/Temporary/LastTest.log
+          cat Testing/Temporary/LastTest.log
