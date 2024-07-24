@@ -19,6 +19,7 @@ if (ANTLR4C3_DEVELOPER)
 
     find_package(Antlr4Tool REQUIRED)
     find_package(GTest REQUIRED)
+    include(CTest)
 
     add_subdirectory(test)
 endif()
