@@ -138,11 +138,10 @@ TEST(SimpleExpressionParser, TypicalSetup) {
     auto candidates = collectCandidatesAt(0);
     EXPECT_THAT(Keys(candidates.tokens),
                 UnorderedElementsAre(ExprLexer::VAR, ExprLexer::LET));
-    // FIXME: it returns empty lists as tokens are ignored, but in TS not
-    // EXPECT_THAT(candidates.tokens[ExprLexer::VAR],
-    //             UnorderedElementsAre(ExprLexer::ID, ExprLexer::EQUAL));
-    // EXPECT_THAT(candidates.tokens[ExprLexer::LET],
-    //             UnorderedElementsAre(ExprLexer::ID, ExprLexer::EQUAL));
+
+    // NOTE: Behaviour differs from TypeScript version
+    EXPECT_THAT(candidates.tokens[ExprLexer::VAR], UnorderedElementsAre());
+    EXPECT_THAT(candidates.tokens[ExprLexer::LET], UnorderedElementsAre());
   }
   {
     // 2) On the variable name ('c').
