@@ -188,7 +188,7 @@ bool CodeCompletionCore::translateStackToRuleIndex(RuleWithStartTokenList const&
 	if (translateRulesTopDown) {
 		// Loop over the rule stack from lowest to highest rule level. This will prioritize a lower preferred rule
 		// if it is a child of a higher one that is also a preferred rule.
-		for (size_t i = ruleWithStartTokenList.size() - 1; i >= 0; i--) {
+		for (int64_t i = ruleWithStartTokenList.size() - 1; i >= 0; i--) {
 			if (translateToRuleIndex(i, ruleWithStartTokenList)) {
 				return true;
 			}
@@ -335,8 +335,8 @@ FollowSetsHolder CodeCompletionCore::determineFollowSets(antlr4::atn::ATNState *
 	
 	return {
 		.sets = sets,
+		.combined = combined,
 		.isExhaustive = isExhaustive,
-		.combined = combined
 	};
 }
 
