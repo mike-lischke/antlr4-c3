@@ -1,0 +1,6 @@
+{
+    "clangd.arguments": [
+        "-compile-commands-dir=./build",
+        "-header-insertion=never"
+    ]
+}

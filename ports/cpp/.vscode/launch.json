@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug Test",
+            "program": "${workspaceFolder}/build/test/antlr4-c3-test",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "Build Test"
+        }
+    ]
+}
