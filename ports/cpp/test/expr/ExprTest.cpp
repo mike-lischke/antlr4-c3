@@ -178,3 +178,55 @@ TEST(SimpleExpressionParser, TypicalSetup) {
     EXPECT_EQ(candidates.rules[ExprParser::RuleFunctionRef].startTokenIndex, 6);
   }
 }
+
+TEST(SimpleExpressionParser, RecursivePreferredRule) {
+  AntlrPipeline pipeline("var c = a + b()");
+
+  CountingErrorListener listener;
+  pipeline.parser.addErrorListener(&listener);
+  pipeline.parser.expression();
+  EXPECT_EQ(listener.GetErrorCount(), 0);
+
+  c3::CodeCompletionCore completion(&pipeline.parser);
+  completion.preferredRules = {ExprParser::RuleSimpleExpression};
+
+  const auto collectCandidatesAt = [&](std::size_t tokenIndex) {
+    return completion.collectCandidates(tokenIndex,
+                                        /*context=*/nullptr, /*size_t=*/0,
+                                        /*cancel=*/nullptr);
+  };
+
+  {
+    // 1) On the variable reference 'a'.
+    auto candidates = collectCandidatesAt(6);
+    EXPECT_THAT(Keys(candidates.rules),
+                UnorderedElementsAre(ExprParser::RuleSimpleExpression));
+    // The start token of the simpleExpression rule begins at token 'a'.
+    EXPECT_EQ(
+        candidates.rules[ExprParser::RuleSimpleExpression].startTokenIndex, 6);
+  }
+  {
+    // 2) On the variable reference 'b'.
+    completion.translateRulesTopDown = false;
+    auto candidates = collectCandidatesAt(10);
+    EXPECT_THAT(Keys(candidates.rules),
+                UnorderedElementsAre(ExprParser::RuleSimpleExpression));
+    // When translateRulesTopDown is false, startTokenIndex should match the
+    // start token for the lower index (less specific) rule in the expression,
+    // which is 'a'.
+    EXPECT_EQ(
+        candidates.rules[ExprParser::RuleSimpleExpression].startTokenIndex, 6);
+  }
+  {
+    // 3) On the variable reference 'b' topDown preferred rules.
+    completion.translateRulesTopDown = true;
+    auto candidates = collectCandidatesAt(10);
+    EXPECT_THAT(Keys(candidates.rules),
+                UnorderedElementsAre(ExprParser::RuleSimpleExpression));
+    // When translateRulesTopDown is true, startTokenIndex should match the
+    // start token for the higher index (more specific) rule in the expression,
+    // which is 'b'.
+    EXPECT_EQ(
+        candidates.rules[ExprParser::RuleSimpleExpression].startTokenIndex, 10);
+  }
+}
