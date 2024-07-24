@@ -13,8 +13,8 @@ jobs:
         cmake_build_type: [Asan, Release]
     runs-on: ubuntu-latest
     steps:
-      - name: Install CMake
-        run: sudo apt update && sudo apt install cmake
+      - name: Install Build Essential
+        run: sudo apt update && sudo apt install build-essential
       - uses: actions/checkout@v3
       - name: Configure
         working-directory: ${{github.workspace}}/ports/cpp
