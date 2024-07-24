@@ -5,10 +5,10 @@
             "type": "lldb",
             "request": "launch",
             "name": "Debug Test",
-            "program": "${workspaceFolder}/build/test/antlr4-c3-test",
+            "program": "${workspaceFolder}/build/test/${fileDirnameBasename}/antlr4-c3-test",
             "args": [],
             "cwd": "${workspaceFolder}",
-            "preLaunchTask": "Build Test"
+            "preLaunchTask": "Build All"
         }
     ]
 }

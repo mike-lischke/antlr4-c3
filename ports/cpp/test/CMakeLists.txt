@@ -1,10 +1,5 @@
-find_package(GTest)
+# ANTLR4 Tool generates such files
+add_compile_options(-Wno-unused-parameter)
 
-add_executable(${PROJECT_NAME}-test HelloWorld.cpp)
-target_link_libraries(
-    ${PROJECT_NAME}-test PRIVATE 
-    ${PROJECT_NAME} 
-    GTest::gtest_main
-)
-
-gtest_discover_tests(${PROJECT_NAME}-test)
+enable_testing()
+add_subdirectory(expr)
