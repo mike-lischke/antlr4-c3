@@ -3,19 +3,19 @@ find_package(GTest)
 
 antlr_generate(
     ${CMAKE_CURRENT_LIST_DIR}/Expr.g4 
-    ${CMAKE_BINARY_DIR}/test/expr
+    ${CMAKE_CURRENT_BINARY_DIR}
 )
 
 file(
     GLOB_RECURSE SOURCE CONFIGURE_DEPENDS 
     *.hpp *.cpp
-    ${CMAKE_BINARY_DIR}/test/expr/*.hpp
-    ${CMAKE_BINARY_DIR}/test/expr/*.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/*.hpp
+    ${CMAKE_CURRENT_BINARY_DIR}/*.cpp
 )
 add_executable(${PROJECT_NAME}-test ${SOURCE})
 target_include_directories(
     ${PROJECT_NAME}-test PRIVATE
-    ${CMAKE_BINARY_DIR}/test/expr
+    ${CMAKE_CURRENT_BINARY_DIR}
 )
 target_link_libraries(
     ${PROJECT_NAME}-test PRIVATE
