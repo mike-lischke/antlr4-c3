@@ -2,11 +2,11 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build Test",
+            "label": "Build All",
             "type": "shell",
             "command": [
                 "make",
-                "antlr4-c3-test"
+                "all"
             ],
             "options": {
                 "cwd": "${workspaceFolder}/build"
