@@ -1,13 +1,11 @@
-set(UBSAN_COMPILE_FLAGS -fsanitize=undefined -fno-sanitize-recover=all)
-set(UBSAN_LINK_FLAGS -fsanitize=undefined)
-if(UBSAN)
-    add_compile_options(${UBSAN_COMPILE_FLAGS})
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${UBSAN_LINK_FLAGS}")
-endif()
+set(
+    CMAKE_CXX_FLAGS_ASAN "-g -fsanitize=address,undefined -fno-sanitize-recover=all"
+    CACHE STRING "Compiler flags in ASan build"
+    FORCE
+)
 
-set(ASAN_COMPILE_FLAGS -fsanitize=address,undefined -fno-sanitize-recover=all)
-set(ASAN_LINK_FLAGS -fsanitize=address,undefined)
-if(ASAN)
-    add_compile_options(${ASAN_COMPILE_FLAGS})
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${ASAN_LINK_FLAGS}")
-endif()
+set(
+    CMAKE_CXX_FLAGS_TSAN "-g -fsanitize=thread -fno-sanitize-recover=all"
+    CACHE STRING "Compiler flags in TSan build"
+    FORCE
+)
