@@ -3,3 +3,4 @@ add_compile_options(-Wno-unused-parameter)
 
 enable_testing()
 add_subdirectory(expr)
+add_subdirectory(whitebox)
