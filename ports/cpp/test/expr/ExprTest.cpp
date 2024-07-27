@@ -1,57 +1,21 @@
 #include <antlr4-c3/CodeCompletionCore.hpp>
-#include <antlr4-runtime.h>
-
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
 
 #include <ExprLexer.h>
 #include <ExprParser.h>
 
-#include <cstddef>
-#include <string_view>
+#include <utility/Testing.hpp>
 
-class CountingErrorListener final : public antlr4::BaseErrorListener {
-public:
-  void syntaxError(antlr4::Recognizer *recognizer,
-                   antlr4::Token *offendingSymbol, std::size_t line,
-                   std::size_t charPositionInLine, const std::string &msg,
-                   std::exception_ptr e) override {}
+namespace c3::test {
 
-  std::size_t GetErrorCount() const { return errorCount; }
-
-private:
-  std::size_t errorCount = 0;
+struct ExprGrammar {
+  using Lexer = ExprLexer;
+  using Parser = ExprParser;
 };
-
-struct AntlrPipeline {
-  AntlrPipeline(std::string_view text)
-      : chars(text), lexer(&chars), tokens(&lexer), parser(&tokens) {}
-
-  antlr4::ANTLRInputStream chars;
-  ExprLexer lexer;
-  antlr4::CommonTokenStream tokens;
-  ExprParser parser;
-};
-
-template <class K, class V> std::vector<K> Keys(const std::map<K, V> &map) {
-  std::vector<K> keys;
-  for (const auto &[key, value] : map) {
-    keys.emplace_back(key);
-  }
-  return keys;
-}
-
-using testing::ElementsAre;
-using testing::UnorderedElementsAre;
 
 TEST(SimpleExpressionParser, MostSimpleSetup) {
-  CountingErrorListener listener;
-
-  AntlrPipeline pipeline("var c = a + b()");
-  pipeline.parser.addErrorListener(&listener);
-
+  AntlrPipeline<ExprGrammar> pipeline("var c = a + b()");
   pipeline.parser.expression();
-  EXPECT_EQ(listener.GetErrorCount(), 0);
+  EXPECT_EQ(pipeline.listener.GetErrorCount(), 0);
 
   c3::CodeCompletionCore completion(&pipeline.parser);
   const auto collectCandidatesAt = [&](std::size_t tokenIndex) {
@@ -109,13 +73,9 @@ TEST(SimpleExpressionParser, MostSimpleSetup) {
 }
 
 TEST(SimpleExpressionParser, TypicalSetup) {
-  CountingErrorListener listener;
-
-  AntlrPipeline pipeline("var c = a + b()");
-  pipeline.parser.addErrorListener(&listener);
-
+  AntlrPipeline<ExprGrammar> pipeline("var c = a + b()");
   pipeline.parser.expression();
-  EXPECT_EQ(listener.GetErrorCount(), 0);
+  EXPECT_EQ(pipeline.listener.GetErrorCount(), 0);
 
   c3::CodeCompletionCore completion(&pipeline.parser);
   completion.ignoredTokens = {
@@ -178,12 +138,9 @@ TEST(SimpleExpressionParser, TypicalSetup) {
 }
 
 TEST(SimpleExpressionParser, RecursivePreferredRule) {
-  AntlrPipeline pipeline("var c = a + b");
-
-  CountingErrorListener listener;
-  pipeline.parser.addErrorListener(&listener);
+  AntlrPipeline<ExprGrammar> pipeline("var c = a + b");
   pipeline.parser.expression();
-  EXPECT_EQ(listener.GetErrorCount(), 0);
+  EXPECT_EQ(pipeline.listener.GetErrorCount(), 0);
 
   c3::CodeCompletionCore completion(&pipeline.parser);
   completion.preferredRules = {ExprParser::RuleSimpleExpression};
@@ -230,12 +187,9 @@ TEST(SimpleExpressionParser, RecursivePreferredRule) {
 }
 
 TEST(SimpleExpressionParser, CandidateRulesWithDifferentStartTokens) {
-  AntlrPipeline pipeline("var c = a + b");
-
-  CountingErrorListener listener;
-  pipeline.parser.addErrorListener(&listener);
+  AntlrPipeline<ExprGrammar> pipeline("var c = a + b");
   pipeline.parser.expression();
-  EXPECT_EQ(listener.GetErrorCount(), 0);
+  EXPECT_EQ(pipeline.listener.GetErrorCount(), 0);
 
   c3::CodeCompletionCore completion(&pipeline.parser);
   completion.preferredRules = {
@@ -273,3 +227,5 @@ TEST(SimpleExpressionParser, CandidateRulesWithDifferentStartTokens) {
     EXPECT_EQ(candidates.rules[ExprParser::RuleVariableRef].startTokenIndex, 6);
   }
 }
+
+} // namespace c3::test
