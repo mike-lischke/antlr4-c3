@@ -12,7 +12,9 @@ public:
   void syntaxError(antlr4::Recognizer *recognizer,
                    antlr4::Token *offendingSymbol, std::size_t line,
                    std::size_t charPositionInLine, const std::string &msg,
-                   std::exception_ptr e) override {}
+                   std::exception_ptr e) override {
+    errorCount += 1;
+  }
 
   std::size_t GetErrorCount() const { return errorCount; }
 
