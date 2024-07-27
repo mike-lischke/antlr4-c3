@@ -1,4 +1,9 @@
 macro(define_grammar_test grammar)
+    get_filename_component(
+        ANTLR4C3_CURRENT_DIR_NAME
+        ${CMAKE_CURRENT_LIST_DIR} NAME
+    )
+
     antlr_generate(
         ${CMAKE_CURRENT_LIST_DIR}/${grammar}
         ${CMAKE_CURRENT_BINARY_DIR}
@@ -11,19 +16,24 @@ macro(define_grammar_test grammar)
         ${CMAKE_CURRENT_BINARY_DIR}/*.cpp
     )
 
-    add_executable(${PROJECT_NAME}-test ${SOURCE})
+    set(
+        ANTLR4C3_TEST_TARGET
+        ${PROJECT_NAME}-test-${ANTLR4C3_CURRENT_DIR_NAME}
+    )
+
+    add_executable(${ANTLR4C3_TEST_TARGET} ${SOURCE})
 
     target_include_directories(
-        ${PROJECT_NAME}-test PRIVATE
+        ${ANTLR4C3_TEST_TARGET} PRIVATE
         ${CMAKE_CURRENT_BINARY_DIR}
     )
 
     target_link_libraries(
-        ${PROJECT_NAME}-test PRIVATE
+        ${ANTLR4C3_TEST_TARGET} PRIVATE
         ${PROJECT_NAME}
         GTest::gtest_main
         GTest::gmock
     )
 
-    gtest_discover_tests(${PROJECT_NAME}-test)
+    gtest_discover_tests(${ANTLR4C3_TEST_TARGET})
 endmacro()
