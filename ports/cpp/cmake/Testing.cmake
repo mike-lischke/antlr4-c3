@@ -26,6 +26,7 @@ macro(define_grammar_test grammar)
     target_include_directories(
         ${ANTLR4C3_TEST_TARGET} PRIVATE
         ${CMAKE_CURRENT_BINARY_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/..
     )
 
     target_link_libraries(
