@@ -13,4 +13,12 @@ template <class K, class V> std::vector<K> Keys(const std::map<K, V> &map) {
   return keys;
 }
 
+template <class T>
+std::vector<T> Concat(std::vector<T> lhs, const std::vector<T> &rhs) {
+  for (const auto &element : rhs) {
+    lhs.emplace_back(element);
+  }
+  return lhs;
+}
+
 } // namespace c3::test
