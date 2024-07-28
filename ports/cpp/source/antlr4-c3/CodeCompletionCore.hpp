@@ -8,21 +8,30 @@
 #ifndef CodeCompletionCore_hpp
 #define CodeCompletionCore_hpp
 
+#include <Parser.h>
+#include <ParserRuleContext.h>
+#include <Token.h>
+#include <atn/ATNState.h>
+#include <atn/PredicateTransition.h>
+#include <atn/RuleStartState.h>
+#include <atn/Transition.h>
+#include <misc/IntervalSet.h>
+
 #include <atomic>
 #include <chrono>
+#include <cstddef>
 #include <map>
 #include <string>
 #include <typeindex>
 #include <unordered_set>
 #include <vector>
 
-#include "antlr4-runtime.h"
-
 // ----------------------------------------------------------------------------
 // Supporting Types
 // ----------------------------------------------------------------------------
 
 namespace c3 {
+
 using TokenList = std::vector<size_t>;
 using RuleList = std::vector<size_t>;
 
@@ -104,7 +113,7 @@ public:
   // Construction
   // --------------------------------------------------------
 
-  CodeCompletionCore(antlr4::Parser* parser);
+  explicit CodeCompletionCore(antlr4::Parser* parser);
 
   // --------------------------------------------------------
   // Configuration
@@ -114,20 +123,20 @@ public:
    * Tailoring of the result:
    * Tokens which should not appear in the candidates set.
    */
-  std::unordered_set<size_t> ignoredTokens;
+  std::unordered_set<size_t> ignoredTokens;  // NOLINT: public field
 
   /**
    * Rules which replace any candidate token they contain.
    * This allows to return descriptive rules (e.g. className, instead of
    * ID/identifier).
    */
-  std::unordered_set<size_t> preferredRules;
+  std::unordered_set<size_t> preferredRules;  // NOLINT: public field
 
   /**
    * Specify if preferred rules should translated top-down (higher index rule
    * returns first) or bottom-up (lower index rule returns first).
    */
-  bool translateRulesTopDown = false;
+  bool translateRulesTopDown = false;  // NOLINT: public field
 
   // --------------------------------------------------------
   // Debugging Options
@@ -136,18 +145,18 @@ public:
 
   /** Not dependent on showDebugOutput. Prints the collected rules + tokens to
    * terminal. */
-  bool showResult = false;
+  bool showResult = false;  // NOLINT: public field
 
   /** Enables printing ATN state info to terminal. */
-  bool showDebugOutput = false;
+  bool showDebugOutput = false;  // NOLINT: public field
 
   /** Only relevant when showDebugOutput is true. Enables transition printing
    * for a state. */
-  bool debugOutputWithTransitions = false;
+  bool debugOutputWithTransitions = false;  // NOLINT: public field
 
   /** Also depends on showDebugOutput. Enables call stack printing for each rule
    * recursion. */
-  bool showRuleStack = false;
+  bool showRuleStack = false;  // NOLINT: public field
 
   // --------------------------------------------------------
   // Usage
@@ -185,9 +194,9 @@ private:
   static std::vector<std::string> atnStateTypeMap;
 
   antlr4::Parser* parser;
-  antlr4::atn::ATN const& atn;
-  antlr4::dfa::Vocabulary const& vocabulary;
-  std::vector<std::string> const& ruleNames;
+  antlr4::atn::ATN const& atn;                // NOLINT: reference field
+  antlr4::dfa::Vocabulary const& vocabulary;  // NOLINT: reference field
+  std::vector<std::string> const& ruleNames;  // NOLINT: reference field
   std::vector<antlr4::Token*> tokens;
   std::vector<int> precedenceStack;
 
@@ -208,24 +217,30 @@ private:
   std::chrono::steady_clock::time_point timeoutStart;
 
   bool checkPredicate(const antlr4::atn::PredicateTransition* transition);
+
   bool translateStackToRuleIndex(
       RuleWithStartTokenList const& ruleWithStartTokenList
   );
+
   bool translateToRuleIndex(
-      size_t i, RuleWithStartTokenList const& ruleWithStartTokenList
+      size_t index, RuleWithStartTokenList const& ruleWithStartTokenList
   );
+
   std::vector<size_t> getFollowingTokens(
       const antlr4::atn::Transition* transition
-  );
+  ) const;
+
   FollowSetsHolder determineFollowSets(
       antlr4::atn::ATNState* start, antlr4::atn::ATNState* stop
   );
+
   bool collectFollowSets(
-      antlr4::atn::ATNState* s, antlr4::atn::ATNState* stopState,
+      antlr4::atn::ATNState* state, antlr4::atn::ATNState* stopState,
       std::vector<FollowSetWithPath>& followSets,
       std::vector<antlr4::atn::ATNState*>& stateStack,
       std::vector<size_t>& ruleStack
   );
+
   RuleEndStatus processRule(
       antlr4::atn::RuleStartState* startState, size_t tokenListIndex,
       RuleWithStartTokenList& callStack, int precedence, size_t indentation,
@@ -233,10 +248,12 @@ private:
   );
 
   std::string generateBaseDescription(antlr4::atn::ATNState* state);
+
   void printDescription(
       size_t indentation, antlr4::atn::ATNState* state,
       std::string const& baseDescription, size_t tokenIndex
   );
+
   void printRuleState(RuleWithStartTokenList const& stack);
 };
 

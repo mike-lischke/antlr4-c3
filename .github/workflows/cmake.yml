@@ -17,26 +17,32 @@ jobs:
     strategy:
       matrix:
         cmake_build_type: [Asan, Release]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Install dependencies
         run: |
+          wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+          sudo add-apt-repository "deb http://apt.llvm.org/noble/ llvm-toolchain-noble-18 main"
           sudo apt update
           sudo apt install build-essential
+          sudo apt install clang-format-18 clang-tidy-18
+
       - name: Setup ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
           create-symlink: true
-          key: ${{ github.job }}-${{ matrix.os }}
+          key: ${{ github.job }}-${{ matrix.cmake_build_type }}
+
       - name: Clang-Format
         working-directory: ${{github.workspace}}/ports/cpp
         run: |
-          ( \
-            find source test -iname '*.hpp' -o -iname '*.cpp' \
-            | xargs clang-format -Werror --dry-run \
-              --fallback-style=Google --verbose \
-          )
+          find source test -iname '*.hpp' -o -iname '*.cpp' \
+          | xargs clang-format-18 -Werror --dry-run \
+              --fallback-style=Google --verbose
+
       - name: Configure
         working-directory: ${{github.workspace}}/ports/cpp
         run: |
@@ -46,11 +52,20 @@ jobs:
             -DANTLR4C3_DEVELOPER=ON \
             -DCMAKE_BUILD_TYPE=${{ matrix.cmake_build_type }} \
             ..
+
       - name: Build
         working-directory: ${{github.workspace}}/ports/cpp/build
         run: make
+
       - name: Unit Test
         working-directory: ${{github.workspace}}/ports/cpp/build/test
         run: |
           ctest 
           cat Testing/Temporary/LastTest.log
+
+      - name: Clang-Tidy on sources
+        if: matrix.cmake_build_type == 'Release'
+        working-directory: ${{github.workspace}}/ports/cpp
+        run: |
+          find source -iname '*.hpp' -o -iname '*.cpp' \
+          | xargs clang-tidy-18 -p build/compile_commands.json

@@ -6,62 +6,82 @@
 //
 
 #include "CodeCompletionCore.hpp"
-using namespace antlr4;
-using namespace std;
+
+#include <Parser.h>
+#include <ParserRuleContext.h>
+#include <Token.h>
+#include <Vocabulary.h>
+#include <atn/ATN.h>
+#include <atn/ATNState.h>
+#include <atn/ATNStateType.h>
+#include <atn/PrecedencePredicateTransition.h>
+#include <atn/PredicateTransition.h>
+#include <atn/RuleStartState.h>
+#include <atn/RuleStopState.h>
+#include <atn/RuleTransition.h>
+#include <atn/Transition.h>
+#include <atn/TransitionType.h>
+
+#include <algorithm>
+#include <atomic>
+#include <chrono>
+#include <cmath>
+#include <cstddef>
+#include <iostream>
+#include <iterator>
+#include <ranges>
+#include <ratio>
+#include <set>
+#include <sstream>
+#include <string>
+#include <vector>
 
 namespace c3 {
 
-// ----------------------------------------------------------------------------
-// MARK: - Utilities
-// ----------------------------------------------------------------------------
+namespace {
 
-static std::vector<size_t> longestCommonPrefix(
-    std::vector<size_t> a, std::vector<size_t> b
+std::vector<size_t> longestCommonPrefix(
+    std::vector<size_t> lhs, std::vector<size_t> rhs
 ) {
-  size_t i = 0;
-  for (; i < std::min(a.size(), b.size()); i++) {
-    if (a[i] != b[i]) {
+  size_t index = 0;
+  for (; index < std::min(lhs.size(), rhs.size()); index++) {
+    if (lhs[index] != rhs[index]) {
       break;
     }
   }
-
-  return std::vector<size_t>(a.begin(), a.begin() + i);
+  return {
+      lhs.begin(),
+      std::next(lhs.begin(), static_cast<std::ptrdiff_t>(index)),
+  };
 }
 
-// ----------------------------------------------------------------------------
-// MARK: - Static
-// ----------------------------------------------------------------------------
+}  // namespace
 
-std::map<std::type_index, FollowSetsPerState>
+std::map<std::type_index, FollowSetsPerState>  // NOLINT
     c3::CodeCompletionCore::followSetsByATN = {};
 
 // Matches ATNStateType enum
-std::vector<std::string> c3::CodeCompletionCore::atnStateTypeMap = {
-    "invalid",          "basic",
-    "rule start",       "block start",
-    "plus block start", "star block start",
-    "token start",      "rule stop",
-    "block end",        "star loop back",
-    "star loop entry",  "plus loop back",
-    "loop end",
-};
-
-// ----------------------------------------------------------------------------
-// MARK: - Construction
-// ----------------------------------------------------------------------------
+std::vector<std::string> c3::CodeCompletionCore::atnStateTypeMap  // NOLINT
+    {
+        "invalid",          "basic",
+        "rule start",       "block start",
+        "plus block start", "star block start",
+        "token start",      "rule stop",
+        "block end",        "star loop back",
+        "star loop entry",  "plus loop back",
+        "loop end",
+    };
 
 CodeCompletionCore::CodeCompletionCore(antlr4::Parser* parser)
     : parser(parser)
     , atn(parser->getATN())
     , vocabulary(parser->getVocabulary())
-    , ruleNames(parser->getRuleNames()) {
+    , ruleNames(parser->getRuleNames())
+    , timeoutMS(0)
+    , cancel(nullptr) {
 }
 
-// ----------------------------------------------------------------------------
-// MARK: - Collecting
-// ----------------------------------------------------------------------------
-
-CandidatesCollection CodeCompletionCore::collectCandidates(
+CandidatesCollection CodeCompletionCore::collectCandidates(  // NOLINT
     size_t caretTokenIndex, antlr4::ParserRuleContext* context,
     size_t timeoutMS, std::atomic<bool>* cancel
 ) {
@@ -75,31 +95,31 @@ CandidatesCollection CodeCompletionCore::collectCandidates(
   this->cancel = cancel;
   this->timeoutMS = timeoutMS;
 
-  tokenStartIndex = context ? context->start->getTokenIndex() : 0;
-  const auto tokenStream = parser->getTokenStream();
+  tokenStartIndex = (context != nullptr) ? context->start->getTokenIndex() : 0;
+  auto* const tokenStream = parser->getTokenStream();
 
   tokens = {};
   size_t offset = tokenStartIndex;
   while (true) {
     antlr4::Token* token = tokenStream->get(offset++);
-    if (token->getChannel() == Token::DEFAULT_CHANNEL) {
+    if (token->getChannel() == antlr4::Token::DEFAULT_CHANNEL) {
       tokens.push_back(token);
 
       if (token->getTokenIndex() >= caretTokenIndex ||
-          token->getType() == Token::EOF) {
+          token->getType() == antlr4::Token::EOF) {
         break;
       }
     }
 
     // Do not check for the token index here, as we want to end with the first
     // unhidden token on or after the caret.
-    if (token->getType() == Token::EOF) {
+    if (token->getType() == antlr4::Token::EOF) {
       break;
     }
   }
 
   RuleWithStartTokenList callStack = {};
-  size_t startRule = context ? context->getRuleIndex() : 0;
+  const size_t startRule = (context != nullptr) ? context->getRuleIndex() : 0;
   bool cancelled = false;
 
   processRule(atn.ruleToStartState[startRule], 0, callStack, 0, 0, cancelled);
@@ -118,19 +138,19 @@ CandidatesCollection CodeCompletionCore::collectCandidates(
       std::cout << ruleNames[tokenIndex];
       std::cout << ", path: ";
 
-      for (size_t token : rule.ruleList) {
+      for (const size_t token : rule.ruleList) {
         std::cout << ruleNames[token] + " ";
       }
     }
     std::cout << "\n\n";
 
     std::set<std::string> sortedTokens;
-    for (auto entry : candidates.tokens) {
-      size_t token = entry.first;
-      std::vector<size_t> tokenList = entry.second;
+    for (const auto& entry : candidates.tokens) {
+      const size_t token = entry.first;
+      const std::vector<size_t> tokenList = entry.second;
 
       std::string value = vocabulary.getDisplayName(token);
-      for (size_t following : tokenList) {
+      for (const size_t following : tokenList) {
         value += " " + vocabulary.getDisplayName(following);
       }
 
@@ -138,7 +158,7 @@ CandidatesCollection CodeCompletionCore::collectCandidates(
     }
 
     std::cout << "Collected tokens:\n";
-    for (std::string symbol : sortedTokens) {
+    for (const std::string& symbol : sortedTokens) {
       std::cout << symbol;
     }
     std::cout << "\n\n";
@@ -157,7 +177,9 @@ CandidatesCollection CodeCompletionCore::collectCandidates(
 bool CodeCompletionCore::checkPredicate(
     const antlr4::atn::PredicateTransition* transition
 ) {
-  return transition->getPredicate()->eval(parser, &ParserRuleContext::EMPTY);
+  return transition->getPredicate()->eval(
+      parser, &antlr4::ParserRuleContext::EMPTY
+  );
 }
 
 /**
@@ -171,17 +193,19 @@ bool CodeCompletionCore::checkPredicate(
 bool CodeCompletionCore::translateStackToRuleIndex(
     RuleWithStartTokenList const& ruleWithStartTokenList
 ) {
-  if (preferredRules.size() == 0) {
+  if (preferredRules.empty()) {
     return false;
   }
 
   // Change the direction we iterate over the rule stack
+  auto forward = std::views::iota(0U, ruleWithStartTokenList.size());
+  auto backward = forward | std::views::reverse;
   if (translateRulesTopDown) {
     // Loop over the rule stack from lowest to highest rule level. This will
     // prioritize a lower preferred rule if it is a child of a higher one that
     // is also a preferred rule.
-    for (int64_t i = ruleWithStartTokenList.size() - 1; i >= 0; i--) {
-      if (translateToRuleIndex(i, ruleWithStartTokenList)) {
+    for (const auto index : backward) {
+      if (translateToRuleIndex(index, ruleWithStartTokenList)) {
         return true;
       }
     }
@@ -189,8 +213,8 @@ bool CodeCompletionCore::translateStackToRuleIndex(
     // Loop over the rule stack from highest to lowest rule level. This will
     // prioritize a higher preferred rule if it contains a lower one that is
     // also a preferred rule.
-    for (size_t i = 0; i < ruleWithStartTokenList.size(); i++) {
-      if (translateToRuleIndex(i, ruleWithStartTokenList)) {
+    for (const auto index : forward) {
+      if (translateToRuleIndex(index, ruleWithStartTokenList)) {
         return true;
       }
     }
@@ -209,18 +233,17 @@ bool CodeCompletionCore::translateStackToRuleIndex(
  * @returns true if the specified rule is in the list of preferred rules.
  */
 bool CodeCompletionCore::translateToRuleIndex(
-    size_t i, RuleWithStartTokenList const& ruleWithStartTokenList
+    size_t index, RuleWithStartTokenList const& ruleWithStartTokenList
 ) {
-  RuleWithStartToken rwst = ruleWithStartTokenList[i];
+  const RuleWithStartToken rwst = ruleWithStartTokenList[index];
 
   if (preferredRules.contains(rwst.ruleIndex)) {
     // Add the rule to our candidates list along with the current rule path,
     // but only if there isn't already an entry like that.
     std::vector<size_t> path;
-    {
-      for (size_t subrangeIndex = 0; subrangeIndex < i; subrangeIndex++) {
-        path.push_back(ruleWithStartTokenList[subrangeIndex].ruleIndex);
-      }
+    path.reserve(index);
+    for (size_t subrangeIndex = 0; subrangeIndex < index; subrangeIndex++) {
+      path.push_back(ruleWithStartTokenList[subrangeIndex].ruleIndex);
     }
 
     bool addNew = true;
@@ -250,7 +273,8 @@ bool CodeCompletionCore::translateToRuleIndex(
 
     if (addNew) {
       candidates.rules[rwst.ruleIndex] = {
-          .startTokenIndex = rwst.startTokenIndex, .ruleList = path
+          .startTokenIndex = rwst.startTokenIndex,
+          .ruleList = path,
       };
       if (showDebugOutput) {
         std::cout << "=====> collected: " << ruleNames[rwst.ruleIndex] << "\n";
@@ -273,21 +297,22 @@ bool CodeCompletionCore::translateToRuleIndex(
  */
 std::vector<size_t> CodeCompletionCore::getFollowingTokens(
     const antlr4::atn::Transition* transition
-) {
+) const {
   std::vector<size_t> result = {};
 
   std::vector<antlr4::atn::ATNState*> pipeline = {transition->target};
 
-  while (pipeline.size() > 0) {
+  while (!pipeline.empty()) {
     antlr4::atn::ATNState* state = pipeline.back();
     pipeline.pop_back();
 
-    if (state) {
-      for (antlr4::atn::ConstTransitionPtr& outgoing : state->transitions) {
+    if (state != nullptr) {
+      for (const antlr4::atn::ConstTransitionPtr& outgoing :
+           state->transitions) {
         if (outgoing->getTransitionType() ==
             antlr4::atn::TransitionType::ATOM) {
           if (!outgoing->isEpsilon()) {
-            std::vector<ssize_t> list = outgoing->label().toList();
+            std::vector<ptrdiff_t> list = outgoing->label().toList();
             if (list.size() == 1 && !ignoredTokens.contains(list[0])) {
               result.push_back(list[0]);
               pipeline.push_back(outgoing->target);
@@ -316,14 +341,14 @@ FollowSetsHolder CodeCompletionCore::determineFollowSets(
   std::vector<FollowSetWithPath> sets = {};
   std::vector<antlr4::atn::ATNState*> stateStack = {};
   std::vector<size_t> ruleStack = {};
-  bool isExhaustive =
+  const bool isExhaustive =
       collectFollowSets(start, stop, sets, stateStack, ruleStack);
 
   // Sets are split by path to allow translating them to preferred rules. But
   // for quick hit tests it is also useful to have a set with all symbols
   // combined.
   antlr4::misc::IntervalSet combined;
-  for (auto set : sets) {
+  for (const auto& set : sets) {
     combined.addAll(set.intervals);
   }
 
@@ -347,30 +372,33 @@ FollowSetsHolder CodeCompletionCore::determineFollowSets(
  * @returns true if the follow sets is exhaustive, i.e. we terminated before the
  * rule end was reached, so no subsequent rules could add tokens
  */
-bool CodeCompletionCore::collectFollowSets(
-    antlr4::atn::ATNState* s, antlr4::atn::ATNState* stopState,
+bool CodeCompletionCore::collectFollowSets(  // NOLINT
+    antlr4::atn::ATNState* state, antlr4::atn::ATNState* stopState,
     std::vector<FollowSetWithPath>& followSets,
     std::vector<antlr4::atn::ATNState*>& stateStack,
     std::vector<size_t>& ruleStack
 ) {
-  if (std::find(stateStack.begin(), stateStack.end(), s) != stateStack.end()) {
+  if (std::find(stateStack.begin(), stateStack.end(), state) !=
+      stateStack.end()) {
     return true;
   }
-  stateStack.push_back(s);
 
-  if (s == stopState ||
-      s->getStateType() == antlr4::atn::ATNStateType::RULE_STOP) {
+  stateStack.push_back(state);
+
+  if (state == stopState ||
+      state->getStateType() == antlr4::atn::ATNStateType::RULE_STOP) {
     stateStack.pop_back();
     return false;
   }
 
   bool isExhaustive = true;
-  for (antlr4::atn::ConstTransitionPtr& tp : s->transitions) {
-    const antlr4::atn::Transition* transition = tp.get();
+  for (const antlr4::atn::ConstTransitionPtr& transitionPtr :
+       state->transitions) {
+    const antlr4::atn::Transition* transition = transitionPtr.get();
 
     if (transition->getTransitionType() == antlr4::atn::TransitionType::RULE) {
-      const antlr4::atn::RuleTransition* ruleTransition =
-          static_cast<const antlr4::atn::RuleTransition*>(transition);
+      const auto* ruleTransition =
+          dynamic_cast<const antlr4::atn::RuleTransition*>(transition);
 
       if (std::find(
               ruleStack.begin(), ruleStack.end(),
@@ -381,7 +409,7 @@ bool CodeCompletionCore::collectFollowSets(
 
       ruleStack.push_back(ruleTransition->target->ruleIndex);
 
-      bool ruleFollowSetsIsExhaustive = collectFollowSets(
+      const bool ruleFollowSetsIsExhaustive = collectFollowSets(
           transition->target, stopState, followSets, stateStack, ruleStack
       );
       ruleStack.pop_back();
@@ -390,7 +418,7 @@ bool CodeCompletionCore::collectFollowSets(
       // added to the follow set are non-exhaustive and we should continue
       // processing subsequent transitions post-rule
       if (!ruleFollowSetsIsExhaustive) {
-        bool nextStateFollowSetsIsExhaustive = collectFollowSets(
+        const bool nextStateFollowSetsIsExhaustive = collectFollowSets(
             ruleTransition->followState, stopState, followSets, stateStack,
             ruleStack
         );
@@ -400,15 +428,15 @@ bool CodeCompletionCore::collectFollowSets(
     } else if (transition->getTransitionType() ==
                antlr4::atn::TransitionType::PREDICATE) {
       if (checkPredicate(
-              static_cast<const antlr4::atn::PredicateTransition*>(transition)
+              dynamic_cast<const antlr4::atn::PredicateTransition*>(transition)
           )) {
-        bool nextStateFollowSetsIsExhaustive = collectFollowSets(
+        const bool nextStateFollowSetsIsExhaustive = collectFollowSets(
             transition->target, stopState, followSets, stateStack, ruleStack
         );
         isExhaustive = isExhaustive && nextStateFollowSetsIsExhaustive;
       }
     } else if (transition->isEpsilon()) {
-      bool nextStateFollowSetsIsExhaustive = collectFollowSets(
+      const bool nextStateFollowSetsIsExhaustive = collectFollowSets(
           transition->target, stopState, followSets, stateStack, ruleStack
       );
       isExhaustive = isExhaustive && nextStateFollowSetsIsExhaustive;
@@ -416,7 +444,8 @@ bool CodeCompletionCore::collectFollowSets(
                antlr4::atn::TransitionType::WILDCARD) {
       FollowSetWithPath set;
       set.intervals = antlr4::misc::IntervalSet::of(
-          antlr4::Token::MIN_USER_TOKEN_TYPE, atn.maxTokenType
+          antlr4::Token::MIN_USER_TOKEN_TYPE,
+          static_cast<ptrdiff_t>(atn.maxTokenType)
       );
       set.path = ruleStack;
       followSets.push_back(set);
@@ -426,7 +455,8 @@ bool CodeCompletionCore::collectFollowSets(
         if (transition->getTransitionType() ==
             antlr4::atn::TransitionType::NOT_SET) {
           label = label.complement(antlr4::misc::IntervalSet::of(
-              antlr4::Token::MIN_USER_TOKEN_TYPE, atn.maxTokenType
+              antlr4::Token::MIN_USER_TOKEN_TYPE,
+              static_cast<ptrdiff_t>(atn.maxTokenType)
           ));
         }
         FollowSetWithPath set;
@@ -457,23 +487,24 @@ bool CodeCompletionCore::collectFollowSets(
  * @returns the set of token stream indexes (which depend on the ways that had
  * to be taken).
  */
-RuleEndStatus CodeCompletionCore::processRule(
+RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
     antlr4::atn::RuleStartState* startState, size_t tokenListIndex,
-    RuleWithStartTokenList& callStack, int precedence, size_t indentation,
-    bool& cancelled
+    RuleWithStartTokenList& callStack, int precedence,  // NOLINT
+    size_t indentation,                                 // NOLINT
+    bool& timedOut
 ) {
   // Cancelled by external caller?
-  if (cancel && cancel->load()) {
-    cancelled = true;
+  if (cancel != nullptr && cancel->load()) {
+    timedOut = true;
     return {};
   }
 
   // Check for timeout
-  cancelled = false;
+  timedOut = false;
   if (timeoutMS > 0) {
-    std::chrono::duration<size_t, std::milli> timeout(timeoutMS);
+    const std::chrono::duration<size_t, std::milli> timeout(timeoutMS);
     if (std::chrono::steady_clock::now() - timeoutStart > timeout) {
-      cancelled = true;
+      timedOut = true;
       return {};
     }
   }
@@ -513,15 +544,16 @@ RuleEndStatus CodeCompletionCore::processRule(
 
   FollowSetsPerState& setsPerState = followSetsByATN[typeid(parser)];
   if (!setsPerState.contains(startState->stateNumber)) {
-    auto stop = atn.ruleToStopState[startState->ruleIndex];
+    antlr4::atn::RuleStopState* stop =
+        atn.ruleToStopState[startState->ruleIndex];
     auto followSets = determineFollowSets(startState, stop);
     setsPerState[startState->stateNumber] = followSets;
   }
-  FollowSetsHolder followSets = setsPerState[startState->stateNumber];
+  const FollowSetsHolder followSets = setsPerState[startState->stateNumber];
 
   // Get the token index where our rule starts from our (possibly filtered)
   // token list
-  size_t startTokenIndex = tokens[tokenListIndex]->getTokenIndex();
+  const size_t startTokenIndex = tokens[tokenListIndex]->getTokenIndex();
 
   callStack.push_back({
       .startTokenIndex = startTokenIndex,
@@ -536,13 +568,13 @@ RuleEndStatus CodeCompletionCore::processRule(
     } else {
       // Convert all follow sets to either single symbols or their associated
       // preferred rule and add the result to our candidates list.
-      for (FollowSetWithPath& set : followSets.sets) {
+      for (const FollowSetWithPath& set : followSets.sets) {
         RuleWithStartTokenList fullPath = callStack;
 
         // Rules derived from our followSet will always start at the same token
         // as our current rule.
         RuleWithStartTokenList followSetPath;
-        for (size_t rule : set.path) {
+        for (const size_t rule : set.path) {
           followSetPath.push_back({
               .startTokenIndex = startTokenIndex,
               .ruleIndex = rule,
@@ -554,8 +586,8 @@ RuleEndStatus CodeCompletionCore::processRule(
         );
 
         if (!translateStackToRuleIndex(fullPath)) {
-          for (ssize_t symbol : set.intervals.toList()) {
-            if (!ignoredTokens.contains((size_t)symbol)) {
+          for (ptrdiff_t symbol : set.intervals.toList()) {
+            if (!ignoredTokens.contains(static_cast<size_t>(symbol))) {
               if (showDebugOutput) {
                 std::cout << "=====> collected: "
                           << vocabulary.getDisplayName(symbol) << "\n";
@@ -586,18 +618,16 @@ RuleEndStatus CodeCompletionCore::processRule(
     callStack.pop_back();
 
     return result;
+  }
 
-  } else {
-    // Process the rule if we either could pass it without consuming anything
-    // (epsilon transition) or if the current input symbol will be matched
-    // somewhere after this entry point. Otherwise stop here.
-    size_t currentSymbol = tokens[tokenListIndex]->getType();
-    if (followSets.isExhaustive &&
-        !followSets.combined.contains(currentSymbol)) {
-      callStack.pop_back();
+  // Process the rule if we either could pass it without consuming anything
+  // (epsilon transition) or if the current input symbol will be matched
+  // somewhere after this entry point. Otherwise stop here.
+  const size_t currentSymbol = tokens[tokenListIndex]->getType();
+  if (followSets.isExhaustive && !followSets.combined.contains(currentSymbol)) {
+    callStack.pop_back();
 
-      return result;
-    }
+    return result;
   }
 
   if (startState->isLeftRecursiveRule) {
@@ -614,19 +644,19 @@ RuleEndStatus CodeCompletionCore::processRule(
       {.state = startState, .tokenListIndex = tokenListIndex}
   );
 
-  while (statePipeline.size() > 0) {
-    if (cancel && cancel->load()) {
-      cancelled = true;
+  while (!statePipeline.empty()) {
+    if (cancel != nullptr && cancel->load()) {
+      timedOut = true;
       return {};
     }
 
-    PipelineEntry currentEntry = statePipeline.back();
+    const PipelineEntry currentEntry = statePipeline.back();
     statePipeline.pop_back();
     ++statesProcessed;
 
-    size_t currentSymbol = tokens[currentEntry.tokenListIndex]->getType();
+    const size_t currentSymbol = tokens[currentEntry.tokenListIndex]->getType();
 
-    bool atCaret = currentEntry.tokenListIndex >= tokens.size() - 1;
+    const bool atCaret = currentEntry.tokenListIndex >= tokens.size() - 1;
     if (showDebugOutput) {
       printDescription(
           indentation, currentEntry.state,
@@ -648,25 +678,27 @@ RuleEndStatus CodeCompletionCore::processRule(
     // We simulate here the same precedence handling as the parser does, which
     // uses hard coded values. For rules that are not left recursive this value
     // is ignored (since there is no precedence transition).
-    for (antlr4::atn::ConstTransitionPtr& transition :
+    for (const antlr4::atn::ConstTransitionPtr& transition :
          currentEntry.state->transitions) {
       switch (transition->getTransitionType()) {
         case antlr4::atn::TransitionType::RULE: {
-          const atn::RuleTransition* ruleTransition =
-              static_cast<const atn::RuleTransition*>(transition.get());
-          atn::RuleStartState* ruleStartState =
-              static_cast<atn::RuleStartState*>(ruleTransition->target);
+          const auto* ruleTransition =
+              dynamic_cast<const antlr4::atn::RuleTransition*>(transition.get()
+              );
+          auto* ruleStartState =
+              dynamic_cast<antlr4::atn::RuleStartState*>(ruleTransition->target
+              );
           bool innerCancelled = false;
-          RuleEndStatus endStatus = processRule(
+          const RuleEndStatus endStatus = processRule(
               ruleStartState, currentEntry.tokenListIndex, callStack,
               ruleTransition->precedence, indentation + 1, innerCancelled
           );
           if (innerCancelled) {
-            cancelled = true;
+            timedOut = true;
             return {};
           }
 
-          for (size_t position : endStatus) {
+          for (const size_t position : endStatus) {
             statePipeline.push_back({
                 .state = ruleTransition->followState,
                 .tokenListIndex = position,
@@ -676,8 +708,10 @@ RuleEndStatus CodeCompletionCore::processRule(
         }
 
         case antlr4::atn::TransitionType::PREDICATE: {
-          const atn::PredicateTransition* predTransition =
-              static_cast<const atn::PredicateTransition*>(transition.get());
+          const auto* predTransition =
+              dynamic_cast<const antlr4::atn::PredicateTransition*>(
+                  transition.get()
+              );
           if (checkPredicate(predTransition)) {
             statePipeline.push_back({
                 .state = transition->target,
@@ -688,8 +722,8 @@ RuleEndStatus CodeCompletionCore::processRule(
         }
 
         case antlr4::atn::TransitionType::PRECEDENCE: {
-          const atn::PrecedencePredicateTransition* predTransition =
-              static_cast<const atn::PrecedencePredicateTransition*>(
+          const auto* predTransition =
+              dynamic_cast<const antlr4::atn::PrecedencePredicateTransition*>(
                   transition.get()
               );
           if (predTransition->getPrecedence() >=
@@ -706,11 +740,11 @@ RuleEndStatus CodeCompletionCore::processRule(
         case antlr4::atn::TransitionType::WILDCARD: {
           if (atCaret) {
             if (!translateStackToRuleIndex(callStack)) {
-              for (auto token :
-                   antlr4::misc::IntervalSet::of(
-                       antlr4::Token::MIN_USER_TOKEN_TYPE, atn.maxTokenType
-                   )
-                       .toList()) {
+              const auto tokens = antlr4::misc::IntervalSet::of(
+                  antlr4::Token::MIN_USER_TOKEN_TYPE,
+                  static_cast<ptrdiff_t>(atn.maxTokenType)
+              );
+              for (auto token : tokens.toList()) {
                 if (!ignoredTokens.contains(token)) {
                   candidates.tokens[token] = {};
                 }
@@ -741,14 +775,15 @@ RuleEndStatus CodeCompletionCore::processRule(
             if (transition->getTransitionType() ==
                 antlr4::atn::TransitionType::NOT_SET) {
               set = set.complement(antlr4::misc::IntervalSet::of(
-                  antlr4::Token::MIN_USER_TOKEN_TYPE, atn.maxTokenType
+                  antlr4::Token::MIN_USER_TOKEN_TYPE,
+                  static_cast<ptrdiff_t>(atn.maxTokenType)
               ));
             }
             if (atCaret) {
               if (!translateStackToRuleIndex(callStack)) {
-                std::vector<ssize_t> list = set.toList();
-                bool hasTokenSequence = list.size() == 1;
-                for (size_t symbol : list) {
+                const std::vector<ptrdiff_t> list = set.toList();
+                const bool hasTokenSequence = list.size() == 1;
+                for (const size_t symbol : list) {
                   if (!ignoredTokens.contains(symbol)) {
                     if (showDebugOutput) {
                       std::cout << "=====> collected: "
@@ -806,14 +841,14 @@ RuleEndStatus CodeCompletionCore::processRule(
 std::string CodeCompletionCore::generateBaseDescription(
     antlr4::atn::ATNState* state
 ) {
-  std::string stateValue =
-      (state->stateNumber == atn::ATNState::INVALID_STATE_NUMBER)
+  const std::string stateValue =
+      (state->stateNumber == antlr4::atn::ATNState::INVALID_STATE_NUMBER)
           ? "Invalid"
           : std::to_string(state->stateNumber);
   std::stringstream output;
 
   output << "[" << stateValue << " "
-         << atnStateTypeMap[(size_t)state->getStateType()] << "]";
+         << atnStateTypeMap[static_cast<size_t>(state->getStateType())] << "]";
   output << " in ";
   output << ruleNames[state->ruleIndex];
   return output.str();
@@ -823,39 +858,48 @@ void CodeCompletionCore::printDescription(
     size_t indentation, antlr4::atn::ATNState* state,
     std::string const& baseDescription, size_t tokenIndex
 ) {
-  std::string indent = std::string(indentation * 2, ' ');
-  std::string output = "";
-  std::string transitionDescription = "";
+  const std::string indent = std::string(indentation * 2, ' ');
+  std::string output;
+  std::string transitionDescription;
 
   if (debugOutputWithTransitions) {
-    for (antlr4::atn::ConstTransitionPtr& transition : state->transitions) {
-      std::string labels = "";
-      std::vector<ssize_t> symbols = transition->label().toList();
+    for (const antlr4::atn::ConstTransitionPtr& transition :
+         state->transitions) {
+      std::string labels;
+      std::vector<ptrdiff_t> symbols = transition->label().toList();
 
       if (symbols.size() > 2) {
         // Only print start and end symbols to avoid large lists in debug
         // output.
-        labels = vocabulary.getDisplayName((size_t)symbols[0]) + " .. " +
-                 vocabulary.getDisplayName((size_t)symbols[symbols.size() - 1]);
+        labels = vocabulary.getDisplayName(static_cast<size_t>(symbols[0])) +
+                 " .. " +
+                 vocabulary.getDisplayName(
+                     static_cast<size_t>(symbols[symbols.size() - 1])
+                 );
       } else {
-        for (size_t symbol : symbols) {
-          if (labels.size() > 0) {
+        for (const size_t symbol : symbols) {
+          if (!labels.empty()) {
             labels += ", ";
           }
           labels += vocabulary.getDisplayName(symbol);
         }
       }
-      if (labels.size() == 0) {
+      if (labels.empty()) {
         labels = "ε";
       }
 
+      transitionDescription += "\n";
+      transitionDescription += indent;
+      transitionDescription += "\t(";
+      transitionDescription += labels;
+      transitionDescription += ") [";
+      transitionDescription += std::to_string(transition->target->stateNumber);
+      transitionDescription += " ";
       transitionDescription +=
-          "\n" + indent + "\t(" + labels + ") " + "[" +
-          std::to_string(transition->target->stateNumber) + " " +
-          atnStateTypeMap[(size_t)transition->target->getStateType()] +
-          "]"
-          " in " +
-          ruleNames[transition->target->ruleIndex];
+          atnStateTypeMap[static_cast<size_t>(transition->target->getStateType()
+          )];
+      transitionDescription += "] in ";
+      transitionDescription += ruleNames[transition->target->ruleIndex];
     }
   }
 
@@ -871,17 +915,15 @@ void CodeCompletionCore::printDescription(
 }
 
 void CodeCompletionCore::printRuleState(RuleWithStartTokenList const& stack) {
-  if (stack.size() == 0) {
+  if (stack.empty()) {
     std::cout << "<empty stack>\n";
     return;
   }
 
-  if (stack.size() > 0) {
-    for (RuleWithStartToken rule : stack) {
-      std::cout << ruleNames[rule.ruleIndex];
-    }
-    std::cout << "\n";
+  for (const RuleWithStartToken rule : stack) {
+    std::cout << ruleNames[rule.ruleIndex];
   }
+  std::cout << "\n";
 }
 
 }  // namespace c3

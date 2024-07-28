@@ -1,0 +1,22 @@
+---
+Checks: '-*,
+  bugprone-*,
+  cert-*,
+  concurrency-*,
+  cppcoreguidelines-*,
+  google-*,
+  hicpp-*,
+  misc-*,
+  -misc-no-recursion,
+  modernize-*,
+  -modernize-use-trailing-return-type,
+  performance-*,
+  readability-*'
+WarningsAsErrors: '*'
+HeaderFileExtensions:
+  - hpp
+ImplementationFileExtensions:
+  - cpp
+HeaderFilterRegex: ''
+FormatStyle: '.clang-format'
+SystemHeaders: false

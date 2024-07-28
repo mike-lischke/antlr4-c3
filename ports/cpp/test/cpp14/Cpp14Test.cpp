@@ -1,9 +1,17 @@
 #include <CPP14Lexer.h>
 #include <CPP14Parser.h>
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
 #include <antlr4-c3/CodeCompletionCore.hpp>
 #include <filesystem>
+#include <fstream>
+#include <iterator>
+#include <string>
+#include <utility/AntlrPipeline.hpp>
+#include <utility/Collections.hpp>
 #include <utility/Testing.hpp>
+#include <vector>
 
 namespace c3::test {
 
@@ -12,7 +20,7 @@ struct Cpp14Grammar {
   using Parser = CPP14Parser;
 };
 
-TEST(CPP14Parser, SimpleExample) {
+TEST(CPP14Parser, SimpleExample) {  // NOLINT: complexity
   // We are trying here to get useful code completion candidates without
   // adjusting the grammar in any way. We use the grammar as downloaded from the
   // ANTLR grammar directory and set up the c3 engine instead in a way that
@@ -105,7 +113,7 @@ TEST(CPP14Parser, SimpleExample) {
     //    Note when counting token indexes: the C++14 grammar skips all
     //    whitespaces, hence there are no tokens for them.
     completion.translateRulesTopDown = translateRulesTopDown;
-    auto candidates = completion.collectCandidates(10);
+    auto candidates = completion.collectCandidates(10);  // NOLINT: magic
 
     const std::vector idexpressionStack = {
         CPP14Parser::RuleTranslationunit,
@@ -195,7 +203,7 @@ TEST(CPP14Parser, SimpleExample) {
     //    Note when counting token indexes: the C++14 grammar skips all
     //    whitespaces, hence there are no tokens for them.
     completion.translateRulesTopDown = true;
-    auto candidates = completion.collectCandidates(10);
+    auto candidates = completion.collectCandidates(10);  // NOLINT: magic
 
     EXPECT_EQ(candidates.tokens.size(), 82);
 
@@ -259,7 +267,7 @@ TEST(CPP14Parser, SimpleCppExampleWithErrorsInInput) {
 
   {
     // At the opening parenthesis.
-    auto candidates = completion.collectCandidates(11);
+    auto candidates = completion.collectCandidates(11);  // NOLINT: magic
 
     EXPECT_THAT(
         Keys(candidates.tokens), UnorderedElementsAre(CPP14Lexer::LeftParen)
@@ -268,7 +276,7 @@ TEST(CPP14Parser, SimpleCppExampleWithErrorsInInput) {
   {
     // At the closing parenthesis -> again everything in an expression allowed
     // (no control flow this time, though).
-    auto candidates = completion.collectCandidates(12);
+    auto candidates = completion.collectCandidates(12);  // NOLINT: magic
 
     EXPECT_EQ(candidates.tokens.size(), 65);
 
@@ -290,14 +298,14 @@ TEST(CPP14Parser, SimpleCppExampleWithErrorsInInput) {
   }
   {
     // After the error position -> no suggestions.
-    auto candidates = completion.collectCandidates(13);
+    auto candidates = completion.collectCandidates(13);  // NOLINT: magic
 
     EXPECT_EQ(candidates.tokens.size(), 0);
     EXPECT_EQ(candidates.rules.size(), 0);
   }
 }
 
-TEST(CPP14Parser, RealCppFile) {
+TEST(CPP14Parser, RealCppFile) {  // NOLINT: complexity
   {
     const auto path = std::filesystem::current_path().string();
     EXPECT_TRUE(path.ends_with("ports/cpp/build/test/cpp14"));
@@ -332,7 +340,7 @@ TEST(CPP14Parser, RealCppFile) {
       CPP14Parser::RuleIdexpression,
   };
 
-  std::vector idexpressionStack = {
+  const std::vector idexpressionStack = {
       CPP14Parser::RuleTranslationunit,
       CPP14Parser::RuleDeclarationseq,
       CPP14Parser::RuleDeclaration,
@@ -352,7 +360,7 @@ TEST(CPP14Parser, RealCppFile) {
       CPP14Parser::RuleDeclaratorid,
   };
 
-  std::vector classnameStack = Concat(
+  const std::vector classnameStack = Concat(
       idexpressionStack,
       {
           CPP14Parser::RuleIdexpression,
@@ -362,7 +370,7 @@ TEST(CPP14Parser, RealCppFile) {
       }
   );
 
-  std::vector namespacenameStack = Concat(
+  const std::vector namespacenameStack = Concat(
       idexpressionStack,
       {
           CPP14Parser::RuleIdexpression,
@@ -372,7 +380,7 @@ TEST(CPP14Parser, RealCppFile) {
   );
 
   {
-    auto candidates = completion.collectCandidates(3469);
+    auto candidates = completion.collectCandidates(3469);  // NOLINT: magic
 
     EXPECT_THAT(
         Keys(candidates.rules),
@@ -391,7 +399,7 @@ TEST(CPP14Parser, RealCppFile) {
     // We should receive more specific rules when translating top down.
 
     completion.translateRulesTopDown = true;
-    auto candidates = completion.collectCandidates(3469);
+    auto candidates = completion.collectCandidates(3469);  // NOLINT: magic
 
     EXPECT_THAT(
         candidates.rules[CPP14Parser::RuleClassname].ruleList,

@@ -2,6 +2,7 @@
 Language: Cpp
 BasedOnStyle: Google
 
+ColumnLimit: 80
 AccessModifierOffset: -2
 
 AllowShortFunctionsOnASingleLine: None
