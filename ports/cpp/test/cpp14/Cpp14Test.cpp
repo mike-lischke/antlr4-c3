@@ -280,15 +280,8 @@ TEST(CPP14Parser, SimpleCppExampleWithErrorsInInput) {
 
 TEST(CPP14Parser, RealCppFile) {
   {
-    auto actual =                                                        //
-        std::filesystem::current_path()                                  //
-        | std::views::reverse                                            //
-        | std::views::take(5)                                            //
-        | std::views::reverse                                            //
-        | std::views::transform([](auto word) { return word.string(); }) //
-        | std::ranges::to<std::vector>();
-    std::vector<std::string> expected{"ports", "cpp", "build", "test", "cpp14"};
-    EXPECT_EQ(actual, expected);
+    const auto path = std::filesystem::current_path().string();
+    EXPECT_TRUE(path.ends_with("ports/cpp/build/test/cpp14"));
   }
 
   const auto source = [] {

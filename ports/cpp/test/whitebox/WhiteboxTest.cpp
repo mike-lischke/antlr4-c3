@@ -46,7 +46,7 @@ TEST(WhiteboxGrammarTests, CaretAtOneOfMultiplePossibleStates) {
   for (const auto index : {4, 5, 6, 7}) {
     AntlrPipeline<WhiteboxGrammar> pipeline("LOREM IPSUM ");
 
-    auto *ctx = [&] -> antlr4::ParserRuleContext * {
+    auto *ctx = [&]() -> antlr4::ParserRuleContext * {
       switch (index) {
       case 4:
         return pipeline.parser.test4();

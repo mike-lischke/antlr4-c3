@@ -14,7 +14,7 @@ Please see the parent [README.md](../../readme.md) for an explanation of the lib
 
 ## Requirements
 
-- [C++ 23 standard](https://en.cppreference.com/w/cpp/23) to compile sources.
+- [C++ 20 standard](https://en.cppreference.com/w/cpp/20) to compile sources.
 
 - [ANTLRv4 C++ Runtime](https://github.com/antlr/antlr4/tree/4.13.1/runtime/Cpp) to compile sources.
 
