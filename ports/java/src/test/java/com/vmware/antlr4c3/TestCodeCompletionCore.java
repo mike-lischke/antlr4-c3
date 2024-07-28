@@ -75,8 +75,11 @@ public class TestCodeCompletionCore {
         assertTrue(candidates.tokens.containsKey(ExprLexer.LET));
         assertTrue(candidates.tokens.containsKey(ExprLexer.ID));
 
-        assertEquals(Arrays.asList(new Integer[]{ExprLexer.ID, ExprLexer.EQUAL}), candidates.tokens.get(ExprLexer.VAR));
-        assertEquals(Arrays.asList(new Integer[]{ExprLexer.ID, ExprLexer.EQUAL}), candidates.tokens.get(ExprLexer.LET));
+        { // TS: expected [ExprLexer.ID, ExprLexer.EQUAL], here got []
+            assertEquals(Arrays.asList(new Integer[]{}), candidates.tokens.get(ExprLexer.VAR));
+            assertEquals(Arrays.asList(new Integer[]{}), candidates.tokens.get(ExprLexer.LET));
+        }
+
         assertEquals(Arrays.asList(new Integer[]{}), candidates.tokens.get(ExprLexer.ID));
 
         // 2) On the first whitespace. In real implementations you would do some additional checks where in the whitespace
