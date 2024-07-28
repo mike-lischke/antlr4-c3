@@ -6,8 +6,10 @@ name: Build & Test
 on:
   push:
     branches: [ main ]
+    paths-ignore: ["ports/**"]
   pull_request:
     branches: [ main ]
+    paths-ignore: ["ports/**"]
 
 jobs:
   build:
