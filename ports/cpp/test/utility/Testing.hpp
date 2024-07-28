@@ -14,4 +14,4 @@ using testing::IsSupersetOf;
 using testing::UnorderedElementsAre;
 using testing::UnorderedElementsAreArray;
 
-} // namespace c3::test
+}  // namespace c3::test
