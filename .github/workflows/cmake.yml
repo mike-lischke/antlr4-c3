@@ -29,6 +29,14 @@ jobs:
         with:
           create-symlink: true
           key: ${{ github.job }}-${{ matrix.os }}
+      - name: Clang-Format
+        working-directory: ${{github.workspace}}/ports/cpp
+        run: |
+          ( \
+            find source test -iname '*.hpp' -o -iname '*.cpp' \
+            | xargs clang-format -Werror --dry-run \
+              --fallback-style=Google --verbose \
+          )
       - name: Configure
         working-directory: ${{github.workspace}}/ports/cpp
         run: |

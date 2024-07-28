@@ -1,11 +1,9 @@
-#include <antlr4-c3/CodeCompletionCore.hpp>
-
 #include <CPP14Lexer.h>
 #include <CPP14Parser.h>
 
-#include <utility/Testing.hpp>
-
+#include <antlr4-c3/CodeCompletionCore.hpp>
 #include <filesystem>
+#include <utility/Testing.hpp>
 
 namespace c3::test {
 
@@ -19,11 +17,12 @@ TEST(CPP14Parser, SimpleExample) {
   // adjusting the grammar in any way. We use the grammar as downloaded from the
   // ANTLR grammar directory and set up the c3 engine instead in a way that
   // still returns useful info. This limits us somewhat.
-  const auto *source = "class A {\n"
-                       "public:\n"
-                       "  void test() {\n"
-                       "  }\n"
-                       "};\n";
+  const auto* source =
+      "class A {\n"
+      "public:\n"
+      "  void test() {\n"
+      "  }\n"
+      "};\n";
   AntlrPipeline<Cpp14Grammar> pipeline(source);
   pipeline.parser.translationunit();
   EXPECT_EQ(pipeline.listener.GetErrorCount(), 0);
@@ -68,12 +67,17 @@ TEST(CPP14Parser, SimpleExample) {
             CPP14Lexer::Friend, CPP14Lexer::Typedef, CPP14Lexer::Constexpr,
             CPP14Lexer::Alignas, CPP14Lexer::Asm, CPP14Lexer::Namespace,
             CPP14Lexer::Using, CPP14Lexer::Static_assert, CPP14Lexer::Template,
-            CPP14Lexer::EOF));
+            CPP14Lexer::EOF
+        )
+    );
 
-    EXPECT_THAT(Keys(candidates.rules),
-                UnorderedElementsAre(CPP14Parser::RuleClassname,
-                                     CPP14Parser::RuleNamespacename,
-                                     CPP14Parser::RuleIdexpression));
+    EXPECT_THAT(
+        Keys(candidates.rules),
+        UnorderedElementsAre(
+            CPP14Parser::RuleClassname, CPP14Parser::RuleNamespacename,
+            CPP14Parser::RuleIdexpression
+        )
+    );
 
     EXPECT_THAT(
         candidates.rules[CPP14Parser::RuleNamespacename].ruleList,
@@ -81,8 +85,9 @@ TEST(CPP14Parser, SimpleExample) {
             CPP14Parser::RuleTranslationunit, CPP14Parser::RuleDeclarationseq,
             CPP14Parser::RuleDeclaration, CPP14Parser::RuleFunctiondefinition,
             CPP14Parser::RuleDeclarator, CPP14Parser::RulePtrdeclarator,
-            CPP14Parser::RulePtroperator,
-            CPP14Parser::RuleNestednamespecifier));
+            CPP14Parser::RulePtroperator, CPP14Parser::RuleNestednamespecifier
+        )
+    );
 
     EXPECT_THAT(
         candidates.rules[CPP14Parser::RuleClassname].ruleList,
@@ -91,7 +96,9 @@ TEST(CPP14Parser, SimpleExample) {
             CPP14Parser::RuleDeclaration, CPP14Parser::RuleFunctiondefinition,
             CPP14Parser::RuleDeclarator, CPP14Parser::RulePtrdeclarator,
             CPP14Parser::RulePtroperator, CPP14Parser::RuleNestednamespecifier,
-            CPP14Parser::RuleTypename));
+            CPP14Parser::RuleTypename
+        )
+    );
   }
   for (auto translateRulesTopDown : {false, true}) {
     // 2) Within the method body.
@@ -104,8 +111,8 @@ TEST(CPP14Parser, SimpleExample) {
         CPP14Parser::RuleTranslationunit,
         CPP14Parser::RuleDeclarationseq,
         CPP14Parser::RuleDeclaration,
-        CPP14Parser::RuleBlockdeclaration,  // TS: +- `RuleFunctiondefinition`
-        CPP14Parser::RuleSimpledeclaration, // TS: --
+        CPP14Parser::RuleBlockdeclaration,   // TS: +- `RuleFunctiondefinition`
+        CPP14Parser::RuleSimpledeclaration,  // TS: --
         CPP14Parser::RuleDeclspecifierseq,
         CPP14Parser::RuleDeclspecifier,
         CPP14Parser::RuleTypespecifier,
@@ -139,40 +146,49 @@ TEST(CPP14Parser, SimpleExample) {
         CPP14Parser::RulePrimaryexpression,
     };
 
-    EXPECT_THAT(Keys(candidates.rules),
-                UnorderedElementsAre(CPP14Parser::RuleClassname,
-                                     CPP14Parser::RuleNamespacename,
-                                     CPP14Parser::RuleIdexpression));
+    EXPECT_THAT(
+        Keys(candidates.rules),
+        UnorderedElementsAre(
+            CPP14Parser::RuleClassname, CPP14Parser::RuleNamespacename,
+            CPP14Parser::RuleIdexpression
+        )
+    );
 
-    EXPECT_THAT(candidates.rules[CPP14Parser::RuleIdexpression].ruleList,
-                ElementsAreArray(idexpressionStack));
+    EXPECT_THAT(
+        candidates.rules[CPP14Parser::RuleIdexpression].ruleList,
+        ElementsAreArray(idexpressionStack)
+    );
 
-    EXPECT_THAT(candidates.rules[CPP14Parser::RuleClassname].ruleList,
-                ElementsAreArray([&] {
-                  auto stack = idexpressionStack;
-                  stack.pop_back();
-                  for (auto rule : {
-                           CPP14Parser::RuleSimpletypespecifier,
-                           CPP14Parser::RuleNestednamespecifier,
-                           CPP14Parser::RuleTypename,
-                       }) {
-                    stack.emplace_back(rule);
-                  }
-                  return stack;
-                }()));
+    EXPECT_THAT(
+        candidates.rules[CPP14Parser::RuleClassname].ruleList,
+        ElementsAreArray([&] {
+          auto stack = idexpressionStack;
+          stack.pop_back();
+          for (auto rule : {
+                   CPP14Parser::RuleSimpletypespecifier,
+                   CPP14Parser::RuleNestednamespecifier,
+                   CPP14Parser::RuleTypename,
+               }) {
+            stack.emplace_back(rule);
+          }
+          return stack;
+        }())
+    );
 
-    EXPECT_THAT(candidates.rules[CPP14Parser::RuleNamespacename].ruleList,
-                ElementsAreArray([&] {
-                  auto stack = idexpressionStack;
-                  stack.pop_back();
-                  for (auto rule : {
-                           CPP14Parser::RuleSimpletypespecifier,
-                           CPP14Parser::RuleNestednamespecifier,
-                       }) {
-                    stack.emplace_back(rule);
-                  }
-                  return stack;
-                }()));
+    EXPECT_THAT(
+        candidates.rules[CPP14Parser::RuleNamespacename].ruleList,
+        ElementsAreArray([&] {
+          auto stack = idexpressionStack;
+          stack.pop_back();
+          for (auto rule : {
+                   CPP14Parser::RuleSimpletypespecifier,
+                   CPP14Parser::RuleNestednamespecifier,
+               }) {
+            stack.emplace_back(rule);
+          }
+          return stack;
+        }())
+    );
   }
   {
     // 2) Within the method body.
@@ -183,18 +199,20 @@ TEST(CPP14Parser, SimpleExample) {
 
     EXPECT_EQ(candidates.tokens.size(), 82);
 
-    EXPECT_THAT(Keys(candidates.tokens),
-                IsSupersetOf({
-                    CPP14Lexer::If,
-                    CPP14Lexer::This,
-                    CPP14Lexer::New,
-                    CPP14Lexer::Case,
-                    CPP14Lexer::While,
-                    CPP14Lexer::Throw,
-                    // Fixing issue #12 causes this to be included that was
-                    // previously not returned
-                    CPP14Lexer::Decltype,
-                }));
+    EXPECT_THAT(
+        Keys(candidates.tokens),
+        IsSupersetOf({
+            CPP14Lexer::If,
+            CPP14Lexer::This,
+            CPP14Lexer::New,
+            CPP14Lexer::Case,
+            CPP14Lexer::While,
+            CPP14Lexer::Throw,
+            // Fixing issue #12 causes this to be included that was
+            // previously not returned
+            CPP14Lexer::Decltype,
+        })
+    );
 
     EXPECT_FALSE(candidates.tokens.contains(CPP14Lexer::Override));
     EXPECT_FALSE(candidates.tokens.contains(CPP14Lexer::Export));
@@ -204,12 +222,13 @@ TEST(CPP14Parser, SimpleExample) {
 }
 
 TEST(CPP14Parser, SimpleCppExampleWithErrorsInInput) {
-  const auto *source = "class A {\n"
-                       "public:\n"
-                       "  void test() {\n"
-                       "    if ()"
-                       "  }\n"
-                       "};\n";
+  const auto* source =
+      "class A {\n"
+      "public:\n"
+      "  void test() {\n"
+      "    if ()"
+      "  }\n"
+      "};\n";
   AntlrPipeline<Cpp14Grammar> pipeline(source);
   pipeline.parser.translationunit();
   EXPECT_EQ(pipeline.listener.GetErrorCount(), 3);
@@ -242,8 +261,9 @@ TEST(CPP14Parser, SimpleCppExampleWithErrorsInInput) {
     // At the opening parenthesis.
     auto candidates = completion.collectCandidates(11);
 
-    EXPECT_THAT(Keys(candidates.tokens),
-                UnorderedElementsAre(CPP14Lexer::LeftParen));
+    EXPECT_THAT(
+        Keys(candidates.tokens), UnorderedElementsAre(CPP14Lexer::LeftParen)
+    );
   }
   {
     // At the closing parenthesis -> again everything in an expression allowed
@@ -286,8 +306,9 @@ TEST(CPP14Parser, RealCppFile) {
   const auto source = [] {
     // Assume we are at antlr4-c3/ports/cpp/build
     std::ifstream file("../../../tests/Parser.cpp");
-    std::string content((std::istreambuf_iterator<char>(file)),
-                        std::istreambuf_iterator<char>());
+    std::string content(
+        (std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>()
+    );
     return content;
   }();
 
@@ -331,31 +352,40 @@ TEST(CPP14Parser, RealCppFile) {
       CPP14Parser::RuleDeclaratorid,
   };
 
-  std::vector classnameStack =
-      Concat(idexpressionStack, {
-                                    CPP14Parser::RuleIdexpression,
-                                    CPP14Parser::RuleQualifiedid,
-                                    CPP14Parser::RuleNestednamespecifier,
-                                    CPP14Parser::RuleTypename,
-                                });
+  std::vector classnameStack = Concat(
+      idexpressionStack,
+      {
+          CPP14Parser::RuleIdexpression,
+          CPP14Parser::RuleQualifiedid,
+          CPP14Parser::RuleNestednamespecifier,
+          CPP14Parser::RuleTypename,
+      }
+  );
 
-  std::vector namespacenameStack =
-      Concat(idexpressionStack, {
-                                    CPP14Parser::RuleIdexpression,
-                                    CPP14Parser::RuleQualifiedid,
-                                    CPP14Parser::RuleNestednamespecifier,
-                                });
+  std::vector namespacenameStack = Concat(
+      idexpressionStack,
+      {
+          CPP14Parser::RuleIdexpression,
+          CPP14Parser::RuleQualifiedid,
+          CPP14Parser::RuleNestednamespecifier,
+      }
+  );
 
   {
     auto candidates = completion.collectCandidates(3469);
 
-    EXPECT_THAT(Keys(candidates.rules),
-                UnorderedElementsAre(CPP14Parser::RuleClassname,
-                                     CPP14Parser::RuleNamespacename,
-                                     CPP14Parser::RuleIdexpression));
+    EXPECT_THAT(
+        Keys(candidates.rules),
+        UnorderedElementsAre(
+            CPP14Parser::RuleClassname, CPP14Parser::RuleNamespacename,
+            CPP14Parser::RuleIdexpression
+        )
+    );
 
-    EXPECT_THAT(candidates.rules[CPP14Parser::RuleIdexpression].ruleList,
-                ElementsAreArray(idexpressionStack));
+    EXPECT_THAT(
+        candidates.rules[CPP14Parser::RuleIdexpression].ruleList,
+        ElementsAreArray(idexpressionStack)
+    );
   }
   {
     // We should receive more specific rules when translating top down.
@@ -363,18 +393,22 @@ TEST(CPP14Parser, RealCppFile) {
     completion.translateRulesTopDown = true;
     auto candidates = completion.collectCandidates(3469);
 
-    EXPECT_THAT(candidates.rules[CPP14Parser::RuleClassname].ruleList,
-                ElementsAreArray(classnameStack));
+    EXPECT_THAT(
+        candidates.rules[CPP14Parser::RuleClassname].ruleList,
+        ElementsAreArray(classnameStack)
+    );
 
-    EXPECT_THAT(candidates.rules[CPP14Parser::RuleNamespacename].ruleList,
-                ElementsAreArray(namespacenameStack));
+    EXPECT_THAT(
+        candidates.rules[CPP14Parser::RuleNamespacename].ruleList,
+        ElementsAreArray(namespacenameStack)
+    );
 
     // We are starting a primary expression in a function body, so everything
     // related to expressions and control flow is allowed here. We only check
     // for a few possible keywords.
-    EXPECT_EQ(candidates.tokens.size(), 40); // TS: 82
+    EXPECT_EQ(candidates.tokens.size(), 40);  // TS: 82
 
-    { // TS: at each statement in this block must be EXPECT_TRUE
+    {  // TS: at each statement in this block must be EXPECT_TRUE
       EXPECT_FALSE(candidates.tokens.contains(CPP14Lexer::If));
       EXPECT_FALSE(candidates.tokens.contains(CPP14Lexer::This));
       EXPECT_FALSE(candidates.tokens.contains(CPP14Lexer::New));
@@ -394,4 +428,4 @@ TEST(CPP14Parser, RealCppFile) {
   }
 }
 
-} // namespace c3::test
+}  // namespace c3::test

@@ -9,20 +9,24 @@ namespace c3::test {
 
 class CountingErrorListener final : public antlr4::BaseErrorListener {
 public:
-  void syntaxError(antlr4::Recognizer *recognizer,
-                   antlr4::Token *offendingSymbol, std::size_t line,
-                   std::size_t charPositionInLine, const std::string &msg,
-                   std::exception_ptr e) override {
+  void syntaxError(
+      antlr4::Recognizer* recognizer, antlr4::Token* offendingSymbol,
+      std::size_t line, std::size_t charPositionInLine, const std::string& msg,
+      std::exception_ptr e
+  ) override {
     errorCount += 1;
   }
 
-  std::size_t GetErrorCount() const { return errorCount; }
+  std::size_t GetErrorCount() const {
+    return errorCount;
+  }
 
 private:
   std::size_t errorCount = 0;
 };
 
-template <class Grammar> struct AntlrPipeline {
+template <class Grammar>
+struct AntlrPipeline {
   AntlrPipeline(std::string_view text)
       : chars(text), lexer(&chars), tokens(&lexer), parser(&tokens) {
     parser.removeErrorListeners();
@@ -36,4 +40,4 @@ template <class Grammar> struct AntlrPipeline {
   CountingErrorListener listener;
 };
 
-} // namespace c3::test
+}  // namespace c3::test
