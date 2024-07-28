@@ -3,8 +3,10 @@ name: CMake
 on:
   push:
     branches: ["main"]
+    paths: ["ports/cpp/**"]
   pull_request:
     branches: ["main"]
+    paths: ["ports/cpp/**"]
 
 jobs:
   build:
