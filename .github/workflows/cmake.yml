@@ -3,10 +3,14 @@ name: CMake
 on:
   push:
     branches: ["main"]
-    paths: ["ports/cpp/**"]
+    paths:
+      - "ports/cpp/**"
+      - ".github/workflows/*"
   pull_request:
     branches: ["main"]
-    paths: ["ports/cpp/**"]
+    paths:
+      - "ports/cpp/**"
+      - ".github/workflows/*"
 
 jobs:
   build:
