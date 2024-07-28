@@ -181,7 +181,7 @@ public:
 	 * @returns The collection of completion candidates. If cancelled or timed out, the returned collection will have its 'cancelled'
 	 *          value set to true and the collected candidates may be incomplete.
 	 */
-	CandidatesCollection collectCandidates(size_t caretTokenIndex, antlr4::ParserRuleContext * context, size_t timeoutMS, std::atomic<bool> * cancel);
+	CandidatesCollection collectCandidates(size_t caretTokenIndex, antlr4::ParserRuleContext * context = nullptr, size_t timeoutMS = 0, std::atomic<bool> * cancel = nullptr);
 	
 	
 	

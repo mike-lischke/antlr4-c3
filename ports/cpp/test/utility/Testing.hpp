@@ -4,7 +4,6 @@
 #include <gtest/gtest.h>
 
 #include "AntlrPipeline.hpp"
-#include "Extension.hpp"
 #include "Collections.hpp"
 
 namespace c3::test {

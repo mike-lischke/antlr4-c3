@@ -6,7 +6,6 @@
 #include <utility/Testing.hpp>
 
 #include <filesystem>
-#include <ranges>
 
 namespace c3::test {
 
@@ -51,7 +50,7 @@ TEST(CPP14Parser, SimpleExample) {
 
   {
     // 1) At the input start.
-    auto candidates = Candidates(completion, 0);
+    auto candidates = completion.collectCandidates(0);
 
     EXPECT_THAT(
         Keys(candidates.tokens),
@@ -99,7 +98,7 @@ TEST(CPP14Parser, SimpleExample) {
     //    Note when counting token indexes: the C++14 grammar skips all
     //    whitespaces, hence there are no tokens for them.
     completion.translateRulesTopDown = translateRulesTopDown;
-    auto candidates = Candidates(completion, 10);
+    auto candidates = completion.collectCandidates(10);
 
     const std::vector idexpressionStack = {
         CPP14Parser::RuleTranslationunit,
@@ -180,7 +179,7 @@ TEST(CPP14Parser, SimpleExample) {
     //    Note when counting token indexes: the C++14 grammar skips all
     //    whitespaces, hence there are no tokens for them.
     completion.translateRulesTopDown = true;
-    auto candidates = Candidates(completion, 10);
+    auto candidates = completion.collectCandidates(10);
 
     EXPECT_EQ(candidates.tokens.size(), 82);
 
@@ -241,7 +240,7 @@ TEST(CPP14Parser, SimpleCppExampleWithErrorsInInput) {
 
   {
     // At the opening parenthesis.
-    auto candidates = Candidates(completion, 11);
+    auto candidates = completion.collectCandidates(11);
 
     EXPECT_THAT(Keys(candidates.tokens),
                 UnorderedElementsAre(CPP14Lexer::LeftParen));
@@ -249,7 +248,7 @@ TEST(CPP14Parser, SimpleCppExampleWithErrorsInInput) {
   {
     // At the closing parenthesis -> again everything in an expression allowed
     // (no control flow this time, though).
-    auto candidates = Candidates(completion, 12);
+    auto candidates = completion.collectCandidates(12);
 
     EXPECT_EQ(candidates.tokens.size(), 65);
 
@@ -271,7 +270,7 @@ TEST(CPP14Parser, SimpleCppExampleWithErrorsInInput) {
   }
   {
     // After the error position -> no suggestions.
-    auto candidates = Candidates(completion, 13);
+    auto candidates = completion.collectCandidates(13);
 
     EXPECT_EQ(candidates.tokens.size(), 0);
     EXPECT_EQ(candidates.rules.size(), 0);
@@ -348,7 +347,7 @@ TEST(CPP14Parser, RealCppFile) {
                                 });
 
   {
-    auto candidates = Candidates(completion, 3469);
+    auto candidates = completion.collectCandidates(3469);
 
     EXPECT_THAT(Keys(candidates.rules),
                 UnorderedElementsAre(CPP14Parser::RuleClassname,
@@ -362,7 +361,7 @@ TEST(CPP14Parser, RealCppFile) {
     // We should receive more specific rules when translating top down.
 
     completion.translateRulesTopDown = true;
-    auto candidates = Candidates(completion, 3469);
+    auto candidates = completion.collectCandidates(3469);
 
     EXPECT_THAT(candidates.rules[CPP14Parser::RuleClassname].ruleList,
                 ElementsAreArray(classnameStack));

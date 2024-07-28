@@ -19,7 +19,7 @@ TEST(WhiteboxGrammarTests, CaretAtTransitionToRuleWithNonExhaustiveFollowSet) {
   EXPECT_EQ(pipeline.listener.GetErrorCount(), 1);
 
   c3::CodeCompletionCore completion(&pipeline.parser);
-  auto candidates = Candidates(completion, 1, ctx);
+  auto candidates = completion.collectCandidates(1, ctx);
 
   EXPECT_THAT(Keys(candidates.tokens),
               UnorderedElementsAre(WhiteboxLexer::IPSUM, WhiteboxLexer::DOLOR,
@@ -34,7 +34,7 @@ TEST(WhiteboxGrammarTests, CaretAtTransitionToRuleWithEmptyFollowSet) {
   EXPECT_EQ(pipeline.listener.GetErrorCount(), 1);
 
   c3::CodeCompletionCore completion(&pipeline.parser);
-  auto candidates = Candidates(completion, 1, ctx);
+  auto candidates = completion.collectCandidates(1, ctx);
 
   EXPECT_THAT(Keys(candidates.tokens),
               UnorderedElementsAre(WhiteboxLexer::IPSUM, WhiteboxLexer::DOLOR,
@@ -62,7 +62,7 @@ TEST(WhiteboxGrammarTests, CaretAtOneOfMultiplePossibleStates) {
     }();
 
     c3::CodeCompletionCore completion(&pipeline.parser);
-    auto candidates = Candidates(completion, 2, ctx);
+    auto candidates = completion.collectCandidates(2, ctx);
 
     EXPECT_THAT(Keys(candidates.tokens),
                 UnorderedElementsAre(WhiteboxLexer::DOLOR));
@@ -78,7 +78,7 @@ TEST(WhiteboxGrammarTests,
   auto *ctx = pipeline.parser.test8();
 
   c3::CodeCompletionCore completion(&pipeline.parser);
-  auto candidates = Candidates(completion, 2, ctx);
+  auto candidates = completion.collectCandidates(2, ctx);
 
   EXPECT_THAT(Keys(candidates.tokens),
               UnorderedElementsAre(WhiteboxLexer::DOLOR));

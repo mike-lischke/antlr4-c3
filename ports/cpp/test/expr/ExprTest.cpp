@@ -18,15 +18,10 @@ TEST(SimpleExpressionParser, MostSimpleSetup) {
   EXPECT_EQ(pipeline.listener.GetErrorCount(), 0);
 
   c3::CodeCompletionCore completion(&pipeline.parser);
-  const auto collectCandidatesAt = [&](std::size_t tokenIndex) {
-    return completion.collectCandidates(tokenIndex,
-                                        /*context=*/nullptr, /*size_t=*/0,
-                                        /*cancel=*/nullptr);
-  };
 
   {
     // 1) At the input start.
-    auto candidates = collectCandidatesAt(0);
+    auto candidates = completion.collectCandidates(0);
     EXPECT_THAT(
         Keys(candidates.tokens),
         UnorderedElementsAre(ExprLexer::VAR, ExprLexer::LET, ExprLexer::ID));
@@ -40,17 +35,17 @@ TEST(SimpleExpressionParser, MostSimpleSetup) {
     // 2) On the first whitespace. In real implementations you would do some
     // additional checks where in the whitespace the caret is, as the outcome is
     // different depending on that position.
-    auto candidates = collectCandidatesAt(1);
+    auto candidates = completion.collectCandidates(1);
     EXPECT_THAT(Keys(candidates.tokens), UnorderedElementsAre(ExprLexer::ID));
   }
   {
     // 3) On the variable name ('c').
-    auto candidates = collectCandidatesAt(2);
+    auto candidates = completion.collectCandidates(2);
     EXPECT_THAT(Keys(candidates.tokens), UnorderedElementsAre(ExprLexer::ID));
   }
   {
     // 4) On the equal sign (ignoring whitespace positions from now on).
-    auto candidates = collectCandidatesAt(4);
+    auto candidates = completion.collectCandidates(4);
     EXPECT_THAT(Keys(candidates.tokens),
                 UnorderedElementsAre(ExprLexer::EQUAL));
   }
@@ -58,13 +53,13 @@ TEST(SimpleExpressionParser, MostSimpleSetup) {
     // 5) On the variable reference 'a'. But since we have not configure the c3
     // engine to return us var refs (or function refs for that matter) we only
     // get an ID here.
-    auto candidates = collectCandidatesAt(6);
+    auto candidates = completion.collectCandidates(6);
     EXPECT_THAT(Keys(candidates.tokens), UnorderedElementsAre(ExprLexer::ID));
   }
   {
     // 6) On the '+' operator. Usually you would not show operators as
     // candidates, but we have not set up the c3 engine yet to not return them.
-    auto candidates = collectCandidatesAt(8);
+    auto candidates = completion.collectCandidates(8);
     EXPECT_THAT(Keys(candidates.tokens),
                 UnorderedElementsAre(ExprLexer::PLUS, ExprLexer::MINUS,
                                      ExprLexer::MULTIPLY, ExprLexer::DIVIDE,
@@ -87,15 +82,9 @@ TEST(SimpleExpressionParser, TypicalSetup) {
       ExprParser::RuleVariableRef,
   };
 
-  const auto collectCandidatesAt = [&](std::size_t tokenIndex) {
-    return completion.collectCandidates(tokenIndex,
-                                        /*context=*/nullptr, /*size_t=*/0,
-                                        /*cancel=*/nullptr);
-  };
-
   {
     // 1) At the input start.
-    auto candidates = collectCandidatesAt(0);
+    auto candidates = completion.collectCandidates(0);
     EXPECT_THAT(Keys(candidates.tokens),
                 UnorderedElementsAre(ExprLexer::VAR, ExprLexer::LET));
 
@@ -105,17 +94,17 @@ TEST(SimpleExpressionParser, TypicalSetup) {
   }
   {
     // 2) On the variable name ('c').
-    auto candidates = collectCandidatesAt(2);
+    auto candidates = completion.collectCandidates(2);
     EXPECT_EQ(candidates.tokens.size(), 0);
   }
   {
     // 4) On the equal sign.
-    auto candidates = collectCandidatesAt(4);
+    auto candidates = completion.collectCandidates(4);
     EXPECT_EQ(candidates.tokens.size(), 0);
   }
   {
     // 5) On the variable reference 'a'.
-    auto candidates = collectCandidatesAt(6);
+    auto candidates = completion.collectCandidates(6);
     EXPECT_EQ(candidates.tokens.size(), 0);
     // Here we get 2 rule indexes, derived from 2 different IDs possible at this
     // caret position. These are what we told the engine above to be preferred
@@ -129,7 +118,7 @@ TEST(SimpleExpressionParser, TypicalSetup) {
   {
     // 6) On the whitespace just after the variable reference 'a' (but it could
     // still be a function reference!).
-    auto candidates = collectCandidatesAt(7);
+    auto candidates = completion.collectCandidates(7);
     EXPECT_EQ(candidates.tokens.size(), 0);
     EXPECT_THAT(Keys(candidates.rules),
                 UnorderedElementsAre(ExprParser::RuleFunctionRef));
@@ -145,15 +134,9 @@ TEST(SimpleExpressionParser, RecursivePreferredRule) {
   c3::CodeCompletionCore completion(&pipeline.parser);
   completion.preferredRules = {ExprParser::RuleSimpleExpression};
 
-  const auto collectCandidatesAt = [&](std::size_t tokenIndex) {
-    return completion.collectCandidates(tokenIndex,
-                                        /*context=*/nullptr, /*size_t=*/0,
-                                        /*cancel=*/nullptr);
-  };
-
   {
     // 1) On the variable reference 'a'.
-    auto candidates = collectCandidatesAt(6);
+    auto candidates = completion.collectCandidates(6);
     EXPECT_THAT(Keys(candidates.rules),
                 UnorderedElementsAre(ExprParser::RuleSimpleExpression));
     // The start token of the simpleExpression rule begins at token 'a'.
@@ -163,7 +146,7 @@ TEST(SimpleExpressionParser, RecursivePreferredRule) {
   {
     // 2) On the variable reference 'b'.
     completion.translateRulesTopDown = false;
-    auto candidates = collectCandidatesAt(10);
+    auto candidates = completion.collectCandidates(10);
     EXPECT_THAT(Keys(candidates.rules),
                 UnorderedElementsAre(ExprParser::RuleSimpleExpression));
     // When translateRulesTopDown is false, startTokenIndex should match the
@@ -175,7 +158,7 @@ TEST(SimpleExpressionParser, RecursivePreferredRule) {
   {
     // 3) On the variable reference 'b' topDown preferred rules.
     completion.translateRulesTopDown = true;
-    auto candidates = collectCandidatesAt(10);
+    auto candidates = completion.collectCandidates(10);
     EXPECT_THAT(Keys(candidates.rules),
                 UnorderedElementsAre(ExprParser::RuleSimpleExpression));
     // When translateRulesTopDown is true, startTokenIndex should match the
@@ -198,15 +181,9 @@ TEST(SimpleExpressionParser, CandidateRulesWithDifferentStartTokens) {
   };
   completion.translateRulesTopDown = true;
 
-  const auto collectCandidatesAt = [&](std::size_t tokenIndex) {
-    return completion.collectCandidates(tokenIndex,
-                                        /*context=*/nullptr, /*size_t=*/0,
-                                        /*cancel=*/nullptr);
-  };
-
   {
     // 1) On the token 'var'.
-    auto candidates = collectCandidatesAt(0);
+    auto candidates = completion.collectCandidates(0);
     EXPECT_THAT(Keys(candidates.rules),
                 UnorderedElementsAre(ExprParser::RuleAssignment,
                                      ExprParser::RuleVariableRef));
@@ -217,7 +194,7 @@ TEST(SimpleExpressionParser, CandidateRulesWithDifferentStartTokens) {
   }
   {
     // 2) On the variable reference 'a'.
-    auto candidates = collectCandidatesAt(6);
+    auto candidates = completion.collectCandidates(6);
     EXPECT_THAT(Keys(candidates.rules),
                 UnorderedElementsAre(ExprParser::RuleAssignment,
                                      ExprParser::RuleVariableRef));
