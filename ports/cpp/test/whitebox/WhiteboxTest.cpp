@@ -1,7 +1,13 @@
+#include <ParserRuleContext.h>
 #include <WhiteboxLexer.h>
 #include <WhiteboxParser.h>
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
 #include <antlr4-c3/CodeCompletionCore.hpp>
+#include <cstdlib>
+#include <utility/AntlrPipeline.hpp>
+#include <utility/Collections.hpp>
 #include <utility/Testing.hpp>
 
 namespace c3::test {
@@ -55,11 +61,11 @@ TEST(WhiteboxGrammarTests, CaretAtOneOfMultiplePossibleStates) {
       switch (index) {
         case 4:
           return pipeline.parser.test4();
-        case 5:
+        case 5:  // NOLINT: magic
           return pipeline.parser.test5();
-        case 6:
+        case 6:  // NOLINT: magic
           return pipeline.parser.test6();
-        case 7:
+        case 7:  // NOLINT: magic
           return pipeline.parser.test7();
         default:
           std::abort();

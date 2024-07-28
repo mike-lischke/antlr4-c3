@@ -1,7 +1,11 @@
 #include <ExprLexer.h>
 #include <ExprParser.h>
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
 #include <antlr4-c3/CodeCompletionCore.hpp>
+#include <utility/AntlrPipeline.hpp>
+#include <utility/Collections.hpp>
 #include <utility/Testing.hpp>
 
 namespace c3::test {
@@ -58,13 +62,13 @@ TEST(SimpleExpressionParser, MostSimpleSetup) {
     // 5) On the variable reference 'a'. But since we have not configure the c3
     // engine to return us var refs (or function refs for that matter) we only
     // get an ID here.
-    auto candidates = completion.collectCandidates(6);
+    auto candidates = completion.collectCandidates(6);  // NOLINT: magic
     EXPECT_THAT(Keys(candidates.tokens), UnorderedElementsAre(ExprLexer::ID));
   }
   {
     // 6) On the '+' operator. Usually you would not show operators as
     // candidates, but we have not set up the c3 engine yet to not return them.
-    auto candidates = completion.collectCandidates(8);
+    auto candidates = completion.collectCandidates(8);  // NOLINT: magic
     EXPECT_THAT(
         Keys(candidates.tokens),
         UnorderedElementsAre(
@@ -114,7 +118,7 @@ TEST(SimpleExpressionParser, TypicalSetup) {
   }
   {
     // 5) On the variable reference 'a'.
-    auto candidates = completion.collectCandidates(6);
+    auto candidates = completion.collectCandidates(6);  // NOLINT: magic
     EXPECT_EQ(candidates.tokens.size(), 0);
     // Here we get 2 rule indexes, derived from 2 different IDs possible at this
     // caret position. These are what we told the engine above to be preferred
@@ -131,7 +135,7 @@ TEST(SimpleExpressionParser, TypicalSetup) {
   {
     // 6) On the whitespace just after the variable reference 'a' (but it could
     // still be a function reference!).
-    auto candidates = completion.collectCandidates(7);
+    auto candidates = completion.collectCandidates(7);  // NOLINT: magic
     EXPECT_EQ(candidates.tokens.size(), 0);
     EXPECT_THAT(
         Keys(candidates.rules),
@@ -151,7 +155,7 @@ TEST(SimpleExpressionParser, RecursivePreferredRule) {
 
   {
     // 1) On the variable reference 'a'.
-    auto candidates = completion.collectCandidates(6);
+    auto candidates = completion.collectCandidates(6);  // NOLINT: magic
     EXPECT_THAT(
         Keys(candidates.rules),
         UnorderedElementsAre(ExprParser::RuleSimpleExpression)
@@ -164,7 +168,7 @@ TEST(SimpleExpressionParser, RecursivePreferredRule) {
   {
     // 2) On the variable reference 'b'.
     completion.translateRulesTopDown = false;
-    auto candidates = completion.collectCandidates(10);
+    auto candidates = completion.collectCandidates(10);  // NOLINT: magic
     EXPECT_THAT(
         Keys(candidates.rules),
         UnorderedElementsAre(ExprParser::RuleSimpleExpression)
@@ -179,7 +183,7 @@ TEST(SimpleExpressionParser, RecursivePreferredRule) {
   {
     // 3) On the variable reference 'b' topDown preferred rules.
     completion.translateRulesTopDown = true;
-    auto candidates = completion.collectCandidates(10);
+    auto candidates = completion.collectCandidates(10);  // NOLINT: magic
     EXPECT_THAT(
         Keys(candidates.rules),
         UnorderedElementsAre(ExprParser::RuleSimpleExpression)
@@ -221,7 +225,7 @@ TEST(SimpleExpressionParser, CandidateRulesWithDifferentStartTokens) {
   }
   {
     // 2) On the variable reference 'a'.
-    auto candidates = completion.collectCandidates(6);
+    auto candidates = completion.collectCandidates(6);  // NOLINT: magic
     EXPECT_THAT(
         Keys(candidates.rules),
         UnorderedElementsAre(

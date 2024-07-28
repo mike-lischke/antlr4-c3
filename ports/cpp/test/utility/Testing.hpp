@@ -1,10 +1,6 @@
 #pragma once
 
 #include <gmock/gmock.h>
-#include <gtest/gtest.h>
-
-#include "AntlrPipeline.hpp"
-#include "Collections.hpp"
 
 namespace c3::test {
 

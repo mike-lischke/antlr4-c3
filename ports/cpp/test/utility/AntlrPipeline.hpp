@@ -1,8 +1,14 @@
 #pragma once
 
-#include <antlr4-runtime.h>
+#include <ANTLRInputStream.h>
+#include <BaseErrorListener.h>
+#include <CommonTokenStream.h>
+#include <Recognizer.h>
+#include <Token.h>
 
 #include <cstddef>
+#include <exception>
+#include <string>
 #include <string_view>
 
 namespace c3::test {
@@ -10,14 +16,14 @@ namespace c3::test {
 class CountingErrorListener final : public antlr4::BaseErrorListener {
 public:
   void syntaxError(
-      antlr4::Recognizer* recognizer, antlr4::Token* offendingSymbol,
-      std::size_t line, std::size_t charPositionInLine, const std::string& msg,
-      std::exception_ptr e
+      antlr4::Recognizer* /*recognizer*/, antlr4::Token* /*offendingSymbol*/,
+      std::size_t /*line*/, std::size_t /*charPositionInLine*/,
+      const std::string& /*msg*/, std::exception_ptr /*e*/
   ) override {
     errorCount += 1;
   }
 
-  std::size_t GetErrorCount() const {
+  [[nodiscard]] std::size_t GetErrorCount() const {
     return errorCount;
   }
 
@@ -27,17 +33,17 @@ private:
 
 template <class Grammar>
 struct AntlrPipeline {
-  AntlrPipeline(std::string_view text)
+  explicit AntlrPipeline(std::string_view text)
       : chars(text), lexer(&chars), tokens(&lexer), parser(&tokens) {
     parser.removeErrorListeners();
     parser.addErrorListener(&listener);
   }
 
-  antlr4::ANTLRInputStream chars;
-  Grammar::Lexer lexer;
-  antlr4::CommonTokenStream tokens;
-  Grammar::Parser parser;
-  CountingErrorListener listener;
+  antlr4::ANTLRInputStream chars;    // NOLINT: public
+  Grammar::Lexer lexer;              // NOLINT: public
+  antlr4::CommonTokenStream tokens;  // NOLINT: public
+  Grammar::Parser parser;            // NOLINT: public
+  CountingErrorListener listener;    // NOLINT: public
 };
 
 }  // namespace c3::test
