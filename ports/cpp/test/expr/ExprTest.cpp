@@ -26,17 +26,10 @@ TEST(SimpleExpressionParser, MostSimpleSetup) {
     // 1) At the input start.
     auto candidates = completion.collectCandidates(0);
     EXPECT_THAT(
-        Keys(candidates.tokens),
-        UnorderedElementsAre(ExprLexer::VAR, ExprLexer::LET, ExprLexer::ID)
+        Keys(candidates.tokens), UnorderedElementsAre(ExprLexer::VAR, ExprLexer::LET, ExprLexer::ID)
     );
-    EXPECT_THAT(
-        candidates.tokens[ExprLexer::VAR],
-        ElementsAre(ExprLexer::ID, ExprLexer::EQUAL)
-    );
-    EXPECT_THAT(
-        candidates.tokens[ExprLexer::LET],
-        ElementsAre(ExprLexer::ID, ExprLexer::EQUAL)
-    );
+    EXPECT_THAT(candidates.tokens[ExprLexer::VAR], ElementsAre(ExprLexer::ID, ExprLexer::EQUAL));
+    EXPECT_THAT(candidates.tokens[ExprLexer::LET], ElementsAre(ExprLexer::ID, ExprLexer::EQUAL));
     EXPECT_THAT(candidates.tokens[ExprLexer::ID], ElementsAre());
   }
   {
@@ -54,9 +47,7 @@ TEST(SimpleExpressionParser, MostSimpleSetup) {
   {
     // 4) On the equal sign (ignoring whitespace positions from now on).
     auto candidates = completion.collectCandidates(4);
-    EXPECT_THAT(
-        Keys(candidates.tokens), UnorderedElementsAre(ExprLexer::EQUAL)
-    );
+    EXPECT_THAT(Keys(candidates.tokens), UnorderedElementsAre(ExprLexer::EQUAL));
   }
   {
     // 5) On the variable reference 'a'. But since we have not configure the c3
@@ -70,11 +61,10 @@ TEST(SimpleExpressionParser, MostSimpleSetup) {
     // candidates, but we have not set up the c3 engine yet to not return them.
     auto candidates = completion.collectCandidates(8);  // NOLINT: magic
     EXPECT_THAT(
-        Keys(candidates.tokens),
-        UnorderedElementsAre(
-            ExprLexer::PLUS, ExprLexer::MINUS, ExprLexer::MULTIPLY,
-            ExprLexer::DIVIDE, ExprLexer::OPEN_PAR
-        )
+        Keys(candidates.tokens), UnorderedElementsAre(
+                                     ExprLexer::PLUS, ExprLexer::MINUS, ExprLexer::MULTIPLY,
+                                     ExprLexer::DIVIDE, ExprLexer::OPEN_PAR
+                                 )
     );
   }
 }
@@ -97,10 +87,7 @@ TEST(SimpleExpressionParser, TypicalSetup) {
   {
     // 1) At the input start.
     auto candidates = completion.collectCandidates(0);
-    EXPECT_THAT(
-        Keys(candidates.tokens),
-        UnorderedElementsAre(ExprLexer::VAR, ExprLexer::LET)
-    );
+    EXPECT_THAT(Keys(candidates.tokens), UnorderedElementsAre(ExprLexer::VAR, ExprLexer::LET));
 
     // NOTE: Behaviour differs from TypeScript version
     EXPECT_THAT(candidates.tokens[ExprLexer::VAR], UnorderedElementsAre());
@@ -125,9 +112,7 @@ TEST(SimpleExpressionParser, TypicalSetup) {
     // rules for us.
     EXPECT_THAT(
         Keys(candidates.rules),
-        UnorderedElementsAre(
-            ExprParser::RuleFunctionRef, ExprParser::RuleVariableRef
-        )
+        UnorderedElementsAre(ExprParser::RuleFunctionRef, ExprParser::RuleVariableRef)
     );
     EXPECT_EQ(candidates.rules[ExprParser::RuleFunctionRef].startTokenIndex, 6);
     EXPECT_EQ(candidates.rules[ExprParser::RuleVariableRef].startTokenIndex, 6);
@@ -137,10 +122,7 @@ TEST(SimpleExpressionParser, TypicalSetup) {
     // still be a function reference!).
     auto candidates = completion.collectCandidates(7);  // NOLINT: magic
     EXPECT_EQ(candidates.tokens.size(), 0);
-    EXPECT_THAT(
-        Keys(candidates.rules),
-        UnorderedElementsAre(ExprParser::RuleFunctionRef)
-    );
+    EXPECT_THAT(Keys(candidates.rules), UnorderedElementsAre(ExprParser::RuleFunctionRef));
     EXPECT_EQ(candidates.rules[ExprParser::RuleFunctionRef].startTokenIndex, 6);
   }
 }
@@ -156,44 +138,29 @@ TEST(SimpleExpressionParser, RecursivePreferredRule) {
   {
     // 1) On the variable reference 'a'.
     auto candidates = completion.collectCandidates(6);  // NOLINT: magic
-    EXPECT_THAT(
-        Keys(candidates.rules),
-        UnorderedElementsAre(ExprParser::RuleSimpleExpression)
-    );
+    EXPECT_THAT(Keys(candidates.rules), UnorderedElementsAre(ExprParser::RuleSimpleExpression));
     // The start token of the simpleExpression rule begins at token 'a'.
-    EXPECT_EQ(
-        candidates.rules[ExprParser::RuleSimpleExpression].startTokenIndex, 6
-    );
+    EXPECT_EQ(candidates.rules[ExprParser::RuleSimpleExpression].startTokenIndex, 6);
   }
   {
     // 2) On the variable reference 'b'.
     completion.translateRulesTopDown = false;
     auto candidates = completion.collectCandidates(10);  // NOLINT: magic
-    EXPECT_THAT(
-        Keys(candidates.rules),
-        UnorderedElementsAre(ExprParser::RuleSimpleExpression)
-    );
+    EXPECT_THAT(Keys(candidates.rules), UnorderedElementsAre(ExprParser::RuleSimpleExpression));
     // When translateRulesTopDown is false, startTokenIndex should match the
     // start token for the lower index (less specific) rule in the expression,
     // which is 'a'.
-    EXPECT_EQ(
-        candidates.rules[ExprParser::RuleSimpleExpression].startTokenIndex, 6
-    );
+    EXPECT_EQ(candidates.rules[ExprParser::RuleSimpleExpression].startTokenIndex, 6);
   }
   {
     // 3) On the variable reference 'b' topDown preferred rules.
     completion.translateRulesTopDown = true;
     auto candidates = completion.collectCandidates(10);  // NOLINT: magic
-    EXPECT_THAT(
-        Keys(candidates.rules),
-        UnorderedElementsAre(ExprParser::RuleSimpleExpression)
-    );
+    EXPECT_THAT(Keys(candidates.rules), UnorderedElementsAre(ExprParser::RuleSimpleExpression));
     // When translateRulesTopDown is true, startTokenIndex should match the
     // start token for the higher index (more specific) rule in the expression,
     // which is 'b'.
-    EXPECT_EQ(
-        candidates.rules[ExprParser::RuleSimpleExpression].startTokenIndex, 10
-    );
+    EXPECT_EQ(candidates.rules[ExprParser::RuleSimpleExpression].startTokenIndex, 10);
   }
 }
 
@@ -214,9 +181,7 @@ TEST(SimpleExpressionParser, CandidateRulesWithDifferentStartTokens) {
     auto candidates = completion.collectCandidates(0);
     EXPECT_THAT(
         Keys(candidates.rules),
-        UnorderedElementsAre(
-            ExprParser::RuleAssignment, ExprParser::RuleVariableRef
-        )
+        UnorderedElementsAre(ExprParser::RuleAssignment, ExprParser::RuleVariableRef)
     );
     // The start token of the assignment and variableRef rules begin at token
     // 'var'.
@@ -228,9 +193,7 @@ TEST(SimpleExpressionParser, CandidateRulesWithDifferentStartTokens) {
     auto candidates = completion.collectCandidates(6);  // NOLINT: magic
     EXPECT_THAT(
         Keys(candidates.rules),
-        UnorderedElementsAre(
-            ExprParser::RuleAssignment, ExprParser::RuleVariableRef
-        )
+        UnorderedElementsAre(ExprParser::RuleAssignment, ExprParser::RuleVariableRef)
     );
     // The start token of the assignment rule begins at token 'var'.
     EXPECT_EQ(candidates.rules[ExprParser::RuleAssignment].startTokenIndex, 0);

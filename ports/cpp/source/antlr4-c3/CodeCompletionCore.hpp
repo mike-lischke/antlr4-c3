@@ -182,8 +182,8 @@ public:
    * and the collected candidates may be incomplete.
    */
   CandidatesCollection collectCandidates(
-      size_t caretTokenIndex, antlr4::ParserRuleContext* context = nullptr,
-      size_t timeoutMS = 0, std::atomic<bool>* cancel = nullptr
+      size_t caretTokenIndex, antlr4::ParserRuleContext* context = nullptr, size_t timeoutMS = 0,
+      std::atomic<bool>* cancel = nullptr
   );
 
   // --------------------------------------------------------
@@ -218,40 +218,30 @@ private:
 
   bool checkPredicate(const antlr4::atn::PredicateTransition* transition);
 
-  bool translateStackToRuleIndex(
-      RuleWithStartTokenList const& ruleWithStartTokenList
-  );
+  bool translateStackToRuleIndex(RuleWithStartTokenList const& ruleWithStartTokenList);
 
-  bool translateToRuleIndex(
-      size_t index, RuleWithStartTokenList const& ruleWithStartTokenList
-  );
+  bool translateToRuleIndex(size_t index, RuleWithStartTokenList const& ruleWithStartTokenList);
 
-  std::vector<size_t> getFollowingTokens(
-      const antlr4::atn::Transition* transition
-  ) const;
+  std::vector<size_t> getFollowingTokens(const antlr4::atn::Transition* transition) const;
 
-  FollowSetsHolder determineFollowSets(
-      antlr4::atn::ATNState* start, antlr4::atn::ATNState* stop
-  );
+  FollowSetsHolder determineFollowSets(antlr4::atn::ATNState* start, antlr4::atn::ATNState* stop);
 
   bool collectFollowSets(
       antlr4::atn::ATNState* state, antlr4::atn::ATNState* stopState,
-      std::vector<FollowSetWithPath>& followSets,
-      std::vector<antlr4::atn::ATNState*>& stateStack,
+      std::vector<FollowSetWithPath>& followSets, std::vector<antlr4::atn::ATNState*>& stateStack,
       std::vector<size_t>& ruleStack
   );
 
   RuleEndStatus processRule(
       antlr4::atn::RuleStartState* startState, size_t tokenListIndex,
-      RuleWithStartTokenList& callStack, int precedence, size_t indentation,
-      bool& timedOut
+      RuleWithStartTokenList& callStack, int precedence, size_t indentation, bool& timedOut
   );
 
   std::string generateBaseDescription(antlr4::atn::ATNState* state);
 
   void printDescription(
-      size_t indentation, antlr4::atn::ATNState* state,
-      std::string const& baseDescription, size_t tokenIndex
+      size_t indentation, antlr4::atn::ATNState* state, std::string const& baseDescription,
+      size_t tokenIndex
   );
 
   void printRuleState(RuleWithStartTokenList const& stack);
