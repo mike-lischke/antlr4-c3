@@ -61,10 +61,14 @@ TEST(SimpleExpressionParser, MostSimpleSetup) {
     // candidates, but we have not set up the c3 engine yet to not return them.
     auto candidates = completion.collectCandidates(8);  // NOLINT: magic
     EXPECT_THAT(
-        Keys(candidates.tokens), UnorderedElementsAre(
-                                     ExprLexer::PLUS, ExprLexer::MINUS, ExprLexer::MULTIPLY,
-                                     ExprLexer::DIVIDE, ExprLexer::OPEN_PAR
-                                 )
+        Keys(candidates.tokens),
+        UnorderedElementsAre(
+            ExprLexer::PLUS,
+            ExprLexer::MINUS,
+            ExprLexer::MULTIPLY,
+            ExprLexer::DIVIDE,
+            ExprLexer::OPEN_PAR
+        )
     );
   }
 }
@@ -76,8 +80,12 @@ TEST(SimpleExpressionParser, TypicalSetup) {
 
   c3::CodeCompletionCore completion(&pipeline.parser);
   completion.ignoredTokens = {
-      ExprLexer::ID,       ExprLexer::PLUS,   ExprLexer::MINUS,
-      ExprLexer::MULTIPLY, ExprLexer::DIVIDE, ExprLexer::EQUAL,
+      ExprLexer::ID,
+      ExprLexer::PLUS,
+      ExprLexer::MINUS,
+      ExprLexer::MULTIPLY,
+      ExprLexer::DIVIDE,
+      ExprLexer::EQUAL,
   };
   completion.preferredRules = {
       ExprParser::RuleFunctionRef,

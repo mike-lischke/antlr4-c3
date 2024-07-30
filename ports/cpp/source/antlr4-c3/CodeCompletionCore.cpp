@@ -61,9 +61,19 @@ std::map<std::type_index, FollowSetsPerState>  // NOLINT
 // Matches ATNStateType enum
 std::vector<std::string> c3::CodeCompletionCore::atnStateTypeMap  // NOLINT
     {
-        "invalid",          "basic",          "rule start", "block start", "plus block start",
-        "star block start", "token start",    "rule stop",  "block end",   "star loop back",
-        "star loop entry",  "plus loop back", "loop end",
+        "invalid",
+        "basic",
+        "rule start",
+        "block start",
+        "plus block start",
+        "star block start",
+        "token start",
+        "rule stop",
+        "block end",
+        "star loop back",
+        "star loop entry",
+        "plus loop back",
+        "loop end",
     };
 
 CodeCompletionCore::CodeCompletionCore(antlr4::Parser* parser)
@@ -76,7 +86,9 @@ CodeCompletionCore::CodeCompletionCore(antlr4::Parser* parser)
 }
 
 CandidatesCollection CodeCompletionCore::collectCandidates(  // NOLINT
-    size_t caretTokenIndex, antlr4::ParserRuleContext* context, size_t timeoutMS,
+    size_t caretTokenIndex,
+    antlr4::ParserRuleContext* context,
+    size_t timeoutMS,
     std::atomic<bool>* cancel
 ) {
   shortcutMap.clear();
@@ -356,8 +368,10 @@ FollowSetsHolder CodeCompletionCore::determineFollowSets(
  * rule end was reached, so no subsequent rules could add tokens
  */
 bool CodeCompletionCore::collectFollowSets(  // NOLINT
-    antlr4::atn::ATNState* state, antlr4::atn::ATNState* stopState,
-    std::vector<FollowSetWithPath>& followSets, std::vector<antlr4::atn::ATNState*>& stateStack,
+    antlr4::atn::ATNState* state,
+    antlr4::atn::ATNState* stopState,
+    std::vector<FollowSetWithPath>& followSets,
+    std::vector<antlr4::atn::ATNState*>& stateStack,
     std::vector<size_t>& ruleStack
 ) {
   if (std::find(stateStack.begin(), stateStack.end(), state) != stateStack.end()) {
@@ -453,9 +467,11 @@ bool CodeCompletionCore::collectFollowSets(  // NOLINT
  * to be taken).
  */
 RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
-    antlr4::atn::RuleStartState* startState, size_t tokenListIndex,
-    RuleWithStartTokenList& callStack, int precedence,  // NOLINT
-    size_t indentation,                                 // NOLINT
+    antlr4::atn::RuleStartState* startState,
+    size_t tokenListIndex,
+    RuleWithStartTokenList& callStack,
+    int precedence,      // NOLINT
+    size_t indentation,  // NOLINT
     bool& timedOut
 ) {
   // Cancelled by external caller?
@@ -618,7 +634,9 @@ RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
     const bool atCaret = currentEntry.tokenListIndex >= tokens.size() - 1;
     if (showDebugOutput) {
       printDescription(
-          indentation, currentEntry.state, generateBaseDescription(currentEntry.state),
+          indentation,
+          currentEntry.state,
+          generateBaseDescription(currentEntry.state),
           currentEntry.tokenListIndex
       );
       if (showRuleStack) {
@@ -643,8 +661,12 @@ RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
           auto* ruleStartState = dynamic_cast<antlr4::atn::RuleStartState*>(ruleTransition->target);
           bool innerCancelled = false;
           const RuleEndStatus endStatus = processRule(
-              ruleStartState, currentEntry.tokenListIndex, callStack, ruleTransition->precedence,
-              indentation + 1, innerCancelled
+              ruleStartState,
+              currentEntry.tokenListIndex,
+              callStack,
+              ruleTransition->precedence,
+              indentation + 1,
+              innerCancelled
           );
           if (innerCancelled) {
             timedOut = true;
@@ -796,7 +818,9 @@ std::string CodeCompletionCore::generateBaseDescription(antlr4::atn::ATNState* s
 }
 
 void CodeCompletionCore::printDescription(
-    size_t indentation, antlr4::atn::ATNState* state, std::string const& baseDescription,
+    size_t indentation,
+    antlr4::atn::ATNState* state,
+    std::string const& baseDescription,
     size_t tokenIndex
 ) {
   const std::string indent = std::string(indentation * 2, ' ');
