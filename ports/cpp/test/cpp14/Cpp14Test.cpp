@@ -196,6 +196,23 @@ TEST(CPP14Parser, SimpleExample) {  // NOLINT: complexity
         CPP14Parser::RulePrimaryexpression,
     };
 
+    const auto classnameStack = [&] {
+      auto stack = idexpressionStack;
+      stack.pop_back();
+      stack.emplace_back(CPP14Parser::RuleSimpletypespecifier);
+      stack.emplace_back(CPP14Parser::RuleNestednamespecifier);
+      stack.emplace_back(CPP14Parser::RuleTypename);
+      return stack;
+    }();
+
+    const auto namespacenameStack = [&] {
+      auto stack = idexpressionStack;
+      stack.pop_back();
+      stack.emplace_back(CPP14Parser::RuleSimpletypespecifier);
+      stack.emplace_back(CPP14Parser::RuleNestednamespecifier);
+      return stack;
+    }();
+
     EXPECT_THAT(
         Keys(candidates.rules),
         UnorderedElementsAre(
@@ -210,30 +227,14 @@ TEST(CPP14Parser, SimpleExample) {  // NOLINT: complexity
         ElementsAreArray(idexpressionStack)
     );
 
-    EXPECT_THAT(candidates.rules[CPP14Parser::RuleClassname].ruleList, ElementsAreArray([&] {
-                  auto stack = idexpressionStack;
-                  stack.pop_back();
-                  for (auto rule : {
-                           CPP14Parser::RuleSimpletypespecifier,
-                           CPP14Parser::RuleNestednamespecifier,
-                           CPP14Parser::RuleTypename,
-                       }) {
-                    stack.emplace_back(rule);
-                  }
-                  return stack;
-                }()));
+    EXPECT_THAT(
+        candidates.rules[CPP14Parser::RuleClassname].ruleList, ElementsAreArray(classnameStack)
+    );
 
-    EXPECT_THAT(candidates.rules[CPP14Parser::RuleNamespacename].ruleList, ElementsAreArray([&] {
-                  auto stack = idexpressionStack;
-                  stack.pop_back();
-                  for (auto rule : {
-                           CPP14Parser::RuleSimpletypespecifier,
-                           CPP14Parser::RuleNestednamespecifier,
-                       }) {
-                    stack.emplace_back(rule);
-                  }
-                  return stack;
-                }()));
+    EXPECT_THAT(
+        candidates.rules[CPP14Parser::RuleNamespacename].ruleList,
+        ElementsAreArray(namespacenameStack)
+    );
   }
   {
     // 2) Within the method body.
