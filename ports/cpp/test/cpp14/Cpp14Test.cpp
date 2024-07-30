@@ -39,10 +39,17 @@ TEST(CPP14Parser, SimpleExample) {  // NOLINT: complexity
 
   // Ignore operators and the generic ID token.
   completion.ignoredTokens = {
-      CPP14Lexer::Identifier,  CPP14Lexer::LeftParen,   CPP14Lexer::RightParen,
-      CPP14Lexer::Operator,    CPP14Lexer::Star,        CPP14Lexer::And,
-      CPP14Lexer::AndAnd,      CPP14Lexer::LeftBracket, CPP14Lexer::Ellipsis,
-      CPP14Lexer::Doublecolon, CPP14Lexer::Semi,
+      CPP14Lexer::Identifier,
+      CPP14Lexer::LeftParen,
+      CPP14Lexer::RightParen,
+      CPP14Lexer::Operator,
+      CPP14Lexer::Star,
+      CPP14Lexer::And,
+      CPP14Lexer::AndAnd,
+      CPP14Lexer::LeftBracket,
+      CPP14Lexer::Ellipsis,
+      CPP14Lexer::Doublecolon,
+      CPP14Lexer::Semi,
   };
 
   // For a C++ grammar you can of course get many candidates of all kind. For
@@ -62,43 +69,83 @@ TEST(CPP14Parser, SimpleExample) {  // NOLINT: complexity
     EXPECT_THAT(
         Keys(candidates.tokens),
         UnorderedElementsAre(
-            CPP14Lexer::Extern, CPP14Lexer::Mutable, CPP14Lexer::Register, CPP14Lexer::Static,
-            CPP14Lexer::Thread_local, CPP14Lexer::Decltype, CPP14Lexer::Char, CPP14Lexer::Char16,
-            CPP14Lexer::Char32, CPP14Lexer::Wchar, CPP14Lexer::Bool, CPP14Lexer::Short,
-            CPP14Lexer::Int, CPP14Lexer::Long, CPP14Lexer::Signed, CPP14Lexer::Unsigned,
-            CPP14Lexer::Float, CPP14Lexer::Double, CPP14Lexer::Void, CPP14Lexer::Auto,
-            CPP14Lexer::Class, CPP14Lexer::Struct, CPP14Lexer::Union, CPP14Lexer::Enum,
-            CPP14Lexer::Typename, CPP14Lexer::Const, CPP14Lexer::Volatile, CPP14Lexer::Explicit,
-            CPP14Lexer::Inline, CPP14Lexer::Virtual, CPP14Lexer::Friend, CPP14Lexer::Typedef,
-            CPP14Lexer::Constexpr, CPP14Lexer::Alignas, CPP14Lexer::Asm, CPP14Lexer::Namespace,
-            CPP14Lexer::Using, CPP14Lexer::Static_assert, CPP14Lexer::Template, CPP14Lexer::EOF
+            CPP14Lexer::Extern,
+            CPP14Lexer::Mutable,
+            CPP14Lexer::Register,
+            CPP14Lexer::Static,
+            CPP14Lexer::Thread_local,
+            CPP14Lexer::Decltype,
+            CPP14Lexer::Char,
+            CPP14Lexer::Char16,
+            CPP14Lexer::Char32,
+            CPP14Lexer::Wchar,
+            CPP14Lexer::Bool,
+            CPP14Lexer::Short,
+            CPP14Lexer::Int,
+            CPP14Lexer::Long,
+            CPP14Lexer::Signed,
+            CPP14Lexer::Unsigned,
+            CPP14Lexer::Float,
+            CPP14Lexer::Double,
+            CPP14Lexer::Void,
+            CPP14Lexer::Auto,
+            CPP14Lexer::Class,
+            CPP14Lexer::Struct,
+            CPP14Lexer::Union,
+            CPP14Lexer::Enum,
+            CPP14Lexer::Typename,
+            CPP14Lexer::Const,
+            CPP14Lexer::Volatile,
+            CPP14Lexer::Explicit,
+            CPP14Lexer::Inline,
+            CPP14Lexer::Virtual,
+            CPP14Lexer::Friend,
+            CPP14Lexer::Typedef,
+            CPP14Lexer::Constexpr,
+            CPP14Lexer::Alignas,
+            CPP14Lexer::Asm,
+            CPP14Lexer::Namespace,
+            CPP14Lexer::Using,
+            CPP14Lexer::Static_assert,
+            CPP14Lexer::Template,
+            CPP14Lexer::EOF
         )
     );
 
     EXPECT_THAT(
-        Keys(candidates.rules), UnorderedElementsAre(
-                                    CPP14Parser::RuleClassname, CPP14Parser::RuleNamespacename,
-                                    CPP14Parser::RuleIdexpression
-                                )
+        Keys(candidates.rules),
+        UnorderedElementsAre(
+            CPP14Parser::RuleClassname,
+            CPP14Parser::RuleNamespacename,
+            CPP14Parser::RuleIdexpression
+        )
     );
 
     EXPECT_THAT(
         candidates.rules[CPP14Parser::RuleNamespacename].ruleList,
         ElementsAre(
-            CPP14Parser::RuleTranslationunit, CPP14Parser::RuleDeclarationseq,
-            CPP14Parser::RuleDeclaration, CPP14Parser::RuleFunctiondefinition,
-            CPP14Parser::RuleDeclarator, CPP14Parser::RulePtrdeclarator,
-            CPP14Parser::RulePtroperator, CPP14Parser::RuleNestednamespecifier
+            CPP14Parser::RuleTranslationunit,
+            CPP14Parser::RuleDeclarationseq,
+            CPP14Parser::RuleDeclaration,
+            CPP14Parser::RuleFunctiondefinition,
+            CPP14Parser::RuleDeclarator,
+            CPP14Parser::RulePtrdeclarator,
+            CPP14Parser::RulePtroperator,
+            CPP14Parser::RuleNestednamespecifier
         )
     );
 
     EXPECT_THAT(
         candidates.rules[CPP14Parser::RuleClassname].ruleList,
         ElementsAre(
-            CPP14Parser::RuleTranslationunit, CPP14Parser::RuleDeclarationseq,
-            CPP14Parser::RuleDeclaration, CPP14Parser::RuleFunctiondefinition,
-            CPP14Parser::RuleDeclarator, CPP14Parser::RulePtrdeclarator,
-            CPP14Parser::RulePtroperator, CPP14Parser::RuleNestednamespecifier,
+            CPP14Parser::RuleTranslationunit,
+            CPP14Parser::RuleDeclarationseq,
+            CPP14Parser::RuleDeclaration,
+            CPP14Parser::RuleFunctiondefinition,
+            CPP14Parser::RuleDeclarator,
+            CPP14Parser::RulePtrdeclarator,
+            CPP14Parser::RulePtroperator,
+            CPP14Parser::RuleNestednamespecifier,
             CPP14Parser::RuleTypename
         )
     );
@@ -150,10 +197,12 @@ TEST(CPP14Parser, SimpleExample) {  // NOLINT: complexity
     };
 
     EXPECT_THAT(
-        Keys(candidates.rules), UnorderedElementsAre(
-                                    CPP14Parser::RuleClassname, CPP14Parser::RuleNamespacename,
-                                    CPP14Parser::RuleIdexpression
-                                )
+        Keys(candidates.rules),
+        UnorderedElementsAre(
+            CPP14Parser::RuleClassname,
+            CPP14Parser::RuleNamespacename,
+            CPP14Parser::RuleIdexpression
+        )
     );
 
     EXPECT_THAT(
@@ -196,17 +245,18 @@ TEST(CPP14Parser, SimpleExample) {  // NOLINT: complexity
     EXPECT_EQ(candidates.tokens.size(), 82);
 
     EXPECT_THAT(
-        Keys(candidates.tokens), IsSupersetOf({
-                                     CPP14Lexer::If,
-                                     CPP14Lexer::This,
-                                     CPP14Lexer::New,
-                                     CPP14Lexer::Case,
-                                     CPP14Lexer::While,
-                                     CPP14Lexer::Throw,
-                                     // Fixing issue #12 causes this to be included that was
-                                     // previously not returned
-                                     CPP14Lexer::Decltype,
-                                 })
+        Keys(candidates.tokens),
+        IsSupersetOf({
+            CPP14Lexer::If,
+            CPP14Lexer::This,
+            CPP14Lexer::New,
+            CPP14Lexer::Case,
+            CPP14Lexer::While,
+            CPP14Lexer::Throw,
+            // Fixing issue #12 causes this to be included that was
+            // previously not returned
+            CPP14Lexer::Decltype,
+        })
     );
 
     EXPECT_FALSE(candidates.tokens.contains(CPP14Lexer::Override));
@@ -311,10 +361,17 @@ TEST(CPP14Parser, RealCppFile) {  // NOLINT: complexity
 
   // Ignore operators and the generic ID token.
   completion.ignoredTokens = {
-      CPP14Lexer::Identifier,  CPP14Lexer::LeftParen,   CPP14Lexer::RightParen,
-      CPP14Lexer::Operator,    CPP14Lexer::Star,        CPP14Lexer::And,
-      CPP14Lexer::AndAnd,      CPP14Lexer::LeftBracket, CPP14Lexer::Ellipsis,
-      CPP14Lexer::Doublecolon, CPP14Lexer::Semi,
+      CPP14Lexer::Identifier,
+      CPP14Lexer::LeftParen,
+      CPP14Lexer::RightParen,
+      CPP14Lexer::Operator,
+      CPP14Lexer::Star,
+      CPP14Lexer::And,
+      CPP14Lexer::AndAnd,
+      CPP14Lexer::LeftBracket,
+      CPP14Lexer::Ellipsis,
+      CPP14Lexer::Doublecolon,
+      CPP14Lexer::Semi,
   };
 
   completion.preferredRules = {
@@ -366,10 +423,12 @@ TEST(CPP14Parser, RealCppFile) {  // NOLINT: complexity
     auto candidates = completion.collectCandidates(3469);  // NOLINT: magic
 
     EXPECT_THAT(
-        Keys(candidates.rules), UnorderedElementsAre(
-                                    CPP14Parser::RuleClassname, CPP14Parser::RuleNamespacename,
-                                    CPP14Parser::RuleIdexpression
-                                )
+        Keys(candidates.rules),
+        UnorderedElementsAre(
+            CPP14Parser::RuleClassname,
+            CPP14Parser::RuleNamespacename,
+            CPP14Parser::RuleIdexpression
+        )
     );
 
     EXPECT_THAT(

@@ -27,10 +27,14 @@ TEST(WhiteboxGrammarTests, CaretAtTransitionToRuleWithNonExhaustiveFollowSet) {
   auto candidates = completion.collectCandidates(1, ctx);
 
   EXPECT_THAT(
-      Keys(candidates.tokens), UnorderedElementsAre(
-                                   WhiteboxLexer::IPSUM, WhiteboxLexer::DOLOR, WhiteboxLexer::SIT,
-                                   WhiteboxLexer::AMET, WhiteboxLexer::CONSECTETUR
-                               )
+      Keys(candidates.tokens),
+      UnorderedElementsAre(
+          WhiteboxLexer::IPSUM,
+          WhiteboxLexer::DOLOR,
+          WhiteboxLexer::SIT,
+          WhiteboxLexer::AMET,
+          WhiteboxLexer::CONSECTETUR
+      )
   );
 }
 
@@ -44,10 +48,14 @@ TEST(WhiteboxGrammarTests, CaretAtTransitionToRuleWithEmptyFollowSet) {
   auto candidates = completion.collectCandidates(1, ctx);
 
   EXPECT_THAT(
-      Keys(candidates.tokens), UnorderedElementsAre(
-                                   WhiteboxLexer::IPSUM, WhiteboxLexer::DOLOR, WhiteboxLexer::SIT,
-                                   WhiteboxLexer::AMET, WhiteboxLexer::CONSECTETUR
-                               )
+      Keys(candidates.tokens),
+      UnorderedElementsAre(
+          WhiteboxLexer::IPSUM,
+          WhiteboxLexer::DOLOR,
+          WhiteboxLexer::SIT,
+          WhiteboxLexer::AMET,
+          WhiteboxLexer::CONSECTETUR
+      )
   );
 }
 

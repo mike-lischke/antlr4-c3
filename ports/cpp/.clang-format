@@ -12,3 +12,6 @@ AllowShortLoopsOnASingleLine: false
 DerivePointerAlignment: false
 BreakConstructorInitializers: BeforeComma
 AlignAfterOpenBracket: BlockIndent
+
+BinPackArguments: false
+BinPackParameters: false
