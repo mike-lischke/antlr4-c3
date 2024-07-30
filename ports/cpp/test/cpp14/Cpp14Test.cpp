@@ -62,29 +62,24 @@ TEST(CPP14Parser, SimpleExample) {  // NOLINT: complexity
     EXPECT_THAT(
         Keys(candidates.tokens),
         UnorderedElementsAre(
-            CPP14Lexer::Extern, CPP14Lexer::Mutable, CPP14Lexer::Register,
-            CPP14Lexer::Static, CPP14Lexer::Thread_local, CPP14Lexer::Decltype,
-            CPP14Lexer::Char, CPP14Lexer::Char16, CPP14Lexer::Char32,
-            CPP14Lexer::Wchar, CPP14Lexer::Bool, CPP14Lexer::Short,
-            CPP14Lexer::Int, CPP14Lexer::Long, CPP14Lexer::Signed,
-            CPP14Lexer::Unsigned, CPP14Lexer::Float, CPP14Lexer::Double,
-            CPP14Lexer::Void, CPP14Lexer::Auto, CPP14Lexer::Class,
-            CPP14Lexer::Struct, CPP14Lexer::Union, CPP14Lexer::Enum,
-            CPP14Lexer::Typename, CPP14Lexer::Const, CPP14Lexer::Volatile,
-            CPP14Lexer::Explicit, CPP14Lexer::Inline, CPP14Lexer::Virtual,
-            CPP14Lexer::Friend, CPP14Lexer::Typedef, CPP14Lexer::Constexpr,
-            CPP14Lexer::Alignas, CPP14Lexer::Asm, CPP14Lexer::Namespace,
-            CPP14Lexer::Using, CPP14Lexer::Static_assert, CPP14Lexer::Template,
-            CPP14Lexer::EOF
+            CPP14Lexer::Extern, CPP14Lexer::Mutable, CPP14Lexer::Register, CPP14Lexer::Static,
+            CPP14Lexer::Thread_local, CPP14Lexer::Decltype, CPP14Lexer::Char, CPP14Lexer::Char16,
+            CPP14Lexer::Char32, CPP14Lexer::Wchar, CPP14Lexer::Bool, CPP14Lexer::Short,
+            CPP14Lexer::Int, CPP14Lexer::Long, CPP14Lexer::Signed, CPP14Lexer::Unsigned,
+            CPP14Lexer::Float, CPP14Lexer::Double, CPP14Lexer::Void, CPP14Lexer::Auto,
+            CPP14Lexer::Class, CPP14Lexer::Struct, CPP14Lexer::Union, CPP14Lexer::Enum,
+            CPP14Lexer::Typename, CPP14Lexer::Const, CPP14Lexer::Volatile, CPP14Lexer::Explicit,
+            CPP14Lexer::Inline, CPP14Lexer::Virtual, CPP14Lexer::Friend, CPP14Lexer::Typedef,
+            CPP14Lexer::Constexpr, CPP14Lexer::Alignas, CPP14Lexer::Asm, CPP14Lexer::Namespace,
+            CPP14Lexer::Using, CPP14Lexer::Static_assert, CPP14Lexer::Template, CPP14Lexer::EOF
         )
     );
 
     EXPECT_THAT(
-        Keys(candidates.rules),
-        UnorderedElementsAre(
-            CPP14Parser::RuleClassname, CPP14Parser::RuleNamespacename,
-            CPP14Parser::RuleIdexpression
-        )
+        Keys(candidates.rules), UnorderedElementsAre(
+                                    CPP14Parser::RuleClassname, CPP14Parser::RuleNamespacename,
+                                    CPP14Parser::RuleIdexpression
+                                )
     );
 
     EXPECT_THAT(
@@ -155,11 +150,10 @@ TEST(CPP14Parser, SimpleExample) {  // NOLINT: complexity
     };
 
     EXPECT_THAT(
-        Keys(candidates.rules),
-        UnorderedElementsAre(
-            CPP14Parser::RuleClassname, CPP14Parser::RuleNamespacename,
-            CPP14Parser::RuleIdexpression
-        )
+        Keys(candidates.rules), UnorderedElementsAre(
+                                    CPP14Parser::RuleClassname, CPP14Parser::RuleNamespacename,
+                                    CPP14Parser::RuleIdexpression
+                                )
     );
 
     EXPECT_THAT(
@@ -167,36 +161,30 @@ TEST(CPP14Parser, SimpleExample) {  // NOLINT: complexity
         ElementsAreArray(idexpressionStack)
     );
 
-    EXPECT_THAT(
-        candidates.rules[CPP14Parser::RuleClassname].ruleList,
-        ElementsAreArray([&] {
-          auto stack = idexpressionStack;
-          stack.pop_back();
-          for (auto rule : {
-                   CPP14Parser::RuleSimpletypespecifier,
-                   CPP14Parser::RuleNestednamespecifier,
-                   CPP14Parser::RuleTypename,
-               }) {
-            stack.emplace_back(rule);
-          }
-          return stack;
-        }())
-    );
+    EXPECT_THAT(candidates.rules[CPP14Parser::RuleClassname].ruleList, ElementsAreArray([&] {
+                  auto stack = idexpressionStack;
+                  stack.pop_back();
+                  for (auto rule : {
+                           CPP14Parser::RuleSimpletypespecifier,
+                           CPP14Parser::RuleNestednamespecifier,
+                           CPP14Parser::RuleTypename,
+                       }) {
+                    stack.emplace_back(rule);
+                  }
+                  return stack;
+                }()));
 
-    EXPECT_THAT(
-        candidates.rules[CPP14Parser::RuleNamespacename].ruleList,
-        ElementsAreArray([&] {
-          auto stack = idexpressionStack;
-          stack.pop_back();
-          for (auto rule : {
-                   CPP14Parser::RuleSimpletypespecifier,
-                   CPP14Parser::RuleNestednamespecifier,
-               }) {
-            stack.emplace_back(rule);
-          }
-          return stack;
-        }())
-    );
+    EXPECT_THAT(candidates.rules[CPP14Parser::RuleNamespacename].ruleList, ElementsAreArray([&] {
+                  auto stack = idexpressionStack;
+                  stack.pop_back();
+                  for (auto rule : {
+                           CPP14Parser::RuleSimpletypespecifier,
+                           CPP14Parser::RuleNestednamespecifier,
+                       }) {
+                    stack.emplace_back(rule);
+                  }
+                  return stack;
+                }()));
   }
   {
     // 2) Within the method body.
@@ -208,18 +196,17 @@ TEST(CPP14Parser, SimpleExample) {  // NOLINT: complexity
     EXPECT_EQ(candidates.tokens.size(), 82);
 
     EXPECT_THAT(
-        Keys(candidates.tokens),
-        IsSupersetOf({
-            CPP14Lexer::If,
-            CPP14Lexer::This,
-            CPP14Lexer::New,
-            CPP14Lexer::Case,
-            CPP14Lexer::While,
-            CPP14Lexer::Throw,
-            // Fixing issue #12 causes this to be included that was
-            // previously not returned
-            CPP14Lexer::Decltype,
-        })
+        Keys(candidates.tokens), IsSupersetOf({
+                                     CPP14Lexer::If,
+                                     CPP14Lexer::This,
+                                     CPP14Lexer::New,
+                                     CPP14Lexer::Case,
+                                     CPP14Lexer::While,
+                                     CPP14Lexer::Throw,
+                                     // Fixing issue #12 causes this to be included that was
+                                     // previously not returned
+                                     CPP14Lexer::Decltype,
+                                 })
     );
 
     EXPECT_FALSE(candidates.tokens.contains(CPP14Lexer::Override));
@@ -269,9 +256,7 @@ TEST(CPP14Parser, SimpleCppExampleWithErrorsInInput) {
     // At the opening parenthesis.
     auto candidates = completion.collectCandidates(11);  // NOLINT: magic
 
-    EXPECT_THAT(
-        Keys(candidates.tokens), UnorderedElementsAre(CPP14Lexer::LeftParen)
-    );
+    EXPECT_THAT(Keys(candidates.tokens), UnorderedElementsAre(CPP14Lexer::LeftParen));
   }
   {
     // At the closing parenthesis -> again everything in an expression allowed
@@ -314,9 +299,7 @@ TEST(CPP14Parser, RealCppFile) {  // NOLINT: complexity
   const auto source = [] {
     // Assume we are at antlr4-c3/ports/cpp/build
     std::ifstream file("../../../tests/Parser.cpp");
-    std::string content(
-        (std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>()
-    );
+    std::string content((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
     return content;
   }();
 
@@ -383,11 +366,10 @@ TEST(CPP14Parser, RealCppFile) {  // NOLINT: complexity
     auto candidates = completion.collectCandidates(3469);  // NOLINT: magic
 
     EXPECT_THAT(
-        Keys(candidates.rules),
-        UnorderedElementsAre(
-            CPP14Parser::RuleClassname, CPP14Parser::RuleNamespacename,
-            CPP14Parser::RuleIdexpression
-        )
+        Keys(candidates.rules), UnorderedElementsAre(
+                                    CPP14Parser::RuleClassname, CPP14Parser::RuleNamespacename,
+                                    CPP14Parser::RuleIdexpression
+                                )
     );
 
     EXPECT_THAT(
@@ -402,8 +384,7 @@ TEST(CPP14Parser, RealCppFile) {  // NOLINT: complexity
     auto candidates = completion.collectCandidates(3469);  // NOLINT: magic
 
     EXPECT_THAT(
-        candidates.rules[CPP14Parser::RuleClassname].ruleList,
-        ElementsAreArray(classnameStack)
+        candidates.rules[CPP14Parser::RuleClassname].ruleList, ElementsAreArray(classnameStack)
     );
 
     EXPECT_THAT(

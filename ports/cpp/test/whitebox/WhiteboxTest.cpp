@@ -27,11 +27,10 @@ TEST(WhiteboxGrammarTests, CaretAtTransitionToRuleWithNonExhaustiveFollowSet) {
   auto candidates = completion.collectCandidates(1, ctx);
 
   EXPECT_THAT(
-      Keys(candidates.tokens),
-      UnorderedElementsAre(
-          WhiteboxLexer::IPSUM, WhiteboxLexer::DOLOR, WhiteboxLexer::SIT,
-          WhiteboxLexer::AMET, WhiteboxLexer::CONSECTETUR
-      )
+      Keys(candidates.tokens), UnorderedElementsAre(
+                                   WhiteboxLexer::IPSUM, WhiteboxLexer::DOLOR, WhiteboxLexer::SIT,
+                                   WhiteboxLexer::AMET, WhiteboxLexer::CONSECTETUR
+                               )
   );
 }
 
@@ -45,11 +44,10 @@ TEST(WhiteboxGrammarTests, CaretAtTransitionToRuleWithEmptyFollowSet) {
   auto candidates = completion.collectCandidates(1, ctx);
 
   EXPECT_THAT(
-      Keys(candidates.tokens),
-      UnorderedElementsAre(
-          WhiteboxLexer::IPSUM, WhiteboxLexer::DOLOR, WhiteboxLexer::SIT,
-          WhiteboxLexer::AMET, WhiteboxLexer::CONSECTETUR
-      )
+      Keys(candidates.tokens), UnorderedElementsAre(
+                                   WhiteboxLexer::IPSUM, WhiteboxLexer::DOLOR, WhiteboxLexer::SIT,
+                                   WhiteboxLexer::AMET, WhiteboxLexer::CONSECTETUR
+                               )
   );
 }
 
@@ -75,18 +73,12 @@ TEST(WhiteboxGrammarTests, CaretAtOneOfMultiplePossibleStates) {
     c3::CodeCompletionCore completion(&pipeline.parser);
     auto candidates = completion.collectCandidates(2, ctx);
 
-    EXPECT_THAT(
-        Keys(candidates.tokens), UnorderedElementsAre(WhiteboxLexer::DOLOR)
-    );
-    EXPECT_THAT(
-        candidates.tokens[WhiteboxLexer::DOLOR], UnorderedElementsAre()
-    );
+    EXPECT_THAT(Keys(candidates.tokens), UnorderedElementsAre(WhiteboxLexer::DOLOR));
+    EXPECT_THAT(candidates.tokens[WhiteboxLexer::DOLOR], UnorderedElementsAre());
   }
 }
 
-TEST(
-    WhiteboxGrammarTests, CaretAtOneOfMultiplePossibleStatesWithCommonFollowList
-) {
+TEST(WhiteboxGrammarTests, CaretAtOneOfMultiplePossibleStatesWithCommonFollowList) {
   AntlrPipeline<WhiteboxGrammar> pipeline("LOREM IPSUM ");
 
   auto* ctx = pipeline.parser.test8();
@@ -94,13 +86,8 @@ TEST(
   c3::CodeCompletionCore completion(&pipeline.parser);
   auto candidates = completion.collectCandidates(2, ctx);
 
-  EXPECT_THAT(
-      Keys(candidates.tokens), UnorderedElementsAre(WhiteboxLexer::DOLOR)
-  );
-  EXPECT_THAT(
-      candidates.tokens[WhiteboxLexer::DOLOR],
-      UnorderedElementsAre(WhiteboxLexer::SIT)
-  );
+  EXPECT_THAT(Keys(candidates.tokens), UnorderedElementsAre(WhiteboxLexer::DOLOR));
+  EXPECT_THAT(candidates.tokens[WhiteboxLexer::DOLOR], UnorderedElementsAre(WhiteboxLexer::SIT));
 }
 
 }  // namespace c3::test
