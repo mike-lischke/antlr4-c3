@@ -491,18 +491,12 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
   // Start with rule specific handling before going into the ATN walk.
 
   // Check first if we've taken this path with the same input before.
-  std::map<size_t, RuleEndStatus> positionMap;
-  if (!shortcutMap.contains(startState->ruleIndex)) {
-    shortcutMap[startState->ruleIndex] = positionMap;
-  } else {
-    positionMap = shortcutMap[startState->ruleIndex];
-    if (positionMap.contains(tokenListIndex)) {
-      if (showDebugOutput) {
-        std::cout << "=====> shortcut" << "\n";
-      }
-
-      return positionMap[tokenListIndex];
+  std::map<size_t, RuleEndStatus>& positionMap = shortcutMap[startState->ruleIndex];
+  if (positionMap.contains(tokenListIndex)) {
+    if (showDebugOutput) {
+      std::cout << "=====> shortcut" << "\n";
     }
+    return positionMap[tokenListIndex];
   }
 
   RuleEndStatus result;
@@ -521,7 +515,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
     antlr4::atn::RuleStopState* stop = atn.ruleToStopState[startState->ruleIndex];
     setsPerState[startState->stateNumber] = determineFollowSets(startState, stop);
   }
-  
+
   const FollowSetsHolder& followSets = setsPerState[startState->stateNumber];
 
   // Get the token index where our rule starts from our (possibly filtered)

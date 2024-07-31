@@ -161,8 +161,7 @@ TEST(CPP14Parser, SimpleExample) {  // NOLINT: complexity
         CPP14Parser::RuleTranslationunit,
         CPP14Parser::RuleDeclarationseq,
         CPP14Parser::RuleDeclaration,
-        CPP14Parser::RuleBlockdeclaration,   // TS: +- `RuleFunctiondefinition`
-        CPP14Parser::RuleSimpledeclaration,  // TS: --
+        CPP14Parser::RuleFunctiondefinition,
         CPP14Parser::RuleDeclspecifierseq,
         CPP14Parser::RuleDeclspecifier,
         CPP14Parser::RuleTypespecifier,
