@@ -40,7 +40,9 @@ namespace c3 {
 
 namespace {
 
-std::vector<size_t> longestCommonPrefix(std::vector<size_t> lhs, std::vector<size_t> rhs) {
+std::vector<size_t> longestCommonPrefix(
+    std::vector<size_t> const& lhs, std::vector<size_t> const& rhs
+) {
   size_t index = 0;
   for (; index < std::min(lhs.size(), rhs.size()); index++) {
     if (lhs[index] != rhs[index]) {
@@ -149,16 +151,12 @@ CandidatesCollection CodeCompletionCore::collectCandidates(  // NOLINT
     std::cout << "\n\n";
 
     std::set<std::string> sortedTokens;
-    for (const auto& entry : candidates.tokens) {
-      const size_t token = entry.first;
-      const std::vector<size_t> tokenList = entry.second;
-
+    for (const auto& [token, tokenList] : candidates.tokens) {
       std::string value = vocabulary.getDisplayName(token);
       for (const size_t following : tokenList) {
         value += " " + vocabulary.getDisplayName(following);
       }
-
-      sortedTokens.insert(value);
+      sortedTokens.emplace(value);
     }
 
     std::cout << "Collected tokens:\n";
@@ -235,7 +233,7 @@ bool CodeCompletionCore::translateStackToRuleIndex(
 bool CodeCompletionCore::translateToRuleIndex(
     size_t index, RuleWithStartTokenList const& ruleWithStartTokenList
 ) {
-  const RuleWithStartToken rwst = ruleWithStartTokenList[index];
+  const auto& rwst = ruleWithStartTokenList[index];
 
   if (preferredRules.contains(rwst.ruleIndex)) {
     // Add the rule to our candidates list along with the current rule path,
@@ -308,9 +306,9 @@ std::vector<size_t> CodeCompletionCore::getFollowingTokens(const antlr4::atn::Tr
       for (const antlr4::atn::ConstTransitionPtr& outgoing : state->transitions) {
         if (outgoing->getTransitionType() == antlr4::atn::TransitionType::ATOM) {
           if (!outgoing->isEpsilon()) {
-            std::vector<ptrdiff_t> list = outgoing->label().toList();
-            if (list.size() == 1 && !ignoredTokens.contains(list[0])) {
-              result.push_back(list[0]);
+            const auto list = outgoing->label();
+            if (list.size() == 1 && !ignoredTokens.contains(list.get(0))) {
+              result.push_back(list.get(0));
               pipeline.push_back(outgoing->target);
             }
           } else {
@@ -429,7 +427,7 @@ bool CodeCompletionCore::collectFollowSets(  // NOLINT
           antlr4::Token::MIN_USER_TOKEN_TYPE, static_cast<ptrdiff_t>(atn.maxTokenType)
       );
       set.path = ruleStack;
-      followSets.push_back(set);
+      followSets.emplace_back(set);
     } else {
       antlr4::misc::IntervalSet label = transition->label();
       if (label.size() > 0) {
@@ -442,7 +440,7 @@ bool CodeCompletionCore::collectFollowSets(  // NOLINT
         set.intervals = label;
         set.path = ruleStack;
         set.following = getFollowingTokens(transition);
-        followSets.push_back(set);
+        followSets.emplace_back(set);
       }
     }
   }
@@ -518,18 +516,13 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
   // further visit of the same rule, which often happens
   //    in non trivial grammars, especially with (recursive) expressions and of
   //    course when invoking code completion multiple times.
-
-  if (!followSetsByATN.contains(typeid(parser))) {
-    followSetsByATN[typeid(parser)] = FollowSetsPerState();
-  }
-
   FollowSetsPerState& setsPerState = followSetsByATN[typeid(parser)];
   if (!setsPerState.contains(startState->stateNumber)) {
     antlr4::atn::RuleStopState* stop = atn.ruleToStopState[startState->ruleIndex];
-    auto followSets = determineFollowSets(startState, stop);
-    setsPerState[startState->stateNumber] = followSets;
+    setsPerState[startState->stateNumber] = determineFollowSets(startState, stop);
   }
-  const FollowSetsHolder followSets = setsPerState[startState->stateNumber];
+  
+  const FollowSetsHolder& followSets = setsPerState[startState->stateNumber];
 
   // Get the token index where our rule starts from our (possibly filtered)
   // token list
@@ -553,15 +546,12 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
 
         // Rules derived from our followSet will always start at the same token
         // as our current rule.
-        RuleWithStartTokenList followSetPath;
         for (const size_t rule : set.path) {
-          followSetPath.push_back({
+          fullPath.push_back({
               .startTokenIndex = startTokenIndex,
               .ruleIndex = rule,
           });
         }
-
-        fullPath.insert(fullPath.end(), followSetPath.begin(), followSetPath.end());
 
         if (!translateStackToRuleIndex(fullPath)) {
           for (ptrdiff_t symbol : set.intervals.toList()) {
@@ -573,11 +563,9 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
                 // Following is empty if there is more than one entry in the
                 // set.
                 candidates.tokens[symbol] = set.following;
-              } else {
+              } else if (candidates.tokens[symbol] != set.following) {
                 // More than one following list for the same symbol.
-                if (candidates.tokens[symbol] != set.following) {
-                  candidates.tokens[symbol] = {};
-                }
+                candidates.tokens[symbol] = {};
               }
             }
           }
@@ -710,10 +698,8 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
         case antlr4::atn::TransitionType::WILDCARD: {
           if (atCaret) {
             if (!translateStackToRuleIndex(callStack)) {
-              const auto tokens = antlr4::misc::IntervalSet::of(
-                  antlr4::Token::MIN_USER_TOKEN_TYPE, static_cast<ptrdiff_t>(atn.maxTokenType)
-              );
-              for (auto token : tokens.toList()) {
+              for (const auto token :
+                   std::views::iota(antlr4::Token::MIN_USER_TOKEN_TYPE, atn.maxTokenType + 1)) {
                 if (!ignoredTokens.contains(token)) {
                   candidates.tokens[token] = {};
                 }
@@ -761,6 +747,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
                     if (hasTokenSequence) {
                       followingTokens = getFollowingTokens(transition.get());
                     }
+
                     if (!candidates.tokens.contains(symbol)) {
                       candidates.tokens[symbol] = followingTokens;
                     } else {
@@ -823,10 +810,9 @@ void CodeCompletionCore::printDescription(
     std::string const& baseDescription,
     size_t tokenIndex
 ) {
-  const std::string indent = std::string(indentation * 2, ' ');
-  std::string output;
-  std::string transitionDescription;
+  const auto indent = std::string(indentation * 2, ' ');
 
+  std::string transitionDescription;
   if (debugOutputWithTransitions) {
     for (const antlr4::atn::ConstTransitionPtr& transition : state->transitions) {
       std::string labels;
@@ -863,6 +849,7 @@ void CodeCompletionCore::printDescription(
     }
   }
 
+  std::string output;
   if (tokenIndex >= tokens.size() - 1) {
     output = "<<" + std::to_string(tokenStartIndex + tokenIndex) + ">> ";
   } else {
@@ -879,7 +866,7 @@ void CodeCompletionCore::printRuleState(RuleWithStartTokenList const& stack) {
     return;
   }
 
-  for (const RuleWithStartToken rule : stack) {
+  for (const RuleWithStartToken& rule : stack) {
     std::cout << ruleNames[rule.ruleIndex];
   }
   std::cout << "\n";
