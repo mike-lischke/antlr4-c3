@@ -34,6 +34,8 @@
 #include <set>
 #include <sstream>
 #include <string>
+#include <unordered_map>
+#include <utility>
 #include <vector>
 
 namespace c3 {
@@ -245,14 +247,13 @@ bool CodeCompletionCore::translateToRuleIndex(
       }
 
       // Found an entry for this rule. Same path?
-      const bool samePath = [&] {
-        for (size_t i = 0; i < path.size(); i++) {
-          if (path[i] == cRuleEntryCandidateRule.ruleList[i]) {
-            return false;
-          }
+      bool samePath = true;
+      for (size_t i = 0; i < path.size(); i++) {
+        if (path[i] == cRuleEntryCandidateRule.ruleList[i]) {
+          samePath = false;
+          break;
         }
-        return true;
-      }();
+      }
 
       // If same path, then don't add a new (duplicate) entry.
       if (samePath) {
@@ -366,10 +367,9 @@ bool CodeCompletionCore::collectFollowSets(  // NOLINT
     std::vector<antlr4::atn::ATNState*>& stateStack,
     std::vector<size_t>& ruleStack
 ) {
-  if (std::find(stateStack.begin(), stateStack.end(), state) != stateStack.end()) {
+  if (std::ranges::find(stateStack, state) != stateStack.end()) {
     return true;
   }
-
   stateStack.push_back(state);
 
   if (state == stopState || state->getStateType() == antlr4::atn::ATNStateType::RULE_STOP) {
@@ -384,13 +384,11 @@ bool CodeCompletionCore::collectFollowSets(  // NOLINT
     if (transition->getTransitionType() == antlr4::atn::TransitionType::RULE) {
       const auto* ruleTransition = dynamic_cast<const antlr4::atn::RuleTransition*>(transition);
 
-      if (std::find(ruleStack.begin(), ruleStack.end(), ruleTransition->target->ruleIndex) !=
-          ruleStack.end()) {
+      if (std::ranges::find(ruleStack, ruleTransition->target->ruleIndex) != ruleStack.end()) {
         continue;
       }
 
       ruleStack.push_back(ruleTransition->target->ruleIndex);
-
       const bool ruleFollowSetsIsExhaustive =
           collectFollowSets(transition->target, stopState, followSets, stateStack, ruleStack);
       ruleStack.pop_back();
@@ -421,10 +419,10 @@ bool CodeCompletionCore::collectFollowSets(  // NOLINT
           antlr4::Token::MIN_USER_TOKEN_TYPE, static_cast<ptrdiff_t>(atn.maxTokenType)
       );
       set.path = ruleStack;
-      followSets.emplace_back(set);
+      followSets.emplace_back(std::move(set));
     } else {
       antlr4::misc::IntervalSet label = transition->label();
-      if (label.size() > 0) {
+      if (!label.isEmpty()) {
         if (transition->getTransitionType() == antlr4::atn::TransitionType::NOT_SET) {
           label = label.complement(antlr4::misc::IntervalSet::of(
               antlr4::Token::MIN_USER_TOKEN_TYPE, static_cast<ptrdiff_t>(atn.maxTokenType)
@@ -434,7 +432,7 @@ bool CodeCompletionCore::collectFollowSets(  // NOLINT
         set.intervals = label;
         set.path = ruleStack;
         set.following = getFollowingTokens(transition);
-        followSets.emplace_back(set);
+        followSets.emplace_back(std::move(set));
       }
     }
   }
@@ -505,11 +503,11 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
   //    in non trivial grammars, especially with (recursive) expressions and of
   //    course when invoking code completion multiple times.
   FollowSetsPerState& setsPerState = followSetsByATN[typeid(parser)];
+
   if (!setsPerState.contains(startState->stateNumber)) {
     antlr4::atn::RuleStopState* stop = atn.ruleToStopState[startState->ruleIndex];
     setsPerState[startState->stateNumber] = determineFollowSets(startState, stop);
   }
-
   const FollowSetsHolder& followSets = setsPerState[startState->stateNumber];
 
   // Get the token index where our rule starts from our (possibly filtered)
@@ -542,8 +540,8 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
         }
 
         if (!translateStackToRuleIndex(fullPath)) {
-          for (ptrdiff_t symbol : set.intervals.toList()) {
-            if (!ignoredTokens.contains(static_cast<size_t>(symbol))) {
+          for (const size_t symbol : set.intervals.toList()) {
+            if (!ignoredTokens.contains(symbol)) {
               if (showDebugOutput) {
                 std::cout << "=====> collected: " << vocabulary.getDisplayName(symbol) << "\n";
               }
@@ -644,6 +642,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
               indentation + 1,
               innerCancelled
           );
+
           if (innerCancelled) {
             timedOut = true;
             return {};
@@ -655,8 +654,8 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
                 .tokenListIndex = position,
             });
           }
-          break;
-        }
+
+        } break;
 
         case antlr4::atn::TransitionType::PREDICATE: {
           const auto* predTransition =
@@ -667,8 +666,8 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
                 .tokenListIndex = currentEntry.tokenListIndex,
             });
           }
-          break;
-        }
+
+        } break;
 
         case antlr4::atn::TransitionType::PRECEDENCE: {
           const auto* predTransition =
@@ -680,8 +679,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
             });
           }
 
-          break;
-        }
+        } break;
 
         case antlr4::atn::TransitionType::WILDCARD: {
           if (atCaret) {
@@ -699,8 +697,8 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
                 .tokenListIndex = currentEntry.tokenListIndex + 1,
             });
           }
-          break;
-        }
+
+        } break;
 
         default: {
           if (transition->isEpsilon()) {
@@ -714,7 +712,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
           }
 
           antlr4::misc::IntervalSet set = transition->label();
-          if (set.size() > 0) {
+          if (!set.isEmpty()) {
             if (transition->getTransitionType() == antlr4::atn::TransitionType::NOT_SET) {
               set = set.complement(antlr4::misc::IntervalSet::of(
                   antlr4::Token::MIN_USER_TOKEN_TYPE, static_cast<ptrdiff_t>(atn.maxTokenType)
@@ -764,7 +762,6 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
   }
 
   callStack.pop_back();
-
   if (startState->isLeftRecursiveRule) {
     precedenceStack.pop_back();
   }
