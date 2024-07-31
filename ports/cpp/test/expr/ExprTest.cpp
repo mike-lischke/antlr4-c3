@@ -210,4 +210,17 @@ TEST(SimpleExpressionParser, CandidateRulesWithDifferentStartTokens) {
   }
 }
 
+TEST(SimpleExpressionParser, OutOfBoundsCaret) {
+  AntlrPipeline<ExprGrammar> pipeline("var c = a + b");
+  pipeline.tokens.fill();
+
+  c3::CodeCompletionCore completion(&pipeline.parser);
+  const auto last = completion.collectCandidates(7);
+  ASSERT_EQ(last, completion.collectCandidates(7));
+  ASSERT_EQ(last, completion.collectCandidates(8));
+  ASSERT_EQ(last, completion.collectCandidates(16));
+  ASSERT_EQ(last, completion.collectCandidates(32));
+  ASSERT_EQ(last, completion.collectCandidates(128));
+}
+
 }  // namespace c3::test
