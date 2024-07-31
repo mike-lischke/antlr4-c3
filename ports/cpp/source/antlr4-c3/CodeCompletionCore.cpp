@@ -57,7 +57,7 @@ std::vector<size_t> longestCommonPrefix(
 
 }  // namespace
 
-std::map<std::type_index, CodeCompletionCore::FollowSetsPerState>  // NOLINT
+std::unordered_map<std::type_index, CodeCompletionCore::FollowSetsPerState>  // NOLINT
     CodeCompletionCore::followSetsByATN = {};
 
 // Matches ATNStateType enum
@@ -491,7 +491,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
   // Start with rule specific handling before going into the ATN walk.
 
   // Check first if we've taken this path with the same input before.
-  std::map<size_t, RuleEndStatus>& positionMap = shortcutMap[startState->ruleIndex];
+  std::unordered_map<size_t, RuleEndStatus>& positionMap = shortcutMap[startState->ruleIndex];
   if (positionMap.contains(tokenListIndex)) {
     if (showDebugOutput) {
       std::cout << "=====> shortcut" << "\n";

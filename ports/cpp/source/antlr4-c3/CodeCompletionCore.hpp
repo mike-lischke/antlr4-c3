@@ -93,7 +93,7 @@ private:
     bool isExhaustive;
   };
 
-  using FollowSetsPerState = std::map<size_t, FollowSetsHolder>;
+  using FollowSetsPerState = std::unordered_map<size_t, FollowSetsHolder>;
 
   /** Token stream position info after a rule was processed. */
   using RuleEndStatus = std::unordered_set<size_t>;
@@ -174,7 +174,7 @@ public:
   // Private
   // --------------------------------------------------------
 private:
-  static std::map<std::type_index, FollowSetsPerState> followSetsByATN;
+  static std::unordered_map<std::type_index, FollowSetsPerState> followSetsByATN;
   static std::vector<std::string> atnStateTypeMap;
 
   antlr4::Parser* parser;
@@ -192,7 +192,7 @@ private:
    * A rule which has been visited before with the same input position will
    * always produce the same output positions.
    */
-  std::map<size_t, std::map<size_t, RuleEndStatus>> shortcutMap;
+  std::unordered_map<size_t, std::unordered_map<size_t, RuleEndStatus>> shortcutMap;
 
   /** The collected candidates (rules and tokens). */
   c3::CandidatesCollection candidates;
