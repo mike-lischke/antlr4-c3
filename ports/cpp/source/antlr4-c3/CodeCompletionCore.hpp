@@ -5,8 +5,8 @@
 //  Licensed under the MIT License.
 //
 
-#ifndef CodeCompletionCore_hpp
-#define CodeCompletionCore_hpp
+#ifndef CODE_COMPLETION_CORE_HPP
+#define CODE_COMPLETION_CORE_HPP
 
 #include <Parser.h>
 #include <ParserRuleContext.h>
