@@ -287,26 +287,27 @@ bool CodeCompletionCore::translateToRuleIndex(
  */
 std::vector<size_t> CodeCompletionCore::getFollowingTokens(const antlr4::atn::Transition* transition
 ) const {
-  std::vector<size_t> result = {};
-
+  std::vector<size_t> result;
   std::vector<antlr4::atn::ATNState*> pipeline = {transition->target};
 
   while (!pipeline.empty()) {
     antlr4::atn::ATNState* state = pipeline.back();
     pipeline.pop_back();
 
-    if (state != nullptr) {
-      for (const antlr4::atn::ConstTransitionPtr& outgoing : state->transitions) {
-        if (outgoing->getTransitionType() == antlr4::atn::TransitionType::ATOM) {
-          if (!outgoing->isEpsilon()) {
-            const auto list = outgoing->label();
-            if (list.size() == 1 && !ignoredTokens.contains(list.get(0))) {
-              result.push_back(list.get(0));
-              pipeline.push_back(outgoing->target);
-            }
-          } else {
+    if (state == nullptr) {
+      continue;
+    }
+
+    for (const antlr4::atn::ConstTransitionPtr& outgoing : state->transitions) {
+      if (outgoing->getTransitionType() == antlr4::atn::TransitionType::ATOM) {
+        if (!outgoing->isEpsilon()) {
+          const auto list = outgoing->label();
+          if (list.size() == 1 && !ignoredTokens.contains(list.get(0))) {
+            result.push_back(list.get(0));
             pipeline.push_back(outgoing->target);
           }
+        } else {
+          pipeline.push_back(outgoing->target);
         }
       }
     }
