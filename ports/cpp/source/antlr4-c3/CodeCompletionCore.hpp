@@ -35,6 +35,8 @@ using RuleList = std::vector<size_t>;
 struct CandidateRule {
   size_t startTokenIndex;
   RuleList ruleList;
+
+  friend bool operator==(const CandidateRule& lhs, const CandidateRule& rhs) = default;
 };
 
 /**
@@ -49,6 +51,9 @@ struct CandidatesCollection {
   std::map<size_t, TokenList> tokens;
   std::map<size_t, CandidateRule> rules;
   bool cancelled;
+
+  friend bool operator==(const CandidatesCollection& lhs, const CandidatesCollection& rhs) =
+      default;
 };
 
 class CodeCompletionCore {
