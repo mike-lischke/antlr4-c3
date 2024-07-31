@@ -127,13 +127,11 @@ CandidatesCollection CodeCompletionCore::collectCandidates(  // NOLINT
 
   RuleWithStartTokenList callStack = {};
   const size_t startRule = (context != nullptr) ? context->getRuleIndex() : 0;
-  bool cancelled = false;
 
-  processRule(atn.ruleToStartState[startRule], 0, callStack, 0, 0, cancelled);
-  candidates.cancelled = cancelled;
+  processRule(atn.ruleToStartState[startRule], 0, callStack, 0, 0, candidates.cancelled);
 
   if (showResult) {
-    if (cancelled) {
+    if (candidates.cancelled) {
       std::cout << "*** TIMED OUT ***\n";
     }
 
