@@ -233,12 +233,11 @@ bool CodeCompletionCore::translateToRuleIndex(
     // but only if there isn't already an entry like that.
     std::vector<size_t> path;
     path.reserve(index);
-    for (size_t subrangeIndex = 0; subrangeIndex < index; subrangeIndex++) {
-      path.push_back(ruleWithStartTokenList[subrangeIndex].ruleIndex);
+    for (size_t i = 0; i < index; i++) {
+      path.push_back(ruleWithStartTokenList[i].ruleIndex);
     }
 
     bool addNew = true;
-
     for (auto const& [cRuleEntryRuleIndex, cRuleEntryCandidateRule] : candidates.rules) {
       if (cRuleEntryRuleIndex != rwst.ruleIndex ||
           cRuleEntryCandidateRule.ruleList.size() != path.size()) {
@@ -246,13 +245,14 @@ bool CodeCompletionCore::translateToRuleIndex(
       }
 
       // Found an entry for this rule. Same path?
-      bool samePath = true;
-      for (size_t pathI = 0; pathI < path.size(); pathI++) {
-        if (path[pathI] == cRuleEntryCandidateRule.ruleList[pathI]) {
-          samePath = false;
-          break;
+      const bool samePath = [&] {
+        for (size_t i = 0; i < path.size(); i++) {
+          if (path[i] == cRuleEntryCandidateRule.ruleList[i]) {
+            return false;
+          }
         }
-      }
+        return true;
+      }();
 
       // If same path, then don't add a new (duplicate) entry.
       if (samePath) {
