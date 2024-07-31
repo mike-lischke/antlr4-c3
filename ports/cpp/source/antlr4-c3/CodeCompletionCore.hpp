@@ -26,63 +26,11 @@
 #include <unordered_set>
 #include <vector>
 
-// ----------------------------------------------------------------------------
-// Supporting Types
-// ----------------------------------------------------------------------------
-
 namespace c3 {
 
 using TokenList = std::vector<size_t>;
+
 using RuleList = std::vector<size_t>;
-
-struct RuleWithStartToken {
-  size_t startTokenIndex;
-  size_t ruleIndex;
-};
-
-using RuleWithStartTokenList = std::vector<RuleWithStartToken>;
-
-/**
- * A record for a follow set along with the path at which this set was found.
- * If there is only a single symbol in the interval set then we also collect and
- * store tokens which follow this symbol directly in its rule (i.e. there is no
- * intermediate rule transition). Only single label transitions are considered.
- * This is useful if you have a chain of tokens which can be suggested as a
- * whole, because there is a fixed sequence in the grammar.
- */
-struct FollowSetWithPath {
-  antlr4::misc::IntervalSet intervals;
-  RuleList path;
-  TokenList following;
-};
-
-/**
- * A list of follow sets (for a given state number) + all of them combined for
- * quick hit tests + whether they are exhaustive (false if subsequent
- * yet-unprocessed rules could add further tokens to the follow set, true
- * otherwise). This data is static in nature (because the used ATN states are
- * part of a static struct: the ATN). Hence it can be shared between all C3
- * instances, however it depends on the actual parser class (type).
- */
-struct FollowSetsHolder {
-  std::vector<FollowSetWithPath> sets;
-  antlr4::misc::IntervalSet combined;
-  bool isExhaustive;
-};
-
-using FollowSetsPerState = std::map<size_t, FollowSetsHolder>;
-
-/** Token stream position info after a rule was processed. */
-using RuleEndStatus = std::unordered_set<size_t>;
-
-struct PipelineEntry {
-  antlr4::atn::ATNState* state;
-  size_t tokenListIndex;
-};
-
-// ----------------------------------------------------------------------------
-// CandidatesCollection
-// ----------------------------------------------------------------------------
 
 struct CandidateRule {
   size_t startTokenIndex;
@@ -103,21 +51,55 @@ struct CandidatesCollection {
   bool cancelled;
 };
 
-// ----------------------------------------------------------------------------
-// Code Completion Core
-// ----------------------------------------------------------------------------
-
 class CodeCompletionCore {
+private:
+  struct PipelineEntry {
+    antlr4::atn::ATNState* state;
+    size_t tokenListIndex;
+  };
+
+  struct RuleWithStartToken {
+    size_t startTokenIndex;
+    size_t ruleIndex;
+  };
+
+  using RuleWithStartTokenList = std::vector<RuleWithStartToken>;
+
+  /**
+   * A record for a follow set along with the path at which this set was found.
+   * If there is only a single symbol in the interval set then we also collect and
+   * store tokens which follow this symbol directly in its rule (i.e. there is no
+   * intermediate rule transition). Only single label transitions are considered.
+   * This is useful if you have a chain of tokens which can be suggested as a
+   * whole, because there is a fixed sequence in the grammar.
+   */
+  struct FollowSetWithPath {
+    antlr4::misc::IntervalSet intervals;
+    RuleList path;
+    TokenList following;
+  };
+
+  /**
+   * A list of follow sets (for a given state number) + all of them combined for
+   * quick hit tests + whether they are exhaustive (false if subsequent
+   * yet-unprocessed rules could add further tokens to the follow set, true
+   * otherwise). This data is static in nature (because the used ATN states are
+   * part of a static struct: the ATN). Hence it can be shared between all C3
+   * instances, however it depends on the actual parser class (type).
+   */
+  struct FollowSetsHolder {
+    std::vector<FollowSetWithPath> sets;
+    antlr4::misc::IntervalSet combined;
+    bool isExhaustive;
+  };
+
+  using FollowSetsPerState = std::map<size_t, FollowSetsHolder>;
+
+  /** Token stream position info after a rule was processed. */
+  using RuleEndStatus = std::unordered_set<size_t>;
+
 public:
-  // --------------------------------------------------------
-  // Construction
-  // --------------------------------------------------------
-
   explicit CodeCompletionCore(antlr4::Parser* parser);
-
-  // --------------------------------------------------------
-  // Configuration
-  // --------------------------------------------------------
 
   /**
    * Tailoring of the result:

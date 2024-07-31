@@ -55,11 +55,11 @@ std::vector<size_t> longestCommonPrefix(std::vector<size_t> lhs, std::vector<siz
 
 }  // namespace
 
-std::map<std::type_index, FollowSetsPerState>  // NOLINT
-    c3::CodeCompletionCore::followSetsByATN = {};
+std::map<std::type_index, CodeCompletionCore::FollowSetsPerState>  // NOLINT
+    CodeCompletionCore::followSetsByATN = {};
 
 // Matches ATNStateType enum
-std::vector<std::string> c3::CodeCompletionCore::atnStateTypeMap  // NOLINT
+std::vector<std::string> CodeCompletionCore::atnStateTypeMap  // NOLINT
     {
         "invalid",
         "basic",
@@ -331,7 +331,7 @@ std::vector<size_t> CodeCompletionCore::getFollowingTokens(const antlr4::atn::Tr
  * @param stop Stop state.
  * @returns Follow sets.
  */
-FollowSetsHolder CodeCompletionCore::determineFollowSets(
+CodeCompletionCore::FollowSetsHolder CodeCompletionCore::determineFollowSets(
     antlr4::atn::ATNState* start, antlr4::atn::ATNState* stop
 ) {
   std::vector<FollowSetWithPath> sets = {};
@@ -466,7 +466,7 @@ bool CodeCompletionCore::collectFollowSets(  // NOLINT
  * @returns the set of token stream indexes (which depend on the ways that had
  * to be taken).
  */
-RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
+CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
     antlr4::atn::RuleStartState* startState,
     size_t tokenListIndex,
     RuleWithStartTokenList& callStack,
