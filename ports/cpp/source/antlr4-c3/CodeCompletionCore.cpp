@@ -135,7 +135,7 @@ CandidatesCollection CodeCompletionCore::collectCandidates(  // NOLINT
       std::cout << "*** TIMED OUT ***\n";
     }
 
-    std::cout << "States processed: " << std::to_string(statesProcessed) << "\n\n";
+    std::cout << "States processed: " << statesProcessed << "\n\n";
 
     std::cout << "Collected rules:\n";
     for (const auto& [tokenIndex, rule] : candidates.rules) {
@@ -143,7 +143,7 @@ CandidatesCollection CodeCompletionCore::collectCandidates(  // NOLINT
       std::cout << ", path: ";
 
       for (const size_t token : rule.ruleList) {
-        std::cout << ruleNames[token] + " ";
+        std::cout << ruleNames[token] << " ";
       }
     }
     std::cout << "\n\n";
@@ -196,27 +196,22 @@ bool CodeCompletionCore::translateStackToRuleIndex(
   // Change the direction we iterate over the rule stack
   auto forward = std::views::iota(0U, ruleWithStartTokenList.size());
   auto backward = forward | std::views::reverse;
+
   if (translateRulesTopDown) {
     // Loop over the rule stack from lowest to highest rule level. This will
     // prioritize a lower preferred rule if it is a child of a higher one that
     // is also a preferred rule.
-    for (const auto index : backward) {
-      if (translateToRuleIndex(index, ruleWithStartTokenList)) {
-        return true;
-      }
-    }
-  } else {
-    // Loop over the rule stack from highest to lowest rule level. This will
-    // prioritize a higher preferred rule if it contains a lower one that is
-    // also a preferred rule.
-    for (const auto index : forward) {
-      if (translateToRuleIndex(index, ruleWithStartTokenList)) {
-        return true;
-      }
-    }
+    return std::ranges::any_of(backward, [&](auto index) {
+      return translateToRuleIndex(index, ruleWithStartTokenList);
+    });
   }
 
-  return false;
+  // Loop over the rule stack from highest to lowest rule level. This will
+  // prioritize a higher preferred rule if it contains a lower one that is
+  // also a preferred rule.
+  return std::ranges::any_of(forward, [&](auto index) {
+    return translateToRuleIndex(index, ruleWithStartTokenList);
+  });
 }
 
 /**
