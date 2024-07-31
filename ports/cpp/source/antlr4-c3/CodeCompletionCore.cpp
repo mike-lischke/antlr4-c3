@@ -109,7 +109,7 @@ CandidatesCollection CodeCompletionCore::collectCandidates(  // NOLINT
   tokens = {};
   size_t offset = tokenStartIndex;
   while (true) {
-    antlr4::Token* token = tokenStream->get(offset++);
+    const antlr4::Token* token = tokenStream->get(offset++);
     if (token->getChannel() == antlr4::Token::DEFAULT_CHANNEL) {
       tokens.push_back(token);
 

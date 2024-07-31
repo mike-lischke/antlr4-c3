@@ -181,7 +181,7 @@ private:
   antlr4::atn::ATN const& atn;                // NOLINT: reference field
   antlr4::dfa::Vocabulary const& vocabulary;  // NOLINT: reference field
   std::vector<std::string> const& ruleNames;  // NOLINT: reference field
-  std::vector<antlr4::Token*> tokens;
+  std::vector<const antlr4::Token*> tokens;
   std::vector<int> precedenceStack;
 
   size_t tokenStartIndex = 0;
