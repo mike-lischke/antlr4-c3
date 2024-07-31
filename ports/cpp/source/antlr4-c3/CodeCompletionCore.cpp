@@ -113,7 +113,7 @@ CandidatesCollection CodeCompletionCore::collectCandidates(  // NOLINT
     if (token->getChannel() == antlr4::Token::DEFAULT_CHANNEL) {
       tokens.push_back(token);
 
-      if (token->getTokenIndex() >= caretTokenIndex || token->getType() == antlr4::Token::EOF) {
+      if (token->getTokenIndex() >= caretTokenIndex) {
         break;
       }
     }
