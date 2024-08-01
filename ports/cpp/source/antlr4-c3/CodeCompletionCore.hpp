@@ -5,8 +5,7 @@
 //  Licensed under the MIT License.
 //
 
-#ifndef CODE_COMPLETION_CORE_HPP
-#define CODE_COMPLETION_CORE_HPP
+#pragma once
 
 #include <Parser.h>
 #include <ParserRuleContext.h>
@@ -246,5 +245,3 @@ private:
 };
 
 }  // namespace c3
-
-#endif /* CodeCompletionCore_hpp */
