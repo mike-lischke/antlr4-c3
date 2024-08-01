@@ -37,7 +37,7 @@
         "@typescript-eslint/eslint-plugin": "7.14.1",
         "@typescript-eslint/parser": "7.8.0",
         "antlr4ng-cli": "2.0.0",
-        "esbuild": "0.22.0",
+        "esbuild": "0.23.0",
         "eslint": "8.57.0",
         "eslint-plugin-import": "2.29.1",
         "eslint-plugin-jsdoc": "48.2.7",
