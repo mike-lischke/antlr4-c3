@@ -30,7 +30,6 @@
 #include <iostream>
 #include <iterator>
 #include <ranges>
-#include <ratio>
 #include <set>
 #include <sstream>
 #include <string>
@@ -95,13 +94,13 @@ CandidatesCollection CodeCompletionCore::collectCandidates(
   const auto* context = parameters.context;
 
   timeout = parameters.timeout;
-  cancel = parameters.cancel;
+  cancel = parameters.isCancelled;
   timeoutStart = std::chrono::steady_clock::now();
 
   shortcutMap.clear();
   candidates.rules.clear();
   candidates.tokens.clear();
-  candidates.cancelled = false;
+  candidates.isCancelled = false;
   statesProcessed = 0;
   precedenceStack = {};
 
@@ -130,10 +129,10 @@ CandidatesCollection CodeCompletionCore::collectCandidates(
   RuleWithStartTokenList callStack = {};
   const size_t startRule = (context != nullptr) ? context->getRuleIndex() : 0;
 
-  processRule(atn.ruleToStartState[startRule], 0, callStack, 0, 0, candidates.cancelled);
+  processRule(atn.ruleToStartState[startRule], 0, callStack, 0, 0, candidates.isCancelled);
 
   if (showResult) {
-    if (candidates.cancelled) {
+    if (candidates.isCancelled) {
       std::cout << "*** TIMED OUT ***\n";
     }
 

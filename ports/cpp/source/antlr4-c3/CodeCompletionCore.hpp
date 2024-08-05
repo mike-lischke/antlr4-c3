@@ -50,7 +50,7 @@ struct CandidateRule {
 struct CandidatesCollection {
   std::map<size_t, TokenList> tokens;
   std::map<size_t, CandidateRule> rules;
-  bool cancelled;
+  bool isCancelled;
 
   friend bool operator==(const CandidatesCollection& lhs, const CandidatesCollection& rhs) =
       default;
@@ -71,7 +71,7 @@ struct Parameters {
    * true while the function is executing, then collecting candidates will abort
    * as soon as possible.
    */
-  std::atomic<bool>* cancel = nullptr;
+  std::atomic<bool>* isCancelled = nullptr;
 };
 
 class CodeCompletionCore {
