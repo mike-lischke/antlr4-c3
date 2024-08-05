@@ -56,6 +56,24 @@ struct CandidatesCollection {
       default;
 };
 
+/**
+ * Optional parameters for `CodeCompletionCore`.
+ */
+struct Parameters {
+  /** An option parser rule context to limit the search space. */
+  const antlr4::ParserRuleContext* context = nullptr;
+
+  /** If non-zero, the number of milliseconds until collecting times out. */
+  std::optional<std::chrono::milliseconds> timeout = std::nullopt;
+
+  /**
+   * If set to a non-`NULL` atomic boolean, and that boolean value is set to
+   * true while the function is executing, then collecting candidates will abort
+   * as soon as possible.
+   */
+  std::atomic<bool>* cancel = nullptr;
+};
+
 class CodeCompletionCore {
 private:
   struct PipelineEntry {
@@ -158,22 +176,12 @@ public:
    * might miss some candidates (if they are outside of the given context).
    *
    * @param caretTokenIndex The index of the token at the caret position.
-   * @param context An option parser rule context to limit the search space.
-   * @param timeoutMS If non-zero, the number of milliseconds until collecting
-   * times out.
-   * @param cancel If set to a non-NULL atomic boolean, and that boolean value
-   * is set to true while the function is executing, then collecting candidates
-   * will abort as soon as possible.
+   * @param parameters Optional parameters.
    * @returns The collection of completion candidates. If cancelled or timed
    * out, the returned collection will have its 'cancelled' value set to true
    * and the collected candidates may be incomplete.
    */
-  CandidatesCollection collectCandidates(
-      size_t caretTokenIndex,
-      antlr4::ParserRuleContext* context = nullptr,
-      size_t timeoutMS = 0,
-      std::atomic<bool>* cancel = nullptr
-  );
+  CandidatesCollection collectCandidates(size_t caretTokenIndex, Parameters parameters = {});
 
   // --------------------------------------------------------
   // Private
@@ -201,7 +209,8 @@ private:
 
   /** The collected candidates (rules and tokens). */
   c3::CandidatesCollection candidates;
-  size_t timeoutMS;
+
+  std::optional<std::chrono::milliseconds> timeout;
   std::atomic<bool>* cancel;
   std::chrono::steady_clock::time_point timeoutStart;
 
