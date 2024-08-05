@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.7)
-project(antlr4-c3 VERSION 1.1.0)
+project(antlr4-c3 VERSION 2.0.0)
 
 option(ANTLR4C3_DEVELOPER "Enable ${PROJECT_NAME} developer mode" OFF)
 
