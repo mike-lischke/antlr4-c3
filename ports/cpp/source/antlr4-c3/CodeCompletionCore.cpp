@@ -85,25 +85,25 @@ CodeCompletionCore::CodeCompletionCore(antlr4::Parser* parser)
     , atn(parser->getATN())
     , vocabulary(parser->getVocabulary())
     , ruleNames(parser->getRuleNames())
-    , timeoutMS(0)
+    , timeout(0)
     , cancel(nullptr) {
 }
 
-CandidatesCollection CodeCompletionCore::collectCandidates(  // NOLINT
-    size_t caretTokenIndex,
-    antlr4::ParserRuleContext* context,
-    size_t timeoutMS,
-    std::atomic<bool>* cancel
+CandidatesCollection CodeCompletionCore::collectCandidates(
+    size_t caretTokenIndex, Parameters parameters
 ) {
+  const auto* context = parameters.context;
+
+  timeout = parameters.timeout;
+  cancel = parameters.cancel;
+  timeoutStart = std::chrono::steady_clock::now();
+
   shortcutMap.clear();
   candidates.rules.clear();
   candidates.tokens.clear();
   candidates.cancelled = false;
   statesProcessed = 0;
   precedenceStack = {};
-  timeoutStart = std::chrono::steady_clock::now();
-  this->cancel = cancel;
-  this->timeoutMS = timeoutMS;
 
   tokenStartIndex = (context != nullptr) ? context->start->getTokenIndex() : 0;
   auto* const tokenStream = parser->getTokenStream();
@@ -472,12 +472,9 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
 
   // Check for timeout
   timedOut = false;
-  if (timeoutMS > 0) {
-    const std::chrono::duration<size_t, std::milli> timeout(timeoutMS);
-    if (std::chrono::steady_clock::now() - timeoutStart > timeout) {
-      timedOut = true;
-      return {};
-    }
+  if (timeout.has_value() && std::chrono::steady_clock::now() - timeoutStart > timeout) {
+    timedOut = true;
+    return {};
   }
 
   // Start with rule specific handling before going into the ATN walk.
