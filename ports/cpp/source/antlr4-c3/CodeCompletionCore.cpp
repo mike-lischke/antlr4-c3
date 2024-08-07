@@ -413,25 +413,22 @@ bool CodeCompletionCore::collectFollowSets(  // NOLINT
           collectFollowSets(transition->target, stopState, followSets, stateStack, ruleStack);
       isExhaustive = isExhaustive && nextStateFollowSetsIsExhaustive;
     } else if (transition->getTransitionType() == antlr4::atn::TransitionType::WILDCARD) {
-      FollowSetWithPath set;
-      set.intervals = antlr4::misc::IntervalSet::of(
-          antlr4::Token::MIN_USER_TOKEN_TYPE, static_cast<ptrdiff_t>(atn->maxTokenType)
-      );
-      set.path = ruleStack;
-      followSets.emplace_back(std::move(set));
+      followSets.push_back({
+          .intervals = allUserTokens(),
+          .path = ruleStack,
+          .following = {},
+      });
     } else {
       antlr4::misc::IntervalSet label = transition->label();
       if (!label.isEmpty()) {
         if (transition->getTransitionType() == antlr4::atn::TransitionType::NOT_SET) {
-          label = label.complement(antlr4::misc::IntervalSet::of(
-              antlr4::Token::MIN_USER_TOKEN_TYPE, static_cast<ptrdiff_t>(atn->maxTokenType)
-          ));
+          label = label.complement(allUserTokens());
         }
-        FollowSetWithPath set;
-        set.intervals = label;
-        set.path = ruleStack;
-        set.following = getFollowingTokens(transition);
-        followSets.emplace_back(std::move(set));
+        followSets.push_back({
+            .intervals = label,
+            .path = ruleStack,
+            .following = getFollowingTokens(transition),
+        });
       }
     }
   }
@@ -710,9 +707,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
           antlr4::misc::IntervalSet set = transition->label();
           if (!set.isEmpty()) {
             if (transition->getTransitionType() == antlr4::atn::TransitionType::NOT_SET) {
-              set = set.complement(antlr4::misc::IntervalSet::of(
-                  antlr4::Token::MIN_USER_TOKEN_TYPE, static_cast<ptrdiff_t>(atn->maxTokenType)
-              ));
+              set = set.complement(allUserTokens());
             }
             if (atCaret) {
               if (!translateStackToRuleIndex(callStack)) {
@@ -766,6 +761,12 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
   positionMap[tokenListIndex] = result;
 
   return result;
+}
+
+antlr4::misc::IntervalSet CodeCompletionCore::allUserTokens() const {
+  const auto min = antlr4::Token::MIN_USER_TOKEN_TYPE;
+  const auto max = static_cast<ptrdiff_t>(atn->maxTokenType);
+  return antlr4::misc::IntervalSet::of(min, max);
 }
 
 std::string CodeCompletionCore::generateBaseDescription(antlr4::atn::ATNState* state) {

@@ -10,6 +10,7 @@
 #include <Parser.h>
 #include <ParserRuleContext.h>
 #include <Token.h>
+#include <Vocabulary.h>
 #include <atn/ATNState.h>
 #include <atn/PredicateTransition.h>
 #include <atn/RuleStartState.h>
@@ -20,6 +21,7 @@
 #include <chrono>
 #include <cstddef>
 #include <map>
+#include <optional>
 #include <string>
 #include <typeindex>
 #include <unordered_map>
@@ -243,6 +245,8 @@ private:
       size_t indentation,
       bool& timedOut
   );
+
+  antlr4::misc::IntervalSet allUserTokens() const;
 
   std::string generateBaseDescription(antlr4::atn::ATNState* state);
 
