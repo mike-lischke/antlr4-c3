@@ -179,7 +179,7 @@ public:
   // Private
   // --------------------------------------------------------
 private:
-  static std::unordered_map<std::type_index, FollowSetsPerState> followSetsByATN;
+  static thread_local std::unordered_map<std::type_index, FollowSetsPerState> followSetsByATN;
   static std::vector<std::string> atnStateTypeMap;
 
   antlr4::Parser* parser;

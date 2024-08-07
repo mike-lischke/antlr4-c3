@@ -59,7 +59,7 @@ std::vector<size_t> longestCommonPrefix(
 
 }  // namespace
 
-std::unordered_map<std::type_index, CodeCompletionCore::FollowSetsPerState>  // NOLINT
+thread_local std::unordered_map<std::type_index, CodeCompletionCore::FollowSetsPerState>  // NOLINT
     CodeCompletionCore::followSetsByATN = {};
 
 // Matches ATNStateType enum
