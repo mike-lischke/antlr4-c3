@@ -131,7 +131,7 @@ CandidatesCollection CodeCompletionCore::collectCandidates(
 
   processRule(atn.ruleToStartState[startRule], 0, callStack, 0, 0, candidates.isCancelled);
 
-  if (showResult) {
+  if (debugOptions.showResult) {
     if (candidates.isCancelled) {
       std::cout << "*** TIMED OUT ***\n";
     }
@@ -266,7 +266,7 @@ bool CodeCompletionCore::translateToRuleIndex(
           .startTokenIndex = rwst.startTokenIndex,
           .ruleList = path,
       };
-      if (showDebugOutput) {
+      if (debugOptions.showDebugOutput) {
         std::cout << "=====> collected: " << ruleNames[rwst.ruleIndex] << "\n";
       }
     }
@@ -481,7 +481,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
   // Check first if we've taken this path with the same input before.
   std::unordered_map<size_t, RuleEndStatus>& positionMap = shortcutMap[startState->ruleIndex];
   if (positionMap.contains(tokenListIndex)) {
-    if (showDebugOutput) {
+    if (debugOptions.showDebugOutput) {
       std::cout << "=====> shortcut" << "\n";
     }
     return positionMap[tokenListIndex];
@@ -538,7 +538,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
         if (!translateStackToRuleIndex(fullPath)) {
           for (const size_t symbol : set.intervals.toList()) {
             if (!ignoredTokens.contains(symbol)) {
-              if (showDebugOutput) {
+              if (debugOptions.showDebugOutput) {
                 std::cout << "=====> collected: " << vocabulary.getDisplayName(symbol) << "\n";
               }
               if (!candidates.tokens.contains(symbol)) {
@@ -602,14 +602,14 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
     const size_t currentSymbol = tokens[currentEntry.tokenListIndex]->getType();
 
     const bool atCaret = currentEntry.tokenListIndex >= tokens.size() - 1;
-    if (showDebugOutput) {
+    if (debugOptions.showDebugOutput) {
       printDescription(
           indentation,
           currentEntry.state,
           generateBaseDescription(currentEntry.state),
           currentEntry.tokenListIndex
       );
-      if (showRuleStack) {
+      if (debugOptions.showRuleStack) {
         printRuleState(callStack);
       }
     }
@@ -720,7 +720,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
                 const bool hasTokenSequence = list.size() == 1;
                 for (const size_t symbol : list) {
                   if (!ignoredTokens.contains(symbol)) {
-                    if (showDebugOutput) {
+                    if (debugOptions.showDebugOutput) {
                       std::cout << "=====> collected: " << vocabulary.getDisplayName(symbol)
                                 << "\n";
                     }
@@ -741,7 +741,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
               }
             } else {
               if (set.contains(currentSymbol)) {
-                if (showDebugOutput) {
+                if (debugOptions.showDebugOutput) {
                   std::cout << "=====> consumed: " << vocabulary.getDisplayName(currentSymbol)
                             << "\n";
                 }
@@ -768,10 +768,6 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
   return result;
 }
 
-// ----------------------------------------------------------------------------
-// MARK: - Debug
-// ----------------------------------------------------------------------------
-
 std::string CodeCompletionCore::generateBaseDescription(antlr4::atn::ATNState* state) {
   const std::string stateValue = (state->stateNumber == antlr4::atn::ATNState::INVALID_STATE_NUMBER)
                                      ? "Invalid"
@@ -794,7 +790,7 @@ void CodeCompletionCore::printDescription(
   const auto indent = std::string(indentation * 2, ' ');
 
   std::string transitionDescription;
-  if (debugOutputWithTransitions) {
+  if (debugOptions.showTransitions) {
     for (const antlr4::atn::ConstTransitionPtr& transition : state->transitions) {
       std::string labels;
       std::vector<ptrdiff_t> symbols = transition->label().toList();
