@@ -81,9 +81,9 @@ std::vector<std::string> CodeCompletionCore::atnStateTypeMap  // NOLINT
 
 CodeCompletionCore::CodeCompletionCore(antlr4::Parser* parser)
     : parser(parser)
-    , atn(parser->getATN())
-    , vocabulary(parser->getVocabulary())
-    , ruleNames(parser->getRuleNames())
+    , atn(&parser->getATN())
+    , vocabulary(&parser->getVocabulary())
+    , ruleNames(&parser->getRuleNames())
     , timeout(0)
     , cancel(nullptr) {
 }
@@ -129,7 +129,7 @@ CandidatesCollection CodeCompletionCore::collectCandidates(
   RuleWithStartTokenList callStack = {};
   const size_t startRule = (context != nullptr) ? context->getRuleIndex() : 0;
 
-  processRule(atn.ruleToStartState[startRule], 0, callStack, 0, 0, candidates.isCancelled);
+  processRule(atn->ruleToStartState[startRule], 0, callStack, 0, 0, candidates.isCancelled);
 
   if (debugOptions.showResult) {
     if (candidates.isCancelled) {
@@ -140,20 +140,20 @@ CandidatesCollection CodeCompletionCore::collectCandidates(
 
     std::cout << "Collected rules:\n";
     for (const auto& [tokenIndex, rule] : candidates.rules) {
-      std::cout << ruleNames[tokenIndex];
+      std::cout << ruleNames->at(tokenIndex);
       std::cout << ", path: ";
 
       for (const size_t token : rule.ruleList) {
-        std::cout << ruleNames[token] << " ";
+        std::cout << ruleNames->at(token) << " ";
       }
     }
     std::cout << "\n\n";
 
     std::set<std::string> sortedTokens;
     for (const auto& [token, tokenList] : candidates.tokens) {
-      std::string value = vocabulary.getDisplayName(token);
+      std::string value = vocabulary->getDisplayName(token);
       for (const size_t following : tokenList) {
-        value += " " + vocabulary.getDisplayName(following);
+        value += " " + vocabulary->getDisplayName(following);
       }
       sortedTokens.emplace(value);
     }
@@ -267,7 +267,7 @@ bool CodeCompletionCore::translateToRuleIndex(
           .ruleList = path,
       };
       if (debugOptions.showDebugOutput) {
-        std::cout << "=====> collected: " << ruleNames[rwst.ruleIndex] << "\n";
+        std::cout << "=====> collected: " << ruleNames->at(rwst.ruleIndex) << "\n";
       }
     }
 
@@ -415,7 +415,7 @@ bool CodeCompletionCore::collectFollowSets(  // NOLINT
     } else if (transition->getTransitionType() == antlr4::atn::TransitionType::WILDCARD) {
       FollowSetWithPath set;
       set.intervals = antlr4::misc::IntervalSet::of(
-          antlr4::Token::MIN_USER_TOKEN_TYPE, static_cast<ptrdiff_t>(atn.maxTokenType)
+          antlr4::Token::MIN_USER_TOKEN_TYPE, static_cast<ptrdiff_t>(atn->maxTokenType)
       );
       set.path = ruleStack;
       followSets.emplace_back(std::move(set));
@@ -424,7 +424,7 @@ bool CodeCompletionCore::collectFollowSets(  // NOLINT
       if (!label.isEmpty()) {
         if (transition->getTransitionType() == antlr4::atn::TransitionType::NOT_SET) {
           label = label.complement(antlr4::misc::IntervalSet::of(
-              antlr4::Token::MIN_USER_TOKEN_TYPE, static_cast<ptrdiff_t>(atn.maxTokenType)
+              antlr4::Token::MIN_USER_TOKEN_TYPE, static_cast<ptrdiff_t>(atn->maxTokenType)
           ));
         }
         FollowSetWithPath set;
@@ -501,7 +501,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
   FollowSetsPerState& setsPerState = followSetsByATN[typeid(parser)];
 
   if (!setsPerState.contains(startState->stateNumber)) {
-    antlr4::atn::RuleStopState* stop = atn.ruleToStopState[startState->ruleIndex];
+    antlr4::atn::RuleStopState* stop = atn->ruleToStopState[startState->ruleIndex];
     setsPerState[startState->stateNumber] = determineFollowSets(startState, stop);
   }
   const FollowSetsHolder& followSets = setsPerState[startState->stateNumber];
@@ -539,7 +539,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
           for (const size_t symbol : set.intervals.toList()) {
             if (!ignoredTokens.contains(symbol)) {
               if (debugOptions.showDebugOutput) {
-                std::cout << "=====> collected: " << vocabulary.getDisplayName(symbol) << "\n";
+                std::cout << "=====> collected: " << vocabulary->getDisplayName(symbol) << "\n";
               }
               if (!candidates.tokens.contains(symbol)) {
                 // Following is empty if there is more than one entry in the
@@ -681,7 +681,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
           if (atCaret) {
             if (!translateStackToRuleIndex(callStack)) {
               for (const auto token :
-                   std::views::iota(antlr4::Token::MIN_USER_TOKEN_TYPE, atn.maxTokenType + 1)) {
+                   std::views::iota(antlr4::Token::MIN_USER_TOKEN_TYPE, atn->maxTokenType + 1)) {
                 if (!ignoredTokens.contains(token)) {
                   candidates.tokens[token] = {};
                 }
@@ -711,7 +711,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
           if (!set.isEmpty()) {
             if (transition->getTransitionType() == antlr4::atn::TransitionType::NOT_SET) {
               set = set.complement(antlr4::misc::IntervalSet::of(
-                  antlr4::Token::MIN_USER_TOKEN_TYPE, static_cast<ptrdiff_t>(atn.maxTokenType)
+                  antlr4::Token::MIN_USER_TOKEN_TYPE, static_cast<ptrdiff_t>(atn->maxTokenType)
               ));
             }
             if (atCaret) {
@@ -721,7 +721,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
                 for (const size_t symbol : list) {
                   if (!ignoredTokens.contains(symbol)) {
                     if (debugOptions.showDebugOutput) {
-                      std::cout << "=====> collected: " << vocabulary.getDisplayName(symbol)
+                      std::cout << "=====> collected: " << vocabulary->getDisplayName(symbol)
                                 << "\n";
                     }
 
@@ -742,7 +742,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
             } else {
               if (set.contains(currentSymbol)) {
                 if (debugOptions.showDebugOutput) {
-                  std::cout << "=====> consumed: " << vocabulary.getDisplayName(currentSymbol)
+                  std::cout << "=====> consumed: " << vocabulary->getDisplayName(currentSymbol)
                             << "\n";
                 }
                 statePipeline.push_back({
@@ -777,7 +777,7 @@ std::string CodeCompletionCore::generateBaseDescription(antlr4::atn::ATNState* s
   output << "[" << stateValue << " " << atnStateTypeMap[static_cast<size_t>(state->getStateType())]
          << "]";
   output << " in ";
-  output << ruleNames[state->ruleIndex];
+  output << ruleNames->at(state->ruleIndex);
   return output.str();
 }
 
@@ -796,16 +796,15 @@ void CodeCompletionCore::printDescription(
       std::vector<ptrdiff_t> symbols = transition->label().toList();
 
       if (symbols.size() > 2) {
-        // Only print start and end symbols to avoid large lists in debug
-        // output.
-        labels = vocabulary.getDisplayName(static_cast<size_t>(symbols[0])) + " .. " +
-                 vocabulary.getDisplayName(static_cast<size_t>(symbols[symbols.size() - 1]));
+        // Only print start and end symbols to avoid large lists in debug output.
+        labels = vocabulary->getDisplayName(static_cast<size_t>(symbols[0])) + " .. " +
+                 vocabulary->getDisplayName(static_cast<size_t>(symbols[symbols.size() - 1]));
       } else {
         for (const size_t symbol : symbols) {
           if (!labels.empty()) {
             labels += ", ";
           }
-          labels += vocabulary.getDisplayName(symbol);
+          labels += vocabulary->getDisplayName(symbol);
         }
       }
       if (labels.empty()) {
@@ -822,7 +821,7 @@ void CodeCompletionCore::printDescription(
       transitionDescription +=
           atnStateTypeMap[static_cast<size_t>(transition->target->getStateType())];
       transitionDescription += "] in ";
-      transitionDescription += ruleNames[transition->target->ruleIndex];
+      transitionDescription += ruleNames->at(transition->target->ruleIndex);
     }
   }
 
@@ -844,7 +843,7 @@ void CodeCompletionCore::printRuleState(RuleWithStartTokenList const& stack) {
   }
 
   for (const RuleWithStartToken& rule : stack) {
-    std::cout << ruleNames[rule.ruleIndex];
+    std::cout << ruleNames->at(rule.ruleIndex);
   }
   std::cout << "\n";
 }
