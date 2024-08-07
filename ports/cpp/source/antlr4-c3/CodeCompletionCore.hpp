@@ -194,9 +194,9 @@ private:
   static std::vector<std::string> atnStateTypeMap;
 
   antlr4::Parser* parser;
-  antlr4::atn::ATN const& atn;                // NOLINT: reference field
-  antlr4::dfa::Vocabulary const& vocabulary;  // NOLINT: reference field
-  std::vector<std::string> const& ruleNames;  // NOLINT: reference field
+  const antlr4::atn::ATN* atn;
+  const antlr4::dfa::Vocabulary* vocabulary;
+  const std::vector<std::string>* ruleNames;
   std::vector<const antlr4::Token*> tokens;
   std::vector<int> precedenceStack;
 
