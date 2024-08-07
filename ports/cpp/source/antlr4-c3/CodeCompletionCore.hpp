@@ -74,6 +74,31 @@ struct Parameters {
   std::atomic<bool>* isCancelled = nullptr;
 };
 
+struct DebugOptions {
+  /**
+   * Not dependent on showDebugOutput.
+   * Prints the collected rules + tokens to terminal.
+   */
+  bool showResult = false;
+
+  /**
+   * Enables printing ATN state info to terminal.
+   */
+  bool showDebugOutput = false;
+
+  /**
+   * Only relevant when showDebugOutput is true.
+   * Enables transition printing for a state.
+   */
+  bool showTransitions = false;
+
+  /**
+   * Only relevant when showDebugOutput is true.
+   * Enables call stack printing for each rule recursion.
+   */
+  bool showRuleStack = false;
+};
+
 class CodeCompletionCore {
 private:
   struct PipelineEntry {
@@ -143,29 +168,10 @@ public:
    */
   bool translateRulesTopDown = false;  // NOLINT: public field
 
-  // --------------------------------------------------------
-  // Debugging Options
-  // --------------------------------------------------------
-  // Print human readable ATN state and other info.
-
-  /** Not dependent on showDebugOutput. Prints the collected rules + tokens to
-   * terminal. */
-  bool showResult = false;  // NOLINT: public field
-
-  /** Enables printing ATN state info to terminal. */
-  bool showDebugOutput = false;  // NOLINT: public field
-
-  /** Only relevant when showDebugOutput is true. Enables transition printing
-   * for a state. */
-  bool debugOutputWithTransitions = false;  // NOLINT: public field
-
-  /** Also depends on showDebugOutput. Enables call stack printing for each rule
-   * recursion. */
-  bool showRuleStack = false;  // NOLINT: public field
-
-  // --------------------------------------------------------
-  // Usage
-  // --------------------------------------------------------
+  /**
+   * Print human readable ATN state and other info.
+   */
+  DebugOptions debugOptions;  // NOLINT: public field
 
   /**
    * This is the main entry point. The caret token index specifies the token
@@ -183,9 +189,6 @@ public:
    */
   CandidatesCollection collectCandidates(size_t caretTokenIndex, Parameters parameters = {});
 
-  // --------------------------------------------------------
-  // Private
-  // --------------------------------------------------------
 private:
   static std::unordered_map<std::type_index, FollowSetsPerState> followSetsByATN;
   static std::vector<std::string> atnStateTypeMap;
