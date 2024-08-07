@@ -38,10 +38,7 @@ jobs:
 
       - name: Clang-Format
         working-directory: ${{github.workspace}}/ports/cpp
-        run: |
-          find source test -iname '*.hpp' -o -iname '*.cpp' \
-          | xargs clang-format-18 -Werror --dry-run \
-              --fallback-style=Google --verbose
+        run: sh ./ci/check-format.sh
 
       - name: Configure
         working-directory: ${{github.workspace}}/ports/cpp
@@ -58,14 +55,10 @@ jobs:
         run: make
 
       - name: Unit Test
-        working-directory: ${{github.workspace}}/ports/cpp/build/test
-        run: |
-          ctest 
-          cat Testing/Temporary/LastTest.log
+        working-directory: ${{github.workspace}}/ports/cpp
+        run: sh ./ci/test.sh
 
       - name: Clang-Tidy on sources
         if: matrix.cmake_build_type == 'Release'
         working-directory: ${{github.workspace}}/ports/cpp
-        run: |
-          find source -iname '*.hpp' -o -iname '*.cpp' \
-          | xargs clang-tidy-18 -p build/compile_commands.json
+        run: sh ./ci/check-style.sh
