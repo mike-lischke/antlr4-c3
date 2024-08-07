@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 
 #include <antlr4-c3/CodeCompletionCore.hpp>
+#include <thread>
 #include <utility/AntlrPipeline.hpp>
 #include <utility/Collections.hpp>
 #include <utility/Testing.hpp>
@@ -221,6 +222,26 @@ TEST(SimpleExpressionParser, OutOfBoundsCaret) {
   ASSERT_EQ(last, completion.collectCandidates(16));
   ASSERT_EQ(last, completion.collectCandidates(32));
   ASSERT_EQ(last, completion.collectCandidates(128));
+}
+
+TEST(SimpleExpressionParser, ConcurrencySmoke) {
+  const std::size_t concurrency = 8;
+  const std::size_t rounds = 32;
+  const std::size_t maxTokenIndex = 8;
+
+  std::vector<std::jthread> threads;
+  for (std::size_t i = 0; i < concurrency; ++i) {
+    threads.emplace_back([] {
+      for (std::size_t j = 0; j < rounds; ++j) {
+        AntlrPipeline<ExprGrammar> pipeline("var c = a + b");
+        pipeline.tokens.fill();
+        c3::CodeCompletionCore completion(&pipeline.parser);
+        for (std::size_t k = 0; k <= maxTokenIndex; ++k) {
+          completion.collectCandidates(k);
+        }
+      }
+    });
+  }
 }
 
 }  // namespace c3::test
