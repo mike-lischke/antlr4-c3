@@ -286,7 +286,7 @@ bool CodeCompletionCore::translateToRuleIndex(
  * @returns A list of toke types.
  */
 std::vector<size_t> CodeCompletionCore::getFollowingTokens(const antlr4::atn::Transition* transition
-) const {
+) {
   std::vector<size_t> result;
   std::vector<antlr4::atn::ATNState*> pipeline = {transition->target};
 
@@ -302,7 +302,7 @@ std::vector<size_t> CodeCompletionCore::getFollowingTokens(const antlr4::atn::Tr
       if (outgoing->getTransitionType() == antlr4::atn::TransitionType::ATOM) {
         if (!outgoing->isEpsilon()) {
           const auto list = outgoing->label();
-          if (list.size() == 1 && !ignoredTokens.contains(list.get(0))) {
+          if (list.size() == 1) {
             result.push_back(list.get(0));
             pipeline.push_back(outgoing->target);
           }
@@ -501,6 +501,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
     antlr4::atn::RuleStopState* stop = atn->ruleToStopState[startState->ruleIndex];
     setsPerState[startState->stateNumber] = determineFollowSets(startState, stop);
   }
+
   const FollowSetsHolder& followSets = setsPerState[startState->stateNumber];
 
   // Get the token index where our rule starts from our (possibly filtered)
