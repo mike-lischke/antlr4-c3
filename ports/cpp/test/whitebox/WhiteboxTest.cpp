@@ -82,7 +82,7 @@ TEST(WhiteboxGrammarTests, CaretAtOneOfMultiplePossibleStates) {
     auto candidates = completion.collectCandidates(2, {ctx});
 
     EXPECT_THAT(Keys(candidates.tokens), UnorderedElementsAre(WhiteboxLexer::DOLOR));
-    EXPECT_THAT(candidates.tokens[WhiteboxLexer::DOLOR], UnorderedElementsAre());
+    EXPECT_THAT(candidates.tokens[WhiteboxLexer::DOLOR], ElementsAre());
   }
 }
 
@@ -95,7 +95,7 @@ TEST(WhiteboxGrammarTests, CaretAtOneOfMultiplePossibleStatesWithCommonFollowLis
   auto candidates = completion.collectCandidates(2, {ctx});
 
   EXPECT_THAT(Keys(candidates.tokens), UnorderedElementsAre(WhiteboxLexer::DOLOR));
-  EXPECT_THAT(candidates.tokens[WhiteboxLexer::DOLOR], UnorderedElementsAre(WhiteboxLexer::SIT));
+  EXPECT_THAT(candidates.tokens[WhiteboxLexer::DOLOR], ElementsAre(WhiteboxLexer::SIT));
 }
 
 }  // namespace c3::test
