@@ -8,8 +8,6 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-exit 0 # https://github.com/mike-lischke/antlr4-c3/issues/136
-
 set -e
 
 TESTS="

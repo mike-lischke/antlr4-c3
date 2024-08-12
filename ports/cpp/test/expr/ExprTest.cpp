@@ -98,9 +98,8 @@ TEST(SimpleExpressionParser, TypicalSetup) {
     auto candidates = completion.collectCandidates(0);
     EXPECT_THAT(Keys(candidates.tokens), UnorderedElementsAre(ExprLexer::VAR, ExprLexer::LET));
 
-    // NOTE: Behaviour differs from TypeScript version
-    EXPECT_THAT(candidates.tokens[ExprLexer::VAR], UnorderedElementsAre());
-    EXPECT_THAT(candidates.tokens[ExprLexer::LET], UnorderedElementsAre());
+    EXPECT_THAT(candidates.tokens[ExprLexer::VAR], ElementsAre(ExprLexer::ID, ExprLexer::EQUAL));
+    EXPECT_THAT(candidates.tokens[ExprLexer::LET], ElementsAre(ExprLexer::ID, ExprLexer::EQUAL));
   }
   {
     // 2) On the variable name ('c').

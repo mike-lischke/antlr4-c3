@@ -225,7 +225,7 @@ private:
 
   bool translateToRuleIndex(size_t index, RuleWithStartTokenList const& ruleWithStartTokenList);
 
-  std::vector<size_t> getFollowingTokens(const antlr4::atn::Transition* transition) const;
+  static std::vector<size_t> getFollowingTokens(const antlr4::atn::Transition* transition);
 
   FollowSetsHolder determineFollowSets(antlr4::atn::ATNState* start, antlr4::atn::ATNState* stop);
 
