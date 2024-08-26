@@ -258,6 +258,8 @@ private:
   );
 
   void printRuleState(RuleWithStartTokenList const& stack);
+
+  void printOverallResults();
 };
 
 }  // namespace c3
