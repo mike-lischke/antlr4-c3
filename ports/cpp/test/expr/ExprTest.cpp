@@ -98,8 +98,8 @@ TEST(SimpleExpressionParser, TypicalSetup) {
     auto candidates = completion.collectCandidates(0);
     EXPECT_THAT(Keys(candidates.tokens), UnorderedElementsAre(ExprLexer::VAR, ExprLexer::LET));
 
-    EXPECT_THAT(candidates.tokens[ExprLexer::VAR], ElementsAre(ExprLexer::ID, ExprLexer::EQUAL));
-    EXPECT_THAT(candidates.tokens[ExprLexer::LET], ElementsAre(ExprLexer::ID, ExprLexer::EQUAL));
+    EXPECT_THAT(candidates.tokens[ExprLexer::VAR], ElementsAre());
+    EXPECT_THAT(candidates.tokens[ExprLexer::LET], ElementsAre());
   }
   {
     // 2) On the variable name ('c').
