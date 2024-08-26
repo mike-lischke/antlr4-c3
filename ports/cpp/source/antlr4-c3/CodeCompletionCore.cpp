@@ -131,6 +131,13 @@ CandidatesCollection CodeCompletionCore::collectCandidates(
 
   processRule(atn->ruleToStartState[startRule], 0, callStack, 0, 0, candidates.isCancelled);
 
+  for (auto& [_, following] : candidates.tokens) {
+    auto removed = std::ranges::remove_if(following, [&](size_t token) {
+      return ignoredTokens.contains(token);
+    });
+    following.erase(std::begin(removed), std::end(removed));
+  }
+
   if (debugOptions.showResult) {
     if (candidates.isCancelled) {
       std::cout << "*** TIMED OUT ***\n";
