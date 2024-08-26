@@ -138,39 +138,7 @@ CandidatesCollection CodeCompletionCore::collectCandidates(
     following.erase(std::begin(removed), std::end(removed));
   }
 
-  if (debugOptions.showResult) {
-    if (candidates.isCancelled) {
-      std::cout << "*** TIMED OUT ***\n";
-    }
-
-    std::cout << "States processed: " << statesProcessed << "\n\n";
-
-    std::cout << "Collected rules:\n";
-    for (const auto& [tokenIndex, rule] : candidates.rules) {
-      std::cout << ruleNames->at(tokenIndex);
-      std::cout << ", path: ";
-
-      for (const size_t token : rule.ruleList) {
-        std::cout << ruleNames->at(token) << " ";
-      }
-    }
-    std::cout << "\n\n";
-
-    std::set<std::string> sortedTokens;
-    for (const auto& [token, tokenList] : candidates.tokens) {
-      std::string value = vocabulary->getDisplayName(token);
-      for (const size_t following : tokenList) {
-        value += " " + vocabulary->getDisplayName(following);
-      }
-      sortedTokens.emplace(value);
-    }
-
-    std::cout << "Collected tokens:\n";
-    for (const std::string& symbol : sortedTokens) {
-      std::cout << symbol;
-    }
-    std::cout << "\n\n";
-  }
+  printOverallResults();
 
   return candidates;
 }
@@ -855,6 +823,42 @@ void CodeCompletionCore::printRuleState(RuleWithStartTokenList const& stack) {
     std::cout << ruleNames->at(rule.ruleIndex);
   }
   std::cout << "\n";
+}
+
+void CodeCompletionCore::printOverallResults() {
+  if (debugOptions.showResult) {
+    if (candidates.isCancelled) {
+      std::cout << "*** TIMED OUT ***\n";
+    }
+
+    std::cout << "States processed: " << statesProcessed << "\n\n";
+
+    std::cout << "Collected rules:\n";
+    for (const auto& [tokenIndex, rule] : candidates.rules) {
+      std::cout << ruleNames->at(tokenIndex);
+      std::cout << ", path: ";
+
+      for (const size_t token : rule.ruleList) {
+        std::cout << ruleNames->at(token) << " ";
+      }
+    }
+    std::cout << "\n\n";
+
+    std::set<std::string> sortedTokens;
+    for (const auto& [token, tokenList] : candidates.tokens) {
+      std::string value = vocabulary->getDisplayName(token);
+      for (const size_t following : tokenList) {
+        value += " " + vocabulary->getDisplayName(following);
+      }
+      sortedTokens.emplace(value);
+    }
+
+    std::cout << "Collected tokens:\n";
+    for (const std::string& symbol : sortedTokens) {
+      std::cout << symbol;
+    }
+    std::cout << "\n\n";
+  }
 }
 
 }  // namespace c3
