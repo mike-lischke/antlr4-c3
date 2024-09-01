@@ -45,7 +45,7 @@
         "jest": "29.7.0",
         "ts-jest": "29.2.3",
         "ts-node": "10.9.2",
-        "typescript": "5.5.2"
+        "typescript": "5.5.4"
     },
     "dependencies": {
         "antlr4ng": "^3.0.1"
