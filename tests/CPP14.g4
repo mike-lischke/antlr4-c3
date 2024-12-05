@@ -640,14 +640,7 @@ virtspecifierseq: virtspecifier | virtspecifierseq virtspecifier;
 
 virtspecifier: Override | Final;
 
-/*
-purespecifier:
-	'=' '0'//Conflicts with the lexer
- ;
- */
-purespecifier:
-    Assign val = Octalliteral {if($val.text != "0") throw new antlr.InputMismatchException(this);}
-;
+purespecifier: '=' '0'; //Conflicts with the lexer
 
 /*Derived classes*/
 baseclause: ':' basespecifierlist;
