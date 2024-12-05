@@ -242,7 +242,7 @@ bool CodeCompletionCore::translateToRuleIndex(
           .ruleList = path,
       };
       if (debugOptions.showDebugOutput) {
-        std::cout << "=====> collected: " << ruleNames->at(rwst.ruleIndex) << "\n";
+        std::cout << "=====> collected:  " << ruleNames->at(rwst.ruleIndex) << "\n";
       }
     }
 
@@ -512,7 +512,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
           for (const size_t symbol : set.intervals.toList()) {
             if (!ignoredTokens.contains(symbol)) {
               if (debugOptions.showDebugOutput) {
-                std::cout << "=====> collected: " << vocabulary->getDisplayName(symbol) << "\n";
+                std::cout << "=====> collected:  " << vocabulary->getDisplayName(symbol) << "\n";
               }
               if (!candidates.tokens.contains(symbol)) {
                 // Following is empty if there is more than one entry in the
@@ -692,7 +692,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
                 for (const size_t symbol : list) {
                   if (!ignoredTokens.contains(symbol)) {
                     if (debugOptions.showDebugOutput) {
-                      std::cout << "=====> collected: " << vocabulary->getDisplayName(symbol)
+                      std::cout << "=====> collected:  " << vocabulary->getDisplayName(symbol)
                                 << "\n";
                     }
 
@@ -713,7 +713,7 @@ CodeCompletionCore::RuleEndStatus CodeCompletionCore::processRule(  // NOLINT
             } else {
               if (set.contains(currentSymbol)) {
                 if (debugOptions.showDebugOutput) {
-                  std::cout << "=====> consumed: " << vocabulary->getDisplayName(currentSymbol)
+                  std::cout << "=====> consumed:  " << vocabulary->getDisplayName(currentSymbol)
                             << "\n";
                 }
                 statePipeline.push_back({
@@ -815,14 +815,13 @@ void CodeCompletionCore::printDescription(
 
 void CodeCompletionCore::printRuleState(RuleWithStartTokenList const& stack) {
   if (stack.empty()) {
-    std::cout << "<empty stack>\n";
+    std::cout << "<empty stack>" << "\n";
     return;
   }
 
   for (const RuleWithStartToken& rule : stack) {
-    std::cout << ruleNames->at(rule.ruleIndex);
+    std::cout << ruleNames->at(rule.ruleIndex) << "\n";
   }
-  std::cout << "\n";
 }
 
 void CodeCompletionCore::printOverallResults() {
@@ -831,18 +830,18 @@ void CodeCompletionCore::printOverallResults() {
       std::cout << "*** TIMED OUT ***\n";
     }
 
-    std::cout << "States processed: " << statesProcessed << "\n\n";
+    std::cout << "States processed: " << statesProcessed << "\n";
 
-    std::cout << "Collected rules:\n";
+    std::cout << "\n\nCollected rules:\n\n";
     for (const auto& [tokenIndex, rule] : candidates.rules) {
       std::cout << ruleNames->at(tokenIndex);
-      std::cout << ", path: ";
+      std::cout << ", path:  ";
 
       for (const size_t token : rule.ruleList) {
         std::cout << ruleNames->at(token) << " ";
       }
+      std::cout << "\n";
     }
-    std::cout << "\n\n";
 
     std::set<std::string> sortedTokens;
     for (const auto& [token, tokenList] : candidates.tokens) {
@@ -853,11 +852,11 @@ void CodeCompletionCore::printOverallResults() {
       sortedTokens.emplace(value);
     }
 
-    std::cout << "Collected tokens:\n";
+    std::cout << "\n\nCollected tokens:\n" << "\n";
     for (const std::string& symbol : sortedTokens) {
-      std::cout << symbol;
+      std::cout << symbol << "\n";
     }
-    std::cout << "\n\n";
+    std::cout << "\n\n" << "\n";
   }
 }
 
