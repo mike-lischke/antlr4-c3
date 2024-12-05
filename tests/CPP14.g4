@@ -631,7 +631,7 @@ memberdeclaration:
 memberdeclaratorlist: memberdeclarator | memberdeclaratorlist ',' memberdeclarator;
 
 memberdeclarator:
-    declarator virtspecifierseq? purespecifier?
+    declarator virtspecifierseq?
     | declarator braceorequalinitializer?
     | Identifier? attributespecifierseq? ':' constantexpression
 ;
@@ -639,8 +639,6 @@ memberdeclarator:
 virtspecifierseq: virtspecifier | virtspecifierseq virtspecifier;
 
 virtspecifier: Override | Final;
-
-purespecifier: '=' '0'; //Conflicts with the lexer
 
 /*Derived classes*/
 baseclause: ':' basespecifierlist;
