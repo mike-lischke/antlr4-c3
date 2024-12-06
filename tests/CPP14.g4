@@ -631,7 +631,7 @@ memberdeclaration:
 memberdeclaratorlist: memberdeclarator | memberdeclaratorlist ',' memberdeclarator;
 
 memberdeclarator:
-    declarator virtspecifierseq?
+    declarator virtspecifierseq? purespecifier?
     | declarator braceorequalinitializer?
     | Identifier? attributespecifierseq? ':' constantexpression
 ;
@@ -639,6 +639,10 @@ memberdeclarator:
 virtspecifierseq: virtspecifier | virtspecifierseq virtspecifier;
 
 virtspecifier: Override | Final;
+
+purespecifier:
+    Assign ZeroLiteral
+;
 
 /*Derived classes*/
 baseclause: ':' basespecifierlist;
@@ -1084,15 +1088,18 @@ literal:
 ;
 
 Integerliteral:
-    Decimalliteral Integersuffix?
+    ZeroLiteral Integersuffix?
+    | Decimalliteral Integersuffix?
     | Octalliteral Integersuffix?
     | Hexadecimalliteral Integersuffix?
     | Binaryliteral Integersuffix?
 ;
 
+ZeroLiteral: '0';
+
 Decimalliteral: NONZERODIGIT ( '\''? DIGIT)*;
 
-Octalliteral: '0' ( '\''? OCTALDIGIT)*;
+Octalliteral: '0' ( '\''? OCTALDIGIT)+;
 
 Hexadecimalliteral: ( '0x' | '0X') HEXADECIMALDIGIT ( '\''? HEXADECIMALDIGIT)*;
 
@@ -1189,7 +1196,8 @@ userdefinedliteral:
 ;
 
 Userdefinedintegerliteral:
-    Decimalliteral Udsuffix
+    ZeroLiteral Udsuffix
+    | Decimalliteral Udsuffix
     | Octalliteral Udsuffix
     | Hexadecimalliteral Udsuffix
     | Binaryliteral Udsuffix
