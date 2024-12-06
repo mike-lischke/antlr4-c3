@@ -4,8 +4,19 @@ macro(define_grammar_test grammar)
         ${CMAKE_CURRENT_LIST_DIR} NAME
     )
 
+    set(
+        ANTLR4C3_TS_PROJECT_ROOT
+        ${CMAKE_CURRENT_LIST_DIR}/../../../..
+    )
+
+    configure_file(
+        ${ANTLR4C3_TS_PROJECT_ROOT}/tests/${grammar}
+        ${CMAKE_CURRENT_BINARY_DIR}/${grammar}
+        COPYONLY
+    )
+
     antlr_generate(
-        ${CMAKE_CURRENT_LIST_DIR}/${grammar}
+        ${CMAKE_CURRENT_BINARY_DIR}/${grammar}
         ${CMAKE_CURRENT_BINARY_DIR}
     )
 
