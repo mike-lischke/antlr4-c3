@@ -6,11 +6,13 @@ on:
     paths:
       - "ports/cpp/**"
       - ".github/workflows/*"
+      - "tests/*.g4"
   pull_request:
     branches: ["main"]
     paths:
       - "ports/cpp/**"
       - ".github/workflows/*"
+      - "tests/*.g4"
 
 jobs:
   build:

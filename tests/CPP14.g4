@@ -640,13 +640,8 @@ virtspecifierseq: virtspecifier | virtspecifierseq virtspecifier;
 
 virtspecifier: Override | Final;
 
-/*
 purespecifier:
-	'=' '0'//Conflicts with the lexer
- ;
- */
-purespecifier:
-    Assign val = Octalliteral {if($val.text != "0") throw new antlr.InputMismatchException(this);}
+    Assign ZeroLiteral
 ;
 
 /*Derived classes*/
@@ -1093,15 +1088,18 @@ literal:
 ;
 
 Integerliteral:
-    Decimalliteral Integersuffix?
+    ZeroLiteral Integersuffix?
+    | Decimalliteral Integersuffix?
     | Octalliteral Integersuffix?
     | Hexadecimalliteral Integersuffix?
     | Binaryliteral Integersuffix?
 ;
 
+ZeroLiteral: '0';
+
 Decimalliteral: NONZERODIGIT ( '\''? DIGIT)*;
 
-Octalliteral: '0' ( '\''? OCTALDIGIT)*;
+Octalliteral: '0' ( '\''? OCTALDIGIT)+;
 
 Hexadecimalliteral: ( '0x' | '0X') HEXADECIMALDIGIT ( '\''? HEXADECIMALDIGIT)*;
 
@@ -1198,7 +1196,8 @@ userdefinedliteral:
 ;
 
 Userdefinedintegerliteral:
-    Decimalliteral Udsuffix
+    ZeroLiteral Udsuffix
+    | Decimalliteral Udsuffix
     | Octalliteral Udsuffix
     | Hexadecimalliteral Udsuffix
     | Binaryliteral Udsuffix
