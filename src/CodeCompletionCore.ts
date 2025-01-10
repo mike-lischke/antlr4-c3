@@ -582,7 +582,7 @@ export class CodeCompletionCore {
             }
         }
 
-        if (startState.isPrecedenceRule) {
+        if (startState.isLeftRecursiveRule) {
             this.precedenceStack.push(precedence);
         }
 
@@ -733,7 +733,7 @@ export class CodeCompletionCore {
         }
 
         callStack.pop();
-        if (startState.isPrecedenceRule) {
+        if (startState.isLeftRecursiveRule) {
             this.precedenceStack.pop();
         }
 
