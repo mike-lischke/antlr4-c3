@@ -7,17 +7,17 @@
 
 This project contains a grammar agnostic code completion engine for ANTLR4 based parsers. The c3 engine is able to provide code completion candidates useful for editors with ANTLR generated parsers, independent of the actual language/grammar used for the generation.
 
-The original implementation is provided as a node module (works in both, Node.js and browsers), and is written in TypeScript. Ports to Java, C#, C++ are available in the `ports` folder. These ports might not be up to date compared to the TypeScript version.
+The original implementation is provided as a node.js package (works in both, Node.js and browsers), and is written in TypeScript. Ports to **Java**, **C#**, **C++** and **Dart** are available in the `ports` subfolder.
 
-# Abstract
+# Overview
 
-This library provides a common infrastructure for code completion implementations. The c3 engine implementation is based on an idea presented a while ago under [Universal Code Completion using ANTLR3](https://soft-gems.net/universal-code-completion-using-antlr3/). There a grammar was loaded into a memory structure so that it can be walked through with the current input to find a specific location (usually the caret position) and then collect all possible tokens and special rules, which then describe the possible set of code completion candidates for that position. With ANTLR4 we no longer need to load a grammar, because the grammar structure is now available as part of a parser (via the ATN - [Augmented Transition Network](https://en.wikipedia.org/wiki/Augmented_transition_network)). The ANTLR4 runtime even provides the [LL1Analyzer](https://github.com/antlr/antlr4/blob/master/runtime/Java/src/org/antlr/v4/runtime/atn/LL1Analyzer.java) class, which helps with retrieving follow sets for a given ATN state, but has a few shortcomings and is in general not easy to use.
+This library provides a common infrastructure for code completion implementations. The c3 engine implementation is based on an idea presented a while ago under [Universal Code Completion using ANTLR3](https://soft-gems.net/universal-code-completion-using-antlr3/). With ANTLR4 we no longer need to load a grammar, because the grammar structure is now available as part of a parser (via the ATN - [Augmented Transition Network](https://en.wikipedia.org/wiki/Augmented_transition_network)). The ANTLR4 runtime even provides the [LL1Analyzer](https://github.com/antlr/antlr4/blob/master/runtime/Java/src/org/antlr/v4/runtime/atn/LL1Analyzer.java) class, which helps with retrieving follow sets for a given ATN state, but is meant to be used in different contexts.
 
-With the Code Completion Core implementation things become a lot easier. In the simplest setup you only give it a parser instance and a caret position and it will return the candidates for it. Still, a full code completion implementation requires some support code that we need to discuss first before we can come to the actual usage of the c3 engine.
+With the Code Completion Core implementation things become a lot easier. In the simplest setup you only provide a parser instance and a caret position and it will return the candidates for it. Still, a full code completion implementation requires some support code that we need to discuss first before we can discuss the actual usage of the c3 engine.
 
 # A Code Completion Breakdown
 
-For showing possible symbols in source code you obviously need a source for all available symbols at the given position. Providing them is usually the task of a symbol table. Its content can be derived from your current source code (with the help of a parser + a parse listener). More static parts (like runtime functions) can be loaded from disk or provided by a hard coded list etc. The symbol table can then answer your question about all symbols of a given type that are visible from a given position. The position usually corresponds to a specific symbol in the symbol table and the structure then allows to easily get visible symbols. The c3 engine comes with a small symbol table implementation, which is however not mandatory to use the library, but instead provides an easy start, if you don't have an own symbol table class already.
+For showing possible symbols in source code you obviously need a source for all available symbols at the given position. Providing them is usually the task of a symbol table. Its content can be derived from your current source code (with the help of a parser + a parse listener). More static parts (like runtime functions) can be loaded from disk or provided by a hard coded list etc. The symbol table can then answer your question about all symbols of a given type that are visible from a given position. The position usually corresponds to a specific symbol in the symbol table and the structure then allows to easily get visible symbols. The c3 engine comes with a small symbol table implementation, which is however not mandatory for using the c3 library, but instead provides an easy start, if you don't have an own symbol table class already.
 
 While the symbol table provides symbols of a given type, we need to find out which type is actually required. This is the task of the c3 engine. In its simplest setup it will return only keywords (and other lexer symbols) that are allowed by the grammar for a given position (which is of course the same position used to find the context for a symbol lookup in your symbol table). Keywords are a fixed set of words (or word sequences) that usually don't live in a symbol table. You can get the actual text strings directly from the parser vocabulary. The c3 engine only returns the lexer tokens for them.
 
@@ -220,6 +220,28 @@ Sometimes you are not getting what you actually expect and you need take a close
 The last two options potentially create a lot of output which can significantly slow down the collection process.
 
 ## Release Notes
+
+### 3.4.1 - 3.4.2
+
+- PR #80 Candidate token's follow TokenList is inaccurate when the candidate's origin is ambiguous
+- PR #135 Add GitHub Workflow for Java port
+- PR #137 Add Clang-Format and Clang-Tidy checks
+- PR #140 C++ port light refactororing and bug fix
+- PR #146 Change C++ port public API
+- PR #147 Run C++ tests in random order
+- PR #148 Make global mutable state thread_local 
+- PR #149 Remove FollowSet cache dependency on ignoredTokens
+- PR #160 Make C++ port debug output more like TS
+- PR #161 Use grammars from the TS project for C++ port testing
+- PR #163 Remove generated parsers
+- PR #164 Provide support for Dart language
+- PR #166 Replace isPrecedenceRule with isLeftRecursive
+
+- Fixed Bug #94 Autocompleting empty string causes error (in PR #95)
+- Fixed Bug #108 Java port-> NPE happen when followSets contains FollowSetWithPath with null following member (in PR #109)
+- Fixed Bug #139 Make C++ port thread safe
+- Fixed Bug #162 Grammar and generated files can be inconsistent (in PR #163)
+- Fixed Bug #165 isPrecedenceRule is required to be required by CodeCompletionCore but seems to be missing from antlr4ng (in PR #166)
 
 ### 3.4.0
 
