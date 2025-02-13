@@ -12,43 +12,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
-
-import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.atn.PredictionMode;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Unit tests for CodeCompletionCore
- */
-public class TestCodeCompletionCore {
-
-    private static final Logger logger = Logger.getLogger(TestCodeCompletionCore.class.getName());
-
-    public static class CountingErrorListener extends BaseErrorListener {
-
-        public int errorCount = 0;
-
-        @Override
-        public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
-            super.syntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e);
-            errorCount++;
-
-        }
-    }
-
+public class ExprTest {
     @Test
-    public void test1_simpleExpressionTest() throws Exception {
-
-        System.out.println();
-        System.out.println("simpleExpressionTest");
-
+    public void simpleExpressionTest() throws Exception {
         String expression = "var c = a + b()";
         ExprLexer lexer = new ExprLexer(CharStreams.fromString(expression));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -76,14 +49,15 @@ public class TestCodeCompletionCore {
         assertTrue(candidates.tokens.containsKey(ExprLexer.ID));
 
         { // TS: expected [ExprLexer.ID, ExprLexer.EQUAL], here got []
-            assertEquals(Arrays.asList(new Integer[]{}), candidates.tokens.get(ExprLexer.VAR));
-            assertEquals(Arrays.asList(new Integer[]{}), candidates.tokens.get(ExprLexer.LET));
+            assertEquals(Arrays.asList(new Integer[] {}), candidates.tokens.get(ExprLexer.VAR));
+            assertEquals(Arrays.asList(new Integer[] {}), candidates.tokens.get(ExprLexer.LET));
         }
 
-        assertEquals(Arrays.asList(new Integer[]{}), candidates.tokens.get(ExprLexer.ID));
+        assertEquals(Arrays.asList(new Integer[] {}), candidates.tokens.get(ExprLexer.ID));
 
-        // 2) On the first whitespace. In real implementations you would do some additional checks where in the whitespace
-        //    the caret is, as the outcome is different depending on that position.
+        // 2) On the first whitespace. In real implementations you would do some
+        // additional checks where in the whitespace
+        // the caret is, as the outcome is different depending on that position.
         candidates = core.collectCandidates(1, null);
         assertEquals(1, candidates.tokens.size());
         assertTrue(candidates.tokens.containsKey(ExprLexer.ID));
@@ -98,14 +72,16 @@ public class TestCodeCompletionCore {
         assertEquals(1, candidates.tokens.size());
         assertTrue(candidates.tokens.containsKey(ExprLexer.EQUAL));
 
-        // 5) On the variable reference 'a'. But since we have not configure the c3 engine to return us var refs
-        //    (or function refs for that matter) we only get an ID here.
+        // 5) On the variable reference 'a'. But since we have not configure the c3
+        // engine to return us var refs
+        // (or function refs for that matter) we only get an ID here.
         candidates = core.collectCandidates(6, null);
         assertEquals(1, candidates.tokens.size());
         assertTrue(candidates.tokens.containsKey(ExprLexer.ID));
 
-        // 6) On the '+' operator. Usually you would not show operators as candidates, but we have not set up the c3 engine
-        //    yet to not return them.
+        // 6) On the '+' operator. Usually you would not show operators as candidates,
+        // but we have not set up the c3 engine
+        // yet to not return them.
         candidates = core.collectCandidates(8, null);
         assertEquals(5, candidates.tokens.size());
         assertTrue(candidates.tokens.containsKey(ExprLexer.PLUS));
@@ -116,11 +92,7 @@ public class TestCodeCompletionCore {
     }
 
     @Test
-    public void test2_typicalExpressionTest() throws Exception {
-
-        System.out.println();
-        System.out.println("typicalExpressionTest");
-
+    public void typicalExpressionTest() throws Exception {
         String expression = "var c = a + b";
         ExprLexer lexer = new ExprLexer(CharStreams.fromString(expression));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -137,8 +109,10 @@ public class TestCodeCompletionCore {
 
         assertEquals(0, errorListener.errorCount);
 
-        // Tell the engine to return certain rules to us, which we could use to look up values in a symbol table.
-        Set<Integer> preferredRules = new HashSet<>(Arrays.asList(ExprParser.RULE_functionRef, ExprParser.RULE_variableRef));
+        // Tell the engine to return certain rules to us, which we could use to look up
+        // values in a symbol table.
+        Set<Integer> preferredRules = new HashSet<>(
+                Arrays.asList(ExprParser.RULE_functionRef, ExprParser.RULE_variableRef));
 
         // Ignore operators and the generic ID token.
         Set<Integer> ignoredTokens = new HashSet<>(Arrays.asList(ExprLexer.ID,
@@ -153,8 +127,8 @@ public class TestCodeCompletionCore {
         assertTrue(candidates.tokens.containsKey(ExprLexer.VAR));
         assertTrue(candidates.tokens.containsKey(ExprLexer.LET));
 
-        assertEquals(Arrays.asList(new Integer[]{}), candidates.tokens.get(ExprLexer.VAR));
-        assertEquals(Arrays.asList(new Integer[]{}), candidates.tokens.get(ExprLexer.LET));
+        assertEquals(Arrays.asList(new Integer[] {}), candidates.tokens.get(ExprLexer.VAR));
+        assertEquals(Arrays.asList(new Integer[] {}), candidates.tokens.get(ExprLexer.LET));
 
         // 2) On the variable name ('c').
         candidates = core.collectCandidates(2, null);
@@ -169,7 +143,8 @@ public class TestCodeCompletionCore {
         assertEquals(0, candidates.tokens.size());
         assertEquals(2, candidates.rules.size());
 
-        // Here we get 2 rule indexes, derived from 2 different IDs possible at this caret position.
+        // Here we get 2 rule indexes, derived from 2 different IDs possible at this
+        // caret position.
         // These are what we told the engine above to be preferred rules for us.
         int found = 0;
         for (Map.Entry<Integer, List<Integer>> candidate : candidates.rules.entrySet()) {
