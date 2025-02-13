@@ -1,0 +1,27 @@
+name: Dart
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "ports/dart/**"
+      - ".github/workflows/dart.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "ports/dart/**"
+      - ".github/workflows/dart.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+      
+      - name: Test
+        working-directory: ${{github.workspace}}/ports/dart
+        run: dart test
