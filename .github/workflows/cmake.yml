@@ -5,13 +5,13 @@ on:
     branches: ["main"]
     paths:
       - "ports/cpp/**"
-      - ".github/workflows/*"
+      - ".github/workflows/cmake.yml"
       - "tests/*.g4"
   pull_request:
     branches: ["main"]
     paths:
       - "ports/cpp/**"
-      - ".github/workflows/*"
+      - ".github/workflows/cmake.yml"
       - "tests/*.g4"
 
 jobs:

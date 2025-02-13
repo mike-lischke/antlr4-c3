@@ -5,12 +5,12 @@ on:
     branches: [ main ]
     paths:
       - "ports/java/**"
-      - ".github/workflows/*"
+      - ".github/workflows/maven.yml"
   pull_request:
     branches: [ main ]
     paths:
       - "ports/java/**"
-      - ".github/workflows/*"
+      - ".github/workflows/maven.yml"
 
 jobs:
   build:
