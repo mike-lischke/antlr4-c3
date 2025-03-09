@@ -3,15 +3,21 @@
 [![Weekly Downloads](https://img.shields.io/npm/dw/antlr4-c3?style=for-the-badge&color=blue)](https://www.npmjs.com/package/antlr4-c3)
 [![npm version](https://img.shields.io/npm/v/antlr4-c3?style=for-the-badge&color=yellow)](https://www.npmjs.com/package/antlr4-c3)
 
-# antlr4-c3 The ANTLR4 Code Completion Core
+<p align="center">
+<img src="https://raw.githubusercontent.com/mike-lischke/website-antlr-ng/main/src/assets/images/antlr-ng-logo6.svg" title="ANTLR Next Generation" alt="antlr-ng the parser generator" height="200"/><br/>
+<label style="font-size: 90%">Part of the Next Generation ANTLR Project</label>
+</p>
+<hr />
 
-This project contains a grammar agnostic code completion engine for ANTLR4 based parsers. The c3 engine is able to provide code completion candidates useful for editors with ANTLR generated parsers, independent of the actual language/grammar used for the generation.
+# antlr4-c3 The antlr-ng and ANTLR4 Code Completion Core
+
+This project contains a grammar agnostic code completion engine for [antlr-ng](https://www.antlr-ng.org) (and ANTLR4) based parsers. The c3 engine is able to provide code completion candidates useful for editors with ANTLR generated parsers, independent of the actual language/grammar used for the generation.
 
 The original implementation is provided as a node.js package (works in both, Node.js and browsers), and is written in TypeScript. Ports to **Java**, **C#**, **C++** and **Dart** are available in the `ports` subfolder.
 
 # Overview
 
-This library provides a common infrastructure for code completion implementations. The c3 engine implementation is based on a walk over the internal ATN ([Augmented Transition Network](https://en.wikipedia.org/wiki/Augmented_transition_network)), but taking every path instead of using the prediction implementation. The ANTLR4 runtime even provides the [LL1Analyzer](https://github.com/antlr/antlr4/blob/master/runtime/Java/src/org/antlr/v4/runtime/atn/LL1Analyzer.java) class, which helps with retrieving follow sets for a given ATN state, but is meant to be used in different contexts (usually errors).
+This library provides a common infrastructure for code completion implementations. The c3 engine implementation is based on a walk over the internal ATN ([Augmented Transition Network](https://en.wikipedia.org/wiki/Augmented_transition_network)), but taking every path instead of using the prediction implementation. The antlr-ng runtime even provides the [LL1Analyzer](https://github.com/antlr/antlr4/blob/master/runtime/Java/src/org/antlr/v4/runtime/atn/LL1Analyzer.java) class, which helps with retrieving follow sets for a given ATN state, but is meant to be used in different contexts (usually errors).
 
 With the Code Completion Core implementation things become a lot easier. In the simplest setup you only provide a parser instance and a caret position and it will return the candidates for it. Still, a full code completion implementation requires some support code that we need to discuss first before we can discuss the actual usage of the c3 engine.
 
@@ -66,7 +72,7 @@ WS: [ \n\r\t] -> channel(HIDDEN);
 
 You can see the 2 special rules `variableRef` and `functionRef`, which mostly consist of the `ID` lexer rule. We could have instead used a single `ID` reference in the `simpleExpression` rule. However, this is where your domain knowledge about the language comes in. By making the two use cases explicit you can now exactly tell what to query from your symbol table. As you see we are using parser rules to denote entity types, which is half of the magic here.
 
-The code completion core can return parser rule indexes (as created by ANTLR4 when it generated your files). With a returned candidate `ExprParser.RULE_variableRef` you know that you have to ask your symbol for all visible variables (or functions if you get back `ExprParser.RULE_functionRef`). It's easy to see how this applies to much more complex grammars. The principle is always the same: create an own parser rule for your entity references. If you have an SQL grammar where you drop a table write your rules so:
+The code completion core can return parser rule indexes (as created by antlr-ng when it generated your files). With a returned candidate `ExprParser.RULE_variableRef` you know that you have to ask your symbol for all visible variables (or functions if you get back `ExprParser.RULE_functionRef`). It's easy to see how this applies to much more complex grammars. The principle is always the same: create an own parser rule for your entity references. If you have an SQL grammar where you drop a table write your rules so:
 
 ```mysql
 dropTable: DROP TABLE tableRef;
@@ -85,10 +91,10 @@ Then tell the c3 engine that you want to get back `tableRef` if it is a valid ca
 
 With this knowledge we can now look at a simple code example that shows how to use the engine. For further details check the unit tests for this node module (under the test/ folder).
 
-> Since this library is made for ANTLR4 based parser, it requires a [JavaScript/TypeScript runtime](https://github.com/mike-lischke/antlr4ng), just like your parser (namely antlr4ng).
+> Since this library is made for antlr-ng (and ANTLR4) based parser, it requires a [TypeScript runtime](https://github.com/mike-lischke/antlr4ng), just like your parser (namely antlr4ng).
 
 ```typescript
-let inputStream = new ANTLRInputStream("var c = a + b()");
+let inputStream = new CharStream.fromString("var c = a + b()");
 let lexer = new ExprLexer(inputStream);
 let tokenStream = new CommonTokenStream(lexer);
 
@@ -270,7 +276,7 @@ Updated dependencies.
 Now using esbuild for building the package.
 
 ### 3.2.4 - 3.2.5
-- Last changes for the dependency switch (antlr-ts -> antlr4ng).
+- Last changes for the dependency switch (antlr4ts -> antlr4ng).
 - Updated Jest settings to run ESM + TS tests.
 
 ### 3.2.3

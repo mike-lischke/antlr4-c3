@@ -366,6 +366,7 @@ export class CodeCompletionCore {
         const stateStack: ATNState[] = [];
         const ruleStack: number[] = [];
         const isExhaustive = this.collectFollowSets(start, stop, sets, stateStack, ruleStack);
+
         // Sets are split by path to allow translating them to preferred rules. But for quick hit tests
         // it is also useful to have a set with all symbols combined.
         const combined = new IntervalSet();
@@ -690,6 +691,7 @@ export class CodeCompletionCore {
                             if (transition.transitionType === Transition.NOT_SET) {
                                 set = set.complement(Token.MIN_USER_TOKEN_TYPE, this.atn.maxTokenType);
                             }
+
                             if (atCaret) {
                                 if (!this.translateStackToRuleIndex(callStack)) {
                                     const list = set.toArray();
@@ -715,16 +717,15 @@ export class CodeCompletionCore {
                                         }
                                     }
                                 }
-                            } else {
-                                if (set.contains(currentSymbol)) {
-                                    if (this.showDebugOutput) {
-                                        console.log("=====> consumed: ", this.vocabulary.getDisplayName(currentSymbol));
-                                    }
-                                    statePipeline.push({
-                                        state: transition.target,
-                                        tokenListIndex: currentEntry.tokenListIndex + 1,
-                                    });
+                            } else if (set.contains(currentSymbol)) {
+                                if (this.showDebugOutput) {
+                                    console.log("=====> consumed: ", this.vocabulary.getDisplayName(currentSymbol));
                                 }
+
+                                statePipeline.push({
+                                    state: transition.target,
+                                    tokenListIndex: currentEntry.tokenListIndex + 1,
+                                });
                             }
                         }
                     }
