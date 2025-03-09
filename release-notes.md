@@ -6,6 +6,10 @@
 
 # antlr4-c3 Release Notes
 
+## 3.4.3
+
+Upgraded dependencies.
+
 ## 3.4.1 - 3.4.2
 
 - PR #80 Candidate token's follow TokenList is inaccurate when the candidate's origin is ambiguous
