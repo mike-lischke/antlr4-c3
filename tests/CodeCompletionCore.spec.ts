@@ -13,6 +13,7 @@ import {
     BaseErrorListener, CharStream, CommonTokenStream, ParserRuleContext, RecognitionException,
     Recognizer, Token, ATNSimulator,
 } from "antlr4ng";
+import { describe, expect, it } from "vitest";
 
 import { CPP14Parser } from "./generated/CPP14Parser";
 import { CPP14Lexer } from "./generated/CPP14Lexer";
@@ -524,7 +525,7 @@ describe("Code Completion Tests", () => {
 
             // Fixing issue #12 causes this to be included that was previously not returned.
             expect(candidates.tokens.has(CPP14Lexer.Decltype)).toEqual(true);
-        });
+        }, 20000);
     });
 
     describe("Simple expression parser:", () => {

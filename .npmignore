@@ -21,6 +21,7 @@ package
 .git/
 cspell.json
 tsconfig.json
-jest.config.ts
+eslint.config.mjs
+vitest.config.ts
 index.ts
 historical-contributors.txt

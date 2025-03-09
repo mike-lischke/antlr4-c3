@@ -6,6 +6,7 @@
  */
 
 import { CommonToken, TerminalNode } from "antlr4ng";
+import { assert, describe, expect, it } from "vitest";
 
 import { BaseSymbol } from "../src/BaseSymbol";
 import { BlockSymbol } from "../src/BlockSymbol";
@@ -109,12 +110,12 @@ describe("Symbol Table Tests", () => {
 
         try {
             symbolTable.addNewSymbolOfType(VariableSymbol, undefined, "globalVar3", undefined);
-            fail();
+            assert.fail();
         } catch (e) {
             if (e instanceof DuplicateSymbolError) {
                 expect(e.message).toEqual("Attempt to add duplicate symbol 'globalVar3'");
             } else {
-                fail();
+                assert.fail();
             }
         }
 
@@ -131,12 +132,12 @@ describe("Symbol Table Tests", () => {
         try {
             const duplicateMethod = symbolTable.addNewSymbolOfType(MethodSymbol, undefined, "method2");
             (class1 as ClassSymbol).addSymbol(duplicateMethod); // Must throw.
-            fail();
+            assert.fail();
         } catch (e) {
             if (e instanceof DuplicateSymbolError) {
                 expect(e.message).toEqual("Attempt to add duplicate symbol 'method2'");
             } else {
-                fail();
+                assert.fail();
             }
         }
 

@@ -1,12 +1,12 @@
 {
     "name": "antlr4-c3",
-    "version": "3.4.2",
+    "version": "3.4.3",
     "description": "A code completion core implementation for ANTLR4 based parsers",
     "author": "Mike Lischke",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/mike-lischke/antlr4-c3"
+        "url": "git+https://github.com/mike-lischke/antlr4-c3.git"
     },
     "keywords": [
         "ANTLR4",
@@ -23,32 +23,35 @@
         "build": "tsc && npm run build-cjs && npm run build-mjs",
         "prepublishOnly": "npm run build && npm run generate && npm run test",
         "test-coverage": "npm run test --coverage",
-        "test": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js --no-coverage",
-        "generate": "antlr4ng -Dlanguage=TypeScript tests/CPP14.g4 tests/Expr.g4 tests/Whitebox.g4 -no-listener -no-visitor -o tests/generated -Xexact-output-dir",
+        "test": "vitest run --no-watch --no-coverage",
+        "generate": "antlr-ng -Dlanguage=TypeScript tests/CPP14.g4 tests/Expr.g4 tests/Whitebox.g4 -l false -o tests/generated --exact-output-dir",
         "eslint": "eslint .",
         "build-mjs": "npm run build-bundle -- --outfile=lib/index.mjs --format=esm",
         "build-cjs": "npm run build-bundle -- --outfile=lib/index.cjs --format=cjs",
         "build-bundle": "esbuild ./index.ts --bundle --main-fields=module,main --target=esnext --packages=external --keep-names"
     },
     "devDependencies": {
-        "@types/jest": "29.5.12",
-        "@types/node": "22.0.2",
+        "@eslint/js": "9.21.0",
+        "@stylistic/eslint-plugin": "4.2.0",
+        "@stylistic/eslint-plugin-ts": "4.2.0",
+        "@types/node": "22.13.10",
         "@types/unicode-properties": "1.3.2",
-        "@typescript-eslint/eslint-plugin": "7.14.1",
-        "@typescript-eslint/parser": "7.18.0",
-        "antlr4ng-cli": "2.0.0",
-        "esbuild": "0.23.0",
-        "eslint": "8.57.0",
-        "eslint-plugin-import": "2.29.1",
-        "eslint-plugin-jsdoc": "48.2.7",
+        "@typescript-eslint/eslint-plugin": "8.26.0",
+        "@typescript-eslint/parser": "8.26.0",
+        "antlr-ng": "1.0.8",
+        "esbuild": "0.25.0",
+        "eslint": "9.22.0",
+        "eslint-plugin-import": "2.31.0",
+        "eslint-plugin-jsdoc": "50.6.3",
         "eslint-plugin-prefer-arrow": "1.2.3",
-        "jest": "29.7.0",
-        "ts-jest": "29.2.3",
-        "ts-node": "10.9.2",
-        "typescript": "5.5.2"
+        "tsx": "4.19.3",
+        "typescript": "5.8.2",
+        "typescript-eslint": "8.26.0",
+        "unicode-properties": "1.4.1",
+        "vitest": "3.0.8"
     },
     "dependencies": {
-        "antlr4ng": "3.0.14"
+        "antlr4ng": "3.0.16"
     },
     "exports": {
         "types": "./lib/index.d.ts",
