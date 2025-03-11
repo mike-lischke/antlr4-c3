@@ -1,0 +1,15 @@
+{
+    "image": "maven:3.9.9-eclipse-temurin-23",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "redhat.java",
+                "vscjava.vscode-java-debug",
+                "vscjava.vscode-java-test",
+                "vscjava.vscode-maven",
+                "vscjava.vscode-java-dependency",
+                "VisualStudioExptTeam.vscodeintellicode"
+            ]
+        }
+    }
+}
