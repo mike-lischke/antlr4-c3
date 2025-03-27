@@ -9,18 +9,22 @@ package com.vmware.antlr4c3;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.atn.PredictionMode;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.Assert.*;
-
+@TestMethodOrder(OrderAnnotation.class)
 public class ExprTest {
     @Test
-    public void simpleExpressionTest() throws Exception {
+    @Order(1)
+    public void mostSimpleSetup() throws Exception {
+        System.out.println(1);
         String expression = "var c = a + b()";
         ExprLexer lexer = new ExprLexer(CharStreams.fromString(expression));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -32,7 +36,7 @@ public class ExprTest {
         parser.addErrorListener(errorListener);
 
         // Specify our entry point
-        ExprParser.ExpressionContext tree = parser.expression();
+        parser.expression();
 
         assertEquals(0, errorListener.errorCount);
 
@@ -47,12 +51,9 @@ public class ExprTest {
         assertTrue(candidates.tokens.containsKey(ExprLexer.LET));
         assertTrue(candidates.tokens.containsKey(ExprLexer.ID));
 
-        { // TS: expected [ExprLexer.ID, ExprLexer.EQUAL], here got []
-            assertEquals(Arrays.asList(new Integer[] {}), candidates.tokens.get(ExprLexer.VAR));
-            assertEquals(Arrays.asList(new Integer[] {}), candidates.tokens.get(ExprLexer.LET));
-        }
-
-        assertEquals(Arrays.asList(new Integer[] {}), candidates.tokens.get(ExprLexer.ID));
+        assertEquals(List.of(ExprLexer.ID, ExprLexer.EQUAL), candidates.tokens.get(ExprLexer.VAR));
+        assertEquals(List.of(ExprLexer.ID, ExprLexer.EQUAL), candidates.tokens.get(ExprLexer.LET));
+        assertEquals(List.of(), candidates.tokens.get(ExprLexer.ID));
 
         // 2) On the first whitespace. In real implementations you would do some
         // additional checks where in the whitespace
@@ -91,7 +92,9 @@ public class ExprTest {
     }
 
     @Test
+    @Order(2)
     public void typicalExpressionTest() throws Exception {
+        System.out.println(2);
         String expression = "var c = a + b";
         ExprLexer lexer = new ExprLexer(CharStreams.fromString(expression));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -128,8 +131,8 @@ public class ExprTest {
         assertTrue(candidates.tokens.containsKey(ExprLexer.VAR));
         assertTrue(candidates.tokens.containsKey(ExprLexer.LET));
 
-        assertEquals(Arrays.asList(new Integer[] {}), candidates.tokens.get(ExprLexer.VAR));
-        assertEquals(Arrays.asList(new Integer[] {}), candidates.tokens.get(ExprLexer.LET));
+        assertEquals(List.of(ExprLexer.ID, ExprLexer.EQUAL), candidates.tokens.get(ExprLexer.VAR));
+        assertEquals(List.of(ExprLexer.ID, ExprLexer.EQUAL), candidates.tokens.get(ExprLexer.LET));
 
         // 2) On the variable name ('c').
         candidates = core.collectCandidates(2, null);
