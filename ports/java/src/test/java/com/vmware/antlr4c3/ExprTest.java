@@ -9,7 +9,6 @@ package com.vmware.antlr4c3;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.antlr.v4.runtime.CharStreams;
@@ -37,7 +36,7 @@ public class ExprTest {
 
         assertEquals(0, errorListener.errorCount);
 
-        CodeCompletionCore core = new CodeCompletionCore(parser, null, null);
+        CodeCompletionCore core = new CodeCompletionCore(parser);
 
         // 1) At the input start.
 
@@ -118,7 +117,9 @@ public class ExprTest {
         Set<Integer> ignoredTokens = new HashSet<>(Arrays.asList(ExprLexer.ID,
                 ExprLexer.PLUS, ExprLexer.MINUS, ExprLexer.MULTIPLY, ExprLexer.DIVIDE, ExprLexer.EQUAL));
 
-        CodeCompletionCore core = new CodeCompletionCore(parser, preferredRules, ignoredTokens);
+        CodeCompletionCore core = new CodeCompletionCore(parser);
+        core.preferredRules = preferredRules;
+        core.ignoredTokens = ignoredTokens;
 
         // 1) At the input start.
         CodeCompletionCore.CandidatesCollection candidates = core.collectCandidates(0, null);
@@ -147,7 +148,7 @@ public class ExprTest {
         // caret position.
         // These are what we told the engine above to be preferred rules for us.
         int found = 0;
-        for (Map.Entry<Integer, List<Integer>> candidate : candidates.rules.entrySet()) {
+        for (Map.Entry<Integer, CodeCompletionCore.CandidateRule> candidate : candidates.rules.entrySet()) {
             switch (candidate.getKey()) {
                 case ExprParser.RULE_functionRef: {
                     found++;
@@ -172,7 +173,7 @@ public class ExprTest {
 
         // Here we get 2 rule indexes
         found = 0;
-        for (Map.Entry<Integer, List<Integer>> candidate : candidates.rules.entrySet()) {
+        for (Map.Entry<Integer, CodeCompletionCore.CandidateRule> candidate : candidates.rules.entrySet()) {
             switch (candidate.getKey()) {
                 case ExprParser.RULE_functionRef: {
                     found++;

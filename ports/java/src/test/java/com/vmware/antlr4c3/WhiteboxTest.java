@@ -1,3 +1,10 @@
+/*
+ * Copyright © 2017 VMware, Inc. All Rights Reserved.
+ *
+ * SPDX-License-Identifier: MIT
+ *
+ * See LICENSE file for more info.
+ */
 package com.vmware.antlr4c3;
 
 import static org.junit.Assert.assertEquals;
@@ -29,7 +36,7 @@ public class WhiteboxTest {
 
         assertEquals(1, errorListener.errorCount);
 
-        CodeCompletionCore core = new CodeCompletionCore(parser, null, null);
+        CodeCompletionCore core = new CodeCompletionCore(parser);
         CodeCompletionCore.CandidatesCollection candidates = core.collectCandidates(1, ctx);
 
         assertEquals(5, candidates.tokens.size());
@@ -54,7 +61,7 @@ public class WhiteboxTest {
         ParserRuleContext ctx = parser.test2();
         assertEquals(1, errorListener.errorCount);
 
-        CodeCompletionCore core = new CodeCompletionCore(parser, null, null);
+        CodeCompletionCore core = new CodeCompletionCore(parser);
         CodeCompletionCore.CandidatesCollection candidates = core.collectCandidates(1, ctx);
 
         assertEquals(5, candidates.tokens.size());
@@ -79,7 +86,7 @@ public class WhiteboxTest {
         ParserRuleContext ctx = parser.test3();
         assertEquals(1, errorListener.errorCount);
 
-        CodeCompletionCore core = new CodeCompletionCore(parser, null, null);
+        CodeCompletionCore core = new CodeCompletionCore(parser);
         CodeCompletionCore.CandidatesCollection candidates = core.collectCandidates(1, ctx);
 
         assertEquals(4, candidates.tokens.size());
@@ -115,7 +122,7 @@ public class WhiteboxTest {
                     throw new IllegalStateException();
             }
 
-            CodeCompletionCore core = new CodeCompletionCore(parser, null, null);
+            CodeCompletionCore core = new CodeCompletionCore(parser);
             CodeCompletionCore.CandidatesCollection candidates = core.collectCandidates(2, ctx);
 
             assertEquals(Set.of(WhiteboxLexer.DOLOR), candidates.tokens.keySet());
@@ -132,7 +139,7 @@ public class WhiteboxTest {
         WhiteboxParser parser = new WhiteboxParser(tokenStream);
         ParserRuleContext ctx = parser.test8();
 
-        CodeCompletionCore core = new CodeCompletionCore(parser, null, null);
+        CodeCompletionCore core = new CodeCompletionCore(parser);
         CodeCompletionCore.CandidatesCollection candidates = core.collectCandidates(2, ctx);
 
         assertEquals(1, candidates.tokens.size());
