@@ -18,7 +18,7 @@ Please see the parent [README.md](../../readme.md) for an explanation of the lib
 
 - [ANTLRv4 C++ Runtime](https://github.com/antlr/antlr4/tree/4.13.1/runtime/Cpp) to compile sources.
 
-- [CMake 3.7](https://cmake.org/cmake/help/latest/release/3.7.html) to build project.
+- [CMake 3.7](https://cmake.org/cmake/help/latest/release/3.7.html) and [Conan](https://conan.io/) to build project.
 
 - [ANTLRv4 Tool](https://www.antlr.org/download.html) to build tests.
 
