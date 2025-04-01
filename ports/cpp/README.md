@@ -39,19 +39,19 @@ Actual build steps are available at [CMake GitHub Workflow](../../.github/workfl
 git clone git@github.com:mike-lischke/antlr4-c3.git
 cd antlr4-c3/ports/cpp # Also a workspace directory for VSCode
 
-# Create and enter the build directory
-mkdir build && cd build
+# Setup the Conan project
+# - build_type Asan and Tsan are supported too
+conan install . --output-folder=build --build=missing --settings=build_type=Debug
 
 # Configure CMake build
 # - ANTLR4C3_DEVELOPER should be enabled if you are going to run tests
-# - CMAKE_BUILD_TYPE Asan and Tsan are supported too
-cmake -DANTLR4C3_DEVELOPER=ON -DCMAKE_BUILD_TYPE=Release ..
+(cd build && cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Debug -DANTLR4C3_DEVELOPER=ON)
 
 # Build everything
-make
+(cd build && make)
 
 # Running tests being at build directory
-(make && cd test && ctest)
+(cd build && make && cd test && ctest)
 ```
 
 ## Contributing
