@@ -41,6 +41,7 @@ cd antlr4-c3/ports/cpp # Also a workspace directory for VSCode
 
 # Setup the Conan project
 # - build_type Asan and Tsan are supported too
+conan profile detect
 conan install . --output-folder=build --build=missing --settings=build_type=Debug
 
 # Configure CMake build
