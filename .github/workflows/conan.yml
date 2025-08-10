@@ -1,5 +1,8 @@
 name: Conan
 
+env:
+  CONAN_SETTING: "--build=missing -s compiler.cppstd=20"
+
 on:
   push:
     branches: ["main"]
@@ -24,8 +27,15 @@ jobs:
 
       - name: Install Conan dependencies
         working-directory: ${{github.workspace}}/ports/cpp
-        run: conan install .
+        run: |
+          conan install . $CONAN_SETTING
 
-      - name: Test package
+      - name: Build Conan Project
         working-directory: ${{github.workspace}}/ports/cpp
-        run: conan create .
+        run: |
+          conan build . $CONAN_SETTING
+
+      - name: Test Conan Package
+        working-directory: ${{github.workspace}}/ports/cpp
+        run: |
+          conan create . $CONAN_SETTING
