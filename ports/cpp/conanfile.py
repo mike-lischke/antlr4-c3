@@ -7,11 +7,11 @@ class ANTLR4C3Recipe(ConanFile):
     version = "2.0.0"
     package_type = "library"
 
-    license = "<Put the package license here>"
-    author = "<Put your name here> <And your email here>"
-    url = "<Package recipe repository url here, for issues about the package>"
-    description = "<Description of hello package here>"
-    topics = ("<Put some tag here>", "<here>", "<and here>")
+    license = "MIT"
+    author = "Mike Lischke mike@lischke-online.de"
+    url = "https://github.com/mike-lischke/antlr4-c3"
+    description = "A grammar agnostic code completion engine for antlr-ng and ANTLR4 based parsers"
+    topics = ("antlr-ng", "antlr4")
 
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True, False]}
