@@ -23,7 +23,9 @@ jobs:
         uses: conan-io/setup-conan@v1
 
       - name: Install Conan dependencies
+        working-directory: ${{github.workspace}}/ports/cpp
         run: conan install .
 
       - name: Test package
+        working-directory: ${{github.workspace}}/ports/cpp
         run: conan create .
