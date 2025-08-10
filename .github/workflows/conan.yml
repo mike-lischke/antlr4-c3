@@ -1,0 +1,29 @@
+name: Conan
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "ports/cpp/**"
+      - ".github/workflows/conan.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "ports/cpp/**"
+      - ".github/workflows/conan.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Conan
+        uses: conan-io/setup-conan@v1
+
+      - name: Install Conan dependencies
+        run: conan install .
+
+      - name: Test package
+        run: conan create .
