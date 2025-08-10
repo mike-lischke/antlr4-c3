@@ -1,24 +1,36 @@
 cmake_minimum_required(VERSION 3.7)
 project(antlr4-c3 VERSION 2.0.0)
 
-option(ANTLR4C3_DEVELOPER "Enable ${PROJECT_NAME} developer mode" OFF)
+if(NOT DEFINED CONAN_GENERATOR_IS_RUNNING)
+    find_package(antlr4-runtime REQUIRED)
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+    set(ANTLR4C3_DIR "source/antlr4-c3")
+    add_library(${PROJECT_NAME} ${ANTLR4C3_DIR}/CodeCompletionCore.cpp)
+    target_include_directories(${PROJECT_NAME} PUBLIC source)
+    target_link_libraries(${PROJECT_NAME} PUBLIC antlr4_static)
+    set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER ${ANTLR4C3_DIR}/CodeCompletionCore.hpp)
 
-include(cmake/CompileOptions.cmake)
-include(cmake/Sanitize.cmake)
+    install(TARGETS ${PROJECT_NAME})
+else()
+    option(ANTLR4C3_DEVELOPER "Enable ${PROJECT_NAME} developer mode" OFF)
 
-set(ANTLR4_TAG 4.13.1)
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
-find_package(Antlr4Cpp REQUIRED)
+    include(cmake/CompileOptions.cmake)
+    include(cmake/Sanitize.cmake)
 
-add_subdirectory(source)
+    set(ANTLR4_TAG 4.13.1)
 
-if (ANTLR4C3_DEVELOPER)
-    include(cmake/Testing.cmake)
+    find_package(Antlr4Cpp REQUIRED)
 
-    find_package(Antlr4Tool REQUIRED)
-    find_package(GTest REQUIRED)
+    add_subdirectory(source)
 
-    add_subdirectory(test)
+    if(ANTLR4C3_DEVELOPER)
+        include(cmake/Testing.cmake)
+
+        find_package(Antlr4Tool REQUIRED)
+        find_package(GTest REQUIRED)
+
+        add_subdirectory(test)
+    endif()
 endif()
