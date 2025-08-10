@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.7)
 project(antlr4-c3 VERSION 2.0.0)
 
-if(NOT DEFINED CONAN_GENERATOR_IS_RUNNING)
+option(ANTLR4C3_CONAN "Enable project build for the Conan" ON)
+
+if(ANTLR4C3_CONAN)
     find_package(antlr4-runtime REQUIRED)
 
     set(ANTLR4C3_DIR "source/antlr4-c3")
