@@ -4,3 +4,6 @@ build-asan/
 
 # Clangd
 .cache
+
+# Conan
+CMakeUserPresets.json

@@ -1,0 +1,41 @@
+name: Conan
+
+env:
+  CONAN_SETTING: "--build=missing -s compiler.cppstd=20"
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "ports/cpp/**"
+      - ".github/workflows/conan.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "ports/cpp/**"
+      - ".github/workflows/conan.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Conan
+        uses: conan-io/setup-conan@v1
+
+      - name: Install Conan dependencies
+        working-directory: ${{github.workspace}}/ports/cpp
+        run: |
+          conan install . $CONAN_SETTING
+
+      - name: Build Conan Project
+        working-directory: ${{github.workspace}}/ports/cpp
+        run: |
+          conan build . $CONAN_SETTING
+
+      - name: Test Conan Package
+        working-directory: ${{github.workspace}}/ports/cpp
+        run: |
+          conan create . $CONAN_SETTING

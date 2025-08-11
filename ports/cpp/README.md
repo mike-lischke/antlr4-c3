@@ -30,7 +30,7 @@ Currently, there are no other ways to adding C++ port as a dependency other than
 
 ## Build & Run
 
-Actual build steps are available at [CMake GitHub Workflow](../../.github/workflows/cmake.yml). 
+Actual build steps are available at [CMake GitHub Workflow](../../.github/workflows/cmake.yml).
 
 `ANTLRv4` Runtime and Tool as well as other dependecnies will be downloaded during `CMake` configiration stage.
 
@@ -43,9 +43,14 @@ cd antlr4-c3/ports/cpp # Also a workspace directory for VSCode
 mkdir build && cd build
 
 # Configure CMake build
+# - ANTLR4C3_CONAN should be disabled
 # - ANTLR4C3_DEVELOPER should be enabled if you are going to run tests
 # - CMAKE_BUILD_TYPE Asan and Tsan are supported too
-cmake -DANTLR4C3_DEVELOPER=ON -DCMAKE_BUILD_TYPE=Release ..
+cmake \
+    -DANTLR4C3_CONAN=OFF \
+    -DANTLR4C3_DEVELOPER=ON \
+    -DCMAKE_BUILD_TYPE=Release \
+    ..
 
 # Build everything
 make

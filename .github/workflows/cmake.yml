@@ -48,6 +48,7 @@ jobs:
           mkdir build
           cd build
           cmake \
+            -DANTLR4C3_CONAN=OFF \
             -DANTLR4C3_DEVELOPER=ON \
             -DCMAKE_BUILD_TYPE=${{ matrix.cmake_build_type }} \
             ..
